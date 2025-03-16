@@ -6,6 +6,7 @@ import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
 import { SupabaseProvider } from '@/providers/SupabaseProvider';
+import { AuthGuard } from '@/components/auth/AuthGuard';
 import { theme } from '@/styles/theme';
 
 export const metadata = {
@@ -29,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SupabaseProvider>
             <MantineProvider theme={theme}>
               <Notifications position="top-right" />
-              {children}
+              <AuthGuard>{children}</AuthGuard>
             </MantineProvider>
           </SupabaseProvider>
         </ReactQueryProvider>

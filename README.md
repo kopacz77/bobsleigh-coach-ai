@@ -6,6 +6,14 @@ An AI-powered training application for bobsleigh athletes with personalized reco
 
 This application uses advanced machine learning techniques to analyze athlete performance data and provide personalized training recommendations, performance tracking, and coaching insights specifically tailored for bobsleigh athletes with plans to expand to other sports.
 
+## Features
+
+- **Performance Management Charts (PMC)** for tracking fitness, fatigue, and form
+- **AI-Generated Training Recommendations** based on current training status
+- **Workout Logging and Tracking** with detailed exercise data
+- **Performance Metrics and Analysis** to monitor progress
+- **Customizable Athlete Profiles** to personalize the experience
+
 ## Tech Stack
 
 ### Frontend
@@ -29,41 +37,82 @@ This application uses advanced machine learning techniques to analyze athlete pe
 - Google Cloud Run (Containerized deployment)
 - Docker (Containerization)
 
-## Repository Structure
-
-```
-/
-├── frontend/              # Next.js application
-│   ├── public/            # Static assets
-│   └── src/               # Source code
-│       ├── app/           # Next.js App Router
-│       ├── components/    # React components
-│       ├── hooks/         # Custom React hooks
-│       ├── styles/        # Global styles
-│       └── utils/         # Utility functions
-│
-├── backend/               # Python FastAPI application
-│   ├── app/               # Application code
-│   │   ├── api/           # API endpoints
-│   │   ├── core/          # Core functionality
-│   │   ├── db/            # Database models and utils
-│   │   ├── models/        # ML models
-│   │   └── services/      # Business logic
-│   ├── tests/             # Test suite
-│   └── Dockerfile         # Backend Dockerfile
-│
-├── ml/                    # Machine learning code
-│   ├── data/              # Data processing scripts
-│   ├── models/            # Model definitions
-│   ├── notebooks/         # Jupyter notebooks
-│   └── training/          # Training scripts
-│
-└── docker-compose.yml     # Development environment setup
-```
-
 ## Getting Started
 
-Instructions for setting up development environment will be added soon.
+### Prerequisites
+
+- Node.js 18+
+- Python 3.11+
+- Docker and Docker Compose
+- Supabase account
+
+### Installation
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/kopacz77/bobsleigh-coach-ai.git
+   cd bobsleigh-coach-ai
+   ```
+
+2. Set up environment variables
+   Create a `.env` file in the root directory with the following variables:
+   ```
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_KEY=your_supabase_anon_key
+   ```
+
+3. Start the development environment
+   ```bash
+   docker-compose up
+   ```
+
+4. Access the application
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
+
+## Database Setup
+
+1. Create a Supabase project at https://supabase.com
+
+2. Run the SQL script in `backend/sql/supabase_schema.sql` in the Supabase SQL editor to create the database schema
+
+3. Update your `.env` file with the Supabase credentials
+
+## Development
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Backend
+
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+## Machine Learning
+
+### Training Models
+
+```bash
+cd ml
+pip install -r requirements.txt
+python -m ml.training.train_pmc_model --data_path data/processed/athlete_data.csv --output_path models/checkpoints/pmc_model.pkl
+```
+
+### Running Jupyter Notebooks
+
+```bash
+cd ml
+jupyter lab
+```
 
 ## License
 
