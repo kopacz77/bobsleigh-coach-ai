@@ -17,18 +17,49 @@ import { showNotification } from '@mantine/notifications';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 /**
+ * WellbeingAssessment props interface
+ */
+interface WellbeingAssessmentProps {
+  userId: string;
+  date?: Date;
+}
+
+/**
+ * Assessment data interface
+ */
+interface AssessmentData {
+  sleep_quality: number;
+  stress_level: number;
+  nutrition_quality: number;
+  physical_readiness: number;
+  mental_clarity: number;
+  notes: string;
+}
+
+/**
+ * Saved assessment data from DB
+ */
+interface SavedAssessment extends AssessmentData {
+  id: number;
+  user_id: string;
+  date: string;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
  * WellbeingAssessment component allows athletes to track various wellbeing metrics
  * including sleep quality, stress levels, nutrition quality, physical readiness,
  * and mental clarity.
  */
-const WellbeingAssessment = ({ userId, date = new Date() }) => {
+const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date = new Date() }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState(false);
-  const [savedAssessment, setSavedAssessment] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [savedAssessment, setSavedAssessment] = useState<SavedAssessment | null>(null);
   
   // Assessment form state
-  const [assessment, setAssessment] = useState({
+  const [assessment, setAssessment] = useState<AssessmentData>({
     sleep_quality: 5,
     stress_level: 5,
     nutrition_quality: 5,
@@ -56,7 +87,7 @@ const WellbeingAssessment = ({ userId, date = new Date() }) => {
         }
 
         if (data) {
-          setSavedAssessment(data);
+          setSavedAssessment(data as SavedAssessment);
           setAssessment({
             sleep_quality: data.sleep_quality,
             stress_level: data.stress_level,
@@ -76,11 +107,11 @@ const WellbeingAssessment = ({ userId, date = new Date() }) => {
     }
   }, [userId, dateString, supabase]);
 
-  const handleSliderChange = (field) => (value) => {
+  const handleSliderChange = (field: keyof AssessmentData) => (value: number) => {
     setAssessment((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleNotesChange = (event) => {
+  const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setAssessment((prev) => ({ ...prev, notes: event.target.value }));
   };
 
@@ -131,7 +162,7 @@ const WellbeingAssessment = ({ userId, date = new Date() }) => {
           .single();
           
         if (!error && data) {
-          setSavedAssessment(data);
+          setSavedAssessment(data as SavedAssessment);
         }
       }
     } catch (error) {
@@ -147,13 +178,13 @@ const WellbeingAssessment = ({ userId, date = new Date() }) => {
   };
 
   // Helper function to determine slider color based on value
-  const getSliderColor = (value) => {
+  const getSliderColor = (value: number): string => {
     if (value <= 3) return theme.colors.red[6];
     if (value <= 6) return theme.colors.yellow[6];
     return theme.colors.green[6];
   };
 
-  const getWellbeingScore = () => {
+  const getWellbeingScore = (): number => {
     const {
       sleep_quality,
       stress_level,

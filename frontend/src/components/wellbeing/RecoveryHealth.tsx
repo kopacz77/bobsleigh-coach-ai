@@ -45,24 +45,111 @@ import {
 } from '@tabler/icons-react';
 
 /**
+ * Option type for select inputs
+ */
+interface SelectOption {
+  value: string;
+  label: string;
+  icon?: React.FC<any>;
+  color?: string;
+}
+
+/**
+ * Recovery session data from database
+ */
+interface RecoverySession {
+  id: number;
+  user_id: string;
+  date: string;
+  recovery_methods: string[];
+  sleep_hours: number;
+  hydration_liters: number;
+  overall_recovery_score: number;
+  soreness_areas: string[] | null;
+  pain_level: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Injury data from database
+ */
+interface Injury {
+  id: number;
+  user_id: string;
+  date: string;
+  body_area: string;
+  injury_type: string;
+  severity: string;
+  pain_level: number;
+  symptoms: string[] | null;
+  impact_on_training: string;
+  treatment_plan: string | null;
+  expected_recovery_time: string | null;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Form state for recovery
+ */
+interface RecoveryForm {
+  id?: number;
+  date: Date;
+  recovery_methods: string[];
+  sleep_hours: number;
+  hydration_liters: number;
+  overall_recovery_score: number;
+  soreness_areas: string[];
+  pain_level: number;
+  notes: string;
+}
+
+/**
+ * Form state for injury
+ */
+interface InjuryForm {
+  id?: number;
+  date: Date;
+  body_area: string;
+  injury_type: string;
+  severity: string;
+  pain_level: number;
+  symptoms: string[];
+  impact_on_training: string;
+  treatment_plan: string;
+  expected_recovery_time: string;
+  status: string;
+}
+
+/**
+ * Component props
+ */
+interface RecoveryHealthProps {
+  userId: string;
+}
+
+/**
  * RecoveryHealth component tracks athlete recovery methods, 
  * injury prevention, and overall recovery status.
  */
-const RecoveryHealth = ({ userId }) => {
+const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [recoveryData, setRecoveryData] = useState([]);
-  const [injuryData, setInjuryData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [loading, setLoading] = useState<boolean>(false);
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  const [recoveryData, setRecoveryData] = useState<RecoverySession[]>([]);
+  const [injuryData, setInjuryData] = useState<Injury[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
   const [injuryModalOpened, { open: openInjuryModal, close: closeInjuryModal }] = useDisclosure(false);
-  const [selectedRecovery, setSelectedRecovery] = useState(null);
-  const [selectedInjury, setSelectedInjury] = useState(null);
+  const [selectedRecovery, setSelectedRecovery] = useState<RecoverySession | null>(null);
+  const [selectedInjury, setSelectedInjury] = useState<Injury | null>(null);
   
   // Form state for recovery
-  const [recovery, setRecovery] = useState({
+  const [recovery, setRecovery] = useState<RecoveryForm>({
     date: new Date(),
     recovery_methods: [],
     sleep_hours: 7,
@@ -74,7 +161,7 @@ const RecoveryHealth = ({ userId }) => {
   });
 
   // Form state for injury/pain
-  const [injury, setInjury] = useState({
+  const [injury, setInjury] = useState<InjuryForm>({
     date: new Date(),
     body_area: '',
     injury_type: '',
@@ -88,7 +175,7 @@ const RecoveryHealth = ({ userId }) => {
   });
 
   // Options for selects
-  const recoveryMethods = [
+  const recoveryMethods: SelectOption[] = [
     { value: 'sleep', label: 'Sleep Optimization', icon: IconZzz },
     { value: 'massage', label: 'Massage', icon: IconMassage },
     { value: 'stretching', label: 'Stretching', icon: IconStretching },
@@ -103,7 +190,7 @@ const RecoveryHealth = ({ userId }) => {
     { value: 'heat_therapy', label: 'Heat Therapy', icon: IconTemperature }
   ];
 
-  const bodyAreas = [
+  const bodyAreas: SelectOption[] = [
     { value: 'shoulder', label: 'Shoulder' },
     { value: 'upper_back', label: 'Upper Back' },
     { value: 'lower_back', label: 'Lower Back' },
@@ -123,7 +210,7 @@ const RecoveryHealth = ({ userId }) => {
     { value: 'abdominals', label: 'Abdominals' }
   ];
 
-  const injuryTypes = [
+  const injuryTypes: SelectOption[] = [
     { value: 'strain', label: 'Muscle Strain' },
     { value: 'sprain', label: 'Sprain' },
     { value: 'contusion', label: 'Contusion/Bruise' },
@@ -137,7 +224,7 @@ const RecoveryHealth = ({ userId }) => {
     { value: 'fracture', label: 'Fracture' }
   ];
 
-  const symptomOptions = [
+  const symptomOptions: SelectOption[] = [
     { value: 'pain', label: 'Pain' },
     { value: 'swelling', label: 'Swelling' },
     { value: 'stiffness', label: 'Stiffness' },
@@ -209,32 +296,49 @@ const RecoveryHealth = ({ userId }) => {
   }, [userId, supabase]);
 
   // Format date for display
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
 
   // Handle recovery form field changes
-  const handleRecoveryDateChange = (value) => setRecovery(prev => ({ ...prev, date: value }));
-  const handleRecoveryMethodsChange = (value) => setRecovery(prev => ({ ...prev, recovery_methods: value }));
-  const handleSleepHoursChange = (value) => setRecovery(prev => ({ ...prev, sleep_hours: value }));
-  const handleHydrationChange = (value) => setRecovery(prev => ({ ...prev, hydration_liters: value }));
-  const handleRecoveryScoreChange = (value) => setRecovery(prev => ({ ...prev, overall_recovery_score: value }));
-  const handleSorenessAreasChange = (value) => setRecovery(prev => ({ ...prev, soreness_areas: value }));
-  const handlePainLevelChange = (value) => setRecovery(prev => ({ ...prev, pain_level: value }));
-  const handleRecoveryNotesChange = (event) => setRecovery(prev => ({ ...prev, notes: event.target.value }));
+  const handleRecoveryDateChange = (value: Date | null) => {
+    if (value) {
+      setRecovery(prev => ({ ...prev, date: value }));
+    }
+  };
+  
+  const handleRecoveryMethodsChange = (value: string[]) => setRecovery(prev => ({ ...prev, recovery_methods: value }));
+  const handleSleepHoursChange = (value: number) => setRecovery(prev => ({ ...prev, sleep_hours: value }));
+  const handleHydrationChange = (value: number) => setRecovery(prev => ({ ...prev, hydration_liters: value }));
+  const handleRecoveryScoreChange = (value: number) => setRecovery(prev => ({ ...prev, overall_recovery_score: value }));
+  const handleSorenessAreasChange = (value: string[]) => setRecovery(prev => ({ ...prev, soreness_areas: value }));
+  const handlePainLevelChange = (value: number) => setRecovery(prev => ({ ...prev, pain_level: value }));
+  
+  const handleRecoveryNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setRecovery(prev => ({ ...prev, notes: event.target.value }));
+  };
 
   // Handle injury form field changes
-  const handleInjuryDateChange = (value) => setInjury(prev => ({ ...prev, date: value }));
-  const handleBodyAreaChange = (value) => setInjury(prev => ({ ...prev, body_area: value }));
-  const handleInjuryTypeChange = (value) => setInjury(prev => ({ ...prev, injury_type: value }));
-  const handleSeverityChange = (value) => setInjury(prev => ({ ...prev, severity: value }));
-  const handleInjuryPainLevelChange = (value) => setInjury(prev => ({ ...prev, pain_level: value }));
-  const handleSymptomsChange = (value) => setInjury(prev => ({ ...prev, symptoms: value }));
-  const handleImpactOnTrainingChange = (value) => setInjury(prev => ({ ...prev, impact_on_training: value }));
-  const handleTreatmentPlanChange = (event) => setInjury(prev => ({ ...prev, treatment_plan: event.target.value }));
-  const handleExpectedRecoveryTimeChange = (value) => setInjury(prev => ({ ...prev, expected_recovery_time: value }));
-  const handleStatusChange = (value) => setInjury(prev => ({ ...prev, status: value }));
+  const handleInjuryDateChange = (value: Date | null) => {
+    if (value) {
+      setInjury(prev => ({ ...prev, date: value }));
+    }
+  };
+  
+  const handleBodyAreaChange = (value: string | null) => setInjury(prev => ({ ...prev, body_area: value || '' }));
+  const handleInjuryTypeChange = (value: string | null) => setInjury(prev => ({ ...prev, injury_type: value || '' }));
+  const handleSeverityChange = (value: string | null) => setInjury(prev => ({ ...prev, severity: value || 'mild' }));
+  const handleInjuryPainLevelChange = (value: number) => setInjury(prev => ({ ...prev, pain_level: value }));
+  const handleSymptomsChange = (value: string[]) => setInjury(prev => ({ ...prev, symptoms: value }));
+  const handleImpactOnTrainingChange = (value: string | null) => setInjury(prev => ({ ...prev, impact_on_training: value || 'minor' }));
+  
+  const handleTreatmentPlanChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInjury(prev => ({ ...prev, treatment_plan: event.target.value }));
+  };
+  
+  const handleExpectedRecoveryTimeChange = (value: string | null) => setInjury(prev => ({ ...prev, expected_recovery_time: value || '' }));
+  const handleStatusChange = (value: string | null) => setInjury(prev => ({ ...prev, status: value || 'active' }));
 
   // Open recovery form modal
   const handleAddRecovery = () => {
@@ -253,7 +357,7 @@ const RecoveryHealth = ({ userId }) => {
   };
 
   // Open recovery form modal with existing data
-  const handleEditRecovery = (recovery) => {
+  const handleEditRecovery = (recovery: RecoverySession) => {
     setRecovery({
       id: recovery.id,
       date: new Date(recovery.date),
@@ -270,7 +374,7 @@ const RecoveryHealth = ({ userId }) => {
   };
 
   // Delete recovery session
-  const handleDeleteRecovery = async (recoveryId) => {
+  const handleDeleteRecovery = async (recoveryId: number) => {
     setDeleteLoading(true);
     
     try {
@@ -411,7 +515,7 @@ const RecoveryHealth = ({ userId }) => {
   };
 
   // Open injury form modal with existing data
-  const handleEditInjury = (injury) => {
+  const handleEditInjury = (injury: Injury) => {
     setInjury({
       id: injury.id,
       date: new Date(injury.date),
@@ -430,7 +534,7 @@ const RecoveryHealth = ({ userId }) => {
   };
 
   // Delete injury
-  const handleDeleteInjury = async (injuryId) => {
+  const handleDeleteInjury = async (injuryId: number) => {
     setDeleteLoading(true);
     
     try {
@@ -547,7 +651,7 @@ const RecoveryHealth = ({ userId }) => {
   };
 
   // Calculate average recovery score
-  const calculateAverageRecoveryScore = () => {
+  const calculateAverageRecoveryScore = (): string | null => {
     if (!recoveryData.length) return null;
     
     const sum = recoveryData.reduce((acc, item) => acc + item.overall_recovery_score, 0);
@@ -555,7 +659,7 @@ const RecoveryHealth = ({ userId }) => {
   };
 
   // Get severity badge color
-  const getSeverityColor = (severity) => {
+  const getSeverityColor = (severity: string): string => {
     switch (severity) {
       case 'mild': return 'green';
       case 'moderate': return 'yellow';
@@ -566,7 +670,7 @@ const RecoveryHealth = ({ userId }) => {
   };
 
   // Get status badge color
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string): string => {
     switch (status) {
       case 'active': return 'red';
       case 'recovering': return 'yellow';
@@ -628,7 +732,7 @@ const RecoveryHealth = ({ userId }) => {
                     <Box mt="md">
                       {(() => {
                         // Count method frequencies
-                        const methodCounts = {};
+                        const methodCounts: Record<string, number> = {};
                         recoveryData.forEach(item => {
                           (item.recovery_methods || []).forEach(method => {
                             methodCounts[method] = (methodCounts[method] || 0) + 1;
@@ -642,11 +746,12 @@ const RecoveryHealth = ({ userId }) => {
                         
                         return sortedMethods.map(([method, count]) => {
                           const methodInfo = recoveryMethods.find(m => m.value === method);
+                          const MethodIcon = methodInfo?.icon;
                           return (
                             <Group key={method} mb="xs" noWrap>
-                              {methodInfo?.icon && (
+                              {MethodIcon && (
                                 <ThemeIcon size={24} radius="xl" color="blue">
-                                  <methodInfo.icon size={14} />
+                                  <MethodIcon size={14} />
                                 </ThemeIcon>
                               )}
                               <Text size="sm">{methodInfo?.label || method}</Text>

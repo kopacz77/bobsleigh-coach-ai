@@ -34,18 +34,111 @@ import {
 } from '@tabler/icons-react';
 
 /**
+ * Training area option
+ */
+interface TrainingAreaOption {
+  value: string;
+  label: string;
+}
+
+/**
+ * Workout type option
+ */
+interface WorkoutTypeOption {
+  value: string;
+  label: string;
+}
+
+/**
+ * Workout data from database
+ */
+interface Workout {
+  id: number;
+  user_id: string;
+  date: string;
+  workout_type: string;
+  name: string;
+  duration: number;
+  notes?: string;
+  is_assessed: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Assessment data from database
+ */
+interface TrainingAssessmentData {
+  id: number;
+  user_id: string;
+  workout_id: number | null;
+  date: string;
+  workout_type: string;
+  duration_minutes: number;
+  perceived_exertion: number;
+  technical_quality: number;
+  energy_level: number;
+  focus_level: number;
+  completed_as_planned: boolean;
+  performance_level: number;
+  areas_of_success: string[];
+  areas_for_improvement: string[];
+  notes: string | null;
+  coach_feedback: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Assessment form state
+ */
+interface AssessmentForm {
+  id?: number;
+  date: Date;
+  workout_type: string;
+  duration_minutes: number;
+  perceived_exertion: number;
+  technical_quality: number;
+  energy_level: number;
+  focus_level: number;
+  completed_as_planned: boolean;
+  performance_level: number;
+  areas_of_success: string[];
+  areas_for_improvement: string[];
+  notes: string;
+  coach_feedback: string;
+}
+
+/**
+ * Performance change information
+ */
+interface PerformanceChange {
+  value: string;
+  direction: 'up' | 'down' | 'same';
+  color: string;
+}
+
+/**
+ * TrainingAssessment props
+ */
+interface TrainingAssessmentProps {
+  userId: string;
+  workoutId?: number | null;
+}
+
+/**
  * TrainingAssessment component allows athletes to record and evaluate
  * their training sessions with detailed metrics and feedback.
  */
-const TrainingAssessment = ({ userId, workoutId = null }) => {
+const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workoutId = null }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState(false);
-  const [workout, setWorkout] = useState(null);
-  const [previousAssessment, setPreviousAssessment] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [workout, setWorkout] = useState<Workout | null>(null);
+  const [previousAssessment, setPreviousAssessment] = useState<TrainingAssessmentData | null>(null);
   
   // Assessment form state
-  const [assessment, setAssessment] = useState({
+  const [assessment, setAssessment] = useState<AssessmentForm>({
     date: new Date(),
     workout_type: '',
     duration_minutes: 60,
@@ -62,7 +155,7 @@ const TrainingAssessment = ({ userId, workoutId = null }) => {
   });
 
   // Training areas options
-  const trainingAreas = [
+  const trainingAreas: TrainingAreaOption[] = [
     { value: 'push_technique', label: 'Push Technique' },
     { value: 'loading_technique', label: 'Loading Technique' },
     { value: 'driving_technique', label: 'Driving Technique' },
@@ -81,7 +174,7 @@ const TrainingAssessment = ({ userId, workoutId = null }) => {
   ];
 
   // Workout types specific to bobsleigh
-  const workoutTypes = [
+  const workoutTypes: WorkoutTypeOption[] = [
     { value: 'on_ice_training', label: 'On-Ice Training' },
     { value: 'push_start_practice', label: 'Push Start Practice' },
     { value: 'track_walk', label: 'Track Walk/Analysis' },
@@ -182,19 +275,39 @@ const TrainingAssessment = ({ userId, workoutId = null }) => {
   }, [workoutId, userId, supabase]);
 
   // Handle form field changes
-  const handleDateChange = (value) => setAssessment(prev => ({ ...prev, date: value }));
-  const handleWorkoutTypeChange = (value) => setAssessment(prev => ({ ...prev, workout_type: value }));
-  const handleDurationChange = (value) => setAssessment(prev => ({ ...prev, duration_minutes: value }));
-  const handleExertionChange = (value) => setAssessment(prev => ({ ...prev, perceived_exertion: value }));
-  const handleTechnicalQualityChange = (value) => setAssessment(prev => ({ ...prev, technical_quality: value }));
-  const handleEnergyLevelChange = (value) => setAssessment(prev => ({ ...prev, energy_level: value }));
-  const handleFocusLevelChange = (value) => setAssessment(prev => ({ ...prev, focus_level: value }));
-  const handleCompletionToggle = (value) => setAssessment(prev => ({ ...prev, completed_as_planned: value }));
-  const handlePerformanceLevelChange = (value) => setAssessment(prev => ({ ...prev, performance_level: value }));
-  const handleSuccessAreasChange = (value) => setAssessment(prev => ({ ...prev, areas_of_success: value }));
-  const handleImprovementAreasChange = (value) => setAssessment(prev => ({ ...prev, areas_for_improvement: value }));
-  const handleNotesChange = (event) => setAssessment(prev => ({ ...prev, notes: event.target.value }));
-  const handleCoachFeedbackChange = (event) => setAssessment(prev => ({ ...prev, coach_feedback: event.target.value }));
+  const handleDateChange = (value: Date | null) => {
+    if (value) {
+      setAssessment(prev => ({ ...prev, date: value }));
+    }
+  };
+  
+  const handleWorkoutTypeChange = (value: string | null) => {
+    if (value) {
+      setAssessment(prev => ({ ...prev, workout_type: value }));
+    }
+  };
+  
+  const handleDurationChange = (value: number) => setAssessment(prev => ({ ...prev, duration_minutes: value }));
+  const handleExertionChange = (value: number) => setAssessment(prev => ({ ...prev, perceived_exertion: value }));
+  const handleTechnicalQualityChange = (value: number) => setAssessment(prev => ({ ...prev, technical_quality: value }));
+  const handleEnergyLevelChange = (value: number) => setAssessment(prev => ({ ...prev, energy_level: value }));
+  const handleFocusLevelChange = (value: number) => setAssessment(prev => ({ ...prev, focus_level: value }));
+  const handleCompletionToggle = (value: string | null) => {
+    if (value !== null) {
+      setAssessment(prev => ({ ...prev, completed_as_planned: value === 'true' }));
+    }
+  };
+  const handlePerformanceLevelChange = (value: number) => setAssessment(prev => ({ ...prev, performance_level: value }));
+  const handleSuccessAreasChange = (value: string[]) => setAssessment(prev => ({ ...prev, areas_of_success: value }));
+  const handleImprovementAreasChange = (value: string[]) => setAssessment(prev => ({ ...prev, areas_for_improvement: value }));
+  
+  const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setAssessment(prev => ({ ...prev, notes: event.target.value }));
+  };
+  
+  const handleCoachFeedbackChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setAssessment(prev => ({ ...prev, coach_feedback: event.target.value }));
+  };
 
   // Submit assessment
   const handleSubmit = async () => {
@@ -255,7 +368,7 @@ const TrainingAssessment = ({ userId, workoutId = null }) => {
         color: 'green',
       });
 
-      if (workout) {
+      if (workout && workoutId) {
         // Mark the workout as assessed
         await supabase
           .from('workouts')
@@ -275,17 +388,23 @@ const TrainingAssessment = ({ userId, workoutId = null }) => {
   };
 
   // Helper function to determine slider color based on value
-  const getSliderColor = (value) => {
+  const getSliderColor = (value: number): string => {
     if (value <= 3) return theme.colors.red[6];
     if (value <= 6) return theme.colors.yellow[6];
     return theme.colors.green[6];
   };
 
   // Calculate performance change for comparison
-  const getPerformanceChange = (metric) => {
+  const getPerformanceChange = (metric: keyof AssessmentForm): PerformanceChange | null => {
     if (!previousAssessment || !assessment[metric]) return null;
     
-    const diff = assessment[metric] - previousAssessment[metric];
+    // Cast to avoid TypeScript issues with comparison
+    const currentValue = Number(assessment[metric]);
+    const previousValue = Number(previousAssessment[metric]);
+    
+    if (isNaN(currentValue) || isNaN(previousValue)) return null;
+    
+    const diff = currentValue - previousValue;
     
     if (diff > 0) {
       return { value: `+${diff}`, direction: 'up', color: theme.colors.green[6] };
@@ -344,10 +463,10 @@ const TrainingAssessment = ({ userId, workoutId = null }) => {
             <Select
               label="Completed as Planned"
               data={[
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
+                { value: 'true', label: 'Yes' },
+                { value: 'false', label: 'No' }
               ]}
-              value={assessment.completed_as_planned}
+              value={assessment.completed_as_planned ? 'true' : 'false'}
               onChange={handleCompletionToggle}
               mb="xl"
             />
@@ -499,14 +618,16 @@ const TrainingAssessment = ({ userId, workoutId = null }) => {
 
           {previousAssessment && (
             <Paper p="md" radius="md" withBorder mb="xl">
-              <Text weight={600} size="lg" mb="lg">Comparison with Previous {workoutTypes.find(w => w.value === assessment.workout_type)?.label}</Text>
+              <Text weight={600} size="lg" mb="lg">
+                Comparison with Previous {workoutTypes.find(w => w.value === assessment.workout_type)?.label}
+              </Text>
               
               <List spacing="md">
-                {['technical_quality', 'energy_level', 'focus_level', 'performance_level'].map(metric => {
+                {(['technical_quality', 'energy_level', 'focus_level', 'performance_level'] as const).map(metric => {
                   const change = getPerformanceChange(metric);
                   if (!change) return null;
                   
-                  const metricLabels = {
+                  const metricLabels: Record<string, string> = {
                     technical_quality: 'Technical Quality',
                     energy_level: 'Energy Level',
                     focus_level: 'Mental Focus',

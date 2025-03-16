@@ -36,25 +36,131 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
 /**
+ * Test Category Option
+ */
+interface TestCategoryOption {
+  value: string;
+  label: string;
+}
+
+/**
+ * Test Type Option
+ */
+interface TestTypeOption {
+  value: string;
+  label: string;
+  unit: string;
+  target: 'higher' | 'lower';
+}
+
+/**
+ * Performance Assessment Data
+ */
+interface Assessment {
+  id: number;
+  user_id: string;
+  date: string;
+  test_category: string;
+  test_name: string;
+  value: number;
+  measurement_unit: string;
+  conditions: string | null;
+  rating: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Assessment Form State
+ */
+interface AssessmentForm {
+  date: Date;
+  test_category: string;
+  test_name: string;
+  value: string | number;
+  measurement_unit: string;
+  conditions: string;
+  rating: number;
+  notes: string;
+}
+
+/**
+ * Comparison State
+ */
+interface ComparisonState {
+  previousValue: number | null;
+  percentChange: string | null;
+  direction: 'better' | 'worse' | 'same' | null;
+  targetDirection?: 'higher' | 'lower';
+}
+
+/**
+ * Enhanced Assessment with Target Info
+ */
+interface EnhancedAssessment extends Assessment {
+  targetDirection?: 'higher' | 'lower';
+  progressPercentage: number | null;
+}
+
+/**
+ * Best & Worst Tests
+ */
+interface BestWorstTests {
+  best: EnhancedAssessment | null;
+  worst: EnhancedAssessment | null;
+}
+
+/**
+ * Chart Data Point
+ */
+interface ChartDataPoint {
+  date: string;
+  value: number;
+}
+
+/**
+ * Chart Data by Test
+ */
+type ChartData = Record<string, ChartDataPoint[]>;
+
+/**
+ * Test Types By Category
+ */
+type TestTypesByCategory = Record<string, TestTypeOption[]>;
+
+/**
+ * Target Values
+ */
+type TargetValues = Record<string, number>;
+
+/**
+ * Component Props
+ */
+interface PerformanceAssessmentProps {
+  userId: string;
+}
+
+/**
  * PerformanceAssessment component for tracking and evaluating athlete's 
  * performance metrics like sprint times, jump heights, strength tests, etc.
  */
-const PerformanceAssessment = ({ userId }) => {
+const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState(false);
-  const [assessments, setAssessments] = useState([]);
-  const [testCategories, setTestCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [targetValues, setTargetValues] = useState({});
-  const [comparison, setComparison] = useState({
+  const [loading, setLoading] = useState<boolean>(false);
+  const [assessments, setAssessments] = useState<Assessment[]>([]);
+  const [testCategories, setTestCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [targetValues, setTargetValues] = useState<TargetValues>({});
+  const [comparison, setComparison] = useState<ComparisonState>({
     previousValue: null,
     percentChange: null,
     direction: null
   });
 
   // Form state
-  const [assessment, setAssessment] = useState({
+  const [assessment, setAssessment] = useState<AssessmentForm>({
     date: new Date(),
     test_category: '',
     test_name: '',
@@ -66,7 +172,7 @@ const PerformanceAssessment = ({ userId }) => {
   });
 
   // Common test categories for bobsleigh athletes
-  const bobsleighTestCategories = [
+  const bobsleighTestCategories: TestCategoryOption[] = [
     { value: 'sprint', label: 'Sprint Tests' },
     { value: 'strength', label: 'Strength Tests' },
     { value: 'power', label: 'Power Tests' },
@@ -75,7 +181,7 @@ const PerformanceAssessment = ({ userId }) => {
   ];
 
   // Common test types by category
-  const testTypesByCategory = {
+  const testTypesByCategory: TestTypesByCategory = {
     sprint: [
       { value: '30m_sprint', label: '30m Sprint', unit: 'seconds', target: 'lower' },
       { value: '60m_sprint', label: '60m Sprint', unit: 'seconds', target: 'lower' },
@@ -193,7 +299,7 @@ const PerformanceAssessment = ({ userId }) => {
         }
 
         // Convert to an object keyed by test_name
-        const targets = {};
+        const targets: TargetValues = {};
         if (data) {
           data.forEach(target => {
             targets[target.test_name] = target.target_value;
@@ -210,21 +316,26 @@ const PerformanceAssessment = ({ userId }) => {
   }, [userId, selectedCategory, supabase]);
 
   // Handle form field changes
-  const handleDateChange = (value) => {
-    setAssessment(prev => ({ ...prev, date: value }));
+  const handleDateChange = (value: Date | null) => {
+    if (value) {
+      setAssessment(prev => ({ ...prev, date: value }));
+    }
   };
 
-  const handleCategoryChange = (value) => {
-    setAssessment(prev => ({
-      ...prev,
-      test_category: value,
-      test_name: '',
-      measurement_unit: ''
-    }));
-    // Update available test types based on category
+  const handleCategoryChange = (value: string | null) => {
+    if (value) {
+      setAssessment(prev => ({
+        ...prev,
+        test_category: value,
+        test_name: '',
+        measurement_unit: ''
+      }));
+    }
   };
 
-  const handleTestNameChange = (value) => {
+  const handleTestNameChange = (value: string | null) => {
+    if (!value) return;
+    
     const selectedTest = testTypesByCategory[assessment.test_category]?.find(
       test => test.value === value
     );
@@ -242,8 +353,6 @@ const PerformanceAssessment = ({ userId }) => {
       if (previousAssessment) {
         const previousValue = previousAssessment.value;
         const targetDirection = selectedTest?.target;
-        let percentChange = 0;
-        let changeDirection = 'same';
         
         // Don't calculate yet since we don't have a new value
         setComparison({
@@ -262,17 +371,17 @@ const PerformanceAssessment = ({ userId }) => {
     }
   };
 
-  const handleValueChange = (value) => {
+  const handleValueChange = (value: string | number) => {
     setAssessment(prev => ({ ...prev, value }));
     
     // Update comparison if we have a previous value
     if (comparison.previousValue !== null && value) {
-      const numValue = parseFloat(value);
-      const prevValue = parseFloat(comparison.previousValue);
+      const numValue = parseFloat(value.toString());
+      const prevValue = parseFloat(comparison.previousValue.toString());
       const percentChange = ((numValue - prevValue) / prevValue * 100).toFixed(2);
       
       // Determine if this change is good or bad based on target direction
-      let direction;
+      let direction: 'better' | 'worse' | 'same';
       if (comparison.targetDirection === 'lower') {
         // For lower targets (like sprint times), negative change is good
         direction = numValue < prevValue ? 'better' : numValue > prevValue ? 'worse' : 'same';
@@ -289,15 +398,15 @@ const PerformanceAssessment = ({ userId }) => {
     }
   };
 
-  const handleConditionsChange = (value) => {
-    setAssessment(prev => ({ ...prev, conditions: value }));
+  const handleConditionsChange = (value: string | null) => {
+    setAssessment(prev => ({ ...prev, conditions: value || '' }));
   };
 
-  const handleRatingChange = (value) => {
+  const handleRatingChange = (value: number) => {
     setAssessment(prev => ({ ...prev, rating: value }));
   };
 
-  const handleNotesChange = (event) => {
+  const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setAssessment(prev => ({ ...prev, notes: event.target.value }));
   };
 
@@ -320,7 +429,7 @@ const PerformanceAssessment = ({ userId }) => {
         date: assessment.date.toISOString().split('T')[0],
         test_category: assessment.test_category,
         test_name: assessment.test_name,
-        value: parseFloat(assessment.value),
+        value: parseFloat(assessment.value.toString()),
         measurement_unit: assessment.measurement_unit,
         conditions: assessment.conditions || null,
         rating: assessment.rating,
@@ -383,13 +492,13 @@ const PerformanceAssessment = ({ userId }) => {
   };
 
   // Format date for display
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
 
   // Get category icon
-  const getCategoryIcon = (category) => {
+  const getCategoryIcon = (category: string): React.ReactNode => {
     switch (category) {
       case 'sprint':
         return <IconRunning size={20} color={theme.colors.blue[6]} />;
@@ -407,11 +516,11 @@ const PerformanceAssessment = ({ userId }) => {
   };
 
   // Prepare chart data
-  const prepareChartData = () => {
-    if (!assessments.length) return [];
+  const prepareChartData = (): Record<string, ChartDataPoint[]> => {
+    if (!assessments.length) return {};
     
     // Group by test_name
-    const groupedData = {};
+    const groupedData: Record<string, ChartDataPoint[]> = {};
     
     assessments.forEach(assessment => {
       if (!groupedData[assessment.test_name]) {
@@ -425,21 +534,21 @@ const PerformanceAssessment = ({ userId }) => {
     });
     
     // For chart, we need one array per test, sorted by date
-    const chartData = {};
+    const chartData: Record<string, ChartDataPoint[]> = {};
     
     Object.entries(groupedData).forEach(([testName, data]) => {
-      chartData[testName] = data.sort((a, b) => new Date(a.date) - new Date(b.date));
+      chartData[testName] = data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     });
     
     return chartData;
   };
 
   // Find the best and worst tests based on recent assessments
-  const findBestAndWorstTests = () => {
+  const findBestAndWorstTests = (): BestWorstTests => {
     if (!assessments.length) return { best: null, worst: null };
     
     // Group by test_name and get the latest assessment for each
-    const latestByTest = {};
+    const latestByTest: Record<string, Assessment> = {};
     assessments.forEach(assessment => {
       if (!latestByTest[assessment.test_name] || new Date(assessment.date) > new Date(latestByTest[assessment.test_name].date)) {
         latestByTest[assessment.test_name] = assessment;
@@ -447,7 +556,7 @@ const PerformanceAssessment = ({ userId }) => {
     });
     
     // Get corresponding tests with target information
-    const testsWithTargets = Object.values(latestByTest).map(assessment => {
+    const testsWithTargets: EnhancedAssessment[] = Object.values(latestByTest).map(assessment => {
       const testInfo = testTypesByCategory[assessment.test_category]?.find(
         test => test.value === assessment.test_name
       );
@@ -455,8 +564,8 @@ const PerformanceAssessment = ({ userId }) => {
       // Calculate progress percentage if we have a target
       let progressPercentage = null;
       if (targetValues[assessment.test_name]) {
-        const target = parseFloat(targetValues[assessment.test_name]);
-        const current = parseFloat(assessment.value);
+        const target = parseFloat(targetValues[assessment.test_name].toString());
+        const current = parseFloat(assessment.value.toString());
         
         if (testInfo?.target === 'lower') {
           // For lower targets (like sprint times), calculate how close we are
@@ -499,7 +608,7 @@ const PerformanceAssessment = ({ userId }) => {
   const { best, worst } = findBestAndWorstTests();
 
   // Format improvement text
-  const getImprovementText = (test) => {
+  const getImprovementText = (test: EnhancedAssessment | null): string | null => {
     if (!test || test.progressPercentage === null) return null;
     
     if (test.progressPercentage >= 100) {
@@ -560,7 +669,9 @@ const PerformanceAssessment = ({ userId }) => {
                   <NumberInput
                     label={`Value (${assessment.measurement_unit})`}
                     placeholder="Enter result"
-                    value={assessment.value}
+                    value={typeof assessment.value === 'string' ? 
+                      parseFloat(assessment.value) || undefined : 
+                      assessment.value}
                     onChange={handleValueChange}
                     precision={2}
                     required
@@ -594,7 +705,7 @@ const PerformanceAssessment = ({ userId }) => {
                             color={comparison.direction === 'better' ? 'green' : 
                                   comparison.direction === 'worse' ? 'red' : 'gray'}
                           >
-                            {comparison.percentChange > 0 ? '+' : ''}{comparison.percentChange}%
+                            {parseFloat(comparison.percentChange) > 0 ? '+' : ''}{comparison.percentChange}%
                             {comparison.direction === 'better' && ' (Improved)'}
                             {comparison.direction === 'worse' && ' (Declined)'}
                           </Text>
@@ -714,7 +825,7 @@ const PerformanceAssessment = ({ userId }) => {
                     .map(cat => ({ value: cat, label: cat.charAt(0).toUpperCase() + cat.slice(1) }))
                 ]}
                 value={selectedCategory}
-                onChange={setSelectedCategory}
+                onChange={(value) => setSelectedCategory(value || '')}
                 style={{ width: 200 }}
               />
             </Group>
@@ -793,8 +904,9 @@ const PerformanceAssessment = ({ userId }) => {
                             test => test.value === testName
                           );
                           
-                          const colorIndex = index % theme.colors.length;
-                          const color = theme.colors[Object.keys(theme.colors)[colorIndex]][6];
+                          const colorKeys = Object.keys(theme.colors);
+                          const colorIndex = index % colorKeys.length;
+                          const color = theme.colors[colorKeys[colorIndex]][6];
                           
                           // Add reference line for target if available
                           const targetValue = targetValues[testName];

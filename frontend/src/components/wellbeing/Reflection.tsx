@@ -35,22 +35,78 @@ import {
 } from '@tabler/icons-react';
 
 /**
+ * Reflection type
+ */
+interface ReflectionType {
+  value: string;
+  label: string;
+}
+
+/**
+ * Sentiment option
+ */
+interface SentimentOption {
+  value: string;
+  label: string;
+  icon: React.FC<any> | null;
+  color: string;
+}
+
+/**
+ * Reflection entry from database
+ */
+interface Reflection {
+  id: number;
+  user_id: string;
+  date: string;
+  type: string;
+  title: string;
+  content: string;
+  sentiment: string;
+  key_learnings: string | null;
+  is_favorite: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Form state for new/edit reflection
+ */
+interface NewReflection {
+  id?: number;
+  date: Date;
+  type: string;
+  title: string;
+  content: string;
+  sentiment: string;
+  key_learnings: string;
+  is_favorite: boolean;
+}
+
+/**
+ * ReflectionComponent props
+ */
+interface ReflectionComponentProps {
+  userId: string;
+}
+
+/**
  * Reflection component allows athletes to write daily or session-based reflections
  * to capture thoughts on training, mental state, and learning moments.
  */
-const Reflection = ({ userId }) => {
+const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [reflections, setReflections] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [reflections, setReflections] = useState<Reflection[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [addModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
   const [viewModalOpened, { open: openViewModal, close: closeViewModal }] = useDisclosure(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedReflection, setSelectedReflection] = useState(null);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedReflection, setSelectedReflection] = useState<Reflection | null>(null);
 
   // Form state
-  const [newReflection, setNewReflection] = useState({
+  const [newReflection, setNewReflection] = useState<NewReflection>({
     date: new Date(),
     type: 'daily',
     title: '',
@@ -61,7 +117,7 @@ const Reflection = ({ userId }) => {
   });
 
   // Reflection types
-  const reflectionTypes = [
+  const reflectionTypes: ReflectionType[] = [
     { value: 'daily', label: 'Daily Reflection' },
     { value: 'training', label: 'Training Session' },
     { value: 'competition', label: 'Competition' },
@@ -70,7 +126,7 @@ const Reflection = ({ userId }) => {
   ];
 
   // Sentiment options
-  const sentimentOptions = [
+  const sentimentOptions: SentimentOption[] = [
     { value: 'positive', label: 'Positive', icon: IconMoodHappy, color: 'green' },
     { value: 'neutral', label: 'Neutral', icon: null, color: 'blue' },
     { value: 'negative', label: 'Negative', icon: IconMoodSad, color: 'red' }
@@ -108,28 +164,50 @@ const Reflection = ({ userId }) => {
   }, [userId, selectedDate, supabase]);
 
   // Check if reflections exist for a date
-  const getReflectionsForDate = (date) => {
+  const getReflectionsForDate = (date: Date): Reflection[] => {
     const dateString = date.toISOString().split('T')[0];
     return reflections.filter(reflection => reflection.date === dateString);
   };
 
   // Format date for display
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   };
 
   // Handle form field changes
-  const handleDateChange = (value) => setNewReflection(prev => ({ ...prev, date: value }));
-  const handleTypeChange = (value) => setNewReflection(prev => ({ ...prev, type: value }));
-  const handleTitleChange = (event) => setNewReflection(prev => ({ ...prev, title: event.target.value }));
-  const handleContentChange = (event) => setNewReflection(prev => ({ ...prev, content: event.target.value }));
-  const handleSentimentChange = (value) => setNewReflection(prev => ({ ...prev, sentiment: value }));
-  const handleKeyLearningsChange = (event) => setNewReflection(prev => ({ ...prev, key_learnings: event.target.value }));
-  const handleFavoriteToggle = () => setNewReflection(prev => ({ ...prev, is_favorite: !prev.is_favorite }));
+  const handleDateChange = (value: Date | null) => {
+    if (value) {
+      setNewReflection(prev => ({ ...prev, date: value }));
+    }
+  };
+  
+  const handleTypeChange = (value: string | null) => {
+    setNewReflection(prev => ({ ...prev, type: value || 'daily' }));
+  };
+  
+  const handleTitleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewReflection(prev => ({ ...prev, title: event.target.value }));
+  };
+  
+  const handleContentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewReflection(prev => ({ ...prev, content: event.target.value }));
+  };
+  
+  const handleSentimentChange = (value: string | null) => {
+    setNewReflection(prev => ({ ...prev, sentiment: value || 'neutral' }));
+  };
+  
+  const handleKeyLearningsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewReflection(prev => ({ ...prev, key_learnings: event.target.value }));
+  };
+  
+  const handleFavoriteToggle = () => {
+    setNewReflection(prev => ({ ...prev, is_favorite: !prev.is_favorite }));
+  };
 
   // Reset form and open modal
-  const handleAddReflection = (date = new Date()) => {
+  const handleAddReflection = (date: Date = new Date()) => {
     setNewReflection({
       date,
       type: 'daily',
@@ -143,7 +221,7 @@ const Reflection = ({ userId }) => {
   };
 
   // Edit existing reflection
-  const handleEditReflection = (reflection) => {
+  const handleEditReflection = (reflection: Reflection) => {
     setNewReflection({
       id: reflection.id,
       date: new Date(reflection.date),
@@ -158,7 +236,7 @@ const Reflection = ({ userId }) => {
   };
 
   // View reflection details
-  const handleViewReflection = (reflection) => {
+  const handleViewReflection = (reflection: Reflection) => {
     setSelectedReflection(reflection);
     openViewModal();
   };
@@ -290,7 +368,7 @@ const Reflection = ({ userId }) => {
   };
 
   // Toggle favorite status
-  const handleToggleFavorite = async (reflection) => {
+  const handleToggleFavorite = async (reflection: Reflection) => {
     try {
       const { error } = await supabase
         .from('reflections')
@@ -331,7 +409,7 @@ const Reflection = ({ userId }) => {
   };
 
   // Custom day renderer for the calendar
-  const renderDay = (date) => {
+  const renderDay = (date: Date): JSX.Element => {
     const dayReflections = getReflectionsForDate(date);
     
     if (!dayReflections.length) {
@@ -356,7 +434,7 @@ const Reflection = ({ userId }) => {
   };
 
   // Get sentiment details
-  const getSentimentDetails = (sentiment) => {
+  const getSentimentDetails = (sentiment: string): Partial<SentimentOption> => {
     return sentimentOptions.find(option => option.value === sentiment) || {};
   };
 
@@ -428,7 +506,7 @@ const Reflection = ({ userId }) => {
                       size="sm"
                       color={getSentimentDetails(reflection.sentiment).color}
                       leftSection={getSentimentDetails(reflection.sentiment).icon && 
-                        <getSentimentDetails(reflection.sentiment).icon size={10} />}
+                        React.createElement(getSentimentDetails(reflection.sentiment).icon as React.FC<any>, { size: 10 })}
                     >
                       {getSentimentDetails(reflection.sentiment).label}
                     </Badge>
@@ -509,8 +587,7 @@ const Reflection = ({ userId }) => {
                     Read more
                   </Button>
                 </Paper>
-              ))
-            }
+              ))}
           </SimpleGrid>
         </Paper>
       )}
@@ -647,7 +724,7 @@ const Reflection = ({ userId }) => {
               mb="lg"
               color={getSentimentDetails(selectedReflection.sentiment).color}
               leftSection={getSentimentDetails(selectedReflection.sentiment).icon && 
-                <getSentimentDetails(selectedReflection.sentiment).icon size={10} />}
+                React.createElement(getSentimentDetails(selectedReflection.sentiment).icon as React.FC<any>, { size: 10 })}
             >
               {getSentimentDetails(selectedReflection.sentiment).label}
             </Badge>
@@ -692,4 +769,4 @@ const Reflection = ({ userId }) => {
   );
 };
 
-export default Reflection;
+export default ReflectionComponent;

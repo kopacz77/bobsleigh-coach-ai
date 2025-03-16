@@ -26,19 +26,61 @@ import {
 } from '@tabler/icons-react';
 
 /**
+ * Emotion option type
+ */
+interface EmotionOption {
+  value: string;
+  label: string;
+}
+
+/**
+ * Mood entry from database
+ */
+interface MoodEntry {
+  id: number;
+  user_id: string;
+  date: string;
+  mood_score: number;
+  energy_level: number;
+  primary_emotion: string;
+  secondary_emotion: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Current mood form state
+ */
+interface CurrentMood {
+  mood_score: string;
+  energy_level: string;
+  primary_emotion: string;
+  secondary_emotion: string;
+  notes: string;
+}
+
+/**
+ * MoodTracking component props
+ */
+interface MoodTrackingProps {
+  userId: string;
+}
+
+/**
  * MoodTracking component allows athletes to track their daily mood and emotions
  * to help correlate mental state with performance and recovery metrics.
  */
-const MoodTracking = ({ userId }) => {
+const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [moodData, setMoodData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [moodData, setMoodData] = useState<MoodEntry[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [opened, { open, close }] = useDisclosure(false);
   
   // Form state
-  const [currentMood, setCurrentMood] = useState({
+  const [currentMood, setCurrentMood] = useState<CurrentMood>({
     mood_score: '3',
     energy_level: '3',
     primary_emotion: '',
@@ -47,7 +89,7 @@ const MoodTracking = ({ userId }) => {
   });
 
   // Available emotion options
-  const emotionOptions = [
+  const emotionOptions: EmotionOption[] = [
     { value: 'happy', label: 'Happy' },
     { value: 'excited', label: 'Excited' },
     { value: 'content', label: 'Content' },
@@ -97,13 +139,13 @@ const MoodTracking = ({ userId }) => {
   }, [userId, selectedDate, supabase]);
 
   // Check if a mood entry exists for the selected date
-  const getMoodEntryForDate = (date) => {
+  const getMoodEntryForDate = (date: Date): MoodEntry | undefined => {
     const dateString = date.toISOString().split('T')[0];
     return moodData.find(entry => entry.date === dateString);
   };
 
   // Get mood icon based on score
-  const getMoodIcon = (score) => {
+  const getMoodIcon = (score: string): React.ReactNode => {
     const iconProps = { size: 24 };
     switch (score) {
       case '1': return <IconMoodCry {...iconProps} color={theme.colors.red[6]} />;
@@ -116,14 +158,14 @@ const MoodTracking = ({ userId }) => {
   };
 
   // Handle form field changes
-  const handleMoodChange = (value) => setCurrentMood(prev => ({ ...prev, mood_score: value }));
-  const handleEnergyChange = (value) => setCurrentMood(prev => ({ ...prev, energy_level: value }));
-  const handlePrimaryEmotionChange = (value) => setCurrentMood(prev => ({ ...prev, primary_emotion: value }));
-  const handleSecondaryEmotionChange = (value) => setCurrentMood(prev => ({ ...prev, secondary_emotion: value }));
-  const handleNotesChange = (e) => setCurrentMood(prev => ({ ...prev, notes: e.target.value }));
+  const handleMoodChange = (value: string) => setCurrentMood(prev => ({ ...prev, mood_score: value }));
+  const handleEnergyChange = (value: string) => setCurrentMood(prev => ({ ...prev, energy_level: value }));
+  const handlePrimaryEmotionChange = (value: string) => setCurrentMood(prev => ({ ...prev, primary_emotion: value }));
+  const handleSecondaryEmotionChange = (value: string) => setCurrentMood(prev => ({ ...prev, secondary_emotion: value }));
+  const handleNotesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setCurrentMood(prev => ({ ...prev, notes: e.target.value }));
 
   // Open modal with existing data or reset form
-  const handleDateClick = (date) => {
+  const handleDateClick = (date: Date) => {
     setSelectedDate(date);
     const existingEntry = getMoodEntryForDate(date);
     
@@ -228,7 +270,7 @@ const MoodTracking = ({ userId }) => {
   };
 
   // Custom day renderer for the calendar
-  const renderDay = (date) => {
+  const renderDay = (date: Date): JSX.Element => {
     const moodEntry = getMoodEntryForDate(date);
     
     if (!moodEntry) {
@@ -302,7 +344,7 @@ const MoodTracking = ({ userId }) => {
                   <Text align="center" weight={600} size="xl" mt="xs">
                     {(() => {
                       const emotions = moodData.map(entry => entry.primary_emotion);
-                      const emotionCounts = emotions.reduce((acc, emotion) => {
+                      const emotionCounts = emotions.reduce<Record<string, number>>((acc, emotion) => {
                         acc[emotion] = (acc[emotion] || 0) + 1;
                         return acc;
                       }, {});
@@ -407,7 +449,7 @@ const MoodTracking = ({ userId }) => {
             placeholder="Select emotion"
             data={emotionOptions}
             value={currentMood.primary_emotion}
-            onChange={handlePrimaryEmotionChange}
+            onChange={(value) => handlePrimaryEmotionChange(value || '')}
             required
             searchable
             clearable
@@ -417,7 +459,7 @@ const MoodTracking = ({ userId }) => {
             placeholder="Select emotion"
             data={emotionOptions.filter(option => option.value !== currentMood.primary_emotion)}
             value={currentMood.secondary_emotion}
-            onChange={handleSecondaryEmotionChange}
+            onChange={(value) => handleSecondaryEmotionChange(value || '')}
             searchable
             clearable
             disabled={!currentMood.primary_emotion}

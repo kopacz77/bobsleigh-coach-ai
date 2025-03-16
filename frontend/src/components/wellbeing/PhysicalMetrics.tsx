@@ -31,26 +31,87 @@ import {
   IconHeartRateMonitor,
   IconTrash
 } from '@tabler/icons-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, TooltipProps } from 'recharts';
+
+/**
+ * Metric type definition
+ */
+interface MetricType {
+  value: string;
+  label: string;
+  icon: React.FC<any>;
+  color: string;
+  unit: string;
+}
+
+/**
+ * Metric entry from database
+ */
+interface Metric {
+  id: number;
+  user_id: string;
+  date: string;
+  type: string;
+  value: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Form state for new/edit metric
+ */
+interface NewMetric {
+  id?: number;
+  date: Date;
+  type: string;
+  value: string | number;
+  notes: string;
+}
+
+/**
+ * Chart data format
+ */
+interface ChartData {
+  date: string;
+  [key: string]: string | number;
+}
+
+/**
+ * Unique metric type for chart
+ */
+interface UniqueMetricType {
+  value: string;
+  color: string;
+  label: string;
+  unit: string;
+}
+
+/**
+ * PhysicalMetrics component props
+ */
+interface PhysicalMetricsProps {
+  userId: string;
+}
 
 /**
  * PhysicalMetrics component for tracking athlete's physical measurements
  * like heart rate, weight, body fat, sleep duration, etc.
  */
-const PhysicalMetrics = ({ userId }) => {
+const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [metrics, setMetrics] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [metrics, setMetrics] = useState<Metric[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [addModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
   const [viewModalOpened, { open: openViewModal, close: closeViewModal }] = useDisclosure(false);
-  const [selectedMetric, setSelectedMetric] = useState(null);
-  const [selectedMetricType, setSelectedMetricType] = useState('all');
-  const [timeRange, setTimeRange] = useState('week');
+  const [selectedMetric, setSelectedMetric] = useState<Metric | null>(null);
+  const [selectedMetricType, setSelectedMetricType] = useState<string>('all');
+  const [timeRange, setTimeRange] = useState<string>('week');
 
   // Form state
-  const [newMetric, setNewMetric] = useState({
+  const [newMetric, setNewMetric] = useState<NewMetric>({
     date: new Date(),
     type: '',
     value: '',
@@ -58,7 +119,7 @@ const PhysicalMetrics = ({ userId }) => {
   });
 
   // Available metric types
-  const metricTypes = [
+  const metricTypes: MetricType[] = [
     { value: 'resting_heart_rate', label: 'Resting Heart Rate (bpm)', icon: IconHeart, color: 'red', unit: 'bpm' },
     { value: 'weight', label: 'Weight', icon: IconWeight, color: 'blue', unit: 'kg' },
     { value: 'body_fat', label: 'Body Fat %', icon: IconRuler2, color: 'orange', unit: '%' },
@@ -80,7 +141,7 @@ const PhysicalMetrics = ({ userId }) => {
 
         // Apply time range filter
         const today = new Date();
-        let startDate;
+        let startDate: Date;
         
         switch (timeRange) {
           case 'week':
@@ -128,30 +189,41 @@ const PhysicalMetrics = ({ userId }) => {
   }, [userId, supabase, timeRange, selectedMetricType]);
 
   // Handle form field changes
-  const handleDateChange = (value) => setNewMetric(prev => ({ ...prev, date: value }));
-  const handleTypeChange = (value) => setNewMetric(prev => ({ ...prev, type: value, value: '' }));
-  const handleValueChange = (value) => setNewMetric(prev => ({ ...prev, value }));
-  const handleNotesChange = (value) => setNewMetric(prev => ({ ...prev, notes: value }));
+  const handleDateChange = (value: Date | null) => {
+    if (value) {
+      setNewMetric(prev => ({ ...prev, date: value }));
+    }
+  };
+  
+  const handleTypeChange = (value: string | null) => {
+    setNewMetric(prev => ({ ...prev, type: value || '', value: '' }));
+  };
+  
+  const handleValueChange = (value: number | string) => setNewMetric(prev => ({ ...prev, value }));
+  
+  const handleNotesChange = (value: string | null) => {
+    setNewMetric(prev => ({ ...prev, notes: value || '' }));
+  };
 
   // Get metric type details
-  const getMetricTypeDetails = (type) => {
+  const getMetricTypeDetails = (type: string): Partial<MetricType> => {
     return metricTypes.find(metric => metric.value === type) || {};
   };
 
   // Format date for display
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
 
   // Open view metric modal
-  const handleViewMetric = (metric) => {
+  const handleViewMetric = (metric: Metric) => {
     setSelectedMetric(metric);
     openViewModal();
   };
 
   // Open add/edit metric modal
-  const handleAddEditMetric = (metric = null) => {
+  const handleAddEditMetric = (metric: Metric | null = null) => {
     if (metric) {
       setNewMetric({
         id: metric.id,
@@ -232,7 +304,7 @@ const PhysicalMetrics = ({ userId }) => {
         user_id: userId,
         date: newMetric.date.toISOString().split('T')[0],
         type: newMetric.type,
-        value: parseFloat(newMetric.value),
+        value: parseFloat(newMetric.value.toString()),
         notes: newMetric.notes || null
       };
 
@@ -285,15 +357,15 @@ const PhysicalMetrics = ({ userId }) => {
   };
 
   // Prepare chart data
-  const prepareChartData = () => {
+  const prepareChartData = (): ChartData[] => {
     if (!metrics.length) return [];
     
     // Make a deep copy of metrics and sort by date
     const sortedMetrics = [...metrics]
-      .sort((a, b) => new Date(a.date) - new Date(b.date));
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
     // Group by date and type for the chart
-    const chartData = [];
+    const chartData: ChartData[] = [];
     
     sortedMetrics.forEach(metric => {
       const existingDateEntry = chartData.find(entry => entry.date === metric.date);
@@ -301,7 +373,7 @@ const PhysicalMetrics = ({ userId }) => {
       if (existingDateEntry) {
         existingDateEntry[metric.type] = metric.value;
       } else {
-        const newEntry = { date: metric.date, [metric.type]: metric.value };
+        const newEntry: ChartData = { date: metric.date, [metric.type]: metric.value };
         chartData.push(newEntry);
       }
     });
@@ -310,7 +382,7 @@ const PhysicalMetrics = ({ userId }) => {
   };
 
   // Get unique metric types in the current dataset
-  const getUniqueMetricTypes = () => {
+  const getUniqueMetricTypes = (): UniqueMetricType[] => {
     const types = [...new Set(metrics.map(metric => metric.type))];
     return types.map(type => {
       const details = getMetricTypeDetails(type);
@@ -324,7 +396,9 @@ const PhysicalMetrics = ({ userId }) => {
   };
 
   // Format chart tooltip
-  const renderTooltip = (props) => {
+  type CustomTooltipProps = TooltipProps<number, string>;
+  
+  const renderTooltip = (props: CustomTooltipProps): JSX.Element | null => {
     const { active, payload, label } = props;
     
     if (active && payload && payload.length) {
@@ -370,7 +444,7 @@ const PhysicalMetrics = ({ userId }) => {
             <Select
               label="Metric Type"
               value={selectedMetricType}
-              onChange={setSelectedMetricType}
+              onChange={(value) => setSelectedMetricType(value || 'all')}
               data={[
                 { value: 'all', label: 'All Metrics' },
                 ...metricTypes
@@ -381,7 +455,7 @@ const PhysicalMetrics = ({ userId }) => {
             <Select
               label="Time Range"
               value={timeRange}
-              onChange={setTimeRange}
+              onChange={(value) => setTimeRange(value || 'week')}
               data={[
                 { value: 'week', label: 'Last 7 Days' },
                 { value: 'month', label: 'Last 30 Days' },
@@ -398,12 +472,13 @@ const PhysicalMetrics = ({ userId }) => {
             <List spacing="xs" size="sm" mb="xs" center>
               {metrics.slice(0, 5).map((metric) => {
                 const metricType = getMetricTypeDetails(metric.type);
+                const MetricIcon = metricType.icon;
                 return (
                   <List.Item
                     key={metric.id}
                     icon={
                       <ThemeIcon color={metricType.color || 'blue'} size={24} radius="xl">
-                        {metricType.icon ? <metricType.icon size={16} /> : null}
+                        {MetricIcon && <MetricIcon size={16} />}
                       </ThemeIcon>
                     }
                   >
@@ -515,7 +590,7 @@ const PhysicalMetrics = ({ userId }) => {
           <NumberInput
             label={`Value (${getMetricTypeDetails(newMetric.type).unit || ''})`}
             placeholder="Enter value"
-            value={newMetric.value}
+            value={typeof newMetric.value === 'string' ? parseFloat(newMetric.value) || undefined : newMetric.value}
             onChange={handleValueChange}
             precision={2}
             min={0}
