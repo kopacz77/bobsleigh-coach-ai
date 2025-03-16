@@ -20,10 +20,11 @@ import {
   ActionIcon,
   ScrollArea,
   Tooltip,
-  Select
-} from '@mantine/showMe';
+  Select,
+  ThemeIcon
+} from '@mantine/core';
 import { DateRangePicker } from '@mantine/dates';
-imLineChart, { Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip as RechartsTooltip, Bar, BarChart, Rectangle, ComposedChart, Area } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, Bar, BarChart, Rectangle, ComposedChart, Area } from 'recharts';
 import {
   IconUsers,
   IconCalendarEvent,
@@ -46,7 +47,8 @@ import {
   IconMaximize,
   IconChevronDown,
   IconChevronUp,
-  IconMail
+  IconMail,
+  IconMinus
 } from '@tabler/icons-react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
