@@ -6,257 +6,346 @@ import {
   Group,
   Paper,
   Button,
+  Tabs,
   SimpleGrid,
   Card,
   Stack,
   RingProgress,
   Progress,
-  Divider,
-  useMantineTheme,
   Badge,
+  useMantineTheme,
+  Divider,
   ActionIcon,
-  Menu,
-  ThemeIcon,
+  Tooltip,
   Avatar,
-  Timeline
+  ThemeIcon
 } from '@mantine/core';
-import { Calendar } from '@mantine/dates';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Legend, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { Calendar, DatePicker } from '@mantine/dates';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, Bar, BarChart, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import {
-  IconHeartbeat, // workout
-  IconUser, // profile
-  IconClipboardCheck, // check-in
-  IconNotes, // review
-  IconChartLine, // progress
-  IconTrophy, // goals
-  IconCalendarEvent, // calendar
-  IconBell, // notifications
-  IconArrowRight,
+  IconActivity,
   IconBarbell,
-  IconHeartFilled,
-  IconWeight,
-  IconRun,
+  IconChecklist,
+  IconHeartbeat,
+  IconMedal,
+  IconUsers,
+  IconArrowRight,
+  IconCalendarEvent,
+  IconPencil,
+  IconStar,
+  IconBell,
+  IconClockHour4,
+  IconChartLine,
+  IconDirections,
+  IconMapPin,
+  IconMoodHappy,
+  IconTrophy,
+  IconBulb,
+  IconCalendarStats,
   IconArrowUp,
   IconArrowDown,
-  IconDots,
-  IconPencil,
-  IconSettings,
-  IconStethoscope,
-  IconZzz,
-  IconHourglassHigh,
-  IconSchool,
-  IconBook
+  IconMinus
 } from '@tabler/icons-react';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 /**
  * AthleteDashboard Component
- * Personalized dashboard for athletes showing their training schedule,
- * wellbeing metrics, progress, and reminders.
+ * Personal dashboard for athletes to view their training schedule,
+ * progress, wellbeing metrics, and performance data.
  */
 const AthleteDashboard = ({ userId }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
   const [loading, setLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [todayDate] = useState(new Date());
   const [userProfile, setUserProfile] = useState(null);
-  const [dashboardData, setDashboardData] = useState({
-    readinessScore: 0,
-    workoutsCompleted: 0,
-    currentStreak: 0,
-    checkInCompliance: 0,
-    pendingWorkouts: [],
-    recentCheckIns: [],
-    upcomingEvents: [],
-    performanceMetrics: [],
-    weeklyTrainingLoad: 0,
-    personalRecords: [],
-    goals: [],
-    notifications: []
-  });
-
-  // Fetch dashboard data on component mount
+  const [wellbeingData, setWellbeingData] = useState(null);
+  const [upcomingWorkouts, setUpcomingWorkouts] = useState([]);
+  const [weeklyMetrics, setWeeklyMetrics] = useState([]);
+  const [performanceData, setPerformanceData] = useState(null);
+  const [monthlyCalendarData, setMonthlyCalendarData] = useState([]);
+  const [goals, setGoals] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  
   useEffect(() => {
-    fetchDashboardData();
-  }, [supabase, selectedDate]);
+    if (userId) {
+      fetchDashboardData();
+    }
+  }, [userId, supabase]);
 
   const fetchDashboardData = async () => {
     setLoading(true);
+    
     try {
       // In a real implementation, these would be actual Supabase queries
-      // Mocking the data for demonstration purposes
+      // For this demo, we're mocking the data
       
       // Mock user profile
-      const mockUserProfile = {
-        id: userId || '1',
+      const mockProfile = {
+        id: userId,
         firstName: 'Alex',
         lastName: 'Johnson',
-        avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36',
-        team: 'National Team',
+        avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80',
         position: 'Driver',
-        coach: 'Sarah Williams',
-        joinDate: '2022-05-15'
+        team: 'National Team',
+        coachName: 'Sarah Peterson',
+        joinDate: '2022-05-15',
+        nextCompetition: {
+          name: 'World Cup - Winterberg',
+          date: '2023-12-12',
+          location: 'Germany'
+        }
       };
       
-      setUserProfile(mockUserProfile);
+      setUserProfile(mockProfile);
+
+      // Mock wellbeing data (latest check-in)
+      const mockWellbeingData = {
+        date: new Date().toISOString(),
+        readiness: 8.5,
+        sleep_quality: 7,
+        energy_level: 8,
+        muscle_soreness: 3,
+        stress_level: 4,
+        overall_recovery: 8,
+        weeklyAverage: 7.8,
+        trend: 'up'
+      };
       
-      // Mock dashboard data
-      const mockDashboardData = {
-        readinessScore: 8.5,
-        workoutsCompleted: 18,
-        currentStreak: 5,
-        checkInCompliance: 92,
-        pendingWorkouts: [
-          {
-            id: '1',
-            title: 'Sprint Training',
-            scheduledTime: '09:00 AM',
-            duration: 60,
-            type: 'sprint_training'
-          },
-          {
-            id: '2',
-            title: 'Weight Room',
-            scheduledTime: '02:00 PM',
-            duration: 90,
-            type: 'strength_training'
-          }
+      setWellbeingData(mockWellbeingData);
+
+      // Mock upcoming workouts
+      const mockUpcomingWorkouts = [
+        {
+          id: '1',
+          title: 'Push Start Practice',
+          date: new Date(new Date().setHours(10, 0, 0, 0)).toISOString(),
+          duration: 90,
+          type: 'push_start_practice',
+          location: 'Start Track',
+          focus: 'Technique',
+          status: 'upcoming'
+        },
+        {
+          id: '2',
+          title: 'Strength Training',
+          date: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
+          duration: 75,
+          type: 'strength_training',
+          location: 'Gym',
+          focus: 'Lower Body',
+          status: 'upcoming'
+        },
+        {
+          id: '3',
+          title: 'Track Analysis',
+          date: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
+          duration: 60,
+          type: 'track_walk',
+          location: 'Main Track',
+          focus: 'Turns 5-10',
+          status: 'upcoming'
+        },
+        {
+          id: '4',
+          title: 'Team Coordination',
+          date: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString(),
+          duration: 120,
+          type: 'on_ice_training',
+          location: 'Ice Track',
+          focus: 'Loading & Timing',
+          status: 'upcoming'
+        }
+      ];
+      
+      setUpcomingWorkouts(mockUpcomingWorkouts);
+
+      // Mock weekly metrics
+      const mockWeeklyData = [
+        {
+          day: 'Mon',
+          readiness: 7,
+          sleep: 8,
+          energy: 7,
+          recovery: 7,
+          workoutIntensity: 6
+        },
+        {
+          day: 'Tue',
+          readiness: 8,
+          sleep: 7,
+          energy: 8,
+          recovery: 8,
+          workoutIntensity: 7
+        },
+        {
+          day: 'Wed',
+          readiness: 6,
+          sleep: 6,
+          energy: 6,
+          recovery: 6,
+          workoutIntensity: 8
+        },
+        {
+          day: 'Thu',
+          readiness: 7,
+          sleep: 8,
+          energy: 7,
+          recovery: 7,
+          workoutIntensity: 5
+        },
+        {
+          day: 'Fri',
+          readiness: 9,
+          sleep: 9,
+          energy: 9,
+          recovery: 9,
+          workoutIntensity: 7
+        },
+        {
+          day: 'Sat',
+          readiness: 8,
+          sleep: 7,
+          energy: 8,
+          recovery: 8,
+          workoutIntensity: 9
+        },
+        {
+          day: 'Sun',
+          readiness: 7,
+          sleep: 8,
+          energy: 7,
+          recovery: 8,
+          workoutIntensity: 3
+        },
+      ];
+      
+      setWeeklyMetrics(mockWeeklyData);
+
+      // Mock performance data
+      const mockPerformanceData = {
+        currentValues: {
+          pushTime: 5.23,
+          squatMax: 165,
+          reaction: 0.31,
+          gripStrength: 58,
+          sprintSpeed: 10.8
+        },
+        targets: {
+          pushTime: 5.0,
+          squatMax: 180,
+          reaction: 0.25,
+          gripStrength: 65,
+          sprintSpeed: 11.2
+        },
+        radarData: [
+          { metric: 'Push Time', value: 85, fullMark: 100 },
+          { metric: 'Strength', value: 75, fullMark: 100 },
+          { metric: 'Speed', value: 90, fullMark: 100 },
+          { metric: 'Technique', value: 80, fullMark: 100 },
+          { metric: 'Reaction', value: 70, fullMark: 100 },
+          { metric: 'Recovery', value: 85, fullMark: 100 },
         ],
-        recentCheckIns: [
-          {
-            date: '2023-11-15',
-            readiness: 9,
-            sleep: 8,
-            energy: 9,
-            soreness: 3
-          },
-          {
-            date: '2023-11-14',
-            readiness: 7,
-            sleep: 6,
-            energy: 7,
-            soreness: 5
-          },
-          {
-            date: '2023-11-13',
-            readiness: 8,
-            sleep: 7,
-            energy: 8,
-            soreness: 4
-          },
-          {
-            date: '2023-11-12',
-            readiness: 9,
-            sleep: 9,
-            energy: 8,
-            soreness: 2
-          },
-          {
-            date: '2023-11-11',
-            readiness: 8,
-            sleep: 8,
-            energy: 7,
-            soreness: 3
-          },
-          {
-            date: '2023-11-10',
-            readiness: 7,
-            sleep: 7,
-            energy: 6,
-            soreness: 4
-          },
-          {
-            date: '2023-11-09',
-            readiness: 8,
-            sleep: 7,
-            energy: 8,
-            soreness: 3
-          }
-        ],
-        upcomingEvents: [
-          {
-            id: '1',
-            title: 'Team Training Camp',
-            date: '2023-12-05',
-            location: 'Lake Placid, NY',
-            type: 'camp'
-          },
-          {
-            id: '2',
-            title: 'World Cup Race 1',
-            date: '2023-12-15',
-            location: 'Winterberg, Germany',
-            type: 'competition'
-          },
-          {
-            id: '3',
-            title: 'Performance Testing',
-            date: '2023-11-25',
-            location: 'National Training Center',
-            type: 'testing'
-          }
-        ],
-        performanceMetrics: [
-          {
-            name: 'Push Time (s)',
-            value: 5.12,
-            change: -0.05,
-            goal: 5.05,
-            unit: 's'
-          },
-          {
-            name: 'Squat 1RM (kg)',
-            value: 142,
-            change: 7,
-            goal: 150,
-            unit: 'kg'
-          },
-          {
-            name: 'Sprint 30m (s)',
-            value: 4.03,
-            change: -0.08,
-            goal: 3.95,
-            unit: 's'
-          },
-          {
-            name: 'Broad Jump (cm)',
-            value: 282,
-            change: 4,
-            goal: 290,
-            unit: 'cm'
-          }
-        ],
-        weeklyTrainingLoad: [
-          { day: 'Mon', planned: 700, actual: 650 },
-          { day: 'Tue', planned: 800, actual: 800 },
-          { day: 'Wed', planned: 600, actual: 550 },
-          { day: 'Thu', planned: 800, actual: 800 },
-          { day: 'Fri', planned: 700, actual: 720 },
-          { day: 'Sat', planned: 300, actual: 300 },
-          { day: 'Sun', planned: 200, actual: 180 }
-        ],
-        personalRecords: [
-          { name: 'Squat 1RM', value: '142 kg', date: '2023-10-25' },
-          { name: 'Push Start Time', value: '5.12 s', date: '2023-11-10' },
-          { name: 'Power Clean', value: '115 kg', date: '2023-09-18' },
-          { name: 'Broad Jump', value: '282 cm', date: '2023-10-02' }
-        ],
-        goals: [
-          { id: '1', text: 'Improve push time to 5.0s', progress: 80, dueDate: '2023-12-31', priority: 'high' },
-          { id: '2', text: 'Increase squat 1RM to 150kg', progress: 65, dueDate: '2023-12-15', priority: 'medium' },
-          { id: '3', text: 'Perfect loading technique', progress: 50, dueDate: '2023-11-30', priority: 'high' },
-          { id: '4', text: 'Improve driving line in turn 4', progress: 40, dueDate: '2023-12-20', priority: 'medium' }
-        ],
-        notifications: [
-          { id: '1', type: 'reminder', message: 'Complete your daily check-in', time: '2 hours ago', read: false },
-          { id: '2', type: 'coach', message: 'Coach added comments to your training plan', time: '1 day ago', read: true },
-          { id: '3', type: 'system', message: 'Weekly review now available', time: '2 days ago', read: false },
-          { id: '4', type: 'achievement', message: 'New personal record: Squat 1RM!', time: '5 days ago', read: true }
+        recentPRs: [
+          { metric: 'Bench Press', value: '110kg', date: '2023-11-10' },
+          { metric: 'Sprint 60m', value: '7.12s', date: '2023-11-05' }
         ]
       };
       
-      setDashboardData(mockDashboardData);
+      setPerformanceData(mockPerformanceData);
+
+      // Mock monthly calendar data (workouts, check-ins, events)
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
       
+      // Generate random events for the current month
+      const calendarEvents = [];
+      for (let day = 1; day <= 28; day++) {
+        // Add some random events
+        if (day % 2 === 0) {
+          calendarEvents.push({
+            date: new Date(currentYear, currentMonth, day).toISOString(),
+            type: 'workout',
+            intensity: Math.floor(Math.random() * 3) + 1 // 1-3
+          });
+        }
+        
+        if (day % 3 === 0) {
+          calendarEvents.push({
+            date: new Date(currentYear, currentMonth, day).toISOString(),
+            type: 'check-in',
+            completed: true
+          });
+        }
+        
+        if (day === 15) {
+          calendarEvents.push({
+            date: new Date(currentYear, currentMonth, day).toISOString(),
+            type: 'event',
+            title: 'Team Meeting'
+          });
+        }
+      }
+      
+      setMonthlyCalendarData(calendarEvents);
+
+      // Mock goals
+      const mockGoals = [
+        {
+          id: '1',
+          title: 'Improve push start time by 0.2s',
+          status: 'in-progress',
+          progress: 65,
+          dueDate: new Date(new Date().setDate(new Date().getDate() + 14)).toISOString(),
+          category: 'performance'
+        },
+        {
+          id: '2',
+          title: 'Consistently sleep 8+ hours nightly',
+          status: 'in-progress',
+          progress: 80,
+          dueDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString(),
+          category: 'recovery'
+        },
+        {
+          id: '3',
+          title: 'Perfect loading technique',
+          status: 'completed',
+          progress: 100,
+          dueDate: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
+          category: 'technique'
+        }
+      ];
+      
+      setGoals(mockGoals);
+
+      // Mock notifications
+      const mockNotifications = [
+        {
+          id: '1',
+          type: 'reminder',
+          message: 'Complete your daily check-in',
+          timestamp: new Date(new Date().setHours(new Date().getHours() - 1)).toISOString(),
+          read: false
+        },
+        {
+          id: '2',
+          type: 'coach',
+          message: 'Coach left feedback on your session',
+          timestamp: new Date(new Date().setHours(new Date().getHours() - 3)).toISOString(),
+          read: true
+        },
+        {
+          id: '3',
+          type: 'schedule',
+          message: 'Tomorrow\'s training rescheduled to 10:00 AM',
+          timestamp: new Date(new Date().setHours(new Date().getHours() - 5)).toISOString(),
+          read: false
+        }
+      ];
+      
+      setNotifications(mockNotifications);
+
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
@@ -264,577 +353,720 @@ const AthleteDashboard = ({ userId }) => {
     }
   };
 
-  // Navigate to daily check-in
-  const navigateToCheckIn = () => {
-    // In a real app this would use router navigation
-    console.log('Navigate to daily check-in');
-  };
-
-  // Navigate to weekly review
-  const navigateToWeeklyReview = () => {
-    // In a real app this would use router navigation
-    console.log('Navigate to weekly review');
-  };
-
-  // Start a workout
-  const startWorkout = (workoutId) => {
-    // In a real app this would navigate to the workout page
-    console.log(`Starting workout ${workoutId}`);
-  };
-
-  // View notifications
-  const viewAllNotifications = () => {
-    // In a real app this would navigate to notifications page
-    console.log('View all notifications');
-  };
-
-  // Mark notification as read
-  const markNotificationAsRead = (notificationId) => {
-    setDashboardData(prev => ({
-      ...prev,
-      notifications: prev.notifications.map(notification =>
-        notification.id === notificationId ? { ...notification, read: true } : notification
-      )
-    }));
-  };
-
-  // Get a color based on metric change (positive is good for most metrics, except timed ones where lower is better)
-  const getMetricChangeColor = (metricName, change) => {
-    const isTimedMetric = metricName.toLowerCase().includes('time') || metricName.toLowerCase().includes('sprint');
-    
-    if (isTimedMetric) {
-      return change < 0 ? theme.colors.green[6] : change > 0 ? theme.colors.red[6] : theme.colors.gray[6];
-    } else {
-      return change > 0 ? theme.colors.green[6] : change < 0 ? theme.colors.red[6] : theme.colors.gray[6];
-    }
-  };
-
-  // Calculate percentage to goal
-  const calculateGoalProgress = (metric) => {
-    const isTimedMetric = metric.name.toLowerCase().includes('time') || metric.name.toLowerCase().includes('sprint');
-    
-    if (isTimedMetric) {
-      // For timed metrics, lower is better
-      const startValue = metric.value + metric.change; // Previous value
-      const totalChange = startValue - metric.goal; // Total change needed
-      const currentChange = startValue - metric.value; // Current change achieved
-      return Math.min(100, Math.max(0, (currentChange / totalChange) * 100));
-    } else {
-      // For other metrics, higher is better
-      return Math.min(100, Math.max(0, (metric.value / metric.goal) * 100));
-    }
-  };
-
-  // Calculate weekly training load summary
-  const getTrainingLoadSummary = () => {
-    const totalPlanned = dashboardData.weeklyTrainingLoad.reduce((sum, day) => sum + day.planned, 0);
-    const totalActual = dashboardData.weeklyTrainingLoad.reduce((sum, day) => sum + day.actual, 0);
-    const completion = totalPlanned > 0 ? (totalActual / totalPlanned) * 100 : 0;
-    
-    return {
-      totalPlanned,
-      totalActual,
-      completion: Math.round(completion)
-    };
-  };
-
-  const trainingLoadSummary = getTrainingLoadSummary();
-
-  // Prepare the check-in data for the chart
-  const prepareCheckInData = () => {
-    return dashboardData.recentCheckIns.map(checkIn => ({
-      date: new Date(checkIn.date).toLocaleDateString('en-US', { weekday: 'short' }),
-      readiness: checkIn.readiness,
-      sleep: checkIn.sleep,
-      energy: checkIn.energy,
-      soreness: checkIn.soreness
-    })).reverse();
-  };
-
-  // Function to determine readiness status text and color
-  const getReadinessStatus = (score) => {
-    if (score >= 8) return { text: 'Ready for high intensity', color: 'green' };
-    if (score >= 6) return { text: 'Ready for moderate training', color: 'blue' };
-    if (score >= 4) return { text: 'Light training advised', color: 'yellow' };
-    return { text: 'Recovery day recommended', color: 'red' };
-  };
-
-  const readinessStatus = getReadinessStatus(dashboardData.readinessScore);
-
-  // Notification dot for unread notifications
-  const hasUnreadNotifications = dashboardData.notifications.some(notification => !notification.read);
-
-  // Get icon for workout type
-  const getWorkoutTypeIcon = (type) => {
-    switch (type) {
-      case 'sprint_training':
-        return <IconRun size={18} />;
-      case 'strength_training':
-        return <IconBarbell size={18} />;
-      case 'recovery_session':
-        return <IconHeartFilled size={18} />;
-      case 'technical_drills':
-        return <IconSchool size={18} />;
-      default:
-        return <IconHeartbeat size={18} />;
-    }
-  };
-
-  // Get icon for event type
-  const getEventTypeIcon = (type) => {
-    switch (type) {
-      case 'competition':
-        return <IconTrophy size={18} />;
-      case 'camp':
-        return <IconUsers size={18} />;
-      case 'testing':
-        return <IconStethoscope size={18} />;
-      default:
-        return <IconCalendarEvent size={18} />;
-    }
-  };
-
   // Format date for display
-  const formatDate = (dateString) => {
-    const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
+  const formatDate = (dateString, format = 'short') => {
+    const date = new Date(dateString);
+    if (format === 'short') {
+      return date.toLocaleDateString();
+    } else if (format === 'time') {
+      return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    } else if (format === 'full') {
+      return date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } else if (format === 'day') {
+      return date.toLocaleDateString(undefined, { weekday: 'short' });
+    }
+    return date.toLocaleDateString();
   };
 
-  // Render notification item
-  const renderNotificationItem = (notification) => {
-    const getNotificationIcon = (type) => {
-      switch (type) {
-        case 'reminder':
-          return <IconBell size={18} />;
-        case 'coach':
-          return <IconUser size={18} />;
-        case 'system':
-          return <IconSettings size={18} />;
-        case 'achievement':
-          return <IconTrophy size={18} />;
-        default:
-          return <IconBell size={18} />;
-      }
-    };
-
-    return (
-      <Group key={notification.id} position="apart" py="xs" px="sm" style={{ 
-        backgroundColor: notification.read ? 'transparent' : theme.colors.blue[0],
-        borderRadius: theme.radius.sm
-      }}>
-        <Group>
-          <ThemeIcon size="md" radius="xl" variant="light">
-            {getNotificationIcon(notification.type)}
-          </ThemeIcon>
-          <Box>
-            <Text size="sm">{notification.message}</Text>
-            <Text size="xs" color="dimmed">{notification.time}</Text>
-          </Box>
-        </Group>
-        {!notification.read && (
-          <ActionIcon size="sm" onClick={() => markNotificationAsRead(notification.id)}>
-            <IconCheck size={16} />
-          </ActionIcon>
-        )}
-      </Group>
-    );
+  // Get trend indicator
+  const getTrendIcon = (trend) => {
+    switch (trend) {
+      case 'up':
+        return <IconArrowUp size={16} color={theme.colors.green[6]} />;
+      case 'down':
+        return <IconArrowDown size={16} color={theme.colors.red[6]} />;
+      default:
+        return <IconMinus size={16} color={theme.colors.gray[6]} />;
+    }
   };
 
-  // Render performance metric card
-  const renderPerformanceMetric = (metric) => {
-    const changeColor = getMetricChangeColor(metric.name, metric.change);
-    const progressPercentage = calculateGoalProgress(metric);
+  // Get progress color
+  const getProgressColor = (value) => {
+    if (value <= 30) return theme.colors.red[6];
+    if (value <= 70) return theme.colors.yellow[6];
+    return theme.colors.green[6];
+  };
+
+  // Get days until next competition
+  const getDaysUntilCompetition = () => {
+    if (!userProfile?.nextCompetition?.date) return null;
+
+    const competitionDate = new Date(userProfile.nextCompetition.date);
+    const today = new Date();
+    const diffTime = competitionDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
+    return diffDays;
+  };
+
+  // Calculate progress percentage based on target and current value
+  const calculateProgressPercentage = (current, target, isLowerBetter = false) => {
+    if (isLowerBetter) {
+      // For metrics where lower is better (e.g., sprint time)
+      if (current <= target) return 100; // Already achieved target
+      const maxValue = target * 1.5; // Assuming 50% worse than target is 0% progress
+      return Math.max(0, Math.min(100, 100 - ((current - target) / (maxValue - target) * 100)));
+    } else {
+      // For metrics where higher is better (e.g., strength)
+      if (current >= target) return 100; // Already achieved target
+      const minValue = target * 0.5; // Assuming 50% of target is 0% progress
+      return Math.max(0, Math.min(100, ((current - minValue) / (target - minValue) * 100)));
+    }
+  };
+
+  // Filter events on the calendar
+  const getCalendarDayEvents = (date) => {
+    const dateString = date.toISOString().split('T')[0];
+    return monthlyCalendarData.filter(event => {
+      const eventDate = new Date(event.date).toISOString().split('T')[0];
+      return eventDate === dateString;
+    });
+  };
+
+  // Render date cell in calendar
+  const renderCalendarDay = (date) => {
+    const events = getCalendarDayEvents(date);
+    if (events.length === 0) return null;
+
     return (
-      <Card key={metric.name} p="md" radius="md" withBorder>
-        <Group position="apart" mb="xs">
-          <Text size="sm" weight={500}>{metric.name}</Text>
-          <Group spacing={4}>
-            <Text size="sm" weight={700}>{metric.value} {metric.unit}</Text>
-            <Text size="xs" color={changeColor}>
-              {metric.change > 0 ? '+' : ''}{metric.change} {metric.unit}
-            </Text>
-          </Group>
-        </Group>
-        
-        <Progress 
-          value={progressPercentage} 
-          color={progressPercentage >= 90 ? 'green' : progressPercentage >= 60 ? 'blue' : 'grape'}
-          size="md"
-          mb="xs"
-        />
-        
-        <Group position="apart">
-          <Text size="xs" color="dimmed">Current</Text>
-          <Text size="xs" color="dimmed">Goal: {metric.goal} {metric.unit}</Text>
-        </Group>
-      </Card>
+      <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+        <div>{date.getDate()}</div>
+        <div style={{ position: 'absolute', bottom: 2, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 2 }}>
+          {events.map((event, idx) => {
+            if (event.type === 'workout') {
+              return (
+                <div 
+                  key={idx} 
+                  style={{
+                    width: 6, 
+                    height: 6, 
+                    borderRadius: '50%', 
+                    backgroundColor: event.intensity === 3 ? theme.colors.red[6] : 
+                                    event.intensity === 2 ? theme.colors.yellow[6] : 
+                                    theme.colors.green[6]
+                  }}
+                />
+              );
+            } else if (event.type === 'check-in') {
+              return (
+                <div 
+                  key={idx} 
+                  style={{
+                    width: 6, 
+                    height: 6, 
+                    borderRadius: '50%', 
+                    backgroundColor: theme.colors.blue[6]
+                  }}
+                />
+              );
+            } else if (event.type === 'event') {
+              return (
+                <div 
+                  key={idx} 
+                  style={{
+                    width: 6, 
+                    height: 6, 
+                    borderRadius: '50%', 
+                    backgroundColor: theme.colors.violet[6]
+                  }}
+                />
+              );
+            }
+            return null;
+          })}
+        </div>
+      </div>
     );
   };
 
-  // Radar chart data for athlete's performance profile
-  const performanceProfileData = [
-    {
-      subject: 'Speed',
-      value: 85,
-      fullMark: 100,
-    },
-    {
-      subject: 'Strength',
-      value: 90,
-      fullMark: 100,
-    },
-    {
-      subject: 'Technique',
-      value: 75,
-      fullMark: 100,
-    },
-    {
-      subject: 'Recovery',
-      value: 80,
-      fullMark: 100,
-    },
-    {
-      subject: 'Mental',
-      value: 85,
-      fullMark: 100,
-    },
-    {
-      subject: 'Endurance',
-      value: 70,
-      fullMark: 100,
-    },
-  ];
+  // Render metrics cards
+  const renderWellbeingMetrics = () => {
+    if (!wellbeingData) return null;
+
+    return (
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md">
+        <Paper p="md" radius="md" withBorder>
+          <Group position="apart" mb="xs">
+            <Text weight={500} size="sm" color="dimmed">Training Readiness</Text>
+            <Badge size="md" color="blue" variant="light">
+              <Group spacing={4}>
+                <Text>{wellbeingData.readiness}</Text>
+                {getTrendIcon(wellbeingData.trend)}
+              </Group>
+            </Badge>
+          </Group>
+          <Progress 
+            value={wellbeingData.readiness * 10} 
+            color="blue" 
+            size="xl" 
+            radius="xl"
+            mb="sm"
+          />
+          <Text size="xs" color="dimmed" align="center">
+            {wellbeingData.readiness >= 8 ? 'Ready for high intensity' : 
+             wellbeingData.readiness >= 6 ? 'Ready for moderate training' : 
+             'Recovery focus recommended'}
+          </Text>
+        </Paper>
+
+        <Paper p="md" radius="md" withBorder>
+          <Group position="apart" mb="xs">
+            <Text weight={500} size="sm" color="dimmed">Sleep Quality</Text>
+            <ThemeIcon color="violet" variant="light" size={24} radius="xl">
+              <IconClockHour4 size={16} />
+            </ThemeIcon>
+          </Group>
+          <RingProgress
+            sections={[{ value: wellbeingData.sleep_quality * 10, color: theme.colors.violet[6] }]}
+            size={80}
+            thickness={8}
+            label={<Text align="center" weight={700} size="lg">{wellbeingData.sleep_quality}</Text>}
+            mx="auto"
+            mb="sm"
+          />
+          <Text size="xs" color="dimmed" align="center">/10 rating</Text>
+        </Paper>
+
+        <Paper p="md" radius="md" withBorder>
+          <Group position="apart" mb="xs">
+            <Text weight={500} size="sm" color="dimmed">Energy Level</Text>
+            <ThemeIcon color="yellow" variant="light" size={24} radius="xl">
+              <IconBulb size={16} />
+            </ThemeIcon>
+          </Group>
+          <RingProgress
+            sections={[{ value: wellbeingData.energy_level * 10, color: theme.colors.yellow[6] }]}
+            size={80}
+            thickness={8}
+            label={<Text align="center" weight={700} size="lg">{wellbeingData.energy_level}</Text>}
+            mx="auto"
+            mb="sm"
+          />
+          <Text size="xs" color="dimmed" align="center">/10 rating</Text>
+        </Paper>
+
+        <Paper p="md" radius="md" withBorder>
+          <Group position="apart" mb="xs">
+            <Text weight={500} size="sm" color="dimmed">Recovery Status</Text>
+            <ThemeIcon color="green" variant="light" size={24} radius="xl">
+              <IconHeartbeat size={16} />
+            </ThemeIcon>
+          </Group>
+          <RingProgress
+            sections={[{ value: wellbeingData.overall_recovery * 10, color: theme.colors.green[6] }]}
+            size={80}
+            thickness={8}
+            label={<Text align="center" weight={700} size="lg">{wellbeingData.overall_recovery}</Text>}
+            mx="auto"
+            mb="sm"
+          />
+          <Text size="xs" color="dimmed" align="center">/10 rating</Text>
+        </Paper>
+      </SimpleGrid>
+    );
+  };
+
+  // Render upcoming workout schedule
+  const renderUpcomingWorkouts = () => {
+    if (!upcomingWorkouts.length) {
+      return (
+        <Text color="dimmed" align="center" py="md">
+          No upcoming workouts scheduled.
+        </Text>
+      );
+    }
+
+    return (
+      <Stack spacing="xs">
+        {upcomingWorkouts.slice(0, 4).map(workout => (
+          <Card key={workout.id} p="md" radius="md" withBorder>
+            <Group position="apart" mb="xs">
+              <Group spacing="sm">
+                <ThemeIcon color="blue" variant="light" size={30} radius="xl">
+                  <IconBarbell size={18} />
+                </ThemeIcon>
+                <Box>
+                  <Text weight={500}>{workout.title}</Text>
+                  <Text size="xs" color="dimmed">{formatDate(workout.date, 'full')}</Text>
+                </Box>
+              </Group>
+              <Group spacing={0}>
+                <Badge size="md">{workout.duration} min</Badge>
+              </Group>
+            </Group>
+            <Group position="apart" mt="xs">
+              <Group spacing="xs">
+                <IconMapPin size={14} color={theme.colors.gray[6]} />
+                <Text size="xs" color="dimmed">{workout.location}</Text>
+              </Group>
+              <Group spacing="xs">
+                <IconDirections size={14} color={theme.colors.gray[6]} />
+                <Text size="xs" color="dimmed">Focus: {workout.focus}</Text>
+              </Group>
+            </Group>
+          </Card>
+        ))}
+      </Stack>
+    );
+  };
+
+  // Render weekly metrics chart
+  const renderWeeklyMetricsChart = () => {
+    if (!weeklyMetrics.length) return null;
+
+    return (
+      <Box style={{ height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={weeklyMetrics} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
+            <XAxis dataKey="day" />
+            <YAxis domain={[0, 10]} />
+            <ChartTooltip />
+            <Line type="monotone" dataKey="readiness" name="Readiness" stroke={theme.colors.blue[6]} strokeWidth={2} />
+            <Line type="monotone" dataKey="sleep" name="Sleep" stroke={theme.colors.violet[6]} strokeWidth={2} />
+            <Line type="monotone" dataKey="energy" name="Energy" stroke={theme.colors.yellow[6]} strokeWidth={2} />
+            <Line type="monotone" dataKey="recovery" name="Recovery" stroke={theme.colors.green[6]} strokeWidth={2} />
+            <Line type="monotone" dataKey="workoutIntensity" name="Workout Intensity" stroke={theme.colors.red[6]} strokeWidth={2} />
+          </LineChart>
+        </ResponsiveContainer>
+      </Box>
+    );
+  };
+
+  // Render performance radar chart
+  const renderPerformanceRadar = () => {
+    if (!performanceData?.radarData) return null;
+
+    return (
+      <Box style={{ height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <RadarChart cx="50%" cy="50%" outerRadius="80%" data={performanceData.radarData}>
+            <PolarGrid />
+            <PolarAngleAxis dataKey="metric" />
+            <PolarRadiusAxis domain={[0, 100]} />
+            <Radar name="Performance" dataKey="value" stroke={theme.colors.blue[6]} fill={theme.colors.blue[6]} fillOpacity={0.6} />
+          </RadarChart>
+        </ResponsiveContainer>
+      </Box>
+    );
+  };
+
+  // Render performance progress
+  const renderPerformanceProgress = () => {
+    if (!performanceData?.currentValues || !performanceData?.targets) return null;
+
+    const { currentValues, targets } = performanceData;
+
+    const performanceItems = [
+      { 
+        key: 'pushTime', 
+        label: 'Push Time', 
+        unit: 's',
+        isLowerBetter: true, 
+        progress: calculateProgressPercentage(currentValues.pushTime, targets.pushTime, true),
+        color: 'blue'
+      },
+      { 
+        key: 'squatMax', 
+        label: 'Squat Max', 
+        unit: 'kg',
+        isLowerBetter: false, 
+        progress: calculateProgressPercentage(currentValues.squatMax, targets.squatMax),
+        color: 'red'
+      },
+      { 
+        key: 'reaction', 
+        label: 'Reaction Time', 
+        unit: 's',
+        isLowerBetter: true, 
+        progress: calculateProgressPercentage(currentValues.reaction, targets.reaction, true),
+        color: 'yellow'
+      },
+      { 
+        key: 'gripStrength', 
+        label: 'Grip Strength', 
+        unit: 'kg',
+        isLowerBetter: false, 
+        progress: calculateProgressPercentage(currentValues.gripStrength, targets.gripStrength),
+        color: 'green'
+      },
+      { 
+        key: 'sprintSpeed', 
+        label: 'Sprint Speed', 
+        unit: 'm/s',
+        isLowerBetter: false, 
+        progress: calculateProgressPercentage(currentValues.sprintSpeed, targets.sprintSpeed),
+        color: 'violet'
+      }
+    ];
+
+    return (
+      <Stack spacing="xs">
+        {performanceItems.map(item => (
+          <Box key={item.key}>
+            <Group position="apart" mb="xs">
+              <Text size="sm">{item.label}</Text>
+              <Group spacing={4}>
+                <Text size="sm">{currentValues[item.key]}</Text>
+                <Text size="sm" color="dimmed">{item.unit}</Text>
+                <Text size="sm" color="dimmed">/</Text>
+                <Text size="sm" color="dimmed">{targets[item.key]} {item.unit}</Text>
+              </Group>
+            </Group>
+            <Progress 
+              value={item.progress} 
+              color={theme.colors[item.color][6]} 
+              size="md" 
+              radius="xl"
+              mb="sm"
+            />
+          </Box>
+        ))}
+      </Stack>
+    );
+  };
+
+  // Render recent personal records
+  const renderRecentPRs = () => {
+    if (!performanceData?.recentPRs?.length) return null;
+
+    return (
+      <Stack spacing="xs">
+        {performanceData.recentPRs.map((pr, index) => (
+          <Group key={index} position="apart">
+            <Group spacing="xs">
+              <ThemeIcon color="yellow" variant="light" size={24} radius="xl">
+                <IconStar size={16} />
+              </ThemeIcon>
+              <Text>{pr.metric}</Text>
+            </Group>
+            <Badge color="yellow" variant="light">
+              <Group spacing={4}>
+                <Text>{pr.value}</Text>
+                <Text color="dimmed">({formatDate(pr.date)})</Text>
+              </Group>
+            </Badge>
+          </Group>
+        ))}
+      </Stack>
+    );
+  };
+
+  // Render goals
+  const renderGoals = () => {
+    if (!goals.length) {
+      return (
+        <Text color="dimmed" align="center" py="md">
+          No goals set yet.
+        </Text>
+      );
+    }
+
+    return (
+      <Stack spacing="xs">
+        {goals.map(goal => (
+          <Card key={goal.id} p="md" radius="md" withBorder>
+            <Group position="apart" mb="xs">
+              <Group spacing="sm">
+                <ThemeIcon 
+                  color={goal.status === 'completed' ? 'green' : 'blue'} 
+                  variant={goal.status === 'completed' ? 'filled' : 'light'} 
+                  size={30} 
+                  radius="xl"
+                >
+                  <IconTrophy size={18} />
+                </ThemeIcon>
+                <Text weight={500}>{goal.title}</Text>
+              </Group>
+              <Badge color={goal.status === 'completed' ? 'green' : 'blue'}>
+                {goal.status === 'completed' ? 'Completed' : 'In Progress'}
+              </Badge>
+            </Group>
+            <Progress 
+              value={goal.progress}
+              color={getProgressColor(goal.progress)}
+              size="md"
+              mb="xs"
+              radius="xl"
+            />
+            <Group position="apart">
+              <Text size="xs" color="dimmed">Category: {goal.category}</Text>
+              {goal.status !== 'completed' && (
+                <Text size="xs" color="dimmed">Due: {formatDate(goal.dueDate)}</Text>
+              )}
+            </Group>
+          </Card>
+        ))}
+      </Stack>
+    );
+  };
+
+  // Render notifications
+  const renderNotifications = () => {
+    if (!notifications.length) {
+      return (
+        <Text color="dimmed" align="center" py="md">
+          No notifications.
+        </Text>
+      );
+    }
+
+    return (
+      <Stack spacing="xs">
+        {notifications.map(notification => {
+          const notificationIcon = {
+            'reminder': <IconBell size={16} />,
+            'coach': <IconUsers size={16} />,
+            'schedule': <IconCalendarEvent size={16} />,
+          }[notification.type] || <IconBell size={16} />;
+
+          const notificationColor = {
+            'reminder': 'yellow',
+            'coach': 'blue',
+            'schedule': 'green',
+          }[notification.type] || 'gray';
+
+          return (
+            <Group key={notification.id} position="apart">
+              <Group spacing="sm">
+                <ThemeIcon color={notificationColor} variant="light" size={24} radius="xl">
+                  {notificationIcon}
+                </ThemeIcon>
+                <Box>
+                  <Text size="sm">{notification.message}</Text>
+                  <Text size="xs" color="dimmed">{new Date(notification.timestamp).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}</Text>
+                </Box>
+              </Group>
+              {!notification.read && (
+                <Badge color="red" variant="dot" size="sm">New</Badge>
+              )}
+            </Group>
+          );
+        })}
+      </Stack>
+    );
+  };
 
   return (
     <Box>
       <Paper p="md" radius="md" withBorder mb="xl">
         <Group position="apart" mb="xl">
           <Group>
-            <Avatar src={userProfile?.avatar} size="lg" radius="xl" />
+            {userProfile && (
+              <Avatar src={userProfile.avatar} size={50} radius={50} />
+            )}
             <Box>
-              <Title order={2}>Welcome, {userProfile?.firstName}</Title>
-              <Text color="dimmed">{userProfile?.team} • {userProfile?.position}</Text>
+              <Title order={2}>Athlete Dashboard</Title>
+              <Text color="dimmed">
+                {userProfile ? `${userProfile.firstName} ${userProfile.lastName} | ${userProfile.position}` : 'Loading...'}
+              </Text>
             </Box>
           </Group>
           
-          <Group spacing="md">
-            <Button
-              leftIcon={<IconClipboardCheck size={18} />}
-              variant="light"
-              onClick={navigateToCheckIn}
-            >
-              Daily Check-in
-            </Button>
-            
-            <Button
-              leftIcon={<IconNotes size={18} />}
-              variant="light"
-              onClick={navigateToWeeklyReview}
-            >
-              Weekly Review
-            </Button>
-            
-            <Menu>
-              <Menu.Target>
-                <ActionIcon size="lg" radius="xl" variant="light" color="blue" sx={{ position: 'relative' }}>
-                  <IconBell size={20} />
-                  {hasUnreadNotifications && (
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        top: 2,
-                        right: 2,
-                        width: 8,
-                        height: 8,
-                        borderRadius: '50%',
-                        backgroundColor: theme.colors.red[6]
-                      }}
-                    />
-                  )}
-                </ActionIcon>
-              </Menu.Target>
-              
-              <Menu.Dropdown w={300}>
-                <Menu.Label>Notifications</Menu.Label>
-                {dashboardData.notifications.slice(0, 3).map(renderNotificationItem)}
-                {dashboardData.notifications.length > 3 && (
-                  <Menu.Item color="blue" icon={<IconArrowRight size={14} />} onClick={viewAllNotifications}>
-                    View all notifications
-                  </Menu.Item>
-                )}
-              </Menu.Dropdown>
-            </Menu>
-          </Group>
-        </Group>
-
-        <SimpleGrid cols={{ base: 1, xs: 2, sm: 3, md: 4 }} spacing="md">
-          <Card p="md" radius="md" withBorder>
-            <Group position="apart">
-              <Box>
-                <Text size="sm" color="dimmed" mb="xs">Today's Readiness</Text>
-                <RingProgress
-                  size={80}
-                  thickness={8}
-                  roundCaps
-                  sections={[{ value: dashboardData.readinessScore * 10, color: readinessStatus.color }]}
-                  label={<Text weight={700} align="center" size="lg">{dashboardData.readinessScore}</Text>}
-                />
-              </Box>
-              <Stack spacing={0} align="flex-end">
-                <Badge color={readinessStatus.color} mb="xs">
-                  {readinessStatus.text}
-                </Badge>
-                <Text size="xs" color="dimmed">
-                  Based on recent check-ins
-                </Text>
-              </Stack>
-            </Group>
-          </Card>
-          
-          <Card p="md" radius="md" withBorder>
-            <Text size="sm" color="dimmed" mb="xs">Training Compliance</Text>
-            <Group position="apart" align="center" noWrap spacing="xs">
-              <RingProgress
-                size={80}
-                thickness={8}
-                roundCaps
-                sections={[{ 
-                  value: dashboardData.checkInCompliance, 
-                  color: dashboardData.checkInCompliance < 70 ? 'red' : dashboardData.checkInCompliance < 85 ? 'yellow' : 'green' 
-                }]}
-                label={<Text weight={700} align="center" size="lg">{dashboardData.checkInCompliance}%</Text>}
-              />
-              <Box>
-                <Group>
-                  <ThemeIcon color="blue" variant="light" size="md" radius="xl">
-                    <IconClipboardCheck size={16} />
-                  </ThemeIcon>
-                  <Text weight={500}>{dashboardData.workoutsCompleted} Workouts</Text>
-                </Group>
-                <Group mt="xs">
-                  <ThemeIcon color="green" variant="light" size="md" radius="xl">
-                    <IconCalendarEvent size={16} />
-                  </ThemeIcon>
-                  <Text weight={500}>{dashboardData.currentStreak} Day Streak</Text>
-                </Group>
-              </Box>
-            </Group>
-          </Card>
-          
-          <Card p="md" radius="md" withBorder>
-            <Text size="sm" color="dimmed" mb="xs">Weekly Load</Text>
-            <Group position="apart" align="center" spacing="xs">
-              <RingProgress
-                size={80}
-                thickness={8}
-                roundCaps
-                sections={[{ 
-                  value: trainingLoadSummary.completion, 
-                  color: trainingLoadSummary.completion < 80 ? 'yellow' : 'blue' 
-                }]}
-                label={<Text weight={700} align="center" size="lg">{trainingLoadSummary.completion}%</Text>}
-              />
-              <Stack spacing={4}>
-                <Group spacing="xs">
-                  <Text size="sm">Planned:</Text>
-                  <Text weight={500}>{trainingLoadSummary.totalPlanned} AU</Text>
-                </Group>
-                <Group spacing="xs">
-                  <Text size="sm">Completed:</Text>
-                  <Text weight={500}>{trainingLoadSummary.totalActual} AU</Text>
-                </Group>
-                <Text size="xs" color="dimmed">Weekly training units</Text>
-              </Stack>
-            </Group>
-          </Card>
-          
-          <Card p="md" radius="md" withBorder>
-            <Text size="sm" color="dimmed" mb="xs">Upcoming Event</Text>
-            {dashboardData.upcomingEvents.length > 0 ? (
-              <Group position="apart" align="flex-start" noWrap>
-                <ThemeIcon size={36} radius="xl" color="grape">
-                  {getEventTypeIcon(dashboardData.upcomingEvents[0].type)}
+          {userProfile?.nextCompetition && (
+            <Card p="sm" radius="md" withBorder>
+              <Group spacing="sm">
+                <ThemeIcon color="red" variant="light" size={38} radius="md">
+                  <IconMedal size={20} />
                 </ThemeIcon>
                 <Box>
-                  <Text weight={500}>{dashboardData.upcomingEvents[0].title}</Text>
-                  <Text size="xs">{formatDate(dashboardData.upcomingEvents[0].date)}</Text>
-                  <Text size="xs" color="dimmed">{dashboardData.upcomingEvents[0].location}</Text>
+                  <Text weight={500}>{userProfile.nextCompetition.name}</Text>
+                  <Group spacing={4}>
+                    <Text size="xs" color="dimmed">{formatDate(userProfile.nextCompetition.date)}</Text>
+                    <Text size="xs" color="dimmed">•</Text>
+                    <Text size="xs" color="dimmed">{userProfile.nextCompetition.location}</Text>
+                  </Group>
                 </Box>
+                <Badge color="red" size="lg">{getDaysUntilCompetition()} days</Badge>
               </Group>
-            ) : (
-              <Text>No upcoming events</Text>
-            )}
-          </Card>
-        </SimpleGrid>
+            </Card>
+          )}
+        </Group>
 
-        <SimpleGrid cols={{ base: 1, md: 2 }} mt="xl" spacing="md">
-          <Box>
-            <Stack spacing="md">
-              <Paper p="md" radius="md" withBorder>
-                <Group position="apart" mb="md">
-                  <Title order={3}>Today's Schedule</Title>
-                  <Text color="dimmed">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</Text>
-                </Group>
-                
-                {dashboardData.pendingWorkouts.length > 0 ? (
-                  <Stack spacing="sm">
-                    {dashboardData.pendingWorkouts.map(workout => (
-                      <Card key={workout.id} p="sm" withBorder>
-                        <Group position="apart">
-                          <Group>
-                            <ThemeIcon size="lg" radius="md" color="blue">
-                              {getWorkoutTypeIcon(workout.type)}
-                            </ThemeIcon>
-                            <Box>
-                              <Text weight={500}>{workout.title}</Text>
-                              <Text size="xs" color="dimmed">{workout.scheduledTime} • {workout.duration} min</Text>
-                            </Box>
-                          </Group>
-                          <Button
-                            variant="light"
-                            size="xs"
-                            onClick={() => startWorkout(workout.id)}
-                            rightIcon={<IconArrowRight size={14} />}
-                          >
-                            Start
-                          </Button>
-                        </Group>
-                      </Card>
-                    ))}
-                  </Stack>
-                ) : (
-                  <Text color="dimmed" align="center" py="md">
-                    No workouts scheduled for today
-                  </Text>
-                )}
-              </Paper>
+        {renderWellbeingMetrics()}
 
-              <Paper p="md" radius="md" withBorder>
-                <Title order={3} mb="md">Recent Wellbeing</Title>
-                <Box style={{ height: 250 }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={prepareCheckInData()} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-                      <XAxis dataKey="date" />
-                      <YAxis domain={[0, 10]} />
-                      <Tooltip />
-                      <Line type="monotone" dataKey="readiness" name="Readiness" stroke={theme.colors.blue[6]} strokeWidth={2} />
-                      <Line type="monotone" dataKey="sleep" name="Sleep" stroke={theme.colors.violet[6]} strokeWidth={2} />
-                      <Line type="monotone" dataKey="energy" name="Energy" stroke={theme.colors.green[6]} strokeWidth={2} />
-                      <Line type="monotone" dataKey="soreness" name="Soreness" stroke={theme.colors.red[6]} strokeWidth={2} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </Box>
-              </Paper>
+        <Box mt="xl">
+          <Tabs defaultValue="dashboard">
+            <Tabs.List mb="md">
+              <Tabs.Tab value="dashboard" icon={<IconActivity size={16} />}>Dashboard</Tabs.Tab>
+              <Tabs.Tab value="calendar" icon={<IconCalendarStats size={16} />}>Calendar</Tabs.Tab>
+              <Tabs.Tab value="performance" icon={<IconChartLine size={16} />}>Performance</Tabs.Tab>
+            </Tabs.List>
 
-              <Paper p="md" radius="md" withBorder>
-                <Title order={3} mb="md">Current Goals</Title>
-                <Stack spacing="xs">
-                  {dashboardData.goals.map(goal => (
-                    <Box key={goal.id}>
-                      <Group position="apart" mb={2}>
-                        <Text size="sm">{goal.text}</Text>
-                        <Badge 
-                          color={goal.priority === 'high' ? 'red' : goal.priority === 'medium' ? 'yellow' : 'blue'}
-                          size="sm"
-                        >
-                          {goal.priority}
-                        </Badge>
-                      </Group>
-                      <Group position="apart">
-                        <Progress 
-                          value={goal.progress} 
-                          color={goal.progress < 50 ? 'red' : goal.progress < 80 ? 'yellow' : 'green'}
-                          size="sm" 
-                          style={{ width: '85%' }}
-                        />
-                        <Text size="xs" weight={500}>{goal.progress}%</Text>
-                      </Group>
-                      <Text size="xs" color="dimmed" mb="sm">Due: {new Date(goal.dueDate).toLocaleDateString()}</Text>
-                    </Box>
-                  ))}
+            <Tabs.Panel value="dashboard">
+              <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
+                <Stack spacing="lg">
+                  <Paper p="md" radius="md" withBorder>
+                    <Group position="apart" mb="md">
+                      <Text weight={600} size="lg">Upcoming Workouts</Text>
+                      <Button variant="subtle" rightIcon={<IconArrowRight size={16} />} compact>View All</Button>
+                    </Group>
+                    {renderUpcomingWorkouts()}
+                  </Paper>
+
+                  <Paper p="md" radius="md" withBorder>
+                    <Text weight={600} size="lg" mb="md">Weekly Metrics</Text>
+                    {renderWeeklyMetricsChart()}
+                  </Paper>
                 </Stack>
-              </Paper>
-            </Stack>
-          </Box>
 
-          <Box>
-            <Stack spacing="md">
-              <Paper p="md" radius="md" withBorder>
-                <Title order={3} mb="md">Performance Progress</Title>
-                <SimpleGrid cols={2} spacing="md" mb="sm">
-                  {dashboardData.performanceMetrics.map(renderPerformanceMetric)}
-                </SimpleGrid>
-              </Paper>
+                <Stack spacing="lg">
+                  <Paper p="md" radius="md" withBorder>
+                    <Group position="apart" mb="md">
+                      <Text weight={600} size="lg">Goals</Text>
+                      <Button variant="subtle" rightIcon={<IconArrowRight size={16} />} compact>View All</Button>
+                    </Group>
+                    {renderGoals()}
+                  </Paper>
 
-              <Paper p="md" radius="md" withBorder>
-                <Title order={3} mb="md">Training Load</Title>
-                <Box style={{ height: 200 }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={dashboardData.weeklyTrainingLoad}>
-                      <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-                      <XAxis dataKey="day" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="planned" name="Planned" fill={theme.colors.blue[5]} />
-                      <Bar dataKey="actual" name="Actual" fill={theme.colors.green[6]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </Box>
-              </Paper>
+                  <Paper p="md" radius="md" withBorder>
+                    <Group position="apart" mb="md">
+                      <Text weight={600} size="lg">Today's Check-in</Text>
+                      <Button variant="filled" size="xs">Complete</Button>
+                    </Group>
+                    {!wellbeingData ? (
+                      <Text color="dimmed" align="center" py="md">
+                        You haven't completed your daily check-in yet.
+                      </Text>
+                    ) : (
+                      <Text color="dimmed" align="center" py="md">
+                        You've completed your daily check-in at {formatDate(wellbeingData.date, 'time')}.
+                      </Text>
+                    )}
+                  </Paper>
 
-              <Paper p="md" radius="md" withBorder>
-                <Group position="apart" mb="md">
-                  <Title order={3}>Athlete Profile</Title>
-                  <ActionIcon>
-                    <IconPencil size={16} />
-                  </ActionIcon>
-                </Group>
+                  <Paper p="md" radius="md" withBorder>
+                    <Group position="apart" mb="md">
+                      <Text weight={600} size="lg">Notifications</Text>
+                      <Text size="xs" color="dimmed">{notifications.filter(n => !n.read).length} unread</Text>
+                    </Group>
+                    {renderNotifications()}
+                  </Paper>
+                </Stack>
+              </SimpleGrid>
+            </Tabs.Panel>
 
-                <SimpleGrid cols={2} spacing="xl">
-                  <Box>
-                    <Text weight={500} mb="xs">Performance Metrics</Text>
-                    <Box style={{ height: 200 }}>
-                      <ResponsiveContainer width="100%" height="100%">
-                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={performanceProfileData}>
-                          <PolarGrid />
-                          <PolarAngleAxis dataKey="subject" />
-                          <Radar name="Performance Profile" dataKey="value" stroke={theme.colors.blue[7]} fill={theme.colors.blue[3]} fillOpacity={0.6} />
-                        </RadarChart>
-                      </ResponsiveContainer>
+            <Tabs.Panel value="calendar">
+              <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="lg">
+                <Paper p="md" radius="md" withBorder style={{ gridColumn: 'span 2' }}>
+                  <Text weight={600} size="lg" mb="md">Monthly Schedule</Text>
+                  <Calendar 
+                    size="lg" 
+                    fullWidth 
+                    renderDay={renderCalendarDay}
+                  />
+                  <Group position="center" mt="sm" spacing="xs">
+                    <Box style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Box style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: theme.colors.green[6] }} />
+                      <Text size="xs">Light Workout</Text>
                     </Box>
-                  </Box>
+                    <Box style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Box style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: theme.colors.yellow[6] }} />
+                      <Text size="xs">Medium Workout</Text>
+                    </Box>
+                    <Box style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Box style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: theme.colors.red[6] }} />
+                      <Text size="xs">Intense Workout</Text>
+                    </Box>
+                    <Box style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Box style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: theme.colors.blue[6] }} />
+                      <Text size="xs">Check-in</Text>
+                    </Box>
+                    <Box style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Box style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: theme.colors.violet[6] }} />
+                      <Text size="xs">Event</Text>
+                    </Box>
+                  </Group>
+                </Paper>
 
-                  <Box>
-                    <Text weight={500} mb="xs">Personal Records</Text>
+                <Stack spacing="lg">
+                  <Paper p="md" radius="md" withBorder>
+                    <Text weight={600} size="lg" mb="md">Today's Schedule</Text>
+                    {upcomingWorkouts.filter(workout => {
+                      const workoutDate = new Date(workout.date).toDateString();
+                      const today = new Date().toDateString();
+                      return workoutDate === today;
+                    }).length ? (
+                      renderUpcomingWorkouts()
+                    ) : (
+                      <Text color="dimmed" align="center" py="md">
+                        No workouts scheduled for today.
+                      </Text>
+                    )}
+                  </Paper>
+
+                  <Paper p="md" radius="md" withBorder>
+                    <Group position="apart" mb="md">
+                      <Text weight={600} size="lg">Weekly Overview</Text>
+                      <Select
+                        placeholder="This Week"
+                        data={[
+                          { value: 'this-week', label: 'This Week' },
+                          { value: 'next-week', label: 'Next Week' },
+                          { value: 'previous-week', label: 'Previous Week' }
+                        ]}
+                        defaultValue="this-week"
+                        style={{ width: 130 }}
+                      />
+                    </Group>
                     <Stack spacing="xs">
-                      {dashboardData.personalRecords.map((record, index) => (
-                        <Group key={index} position="apart">
-                          <Text size="sm">{record.name}</Text>
-                          <Text size="sm" weight={500}>{record.value}</Text>
-                        </Group>
-                      ))}
+                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => {
+                        const isToday = new Date().getDay() === (index + 1) % 7;
+                        return (
+                          <Group key={day} position="apart" p="xs" bg={isToday ? 'blue.0' : undefined} style={{ borderRadius: 4 }}>
+                            <Text weight={isToday ? 500 : 400}>{day}</Text>
+                            <Badge color={weeklyMetrics[index].workoutIntensity > 7 ? 'red' : 
+                                   weeklyMetrics[index].workoutIntensity > 4 ? 'yellow' : 
+                                   weeklyMetrics[index].workoutIntensity > 0 ? 'green' : 'gray'}
+                            >
+                              {weeklyMetrics[index].workoutIntensity > 0 ? 
+                               `${weeklyMetrics[index].workoutIntensity}/10` : 'Rest'}
+                            </Badge>
+                          </Group>
+                        );
+                      })}
                     </Stack>
-                    <Divider my="sm" />
-                    <Timeline active={1} bulletSize={24} lineWidth={2}>
-                      {dashboardData.personalRecords.slice(0, 2).map((record, index) => (
-                        <Timeline.Item
-                          key={index}
-                          bullet={<IconTrophy size={12} />}
-                          title={record.name}
-                        >
-                          <Text color="dimmed" size="sm">{record.value} on {new Date(record.date).toLocaleDateString()}</Text>
-                        </Timeline.Item>
-                      ))}
-                    </Timeline>
+                  </Paper>
+                </Stack>
+              </SimpleGrid>
+            </Tabs.Panel>
+
+            <Tabs.Panel value="performance">
+              <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
+                <Paper p="md" radius="md" withBorder>
+                  <Text weight={600} size="lg" mb="md">Performance Overview</Text>
+                  {renderPerformanceRadar()}
+                </Paper>
+
+                <Paper p="md" radius="md" withBorder>
+                  <Text weight={600} size="lg" mb="md">Progress to Targets</Text>
+                  {renderPerformanceProgress()}
+                </Paper>
+
+                <Paper p="md" radius="md" withBorder>
+                  <Group position="apart" mb="md">
+                    <Text weight={600} size="lg">Recent Personal Records</Text>
+                    <Button variant="subtle" rightIcon={<IconArrowRight size={16} />} compact>View All</Button>
+                  </Group>
+                  {renderRecentPRs()}
+                </Paper>
+
+                <Paper p="md" radius="md" withBorder>
+                  <Group position="apart" mb="md">
+                    <Text weight={600} size="lg">Performance Tests</Text>
+                    <Button variant="subtle" rightIcon={<IconArrowRight size={16} />} compact>Schedule Test</Button>
+                  </Group>
+                  <Box>
+                    {/* Placeholder for performance tests */}
+                    <Text color="dimmed" align="center" py="md">
+                      No upcoming performance tests scheduled.
+                    </Text>
                   </Box>
-                </SimpleGrid>
-              </Paper>
-            </Stack>
-          </Box>
-        </SimpleGrid>
+                </Paper>
+              </SimpleGrid>
+            </Tabs.Panel>
+          </Tabs>
+        </Box>
       </Paper>
     </Box>
   );
