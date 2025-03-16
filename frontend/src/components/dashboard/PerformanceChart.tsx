@@ -1,21 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Card, Group, Title, SegmentedControl, Text, Stack, rem } from '@mantine/core';
+import { Card, Group, Stack, Text, Title, useMantineTheme } from '@mantine/core';
 import { Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title as ChartTitle,
-  Tooltip,
+import { 
+  Chart as ChartJS, 
+  CategoryScale, 
+  LinearScale, 
+  PointElement, 
+  LineElement, 
+  Title as ChartTitle, 
+  Tooltip, 
   Legend,
-  Filler,
+  ChartOptions
 } from 'chart.js';
 
-// Register ChartJS components
+// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,143 +23,127 @@ ChartJS.register(
   LineElement,
   ChartTitle,
   Tooltip,
-  Legend,
-  Filler
+  Legend
 );
 
-export function PerformanceChart() {
-  const [timeRange, setTimeRange] = useState('4w'); // Options: 1w, 4w, 3m, 1y
+interface PerformanceChartProps {
+  athleteId?: number;
+  days?: number;
+}
+
+export function PerformanceChart({ athleteId = 1, days = 14 }: PerformanceChartProps) {
+  const theme = useMantineTheme();
   const [chartData, setChartData] = useState<any>(null);
 
   useEffect(() => {
-    // This would normally be a data fetch from API
-    // but for now we're using static data
+    // In a real application, this data would come from an API call
+    // api.get(`/api/performance/load/${athleteId}?days=${days}`)
+    
+    // Generate dates for the x-axis
+    const dates = Array.from({ length: days }, (_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - (days - 1 - i));
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    });
+    
+    // Sample data for PMC metrics
+    // In a real app, this would come from the backend API
+    const ctlValues = [78.2, 79.5, 80.0, 80.5, 81.2, 82.0, 82.3, 82.5, 83.0, 83.7, 84.5, 85.0, 85.7, 86.1];
+    const atlValues = [70.5, 72.8, 75.5, 76.8, 80.5, 83.2, 85.7, 83.4, 85.8, 88.2, 90.4, 93.4, 95.2, 96.8];
+    const tsbValues = [7.7, 6.7, 4.5, 3.7, 0.7, -1.2, -3.4, -0.9, -2.8, -4.5, -5.9, -8.4, -9.5, -10.7];
+    const dailyLoadValues = [60, 70, 85, 55, 95, 85, 110, 40, 90, 100, 95, 120, 105, 90];
 
-    const labels = {
-      '1w': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      '4w': ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-      '3m': ['Jan', 'Feb', 'Mar'],
-      '1y': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    }[timeRange];
-
-    const ctlData = {
-      '1w': [75, 78, 78, 80, 82, 85, 86],
-      '4w': [70, 74, 80, 86],
-      '3m': [60, 72, 86],
-      '1y': [40, 45, 52, 58, 64, 70, 75, 78, 82, 85, 87, 86]
-    }[timeRange];
-
-    const atlData = {
-      '1w': [80, 85, 82, 88, 90, 95, 92],
-      '4w': [75, 82, 88, 92],
-      '3m': [65, 78, 92],
-      '1y': [42, 48, 55, 62, 68, 75, 80, 82, 85, 88, 92, 90]
-    }[timeRange];
-
-    const tsbData = {
-      '1w': [-5, -7, -4, -8, -8, -10, -6],
-      '4w': [-5, -8, -8, -6],
-      '3m': [-5, -6, -6],
-      '1y': [-2, -3, -3, -4, -4, -5, -5, -4, -3, -3, -5, -4]
-    }[timeRange];
-
-    setChartData({
-      labels,
+    // Create chart data object
+    const data = {
+      labels: dates,
       datasets: [
         {
           label: 'CTL (Fitness)',
-          data: ctlData,
-          borderColor: '#228be6',
-          backgroundColor: '#228be6',
-          tension: 0.4,
-          pointRadius: 3,
+          data: ctlValues,
+          borderColor: theme.colors.blue[6],
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          borderWidth: 2,
         },
         {
           label: 'ATL (Fatigue)',
-          data: atlData,
-          borderColor: '#fa5252',
-          backgroundColor: '#fa5252',
-          tension: 0.4,
-          pointRadius: 3,
+          data: atlValues,
+          borderColor: theme.colors.red[6],
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          borderWidth: 2,
         },
         {
           label: 'TSB (Form)',
-          data: tsbData,
-          borderColor: '#40c057',
-          backgroundColor: '#40c057',
-          tension: 0.4,
-          pointRadius: 3,
+          data: tsbValues,
+          borderColor: theme.colors.green[6],
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          borderWidth: 2,
           yAxisID: 'y1',
         },
+        {
+          label: 'Daily Load',
+          data: dailyLoadValues,
+          borderColor: theme.colors.gray[6],
+          backgroundColor: theme.colors.gray[3],
+          borderWidth: 1,
+          type: 'bar',
+        },
       ],
-    });
-  }, [timeRange]);
+    };
 
-  const options = {
+    setChartData(data);
+  }, [athleteId, days, theme.colors]);
+
+  const options: ChartOptions<'line'> = {
     responsive: true,
-    interaction: {
-      mode: 'index' as const,
-      intersect: false,
-    },
+    maintainAspectRatio: false,
     scales: {
       y: {
-        type: 'linear' as const,
-        display: true,
-        position: 'left' as const,
         title: {
           display: true,
           text: 'Training Load',
         },
-        min: timeRange === '1y' ? 35 : 50,
+        min: 0,
       },
       y1: {
-        type: 'linear' as const,
-        display: true,
-        position: 'right' as const,
+        position: 'right',
         title: {
           display: true,
-          text: 'Training Stress Balance',
+          text: 'TSB (Form)',
         },
         grid: {
           drawOnChartArea: false,
         },
-        min: -15,
-        max: 5,
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
       },
     },
   };
 
   return (
-    <Card withBorder shadow="sm" p="md">
-      <Stack spacing="md">
+    <Card withBorder p="md" radius="md">
+      <Stack>
         <Group position="apart">
           <Title order={3}>Performance Management Chart</Title>
-          <SegmentedControl
-            value={timeRange}
-            onChange={setTimeRange}
-            data={[
-              { label: '1W', value: '1w' },
-              { label: '4W', value: '4w' },
-              { label: '3M', value: '3m' },
-              { label: '1Y', value: '1y' },
-            ]}
-            size="xs"
-          />
         </Group>
-
-        <Group position="apart">
-          <Stack spacing={0}>
-            <Text fw={500}>Current Metrics</Text>
-            <Group spacing="lg">
-              <Text size="sm">CTL: <Text span fw={700} c="blue">86</Text></Text>
-              <Text size="sm">ATL: <Text span fw={700} c="red">92</Text></Text>
-              <Text size="sm">TSB: <Text span fw={700} c={-6 > 0 ? 'green' : 'red'}>-6</Text></Text>
-            </Group>
-          </Stack>
-        </Group>
-
-        <div style={{ height: rem(320) }}>
-          {chartData && <Line options={options} data={chartData} />}
+        
+        <Text size="sm" c="dimmed">
+          This chart shows your training load balance over time. The CTL line shows your fitness, ATL shows fatigue, 
+          and TSB shows your form (the balance between fitness and fatigue).
+        </Text>
+        
+        <div style={{ height: 400 }}>
+          {chartData ? (
+            <Line data={chartData} options={options} />
+          ) : (
+            <Text>Loading chart data...</Text>
+          )}
         </div>
       </Stack>
     </Card>
