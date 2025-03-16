@@ -12,6 +12,9 @@ This application uses advanced machine learning techniques to analyze athlete pe
 - **AI-Generated Training Recommendations** based on current training status
 - **Workout Logging and Tracking** with detailed exercise data
 - **Performance Metrics and Analysis** to monitor progress
+- **Athlete Wellbeing Tracking** for holistic health monitoring
+- **Recovery Management** to optimize training adaptation
+- **Mood and Mental Health Tracking** for complete athlete monitoring
 - **Customizable Athlete Profiles** to personalize the experience
 
 ## Tech Stack
@@ -21,6 +24,7 @@ This application uses advanced machine learning techniques to analyze athlete pe
 - TypeScript
 - Mantine UI v7 (Component library)
 - React Query (Data fetching and caching)
+- Recharts (Data visualization)
 
 ### Backend
 - Python 3.11
@@ -78,6 +82,26 @@ This application uses advanced machine learning techniques to analyze athlete pe
 2. Run the SQL script in `backend/sql/supabase_schema.sql` in the Supabase SQL editor to create the database schema
 
 3. Update your `.env` file with the Supabase credentials
+
+## Key Components
+
+### Wellbeing Module
+
+The wellbeing module provides comprehensive tracking of athlete wellbeing:
+
+- **Daily Wellbeing Assessment** - Track sleep, stress, nutrition, and mental clarity
+- **Mood Tracking** - Monitor emotional state with calendar visualization
+- **Physical Metrics** - Record measurable health data like heart rate, weight, etc.
+- **Reflections Journal** - Capture thoughts and insights about training
+- **Recovery Health** - Track recovery methods and manage injuries
+
+### Performance Module
+
+The performance module allows for detailed tracking of athletic performance:
+
+- **Performance Assessment** - Record and analyze performance tests
+- **Training Assessment** - Evaluate training sessions effectiveness
+- **Performance Trends** - Visualize progress over time
 
 ## Development
 
