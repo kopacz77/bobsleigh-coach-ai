@@ -15,10 +15,12 @@ import {
   Tabs,
   useMantineTheme,
   Progress,
-  ThemeIcon
+  ThemeIcon,
+  MantineColor,
+  rem
 } from '@mantine/core';
-import { DatePickerInput, DatePicker } from '@mantine/dates';
-import { showNotification } from '@mantine/notifications';
+import { DatePickerInput, DatePicker, DateValue } from '@mantine/dates';
+import { notifications } from '@mantine/notifications';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import {
   IconTrendingUp,
@@ -35,20 +37,83 @@ import {
 } from '@tabler/icons-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
+interface WeeklyReviewProps {
+  userId: string;
+}
+
+interface ReviewFormState {
+  week_start: Date;
+  overall_performance: number;
+  achievements: string;
+  challenges: string;
+  technique_progress: number;
+  physical_progress: number;
+  mental_progress: number;
+  goal_progress: string[];
+  next_week_goals: string;
+  coach_feedback: string;
+  focus_areas: string[];
+  key_learnings: string;
+}
+
+interface FocusArea {
+  value: string;
+  label: string;
+}
+
+interface DailyCheckIn {
+  date: string;
+  user_id: string;
+  sleep_quality: number;
+  fatigue_level: number;
+  muscle_soreness: number;
+  mental_readiness: number;
+  nutrition_quality: number;
+  hydration_level: number;
+  [key: string]: any; // For any additional properties
+}
+
+interface WeeklyReviewData extends Omit<ReviewFormState, 'week_start'> {
+  id?: number;
+  user_id: string;
+  week_start: string; // ISO date string in DB
+  created_at?: string;
+  updated_at?: string;
+}
+
+interface ChartDataPoint {
+  date: string;
+  readiness: number | null;
+  fatigue: number | null;
+  soreness: number | null;
+  mental: number | null;
+}
+
+interface Averages {
+  sleep_quality: string;
+  fatigue_level: string;
+  muscle_soreness: string;
+  mental_readiness: string;
+  nutrition_quality: string;
+  hydration_level: string;
+  avg_readiness: string;
+  readiness_scores: number[];
+}
+
 /**
  * WeeklyReview component for athletes to assess their weekly performance,
  * set goals for the upcoming week, and review progress
  */
-const WeeklyReview = ({ userId }) => {
+const WeeklyReview: React.FC<WeeklyReviewProps> = ({ userId }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState(false);
-  const [weekData, setWeekData] = useState([]);
-  const [selectedWeekStart, setSelectedWeekStart] = useState(getStartOfWeek(new Date()));
-  const [savedReview, setSavedReview] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [weekData, setWeekData] = useState<DailyCheckIn[]>([]);
+  const [selectedWeekStart, setSelectedWeekStart] = useState<Date>(getStartOfWeek(new Date()));
+  const [savedReview, setSavedReview] = useState<WeeklyReviewData | null>(null);
   
   // Review form state
-  const [review, setReview] = useState({
+  const [review, setReview] = useState<ReviewFormState>({
     week_start: getStartOfWeek(new Date()),
     overall_performance: 5,
     achievements: '',
@@ -64,7 +129,7 @@ const WeeklyReview = ({ userId }) => {
   });
 
   // Bobsleigh-specific focus areas
-  const focusAreas = [
+  const focusAreas: FocusArea[] = [
     { value: 'push_technique', label: 'Push Technique' },
     { value: 'start_speed', label: 'Start Speed' },
     { value: 'driving_line', label: 'Driving Line' },
@@ -80,7 +145,7 @@ const WeeklyReview = ({ userId }) => {
   ];
 
   // Helper function to get the start of a week (Sunday) from a date
-  function getStartOfWeek(date) {
+  function getStartOfWeek(date: Date): Date {
     const d = new Date(date);
     const day = d.getDay();
     const diff = d.getDate() - day;
@@ -88,13 +153,13 @@ const WeeklyReview = ({ userId }) => {
   }
 
   // Helper function to format date for display
-  function formatDate(date) {
+  function formatDate(date: Date): string {
     return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   }
 
   // Generate array of dates for the selected week
-  function getWeekDates(startDate) {
-    const dates = [];
+  function getWeekDates(startDate: Date): Date[] {
+    const dates: Date[] = [];
     const start = new Date(startDate);
     for (let i = 0; i < 7; i++) {
       const date = new Date(start);
@@ -194,22 +259,24 @@ const WeeklyReview = ({ userId }) => {
   }, [userId, selectedWeekStart, supabase]);
 
   // Handle week selection change
-  const handleWeekChange = (date) => {
-    setSelectedWeekStart(getStartOfWeek(date));
+  const handleWeekChange = (date: DateValue) => {
+    if (date) {
+      setSelectedWeekStart(getStartOfWeek(date));
+    }
   };
 
   // Handle text input changes
-  const handleTextChange = (field) => (event) => {
+  const handleTextChange = (field: keyof ReviewFormState) => (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReview((prev) => ({ ...prev, [field]: event.target.value }));
   };
 
   // Handle slider changes
-  const handleSliderChange = (field) => (value) => {
+  const handleSliderChange = (field: keyof ReviewFormState) => (value: number) => {
     setReview((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle focus areas selection
-  const handleFocusAreasChange = (values) => {
+  const handleFocusAreasChange = (values: string[]) => {
     setReview((prev) => ({ ...prev, focus_areas: values }));
   };
 
@@ -218,7 +285,7 @@ const WeeklyReview = ({ userId }) => {
     setLoading(true);
     
     try {
-      const reviewData = {
+      const reviewData: Omit<WeeklyReviewData, 'id' | 'created_at' | 'updated_at'> = {
         user_id: userId,
         week_start: review.week_start.toISOString().split('T')[0],
         overall_performance: review.overall_performance,
@@ -255,7 +322,7 @@ const WeeklyReview = ({ userId }) => {
         throw error;
       }
 
-      showNotification({
+      notifications.show({
         title: 'Success',
         message: 'Weekly review saved successfully',
         color: 'green',
@@ -274,7 +341,7 @@ const WeeklyReview = ({ userId }) => {
       }
     } catch (error) {
       console.error('Error saving weekly review:', error);
-      showNotification({
+      notifications.show({
         title: 'Error',
         message: 'Failed to save weekly review',
         color: 'red',
@@ -285,14 +352,14 @@ const WeeklyReview = ({ userId }) => {
   };
 
   // Helper function to determine slider color based on value
-  const getSliderColor = (value) => {
+  const getSliderColor = (value: number): string => {
     if (value <= 3) return theme.colors.red[6];
     if (value <= 6) return theme.colors.yellow[6];
     return theme.colors.green[6];
   };
 
   // Calculate averages from daily check-ins
-  const calculateAverages = () => {
+  const calculateAverages = (): Averages | null => {
     if (!weekData.length) return null;
 
     const metrics = {
@@ -302,7 +369,7 @@ const WeeklyReview = ({ userId }) => {
       mental_readiness: 0,
       nutrition_quality: 0,
       hydration_level: 0,
-      readiness_scores: []
+      readiness_scores: [] as number[]
     };
 
     weekData.forEach(day => {
@@ -341,14 +408,14 @@ const WeeklyReview = ({ userId }) => {
   };
 
   // Prepare chart data for weekly metrics
-  const prepareChartData = () => {
+  const prepareChartData = (): ChartDataPoint[] => {
     if (!weekData.length) return [];
 
     const weekDates = getWeekDates(selectedWeekStart);
     const formattedDates = weekDates.map(date => formatDate(date));
     
     // Prepare data with all dates, filled with null values initially
-    const chartData = formattedDates.map(date => ({
+    const chartData: ChartDataPoint[] = formattedDates.map(date => ({
       date,
       readiness: null,
       fatigue: null,
@@ -392,33 +459,32 @@ const WeeklyReview = ({ userId }) => {
   return (
     <Box>
       <Title order={2} mb="md">Weekly Performance Review</Title>
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Review your past week's performance, set goals for the upcoming week, and track your progress.
         This helps identify patterns and improve your training program.
       </Text>
 
-      <Group position="apart" mb="xl">
+      <Group justify="space-between" mb="xl">
         <Group>
           <IconCalendarStats size={24} color={theme.colors.blue[6]} />
           <Title order={3}>Week of {formatDate(selectedWeekStart)} - {formatDate(getWeekDates(selectedWeekStart)[6])}</Title>
         </Group>
         
         <DatePicker
-          type="default"
           value={selectedWeekStart}
           onChange={handleWeekChange}
           firstDayOfWeek={0}
           maxDate={new Date()}
           hideOutsideDates
-          styles={{ root: { maxWidth: 300 } }}
+          w={300}
         />
       </Group>
 
       <Tabs defaultValue="summary">
         <Tabs.List mb="md">
-          <Tabs.Tab value="summary" icon={<IconChartBar size={14} />}>Weekly Summary</Tabs.Tab>
-          <Tabs.Tab value="goals" icon={<IconTarget size={14} />}>Goals & Progress</Tabs.Tab>
-          <Tabs.Tab value="notes" icon={<IconNotes size={14} />}>Reflections</Tabs.Tab>
+          <Tabs.Tab value="summary" leftSection={<IconChartBar size={14} />}>Weekly Summary</Tabs.Tab>
+          <Tabs.Tab value="goals" leftSection={<IconTarget size={14} />}>Goals & Progress</Tabs.Tab>
+          <Tabs.Tab value="notes" leftSection={<IconNotes size={14} />}>Reflections</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="summary">
@@ -426,7 +492,7 @@ const WeeklyReview = ({ userId }) => {
             <>
               <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mb="xl">
                 <Paper p="md" radius="md" withBorder>
-                  <Text weight={600} size="lg" mb="md">Weekly Readiness Trend</Text>
+                  <Text fw={600} size="lg" mb="md">Weekly Readiness Trend</Text>
                   
                   <Box style={{ height: 270 }}>
                     <ResponsiveContainer width="100%" height="100%">
@@ -450,7 +516,7 @@ const WeeklyReview = ({ userId }) => {
                 </Paper>
 
                 <Paper p="md" radius="md" withBorder>
-                  <Text weight={600} size="lg" mb="md">Weekly Metrics</Text>
+                  <Text fw={600} size="lg" mb="md">Weekly Metrics</Text>
                   
                   <Box style={{ height: 270 }}>
                     <ResponsiveContainer width="100%" height="100%">
@@ -492,42 +558,42 @@ const WeeklyReview = ({ userId }) => {
 
               <SimpleGrid cols={{ base: 1, md: 3 }} spacing="md" mb="xl">
                 <Paper p="md" radius="md" withBorder>
-                  <Text align="center" size="sm" color="dimmed" mb="xs">Average Readiness</Text>
-                  <Text align="center" weight={700} size="xl" mb="xs" color={getSliderColor(parseFloat(averages.avg_readiness))}>
-                    {averages.avg_readiness}/10
+                  <Text ta="center" size="sm" c="dimmed" mb="xs">Average Readiness</Text>
+                  <Text ta="center" fw={700} size="xl" mb="xs" c={getSliderColor(parseFloat(averages!.avg_readiness))}>
+                    {averages!.avg_readiness}/10
                   </Text>
                   
                   <Progress 
-                    value={(parseFloat(averages.avg_readiness) / 10) * 100} 
-                    color={getSliderColor(parseFloat(averages.avg_readiness))} 
+                    value={(parseFloat(averages!.avg_readiness) / 10) * 100} 
+                    color={getSliderColor(parseFloat(averages!.avg_readiness))} 
                     size="md" 
                     radius="xl" 
                   />
                 </Paper>
                 
                 <Paper p="md" radius="md" withBorder>
-                  <Text align="center" size="sm" color="dimmed" mb="xs">Sleep Quality</Text>
-                  <Text align="center" weight={700} size="xl" mb="xs" color={getSliderColor(parseFloat(averages.sleep_quality))}>
-                    {averages.sleep_quality}/10
+                  <Text ta="center" size="sm" c="dimmed" mb="xs">Sleep Quality</Text>
+                  <Text ta="center" fw={700} size="xl" mb="xs" c={getSliderColor(parseFloat(averages!.sleep_quality))}>
+                    {averages!.sleep_quality}/10
                   </Text>
                   
                   <Progress 
-                    value={(parseFloat(averages.sleep_quality) / 10) * 100} 
-                    color={getSliderColor(parseFloat(averages.sleep_quality))} 
+                    value={(parseFloat(averages!.sleep_quality) / 10) * 100} 
+                    color={getSliderColor(parseFloat(averages!.sleep_quality))} 
                     size="md" 
                     radius="xl" 
                   />
                 </Paper>
                 
                 <Paper p="md" radius="md" withBorder>
-                  <Text align="center" size="sm" color="dimmed" mb="xs">Mental Readiness</Text>
-                  <Text align="center" weight={700} size="xl" mb="xs" color={getSliderColor(parseFloat(averages.mental_readiness))}>
-                    {averages.mental_readiness}/10
+                  <Text ta="center" size="sm" c="dimmed" mb="xs">Mental Readiness</Text>
+                  <Text ta="center" fw={700} size="xl" mb="xs" c={getSliderColor(parseFloat(averages!.mental_readiness))}>
+                    {averages!.mental_readiness}/10
                   </Text>
                   
                   <Progress 
-                    value={(parseFloat(averages.mental_readiness) / 10) * 100} 
-                    color={getSliderColor(parseFloat(averages.mental_readiness))} 
+                    value={(parseFloat(averages!.mental_readiness) / 10) * 100} 
+                    color={getSliderColor(parseFloat(averages!.mental_readiness))} 
                     size="md" 
                     radius="xl" 
                   />
@@ -536,18 +602,18 @@ const WeeklyReview = ({ userId }) => {
             </>
           ) : (
             <Paper p="xl" radius="md" withBorder>
-              <Text align="center" size="lg" weight={500} mb="md">
+              <Text ta="center" size="lg" fw={500} mb="md">
                 No check-in data available for this week
               </Text>
-              <Text align="center" color="dimmed">
+              <Text ta="center" c="dimmed">
                 Complete your daily check-ins to see your weekly metrics and trends
               </Text>
             </Paper>
           )}
 
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Text weight={600} size="lg" mb="md">Overall Performance Rating</Text>
-            <Text size="sm" color="dimmed" mb="md">
+            <Text fw={600} size="lg" mb="md">Overall Performance Rating</Text>
+            <Text size="sm" c="dimmed" mb="md">
               How would you rate your overall performance this week?
             </Text>
             
@@ -572,7 +638,7 @@ const WeeklyReview = ({ userId }) => {
             <Paper p="md" radius="md" withBorder>
               <Group mb="xs">
                 <IconRun size={20} color={theme.colors.green[6]} />
-                <Text weight={600}>Technique Progress</Text>
+                <Text fw={600}>Technique Progress</Text>
               </Group>
               
               <Slider
@@ -589,7 +655,7 @@ const WeeklyReview = ({ userId }) => {
             <Paper p="md" radius="md" withBorder>
               <Group mb="xs">
                 <IconMedal size={20} color={theme.colors.blue[6]} />
-                <Text weight={600}>Physical Progress</Text>
+                <Text fw={600}>Physical Progress</Text>
               </Group>
               
               <Slider
@@ -606,7 +672,7 @@ const WeeklyReview = ({ userId }) => {
             <Paper p="md" radius="md" withBorder>
               <Group mb="xs">
                 <IconTarget size={20} color={theme.colors.violet[6]} />
-                <Text weight={600}>Mental Progress</Text>
+                <Text fw={600}>Mental Progress</Text>
               </Group>
               
               <Slider
@@ -627,7 +693,7 @@ const WeeklyReview = ({ userId }) => {
             <Paper p="md" radius="md" withBorder>
               <Group mb="md">
                 <IconMedal size={24} color={theme.colors.yellow[6]} />
-                <Text weight={600} size="lg">Key Achievements</Text>
+                <Text fw={600} size="lg">Key Achievements</Text>
               </Group>
               
               <Textarea
@@ -642,7 +708,7 @@ const WeeklyReview = ({ userId }) => {
             <Paper p="md" radius="md" withBorder>
               <Group mb="md">
                 <IconTrendingDown size={24} color={theme.colors.red[6]} />
-                <Text weight={600} size="lg">Challenges Faced</Text>
+                <Text fw={600} size="lg">Challenges Faced</Text>
               </Group>
               
               <Textarea
@@ -658,7 +724,7 @@ const WeeklyReview = ({ userId }) => {
           <Paper p="md" radius="md" withBorder mb="xl">
             <Group mb="md">
               <IconTarget size={24} color={theme.colors.blue[6]} />
-              <Text weight={600} size="lg">Focus Areas for Next Week</Text>
+              <Text fw={600} size="lg">Focus Areas for Next Week</Text>
             </Group>
             
             <MultiSelect
@@ -669,7 +735,7 @@ const WeeklyReview = ({ userId }) => {
               mb="lg"
             />
             
-            <Text weight={500} mb="md">Next Week's Goals</Text>
+            <Text fw={500} mb="md">Next Week's Goals</Text>
             <Textarea
               placeholder="What specific goals do you want to achieve next week?"
               value={review.next_week_goals}
@@ -685,7 +751,7 @@ const WeeklyReview = ({ userId }) => {
             <Paper p="md" radius="md" withBorder>
               <Group mb="md">
                 <IconCaretRight size={24} color={theme.colors.green[6]} />
-                <Text weight={600} size="lg">Key Learnings</Text>
+                <Text fw={600} size="lg">Key Learnings</Text>
               </Group>
               
               <Textarea
@@ -700,10 +766,10 @@ const WeeklyReview = ({ userId }) => {
             <Paper p="md" radius="md" withBorder>
               <Group mb="md">
                 <IconNotes size={24} color={theme.colors.orange[6]} />
-                <Text weight={600} size="lg">Coach Feedback</Text>
+                <Text fw={600} size="lg">Coach Feedback</Text>
               </Group>
               
-              <Text size="sm" color="dimmed" mb="md">
+              <Text size="sm" c="dimmed" mb="md">
                 Feedback from your coach will appear here.
               </Text>
               
@@ -720,7 +786,7 @@ const WeeklyReview = ({ userId }) => {
         </Tabs.Panel>
       </Tabs>
 
-      <Group position="right" mt="xl">
+      <Group justify="flex-end" mt="xl">
         <Button
           onClick={handleSubmit}
           loading={loading}
