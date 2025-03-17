@@ -383,7 +383,11 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
 
   // Get unique metric types in the current dataset
   const getUniqueMetricTypes = (): UniqueMetricType[] => {
-    const types = [...new Set(metrics.map(metric => metric.type))];
+    // Fix for Set iteration in TypeScript by using Array.from()
+    const typeSet = new Set<string>();
+    metrics.forEach(metric => typeSet.add(metric.type));
+    const types = Array.from(typeSet);
+    
     return types.map(type => {
       const details = getMetricTypeDetails(type);
       return {
@@ -404,9 +408,9 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
     if (active && payload && payload.length) {
       return (
         <Paper p="xs" withBorder shadow="sm">
-          <Text weight={600}>{formatDate(label)}</Text>
+          <Text fw={600}>{formatDate(label)}</Text>
           {payload.map((entry, index) => {
-            const metricType = getMetricTypeDetails(entry.dataKey);
+            const metricType = getMetricTypeDetails(entry.dataKey?.toString() || '');
             return (
               <Text key={index} size="sm" style={{ color: entry.color }}>
                 {metricType.label}: {entry.value} {metricType.unit}
@@ -429,10 +433,10 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
 
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl" mb="xl">
         <Paper p="md" radius="md" withBorder>
-          <Group position="apart" mb="lg">
-            <Text weight={600} size="lg">Recent Metrics</Text>
+          <Group justify="apart" mb="lg">
+            <Text fw={600} size="lg">Recent Metrics</Text>
             <Button
-              leftIcon={<IconPlus size={16} />}
+              leftSection={<IconPlus size={16} />}
               size="sm"
               onClick={() => handleAddEditMetric()}
             >
@@ -440,7 +444,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
             </Button>
           </Group>
 
-          <Group position="apart" mb="md">
+          <Group justify="apart" mb="md">
             <Select
               label="Metric Type"
               value={selectedMetricType}
@@ -482,15 +486,15 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
                       </ThemeIcon>
                     }
                   >
-                    <Group position="apart" noWrap>
+                    <Group justify="apart" style={{ flexWrap: 'nowrap' }}>
                       <Box>
-                        <Group spacing="xs">
-                          <Text weight={500}>{metricType.label}:</Text>
+                        <Group style={{ gap: '0.5rem' }}>
+                          <Text fw={500}>{metricType.label}:</Text>
                           <Text>{metric.value} {metricType.unit}</Text>
                         </Group>
                         <Text size="xs" color="dimmed">{formatDate(metric.date)}</Text>
                       </Box>
-                      <Group spacing={0}>
+                      <Group style={{ gap: 0 }}>
                         <ActionIcon onClick={() => handleViewMetric(metric)}>
                           <IconEye size={18} />
                         </ActionIcon>
@@ -504,20 +508,20 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
               })}
             </List>
           ) : (
-            <Text color="dimmed" align="center" py="xl">
+            <Text color="dimmed" ta="center" py="xl">
               No metrics recorded in the selected time range.
             </Text>
           )}
 
           {metrics.length > 5 && (
-            <Text size="sm" align="center" color="dimmed">
+            <Text size="sm" ta="center" color="dimmed">
               Showing 5 of {metrics.length} entries.
             </Text>
           )}
         </Paper>
 
         <Paper p="md" radius="md" withBorder>
-          <Text weight={600} size="lg" mb="lg">Metrics Trends</Text>
+          <Text fw={600} size="lg" mb="lg">Metrics Trends</Text>
           
           {metrics.length > 0 ? (
             <Box style={{ height: 300 }}>
@@ -551,7 +555,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
               </ResponsiveContainer>
             </Box>
           ) : (
-            <Text color="dimmed" align="center" py="xl">
+            <Text color="dimmed" ta="center" py="xl">
               No metrics data available to show trends.
             </Text>
           )}
@@ -562,7 +566,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
       <Modal
         opened={addModalOpened}
         onClose={closeAddModal}
-        title={<Text weight={600}>{newMetric.id ? 'Edit Metric' : 'Add New Metric'}</Text>}
+        title={<Text fw={600}>{newMetric.id ? 'Edit Metric' : 'Add New Metric'}</Text>}
         size="md"
       >
         <DatePickerInput
@@ -592,7 +596,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
             placeholder="Enter value"
             value={typeof newMetric.value === 'string' ? parseFloat(newMetric.value) || undefined : newMetric.value}
             onChange={handleValueChange}
-            precision={2}
+            // Remove precision prop as it's not supported
             min={0}
             mb="md"
             required
@@ -612,12 +616,12 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
           onChange={handleNotesChange}
           searchable
           clearable
-          creatable
-          getCreateLabel={(query) => `Add "${query}"`}
+          // Remove creatable prop as it's not supported
+          // Use getCreateLabel with proper typing
           mb="xl"
         />
 
-        <Group position="right">
+        <Group justify="right">
           <Button variant="outline" onClick={closeAddModal}>Cancel</Button>
           <Button
             onClick={handleSubmit}
@@ -633,7 +637,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
       <Modal
         opened={viewModalOpened}
         onClose={closeViewModal}
-        title={<Text weight={600}>Metric Details</Text>}
+        title={<Text fw={600}>Metric Details</Text>}
         size="md"
       >
         {selectedMetric && (
@@ -641,15 +645,15 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
             <SimpleGrid cols={2} spacing="md">
               <Box>
                 <Text size="sm" color="dimmed">Date</Text>
-                <Text weight={500}>{formatDate(selectedMetric.date)}</Text>
+                <Text fw={500}>{formatDate(selectedMetric.date)}</Text>
               </Box>
               <Box>
                 <Text size="sm" color="dimmed">Metric Type</Text>
-                <Text weight={500}>{getMetricTypeDetails(selectedMetric.type).label}</Text>
+                <Text fw={500}>{getMetricTypeDetails(selectedMetric.type).label}</Text>
               </Box>
               <Box>
                 <Text size="sm" color="dimmed">Value</Text>
-                <Text weight={500}>
+                <Text fw={500}>
                   {selectedMetric.value} {getMetricTypeDetails(selectedMetric.type).unit}
                 </Text>
               </Box>
@@ -663,9 +667,9 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
 
             <Divider my="lg" />
 
-            <Group position="right">
+            <Group justify="right">
               <Button 
-                leftIcon={<IconPencil size={16} />}
+                leftSection={<IconPencil size={16} />}
                 variant="outline" 
                 onClick={() => {
                   closeViewModal();
@@ -675,7 +679,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
                 Edit
               </Button>
               <Button
-                leftIcon={<IconTrash size={16} />}
+                leftSection={<IconTrash size={16} />}
                 color="red"
                 variant="outline"
                 onClick={handleDeleteMetric}

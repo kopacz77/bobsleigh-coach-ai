@@ -447,10 +447,10 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
 
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
         <Paper p="md" radius="md" withBorder>
-          <Group position="apart" mb="lg">
-            <Text weight={600} size="lg">Reflection Calendar</Text>
+          <Group justify="apart" mb="lg">
+            <Text fw={600} size="lg">Reflection Calendar</Text>
             <Button
-              leftIcon={<IconPlus size={16} />}
+              leftSection={<IconPlus size={16} />}
               size="sm"
               onClick={() => handleAddReflection(new Date())}
             >
@@ -459,27 +459,29 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
           </Group>
           
           <Calendar
-            value={selectedDate}
-            onChange={setSelectedDate}
+            date={selectedDate}
+            // Cast handleDateChange to any to work around the type issue
+            onDateChange={handleDateChange as any}
             size="lg"
-            fullWidth
-            renderDay={renderDay}
             styles={{
               day: {
                 height: 60
-              }
+              },
+              // Use a wrapper div instead
             }}
+            renderDay={renderDay}
+            style={{ width: '100%' }} // Add direct style prop instead
           />
           
-          <Text size="sm" color="dimmed" mt="md" align="center">
+          <Text size="sm" color="dimmed" mt="md" ta="center">
             Blue dots indicate days with reflections.
           </Text>
         </Paper>
 
         <Box>
           <Paper p="md" radius="md" withBorder mb="md">
-            <Group position="apart">
-              <Text weight={600} size="lg">
+            <Group justify="apart">
+              <Text fw={600} size="lg">
                 {selectedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
               </Text>
               <Badge size="lg">
@@ -491,8 +493,8 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
           {getReflectionsForDate(selectedDate).length > 0 ? (
             getReflectionsForDate(selectedDate).map(reflection => (
               <Paper key={reflection.id} p="md" radius="md" withBorder mb="md">
-                <Group position="apart" mb="xs">
-                  <Group spacing="xs">
+                <Group justify="apart" mb="xs">
+                  <Group>
                     <Badge
                       size="sm"
                       color={reflection.type === 'daily' ? 'blue' : 
@@ -518,15 +520,15 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
                   </Tooltip>
                 </Group>
                 
-                <Text weight={600} size="lg" mb="xs">{reflection.title}</Text>
+                <Text fw={600} size="lg" mb="xs">{reflection.title}</Text>
                 <Text lineClamp={3} size="sm" mb="md">{reflection.content}</Text>
                 
-                <Group position="right" spacing="xs">
+                <Group justify="right">
                   <Button
                     variant="subtle"
                     size="xs"
                     onClick={() => handleViewReflection(reflection)}
-                    leftIcon={<IconEye size={16} />}
+                    leftSection={<IconEye size={16} />}
                   >
                     View
                   </Button>
@@ -534,7 +536,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
                     variant="subtle"
                     size="xs"
                     onClick={() => handleEditReflection(reflection)}
-                    leftIcon={<IconPencil size={16} />}
+                    leftSection={<IconPencil size={16} />}
                   >
                     Edit
                   </Button>
@@ -545,13 +547,13 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
             <Paper p="xl" radius="md" withBorder>
               <Box style={{ textAlign: 'center' }}>
                 <IconBulb size={40} color={theme.colors.gray[5]} style={{ marginBottom: 10 }} />
-                <Text size="lg" weight={500} mb="xs">No reflections for this day</Text>
+                <Text size="lg" fw={500} mb="xs">No reflections for this day</Text>
                 <Text color="dimmed" mb="md">
                   Record your thoughts and experiences to track your mental progress.
                 </Text>
                 <Button
                   onClick={() => handleAddReflection(selectedDate)}
-                  leftIcon={<IconPlus size={16} />}
+                  leftSection={<IconPlus size={16} />}
                 >
                   Add Reflection
                 </Button>
@@ -564,7 +566,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
       {/* Favorite Reflections */}
       {reflections.some(r => r.is_favorite) && (
         <Paper p="md" radius="md" withBorder mt="xl">
-          <Text weight={600} size="lg" mb="md">Favorite Reflections</Text>
+          <Text fw={600} size="lg" mb="md">Favorite Reflections</Text>
           
           <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
             {reflections
@@ -572,16 +574,16 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
               .slice(0, 3)
               .map(reflection => (
                 <Paper key={reflection.id} p="sm" radius="md" withBorder>
-                  <Group position="apart" mb="xs">
-                    <Text weight={600}>{reflection.title}</Text>
+                  <Group justify="apart" mb="xs">
+                    <Text fw={600}>{reflection.title}</Text>
                     <IconStarFilled size={16} color={theme.colors.yellow[6]} />
                   </Group>
                   <Text size="xs" color="dimmed" mb="xs">{formatDate(reflection.date)}</Text>
                   <Text size="sm" lineClamp={3} mb="sm">{reflection.content}</Text>
                   <Button 
                     variant="subtle" 
-                    size="xs" 
-                    compact 
+                    size="xs"
+                    styles={{ root: { padding: '4px 8px' } }} // Replace compact with custom styling
                     onClick={() => handleViewReflection(reflection)}
                   >
                     Read more
@@ -596,15 +598,16 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
       <Modal
         opened={addModalOpened}
         onClose={closeAddModal}
-        title={<Text weight={600}>{newReflection.id ? 'Edit Reflection' : 'New Reflection'}</Text>}
+        title={<Text fw={600}>{newReflection.id ? 'Edit Reflection' : 'New Reflection'}</Text>}
         size="lg"
       >
         <Group mb="md" grow>
           <Box>
-            <Text weight={500} size="sm">Date</Text>
+            <Text fw={500} size="sm">Date</Text>
             <Calendar
-              value={newReflection.date}
-              onChange={handleDateChange}
+              date={newReflection.date}
+              // Cast handleDateChange to any to work around the type issue
+              onDateChange={handleDateChange as any}
               maxDate={new Date()}
               size="sm"
             />
@@ -630,8 +633,8 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
               mb="md"
             />
             
-            <Group position="apart" mt="xl">
-              <Text weight={500} size="sm">Mark as Favorite</Text>
+            <Group justify="apart" mt="xl">
+              <Text fw={500} size="sm">Mark as Favorite</Text>
               <ActionIcon 
                 color={newReflection.is_favorite ? 'yellow' : 'gray'}
                 onClick={handleFavoriteToggle}
@@ -673,7 +676,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
           mb="xl"
         />
 
-        <Group position="right">
+        <Group justify="right">
           <Button variant="outline" onClick={closeAddModal}>Cancel</Button>
           <Button
             onClick={handleSubmit}
@@ -694,8 +697,8 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
       >
         {selectedReflection && (
           <Box>
-            <Group position="apart" mb="xs">
-              <Group spacing="xs">
+            <Group justify="apart" mb="xs">
+              <Group>
                 <Badge
                   size="md"
                   color={selectedReflection.type === 'daily' ? 'blue' : 
@@ -707,7 +710,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
                 </Badge>
                 <Text color="dimmed">{formatDate(selectedReflection.date)}</Text>
               </Group>
-              <Group spacing="xs">
+              <Group>
                 <Tooltip label={selectedReflection.is_favorite ? "Remove from favorites" : "Add to favorites"}>
                   <ActionIcon onClick={() => handleToggleFavorite(selectedReflection)} color="yellow">
                     {selectedReflection.is_favorite ? <IconStarFilled size={18} /> : <IconStar size={18} />}
@@ -734,16 +737,16 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
             {selectedReflection.key_learnings && (
               <>
                 <Divider my="md" />
-                <Text weight={600} size="md" mb="xs">Key Learnings</Text>
+                <Text fw={600} size="md" mb="xs">Key Learnings</Text>
                 <Text style={{ whiteSpace: 'pre-line' }} mb="lg">{selectedReflection.key_learnings}</Text>
               </>
             )}
 
             <Divider my="lg" />
 
-            <Group position="right">
+            <Group justify="right">
               <Button 
-                leftIcon={<IconPencil size={16} />}
+                leftSection={<IconPencil size={16} />}
                 variant="outline" 
                 onClick={() => {
                   closeViewModal();
@@ -753,7 +756,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
                 Edit
               </Button>
               <Button
-                leftIcon={<IconTrash size={16} />}
+                leftSection={<IconTrash size={16} />}
                 color="red"
                 variant="outline"
                 onClick={handleDeleteReflection}

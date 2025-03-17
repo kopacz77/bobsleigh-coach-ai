@@ -26,7 +26,7 @@ import {
   IconHeartFilled,
   IconGauge,
   IconArrowsRightLeft,
-  IconMuscle,
+  IconActivity, // Replaced IconMuscle with IconActivity
   IconCheckbox,
   IconArrowDown,
   IconArrowUp,
@@ -287,7 +287,11 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
     }
   };
   
-  const handleDurationChange = (value: number) => setAssessment(prev => ({ ...prev, duration_minutes: value }));
+  // Update handler functions to match the NumberInput onChange type
+  const handleDurationChange = (value: string | number) => {
+    const numValue = typeof value === 'string' ? parseInt(value, 10) : value;
+    setAssessment(prev => ({ ...prev, duration_minutes: numValue || 0 }));
+  };
   const handleExertionChange = (value: number) => setAssessment(prev => ({ ...prev, perceived_exertion: value }));
   const handleTechnicalQualityChange = (value: number) => setAssessment(prev => ({ ...prev, technical_quality: value }));
   const handleEnergyLevelChange = (value: number) => setAssessment(prev => ({ ...prev, energy_level: value }));
@@ -425,7 +429,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
         <Box>
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Text weight={600} size="lg" mb="lg">Session Details</Text>
+            <Text fw={600} size="lg" mb="lg">Session Details</Text>
             
             <DatePickerInput
               label="Date"
@@ -473,12 +477,12 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
           </Paper>
 
           <Paper p="md" radius="md" withBorder>
-            <Text weight={600} size="lg" mb="lg">Subjective Evaluation</Text>
+            <Text fw={600} size="lg" mb="lg">Subjective Evaluation</Text>
 
             <Box mb="xl">
               <Group mb="xs">
                 <IconGauge size={20} color={theme.colors.blue[6]} />
-                <Text weight={500}>Perceived Exertion (RPE)</Text>
+                <Text fw={500}>Perceived Exertion (RPE)</Text>
               </Group>
               <Slider
                 value={assessment.perceived_exertion}
@@ -499,7 +503,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
             <Box mb="xl">
               <Group mb="xs">
                 <IconArrowsRightLeft size={20} color={theme.colors.indigo[6]} />
-                <Text weight={500}>Technical Quality</Text>
+                <Text fw={500}>Technical Quality</Text>
               </Group>
               <Slider
                 value={assessment.technical_quality}
@@ -520,7 +524,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
             <Box mb="xl">
               <Group mb="xs">
                 <IconHeartFilled size={20} color={theme.colors.red[6]} />
-                <Text weight={500}>Energy Level</Text>
+                <Text fw={500}>Energy Level</Text>
               </Group>
               <Slider
                 value={assessment.energy_level}
@@ -540,8 +544,8 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
 
             <Box mb="xl">
               <Group mb="xs">
-                <IconMuscle size={20} color={theme.colors.grape[6]} />
-                <Text weight={500}>Mental Focus</Text>
+                <IconActivity size={20} color={theme.colors.grape[6]} />
+                <Text fw={500}>Mental Focus</Text>
               </Group>
               <Slider
                 value={assessment.focus_level}
@@ -562,7 +566,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
             <Box mb="md">
               <Group mb="xs">
                 <IconBarbell size={20} color={theme.colors.green[6]} />
-                <Text weight={500}>Overall Performance</Text>
+                <Text fw={500}>Overall Performance</Text>
               </Group>
               <Slider
                 value={assessment.performance_level}
@@ -584,7 +588,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
 
         <Box>
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Text weight={600} size="lg" mb="lg">Key Areas</Text>
+            <Text fw={600} size="lg" mb="lg">Key Areas</Text>
 
             <MultiSelect
               label="Areas of Success"
@@ -618,7 +622,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
 
           {previousAssessment && (
             <Paper p="md" radius="md" withBorder mb="xl">
-              <Text weight={600} size="lg" mb="lg">
+              <Text fw={600} size="lg" mb="lg">
                 Comparison with Previous {workoutTypes.find(w => w.value === assessment.workout_type)?.label}
               </Text>
               
@@ -645,9 +649,9 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
                         </ThemeIcon>
                       }
                     >
-                      <Group position="apart">
+                      <Group justify="apart">
                         <Text>{metricLabels[metric]}</Text>
-                        <Text weight={500} color={change.color}>{change.value} points</Text>
+                        <Text fw={500} color={change.color}>{change.value} points</Text>
                       </Group>
                     </List.Item>
                   );
@@ -666,7 +670,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
           )}
 
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Text weight={600} size="lg" mb="md">Coach Feedback</Text>
+            <Text fw={600} size="lg" mb="md">Coach Feedback</Text>
             <Text size="sm" color="dimmed" mb="md">
               This section can be filled out by your coach to provide feedback on your training session.
             </Text>
@@ -680,7 +684,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
             />
           </Paper>
 
-          <Group position="right" mt="xl">
+          <Group justify="right" mt="xl">
             <Button
               onClick={handleSubmit}
               size="lg"

@@ -309,8 +309,8 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   };
   
   const handleRecoveryMethodsChange = (value: string[]) => setRecovery(prev => ({ ...prev, recovery_methods: value }));
-  const handleSleepHoursChange = (value: number) => setRecovery(prev => ({ ...prev, sleep_hours: value }));
-  const handleHydrationChange = (value: number) => setRecovery(prev => ({ ...prev, hydration_liters: value }));
+  const handleSleepHoursChange = (value: string | number) => setRecovery(prev => ({ ...prev, sleep_hours: typeof value === 'string' ? parseFloat(value) : value }));
+  const handleHydrationChange = (value: string | number) => setRecovery(prev => ({ ...prev, hydration_liters: typeof value === 'string' ? parseFloat(value) : value }));
   const handleRecoveryScoreChange = (value: number) => setRecovery(prev => ({ ...prev, overall_recovery_score: value }));
   const handleSorenessAreasChange = (value: string[]) => setRecovery(prev => ({ ...prev, soreness_areas: value }));
   const handlePainLevelChange = (value: number) => setRecovery(prev => ({ ...prev, pain_level: value }));
@@ -690,10 +690,10 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
         <Box>
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Group position="apart" mb="lg">
-              <Text weight={600} size="lg">Recovery Tracking</Text>
+            <Group justify="apart" mb="lg">
+              <Text fw={600} size="lg">Recovery Tracking</Text>
               <Button
-                leftIcon={<IconPlus size={16} />}
+                leftSection={<IconPlus size={16} />}
                 size="sm"
                 onClick={handleAddRecovery}
               >
@@ -705,8 +705,8 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
               <>
                 <SimpleGrid cols={2} mb="xl">
                   <Paper p="md" withBorder radius="md">
-                    <Text align="center" size="sm" color="dimmed">Average Recovery Score</Text>
-                    <Group position="center" spacing="xs">
+                    <Text ta="center" size="sm" color="dimmed">Average Recovery Score</Text>
+                    <Group justify="center">
                       <Box
                         style={{
                           width: 60,
@@ -720,7 +720,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                           marginTop: 10
                         }}
                       >
-                        <Text weight={700} size="xl">{calculateAverageRecoveryScore()}</Text>
+                        <Text fw={700} size="xl">{calculateAverageRecoveryScore()}</Text>
                       </Box>
                       <Text size="xs" color="dimmed" style={{ maxWidth: 100 }}>
                         Based on your last {recoveryData.length} recovery sessions
@@ -728,7 +728,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                     </Group>
                   </Paper>
                   <Paper p="md" withBorder radius="md">
-                    <Text align="center" size="sm" color="dimmed">Most Used Recovery Methods</Text>
+                    <Text ta="center" size="sm" color="dimmed">Most Used Recovery Methods</Text>
                     <Box mt="md">
                       {(() => {
                         // Count method frequencies
@@ -748,7 +748,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                           const methodInfo = recoveryMethods.find(m => m.value === method);
                           const MethodIcon = methodInfo?.icon;
                           return (
-                            <Group key={method} mb="xs" noWrap>
+                            <Group key={method} mb="xs" wrap="nowrap">
                               {MethodIcon && (
                                 <ThemeIcon size={24} radius="xl" color="blue">
                                   <MethodIcon size={14} />
@@ -763,14 +763,14 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                   </Paper>
                 </SimpleGrid>
 
-                <Text weight={500} mb="xs">Recent Recovery Sessions</Text>
+                <Text fw={500} mb="xs">Recent Recovery Sessions</Text>
                 {recoveryData.slice(0, 3).map((item) => (
                   <Paper key={item.id} p="sm" withBorder radius="md" mb="md">
-                    <Group position="apart" mb="xs">
-                      <Text weight={500}>
+                    <Group justify="apart" mb="xs">
+                      <Text fw={500}>
                         {formatDate(item.date)}
                       </Text>
-                      <Group spacing={8}>
+                      <Group>
                         <Tooltip label="Edit">
                           <ActionIcon size="sm" onClick={() => handleEditRecovery(item)}>
                             <IconEdit size={16} />
@@ -784,7 +784,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                       </Group>
                     </Group>
                     
-                    <Group spacing={5} mb="xs">
+                    <Group>
                       {(item.recovery_methods || []).map(method => {
                         const methodInfo = recoveryMethods.find(m => m.value === method);
                         return (
@@ -812,7 +812,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             ) : (
               <Box py="xl" style={{ textAlign: 'center' }}>
                 <IconInfoCircle size={40} color={theme.colors.gray[5]} style={{ marginBottom: 10 }} />
-                <Text size="lg" weight={500} mb="xs">No recovery data yet</Text>
+                <Text size="lg" fw={500} mb="xs">No recovery data yet</Text>
                 <Text color="dimmed" mb="md">
                   Start tracking your recovery methods to optimize your performance and prevent injuries.
                 </Text>
@@ -824,10 +824,10 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
 
         <Box>
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Group position="apart" mb="lg">
-              <Text weight={600} size="lg">Injury Tracking</Text>
+            <Group justify="apart" mb="lg">
+              <Text fw={600} size="lg">Injury Tracking</Text>
               <Button
-                leftIcon={<IconPlus size={16} />}
+                leftSection={<IconPlus size={16} />}
                 size="sm"
                 onClick={handleAddInjury}
               >
@@ -838,18 +838,18 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             {injuryData.length > 0 ? (
               <>
                 <Box mb="xl">
-                  <Text weight={500} mb="xs">Active Injuries/Issues</Text>
+                  <Text fw={500} mb="xs">Active Injuries/Issues</Text>
                   {injuryData
                     .filter(item => item.status !== 'resolved')
                     .slice(0, 3)
                     .map((item) => (
                       <Paper key={item.id} p="sm" withBorder radius="md" mb="md">
-                        <Group position="apart" mb="xs">
-                          <Group spacing="xs">
+                        <Group justify="apart" mb="xs">
+                          <Group>
                             <Badge color={getSeverityColor(item.severity)}>{item.severity}</Badge>
                             <Badge color={getStatusColor(item.status)}>{item.status}</Badge>
                           </Group>
-                          <Group spacing={8}>
+                          <Group>
                             <Tooltip label="Edit">
                               <ActionIcon size="sm" onClick={() => handleEditInjury(item)}>
                                 <IconEdit size={16} />
@@ -863,7 +863,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                           </Group>
                         </Group>
                         
-                        <Text weight={500} mb="xs">
+                        <Text fw={500} mb="xs">
                           {(() => {
                             const area = bodyAreas.find(a => a.value === item.body_area);
                             const type = injuryTypes.find(t => t.value === item.injury_type);
@@ -908,7 +908,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                 <Divider mb="md" />
                 
                 <Box>
-                  <Text weight={500} mb="xs">Injury History</Text>
+                  <Text fw={500} mb="xs">Injury History</Text>
                   <List spacing="sm">
                     {injuryData
                       .filter(item => item.status === 'resolved')
@@ -922,7 +922,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                             </ThemeIcon>
                           }
                         >
-                          <Group position="apart">
+                          <Group justify="apart">
                             <Box>
                               <Text size="sm">
                                 {(() => {
@@ -943,7 +943,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             ) : (
               <Box py="xl" style={{ textAlign: 'center' }}>
                 <IconAlertCircle size={40} color={theme.colors.gray[5]} style={{ marginBottom: 10 }} />
-                <Text size="lg" weight={500} mb="xs">No injury data recorded</Text>
+                <Text size="lg" fw={500} mb="xs">No injury data recorded</Text>
                 <Text color="dimmed" mb="md">
                   Track injuries, pain points, and healing progress to maintain long-term health.
                 </Text>
@@ -958,7 +958,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       <Modal
         opened={modalOpened}
         onClose={closeModal}
-        title={<Text weight={600}>{selectedRecovery ? 'Edit Recovery Session' : 'Add Recovery Session'}</Text>}
+        title={<Text fw={600}>{selectedRecovery ? 'Edit Recovery Session' : 'Add Recovery Session'}</Text>}
         size="lg"
       >
         <DatePickerInput
@@ -989,9 +989,9 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             placeholder="Enter sleep hours"
             value={recovery.sleep_hours}
             onChange={handleSleepHoursChange}
-            precision={1}
             min={0}
             max={24}
+            step={0.1}
           />
 
           <NumberInput
@@ -999,14 +999,14 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             placeholder="Enter hydration amount"
             value={recovery.hydration_liters}
             onChange={handleHydrationChange}
-            precision={1}
             min={0}
             max={10}
+            step={0.1}
           />
         </Group>
 
         <Box mb="md">
-          <Text weight={500} size="sm" mb="xs">Overall Recovery Score</Text>
+          <Text fw={500} size="sm" mb="xs">Overall Recovery Score</Text>
           <Slider
             value={recovery.overall_recovery_score}
             onChange={handleRecoveryScoreChange}
@@ -1037,7 +1037,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
 
         {recovery.soreness_areas.length > 0 && (
           <Box mb="md">
-            <Text weight={500} size="sm" mb="xs">Pain Level (if sore)</Text>
+            <Text fw={500} size="sm" mb="xs">Pain Level (if sore)</Text>
             <Slider
               value={recovery.pain_level}
               onChange={handlePainLevelChange}
@@ -1064,7 +1064,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
           mb="xl"
         />
 
-        <Group position="right">
+        <Group justify="right">
           <Button variant="outline" onClick={closeModal}>Cancel</Button>
           {selectedRecovery && (
             <Button
@@ -1090,7 +1090,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       <Modal
         opened={injuryModalOpened}
         onClose={closeInjuryModal}
-        title={<Text weight={600}>{selectedInjury ? 'Edit Injury Record' : 'Record Injury/Pain'}</Text>}
+        title={<Text fw={600}>{selectedInjury ? 'Edit Injury Record' : 'Record Injury/Pain'}</Text>}
         size="lg"
       >
         <DatePickerInput
@@ -1156,7 +1156,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         </SimpleGrid>
 
         <Box mb="md">
-          <Text weight={500} size="sm" mb="xs">Pain Level</Text>
+          <Text fw={500} size="sm" mb="xs">Pain Level</Text>
           <Slider
             value={injury.pain_level}
             onChange={handleInjuryPainLevelChange}
@@ -1225,7 +1225,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
           />
         </SimpleGrid>
 
-        <Group position="right" mt="xl">
+        <Group justify="right" mt="xl">
           <Button variant="outline" onClick={closeInjuryModal}>Cancel</Button>
           {selectedInjury && (
             <Button

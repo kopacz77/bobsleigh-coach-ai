@@ -12,7 +12,13 @@ import {
   Stack,
   useMantineTheme
 } from '@mantine/core';
-import { IconHeartFilled, IconBrain, IconZzz, IconSalad, IconStress } from '@tabler/icons-react';
+import { 
+  IconHeartFilled, 
+  IconBrain, 
+  IconZzz, 
+  IconSalad, 
+  IconMoodNervous // Using IconMoodNervous instead of the missing IconStress
+} from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
@@ -210,7 +216,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
       <Paper p="md" radius="md" withBorder mb="xl">
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
           <Box>
-            <Text size="xl" weight={700}>Wellbeing Score</Text>
+            <Text size="xl" fw={700}>Wellbeing Score</Text>
             <Text size="sm" color="dimmed" mb="md">Aggregate score based on all metrics</Text>
           </Box>
           <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -226,7 +232,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
                 color: '#fff',
               }}
             >
-              <Text size={36} weight={700}>{getWellbeingScore()}</Text>
+              <Text size="xl" fw={700}>{getWellbeingScore()}</Text>
             </Box>
           </Box>
         </SimpleGrid>
@@ -236,7 +242,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
         <Paper p="md" radius="md" withBorder>
           <Group mb="xs">
             <IconZzz size={24} color={theme.colors.blue[6]} />
-            <Text weight={600}>Sleep Quality</Text>
+            <Text fw={600}>Sleep Quality</Text>
           </Group>
           <Text size="sm" color="dimmed" mb="md">
             How well did you sleep last night?
@@ -259,8 +265,8 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
 
         <Paper p="md" radius="md" withBorder>
           <Group mb="xs">
-            <IconStress size={24} color={theme.colors.orange[6]} />
-            <Text weight={600}>Stress Level</Text>
+            <IconMoodNervous size={24} color={theme.colors.orange[6]} />
+            <Text fw={600}>Stress Level</Text>
           </Group>
           <Text size="sm" color="dimmed" mb="md">
             How stressed do you feel today?
@@ -285,7 +291,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
         <Paper p="md" radius="md" withBorder>
           <Group mb="xs">
             <IconSalad size={24} color={theme.colors.green[6]} />
-            <Text weight={600}>Nutrition Quality</Text>
+            <Text fw={600}>Nutrition Quality</Text>
           </Group>
           <Text size="sm" color="dimmed" mb="md">
             How well have you been eating in the last 24 hours?
@@ -309,7 +315,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
         <Paper p="md" radius="md" withBorder>
           <Group mb="xs">
             <IconHeartFilled size={24} color={theme.colors.red[6]} />
-            <Text weight={600}>Physical Readiness</Text>
+            <Text fw={600}>Physical Readiness</Text>
           </Group>
           <Text size="sm" color="dimmed" mb="md">
             How physically ready do you feel for training?
@@ -330,10 +336,11 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
           />
         </Paper>
 
-        <Paper p="md" radius="md" withBorder colSpan={2}>
+        {/* Remove colSpan as it's not supported in Paper component */}
+        <Paper p="md" radius="md" withBorder style={{ gridColumn: 'span 2' }}>
           <Group mb="xs">
             <IconBrain size={24} color={theme.colors.violet[6]} />
-            <Text weight={600}>Mental Clarity</Text>
+            <Text fw={600}>Mental Clarity</Text>
           </Group>
           <Text size="sm" color="dimmed" mb="md">
             How mentally sharp and focused do you feel today?
@@ -356,7 +363,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
       </SimpleGrid>
 
       <Paper p="md" radius="md" withBorder mt="xl">
-        <Text weight={600} mb="sm">Additional Notes</Text>
+        <Text fw={600} mb="sm">Additional Notes</Text>
         <Textarea
           placeholder="Enter any additional notes about your wellbeing (e.g., injuries, illness, life stressors)"
           value={assessment.notes}
@@ -365,7 +372,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
           mb="md"
         />
 
-        <Group position="right">
+        <Group justify="right">
           <Button
             onClick={handleSubmit}
             loading={loading}

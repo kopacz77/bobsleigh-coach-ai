@@ -296,10 +296,10 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
 
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
         <Paper p="md" radius="md" withBorder>
-          <Group position="apart" mb="lg">
-            <Text weight={600} size="lg">Monthly Mood Calendar</Text>
+          <Group justify="apart" mb="lg">
+            <Text fw={600} size="lg">Monthly Mood Calendar</Text>
             <Button
-              leftIcon={<IconPlus size={16} />}
+              leftSection={<IconPlus size={16} />}
               size="sm"
               onClick={() => handleDateClick(new Date())}
             >
@@ -308,40 +308,40 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
           </Group>
           
           <Calendar
-            value={selectedDate}
-            onChange={handleDateClick}
+            date={selectedDate}
+            onDateChange={handleDateClick}
             size="lg"
-            fullWidth
-            renderDay={renderDay}
             styles={{
               day: {
                 height: 60
               }
             }}
+            style={{ width: '100%' }} // Use style prop instead of styles.calendarBase
+            renderDay={renderDay}
           />
         </Paper>
 
         <Paper p="md" radius="md" withBorder style={{ height: 'fit-content' }}>
-          <Text weight={600} size="lg" mb="lg">Mood Insights</Text>
+          <Text fw={600} size="lg" mb="lg">Mood Insights</Text>
           
           {moodData.length > 0 ? (
             <Box>
               <SimpleGrid cols={2} spacing="xl" mb="xl">
                 <Paper p="xs" radius="md" withBorder>
-                  <Text align="center" size="sm" color="dimmed">Average Mood</Text>
-                  <Group position="center" mt="xs">
+                  <Text ta="center" size="sm" color="dimmed">Average Mood</Text>
+                  <Group justify="center" mt="xs">
                     {getMoodIcon(String(Math.round(
                       moodData.reduce((sum, entry) => sum + entry.mood_score, 0) / moodData.length
                     )))}
-                    <Text weight={600} size="xl">
+                    <Text fw={600} size="xl">
                       {(moodData.reduce((sum, entry) => sum + entry.mood_score, 0) / moodData.length).toFixed(1)}
                     </Text>
                   </Group>
                 </Paper>
 
                 <Paper p="xs" radius="md" withBorder>
-                  <Text align="center" size="sm" color="dimmed">Top Emotion</Text>
-                  <Text align="center" weight={600} size="xl" mt="xs">
+                  <Text ta="center" size="sm" color="dimmed">Top Emotion</Text>
+                  <Text ta="center" fw={600} size="xl" mt="xs">
                     {(() => {
                       const emotions = moodData.map(entry => entry.primary_emotion);
                       const emotionCounts = emotions.reduce<Record<string, number>>((acc, emotion) => {
@@ -363,7 +363,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
               </Text>
             </Box>
           ) : (
-            <Text color="dimmed" align="center" py="xl">
+            <Text color="dimmed" ta="center" py="xl">
               No mood data available for this month. Start tracking to see insights.
             </Text>
           )}
@@ -374,12 +374,12 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
       <Modal
         opened={opened}
         onClose={close}
-        title={<Text weight={600}>Record Your Mood</Text>}
+        title={<Text fw={600}>Record Your Mood</Text>}
         size="lg"
       >
         <Box mb="xl">
-          <Text weight={500} mb="xs">How are you feeling today?</Text>
-          <Group position="center" spacing="xl" mb="md">
+          <Text fw={500} mb="xs">How are you feeling today?</Text>
+          <Group justify="center" style={{ gap: '1rem' }} mb="md">
             <Button
               variant={currentMood.mood_score === '1' ? 'filled' : 'light'}
               color={currentMood.mood_score === '1' ? 'red' : 'gray'}
@@ -424,8 +424,8 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
         </Box>
 
         <Box mb="xl">
-          <Text weight={500} mb="xs">Energy Level</Text>
-          <Group position="center" spacing={8} mb="md">
+          <Text fw={500} mb="xs">Energy Level</Text>
+          <Group justify="center" style={{ gap: '0.5rem' }} mb="md">
             {['1', '2', '3', '4', '5'].map((level) => (
               <Button
                 key={level}
@@ -437,7 +437,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
               </Button>
             ))}
           </Group>
-          <Group position="apart" px="md">
+          <Group justify="apart" px="md">
             <Text size="sm" color="dimmed">Low Energy</Text>
             <Text size="sm" color="dimmed">High Energy</Text>
           </Group>
@@ -475,7 +475,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
           mb="xl"
         />
 
-        <Group position="right">
+        <Group justify="right">
           <Button variant="outline" onClick={close}>Cancel</Button>
           <Button
             onClick={handleSubmit}

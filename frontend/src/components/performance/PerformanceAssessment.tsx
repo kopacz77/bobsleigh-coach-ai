@@ -22,7 +22,7 @@ import { DatePickerInput } from '@mantine/dates';
 import { showNotification } from '@mantine/notifications';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import {
-  IconRunning,
+  IconRun, // Using IconRun instead of the missing IconRunning
   IconWeight,
   IconJumpRope,
   IconClockHour4,
@@ -265,8 +265,11 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
           return;
         }
 
-        // Get unique categories
-        const uniqueCategories = [...new Set(data.map(item => item.test_category))];
+        // Fix for Set iteration issue in TypeScript
+        const categoriesSet = new Set<string>();
+        data.forEach(item => categoriesSet.add(item.test_category));
+        const uniqueCategories = Array.from(categoriesSet);
+        
         setTestCategories(uniqueCategories);
 
         // If we have categories but none selected, select the first one
@@ -501,7 +504,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
   const getCategoryIcon = (category: string): React.ReactNode => {
     switch (category) {
       case 'sprint':
-        return <IconRunning size={20} color={theme.colors.blue[6]} />;
+        return <IconRun size={20} color={theme.colors.blue[6]} />;
       case 'strength':
         return <IconWeight size={20} color={theme.colors.red[6]} />;
       case 'power':
@@ -628,7 +631,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
         <Box>
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Text weight={600} size="lg" mb="lg">Record New Assessment</Text>
+            <Text fw={600} size="lg" mb="lg">Record New Assessment</Text>
             
             <DatePickerInput
               label="Date"
@@ -673,7 +676,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                       parseFloat(assessment.value) || undefined : 
                       assessment.value}
                     onChange={handleValueChange}
-                    precision={2}
+                    // Remove precision prop as it's not supported in current Mantine version
                     required
                   />
 
@@ -694,14 +697,14 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
 
                 {comparison.previousValue && (
                   <Paper p="xs" radius="md" withBorder mb="md">
-                    <Group spacing="xs">
+                    <Group>
                       <Text size="sm">Previous: {comparison.previousValue} {assessment.measurement_unit}</Text>
                       {comparison.percentChange && (
                         <>
                           <IconArrowRight size={16} />
                           <Text 
                             size="sm" 
-                            weight={500}
+                            fw={500}
                             color={comparison.direction === 'better' ? 'green' : 
                                   comparison.direction === 'worse' ? 'red' : 'gray'}
                           >
@@ -716,7 +719,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                 )}
 
                 <Box mb="md">
-                  <Text weight={500} size="sm" mb="xs">Overall Rating</Text>
+                  <Text fw={500} size="sm" mb="xs">Overall Rating</Text>
                   <Slider
                     value={assessment.rating}
                     onChange={handleRatingChange}
@@ -756,7 +759,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
 
           {(best || worst) && (
             <Paper p="md" radius="md" withBorder>
-              <Text weight={600} size="lg" mb="lg">Performance Highlights</Text>
+              <Text fw={600} size="lg" mb="lg">Performance Highlights</Text>
 
               {best && (
                 <Box mb="md">
@@ -764,18 +767,18 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                     <ThemeIcon color="green" size={24} radius="xl">
                       <IconTrendingUp size={16} />
                     </ThemeIcon>
-                    <Text weight={500}>Strongest Area</Text>
+                    <Text fw={500}>Strongest Area</Text>
                   </Group>
                   <Paper p="sm" radius="md" withBorder>
-                    <Group position="apart" mb="xs">
-                      <Text weight={500}>
+                    <Group justify="apart" mb="xs">
+                      <Text fw={500}>
                         {testTypesByCategory[best.test_category]?.find(t => t.value === best.test_name)?.label || best.test_name}
                       </Text>
                       <Badge color="green">{best.value} {best.measurement_unit}</Badge>
                     </Group>
                     <Text size="sm" color="dimmed">{formatDate(best.date)}</Text>
                     {getImprovementText(best) && (
-                      <Text size="sm" weight={500} color="green" mt="xs">
+                      <Text size="sm" fw={500} color="green" mt="xs">
                         {getImprovementText(best)}
                       </Text>
                     )}
@@ -789,18 +792,18 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                     <ThemeIcon color="orange" size={24} radius="xl">
                       <IconTrendingDown size={16} />
                     </ThemeIcon>
-                    <Text weight={500}>Focus Area</Text>
+                    <Text fw={500}>Focus Area</Text>
                   </Group>
                   <Paper p="sm" radius="md" withBorder>
-                    <Group position="apart" mb="xs">
-                      <Text weight={500}>
+                    <Group justify="apart" mb="xs">
+                      <Text fw={500}>
                         {testTypesByCategory[worst.test_category]?.find(t => t.value === worst.test_name)?.label || worst.test_name}
                       </Text>
                       <Badge color="orange">{worst.value} {worst.measurement_unit}</Badge>
                     </Group>
                     <Text size="sm" color="dimmed">{formatDate(worst.date)}</Text>
                     {getImprovementText(worst) && (
-                      <Text size="sm" weight={500} color="orange" mt="xs">
+                      <Text size="sm" fw={500} color="orange" mt="xs">
                         {getImprovementText(worst)}
                       </Text>
                     )}
@@ -813,8 +816,8 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
 
         <Box>
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Group position="apart" mb="md">
-              <Text weight={600} size="lg">Assessment History</Text>
+            <Group justify="apart" mb="md">
+              <Text fw={600} size="lg">Assessment History</Text>
               
               <Select
                 placeholder="Select category"
@@ -833,7 +836,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
             {selectedCategory && assessments.length > 0 ? (
               <Box>
                 <Box mb="xl">
-                  <Text weight={500} mb="sm">
+                  <Text fw={500} mb="sm">
                     {getCategoryIcon(selectedCategory)}
                     <span style={{ marginLeft: 8 }}>
                       {bobsleighTestCategories.find(c => c.value === selectedCategory)?.label || selectedCategory}
@@ -865,9 +868,9 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                             </ThemeIcon>
                           )}
                         >
-                          <Group position="apart">
+                          <Group justify="apart">
                             <Box>
-                              <Text weight={500}>
+                              <Text fw={500}>
                                 {testInfo?.label || item.test_name}: {item.value} {item.measurement_unit}
                               </Text>
                               <Text size="xs" color="dimmed">{formatDate(item.date)}</Text>
@@ -881,7 +884,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                 
                 <Divider mb="md" />
                 
-                <Text weight={500} mb="md">Performance Trends</Text>
+                <Text fw={500} mb="md">Performance Trends</Text>
                 
                 {Object.entries(prepareChartData()).length > 0 && (
                   <Box style={{ height: 300 }}>
@@ -946,7 +949,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
             ) : (
               <Box py="xl" style={{ textAlign: 'center' }}>
                 <IconBulb size={40} color={theme.colors.gray[5]} style={{ marginBottom: 10 }} />
-                <Text size="lg" weight={500} mb="xs">No performance data yet</Text>
+                <Text size="lg" fw={500} mb="xs">No performance data yet</Text>
                 <Text color="dimmed" mb="md">
                   Select a test category and add your first assessment to start tracking performance.
                 </Text>
