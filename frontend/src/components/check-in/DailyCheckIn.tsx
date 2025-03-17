@@ -21,23 +21,68 @@ import {
   IconBrain,
   IconZzz,
   IconSalad,
-  IconStress,
-  IconMuscle,
+  IconMoodNervous, // Replaced IconStress with IconMoodNervous based on previous fixes
+  IconActivity, // Replaced IconMuscle with IconActivity based on previous fixes
   IconFlame
 } from '@tabler/icons-react';
+
+/**
+ * Daily Check-In data from database
+ */
+interface CheckIn {
+  id: number;
+  user_id: string;
+  date: string;
+  sleep_quality: number;
+  sleep_hours: number;
+  fatigue_level: number;
+  muscle_soreness: number;
+  mental_readiness: number;
+  nutrition_quality: number;
+  hydration_level: number;
+  injury_concerns: string | null;
+  notes: string | null;
+  training_readiness: string;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Check-in form state
+ */
+interface CheckInForm {
+  sleep_quality: number;
+  sleep_hours: number;
+  fatigue_level: number;
+  muscle_soreness: number;
+  mental_readiness: number;
+  nutrition_quality: number;
+  hydration_level: number;
+  injury_concerns: string;
+  notes: string;
+  training_readiness: string;
+}
+
+/**
+ * DailyCheckIn component props
+ */
+interface DailyCheckInProps {
+  userId: string;
+  date?: Date;
+}
 
 /**
  * DailyCheckIn component for athletes to quickly log their daily wellbeing metrics
  * Focus is on bobsleigh-specific factors that impact training and performance
  */
-const DailyCheckIn = ({ userId, date = new Date() }) => {
+const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState(false);
-  const [savedCheckIn, setSavedCheckIn] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [savedCheckIn, setSavedCheckIn] = useState<CheckIn | null>(null);
   
   // Check-in form state
-  const [checkIn, setCheckIn] = useState({
+  const [checkIn, setCheckIn] = useState<CheckInForm>({
     sleep_quality: 5,
     sleep_hours: 7,
     fatigue_level: 5,
@@ -69,7 +114,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
         }
 
         if (data) {
-          setSavedCheckIn(data);
+          setSavedCheckIn(data as CheckIn);
           setCheckIn({
             sleep_quality: data.sleep_quality,
             sleep_hours: data.sleep_hours,
@@ -94,23 +139,27 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
   }, [userId, dateString, supabase]);
 
   // Handle slider changes
-  const handleSliderChange = (field) => (value) => {
+  const handleSliderChange = (field: keyof CheckInForm) => (value: number) => {
     setCheckIn((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle sleep hours change
-  const handleSleepHoursChange = (value) => {
-    setCheckIn((prev) => ({ ...prev, sleep_hours: value }));
+  const handleSleepHoursChange = (value: string | null) => {
+    if (value) {
+      setCheckIn((prev) => ({ ...prev, sleep_hours: parseInt(value, 10) }));
+    }
   };
 
   // Handle text input changes
-  const handleTextChange = (field) => (event) => {
+  const handleTextChange = (field: keyof CheckInForm) => (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCheckIn((prev) => ({ ...prev, [field]: event.target.value }));
   };
 
   // Handle training readiness selection
-  const handleReadinessChange = (value) => {
-    setCheckIn((prev) => ({ ...prev, training_readiness: value }));
+  const handleReadinessChange = (value: string | null) => {
+    if (value) {
+      setCheckIn((prev) => ({ ...prev, training_readiness: value }));
+    }
   };
 
   // Submit check-in data
@@ -161,7 +210,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
           .single();
           
         if (!error && data) {
-          setSavedCheckIn(data);
+          setSavedCheckIn(data as CheckIn);
         }
       }
     } catch (error) {
@@ -177,7 +226,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
   };
 
   // Helper function to determine slider color based on value
-  const getSliderColor = (value, inverse = false) => {
+  const getSliderColor = (value: number, inverse = false): string => {
     if (inverse) {
       // For metrics where lower is better (like fatigue)
       if (value >= 7) return theme.colors.red[6];
@@ -192,7 +241,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
   };
 
   // Calculate overall readiness score
-  const calculateReadinessScore = () => {
+  const calculateReadinessScore = (): number => {
     const {
       sleep_quality,
       fatigue_level,
@@ -214,7 +263,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
   };
 
   // Get color for readiness badge
-  const getReadinessColor = (status) => {
+  const getReadinessColor = (status: string): string => {
     switch (status) {
       case 'ready': return 'green';
       case 'limited': return 'yellow';
@@ -225,7 +274,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
   };
 
   // Get label for readiness badge
-  const getReadinessLabel = (status) => {
+  const getReadinessLabel = (status: string): string => {
     switch (status) {
       case 'ready': return 'Ready to Train';
       case 'limited': return 'Limited Training';
@@ -244,9 +293,9 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
       </Text>
 
       <Paper p="md" radius="md" withBorder mb="xl">
-        <Group position="apart">
+        <Group justify="apart">
           <Box>
-            <Text size="xl" weight={700}>Today's Readiness</Text>
+            <Text size="xl" fw={700}>Today's Readiness</Text>
             <Text size="sm" color="dimmed" mb="md">Based on your metrics</Text>
           </Box>
           
@@ -263,7 +312,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
                 color: '#fff',
               }}
             >
-              <Text size={28} weight={700}>{calculateReadinessScore()}</Text>
+              <Text size="xl" fw={700}>{calculateReadinessScore()}</Text>
             </Box>
             
             <Badge 
@@ -282,11 +331,11 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
           <Paper p="md" radius="md" withBorder>
             <Group mb="xs">
               <IconZzz size={24} color={theme.colors.blue[6]} />
-              <Text weight={600}>Sleep Metrics</Text>
+              <Text fw={600}>Sleep Metrics</Text>
             </Group>
             
             <Box mb="lg">
-              <Text weight={500} size="sm">Sleep Quality</Text>
+              <Text fw={500} size="sm">Sleep Quality</Text>
               <Slider
                 value={checkIn.sleep_quality}
                 onChange={handleSliderChange('sleep_quality')}
@@ -304,7 +353,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
             </Box>
             
             <Box mb="lg">
-              <Text weight={500} size="sm">Hours of Sleep</Text>
+              <Text fw={500} size="sm">Hours of Sleep</Text>
               <Select
                 value={checkIn.sleep_hours.toString()}
                 onChange={handleSleepHoursChange}
@@ -327,11 +376,11 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
           <Paper p="md" radius="md" withBorder>
             <Group mb="xs">
               <IconHeartFilled size={24} color={theme.colors.red[6]} />
-              <Text weight={600}>Recovery Status</Text>
+              <Text fw={600}>Recovery Status</Text>
             </Group>
             
             <Box mb="lg">
-              <Text weight={500} size="sm">Fatigue Level</Text>
+              <Text fw={500} size="sm">Fatigue Level</Text>
               <Slider
                 value={checkIn.fatigue_level}
                 onChange={handleSliderChange('fatigue_level')}
@@ -349,7 +398,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
             </Box>
             
             <Box mb="lg">
-              <Text weight={500} size="sm">Muscle Soreness</Text>
+              <Text fw={500} size="sm">Muscle Soreness</Text>
               <Slider
                 value={checkIn.muscle_soreness}
                 onChange={handleSliderChange('muscle_soreness')}
@@ -372,11 +421,11 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
           <Paper p="md" radius="md" withBorder>
             <Group mb="xs">
               <IconBrain size={24} color={theme.colors.violet[6]} />
-              <Text weight={600}>Mental Readiness</Text>
+              <Text fw={600}>Mental Readiness</Text>
             </Group>
             
             <Box mb="lg">
-              <Text weight={500} size="sm">Mental Focus & Readiness</Text>
+              <Text fw={500} size="sm">Mental Focus & Readiness</Text>
               <Slider
                 value={checkIn.mental_readiness}
                 onChange={handleSliderChange('mental_readiness')}
@@ -399,11 +448,11 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
           <Paper p="md" radius="md" withBorder>
             <Group mb="xs">
               <IconSalad size={24} color={theme.colors.green[6]} />
-              <Text weight={600}>Nutrition & Hydration</Text>
+              <Text fw={600}>Nutrition & Hydration</Text>
             </Group>
             
             <Box mb="lg">
-              <Text weight={500} size="sm">Nutrition Quality</Text>
+              <Text fw={500} size="sm">Nutrition Quality</Text>
               <Slider
                 value={checkIn.nutrition_quality}
                 onChange={handleSliderChange('nutrition_quality')}
@@ -421,7 +470,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
             </Box>
             
             <Box mb="lg">
-              <Text weight={500} size="sm">Hydration Level</Text>
+              <Text fw={500} size="sm">Hydration Level</Text>
               <Slider
                 value={checkIn.hydration_level}
                 onChange={handleSliderChange('hydration_level')}
@@ -443,8 +492,8 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
 
       <Paper p="md" radius="md" withBorder mt="xl">
         <Group mb="xs">
-          <IconMuscle size={24} color={theme.colors.orange[6]} />
-          <Text weight={600}>Injury & Concerns</Text>
+          <IconActivity size={24} color={theme.colors.orange[6]} />
+          <Text fw={600}>Injury & Concerns</Text>
         </Group>
         
         <Textarea
@@ -455,7 +504,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
           mb="lg"
         />
         
-        <Text weight={500} size="sm" mb="xs">Today's Training Readiness</Text>
+        <Text fw={500} size="sm" mb="xs">Today's Training Readiness</Text>
         <Select
           value={checkIn.training_readiness}
           onChange={handleReadinessChange}
@@ -468,7 +517,7 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
           mb="lg"
         />
         
-        <Text weight={500} size="sm" mb="xs">Additional Notes</Text>
+        <Text fw={500} size="sm" mb="xs">Additional Notes</Text>
         <Textarea
           placeholder="Any other relevant information about your current status"
           value={checkIn.notes}
@@ -477,13 +526,13 @@ const DailyCheckIn = ({ userId, date = new Date() }) => {
           mb="md"
         />
 
-        <Group position="right">
+        <Group justify="right">
           <Button
             onClick={handleSubmit}
             loading={loading}
             variant="filled"
             color="blue"
-            leftIcon={<IconFlame size={20} />}
+            leftSection={<IconFlame size={20} />}
           >
             {savedCheckIn ? 'Update Check-In' : 'Submit Check-In'}
           </Button>
