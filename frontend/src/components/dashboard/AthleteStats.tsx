@@ -121,7 +121,7 @@ export function AthleteStats({ athleteId = 1 }: AthleteStatsProps) {
               Athlete Readiness
             </Text>
             
-            <Group position="apart" mt="md">
+            <Group justify="space-between" mt="md">
               <RingProgress 
                 size={120}
                 thickness={12}
@@ -134,7 +134,7 @@ export function AthleteStats({ athleteId = 1 }: AthleteStatsProps) {
                 }
               />
               
-              <Stack spacing="xs">
+              <Stack gap="xs">
                 <Group>
                   <div style={{ width: 12, height: 12, backgroundColor: 'teal', borderRadius: '50%' }} />
                   <Text size="sm">Ready for high intensity (80-100%)</Text>
@@ -159,8 +159,8 @@ export function AthleteStats({ athleteId = 1 }: AthleteStatsProps) {
             </Text>
             
             <Group mt="md">
-              <Stack spacing="md" w="100%">
-                <Group position="apart">
+              <Stack gap="md" w="100%">
+                <Group justify="space-between">
                   <Text size="sm">Fatigue</Text>
                   <Text size="sm" fw={700}>High</Text>
                 </Group>
@@ -169,7 +169,7 @@ export function AthleteStats({ athleteId = 1 }: AthleteStatsProps) {
                   <div style={{ position: 'absolute', top: 0, left: 0, height: 8, width: '85%', backgroundColor: 'red', borderRadius: 4 }} />
                 </div>
                 
-                <Group position="apart">
+                <Group justify="space-between">
                   <Text size="sm">Fitness</Text>
                   <Text size="sm" fw={700}>Good</Text>
                 </Group>
@@ -178,7 +178,7 @@ export function AthleteStats({ athleteId = 1 }: AthleteStatsProps) {
                   <div style={{ position: 'absolute', top: 0, left: 0, height: 8, width: '70%', backgroundColor: 'teal', borderRadius: 4 }} />
                 </div>
                 
-                <Group position="apart">
+                <Group justify="space-between">
                   <Text size="sm">Recommendation</Text>
                   <Text size="sm" c="red" fw={700}>Reduce load by 15%</Text>
                 </Group>

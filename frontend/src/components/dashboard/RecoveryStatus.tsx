@@ -13,7 +13,7 @@ import {
   ThemeIcon,
   rem,
 } from '@mantine/core';
-import { IconBattery3, IconHeartbeat, IconMoon, IconMuscle } from '@tabler/icons-react';
+import { IconBattery3, IconHeartbeat, IconMoon, IconBarbell } from '@tabler/icons-react';
 
 export function RecoveryStatus() {
   const theme = useMantineTheme();
@@ -30,7 +30,7 @@ export function RecoveryStatus() {
       name: 'Muscle',
       value: 'Good',
       score: 78,
-      icon: <IconMuscle style={{ width: rem(18), height: rem(18) }} stroke={1.5} color="white" />,
+      icon: <IconBarbell style={{ width: rem(18), height: rem(18) }} stroke={1.5} color="white" />,
       color: 'orange',
     },
     {
@@ -58,21 +58,21 @@ export function RecoveryStatus() {
 
   return (
     <Card withBorder shadow="sm" p="md" h="100%">
-      <Stack spacing="md" justify="space-between" h="100%">
-        <Group position="apart">
+      <Stack gap="md" justify="space-between" h="100%">
+        <Group justify="space-between">
           <Title order={3}>Recovery Status</Title>
           <ThemeIcon size="md" radius="xl" color={scoreColor}>
             <IconBattery3 style={{ width: rem(16), height: rem(16) }} />
           </ThemeIcon>
         </Group>
 
-        <Group position="center">
+        <Group justify="center">
           <RingProgress
             size={130}
             thickness={12}
             sections={[{ value: recoveryScore, color: scoreColor }]}
             label={
-              <Stack spacing={0} align="center">
+              <Stack gap={0} align="center">
                 <Text fw={700} size="xl">
                   {recoveryScore}%
                 </Text>
@@ -84,20 +84,20 @@ export function RecoveryStatus() {
           />
         </Group>
 
-        <Stack spacing="md">
+        <Stack gap="md">
           <Title order={5}>Recovery Metrics</Title>
           
           <SimpleGrid cols={1}>
             {metrics.map((metric) => (
-              <Stack key={metric.name} spacing={2}>
-                <Group position="apart">
-                  <Group spacing="xs">
+              <Stack key={metric.name} gap={2}>
+                <Group justify="space-between">
+                  <Group gap="xs">
                     <ThemeIcon size="sm" radius="xl" color={metric.color}>
                       {metric.icon}
                     </ThemeIcon>
                     <Text size="sm">{metric.name}</Text>
                   </Group>
-                  <Group spacing="xs">
+                  <Group gap="xs">
                     <Text size="sm">{metric.value}</Text>
                     <Text size="sm" fw={500} c={getScoreColor(metric.score)}>
                       {metric.score}%

@@ -7,7 +7,7 @@ import { Grid, Stack, Title } from '@mantine/core';
 export default function DashboardPage() {
   return (
     <AppShell>
-      <Stack spacing="xl">
+      <Stack gap="xl">
         <Title>Dashboard</Title>
         
         <AthleteStats />

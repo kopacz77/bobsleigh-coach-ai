@@ -5,7 +5,7 @@ import { Button, Container, Stack, Text, Title } from '@mantine/core';
 export function Welcome() {
   return (
     <Container>
-      <Stack spacing="xl" my="xl">
+      <Stack gap="xl" my="xl">
         <Title order={1}>Welcome to Bobsleigh Coach AI</Title>
         <Text>
           An AI-powered training application for bobsleigh athletes with personalized recommendations

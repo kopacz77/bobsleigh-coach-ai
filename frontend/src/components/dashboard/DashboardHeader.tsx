@@ -8,7 +8,7 @@ export function DashboardHeader() {
   
   return (
     <Group justify="space-between" wrap="nowrap">
-      <Stack spacing="xs">
+      <Stack gap="xs">
         <Group align="center" gap="xs">
           <Title order={1}>Dashboard</Title>
           <Badge color="blue" variant="light" size="lg">

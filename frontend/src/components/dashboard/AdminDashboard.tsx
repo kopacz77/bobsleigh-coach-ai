@@ -23,7 +23,7 @@ import {
   Select,
   ThemeIcon
 } from '@mantine/core';
-import { DateRangePicker } from '@mantine/dates';
+import { DatePickerInput, DateValue } from '@mantine/dates';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, Bar, BarChart, Rectangle, ComposedChart, Area } from 'recharts';
 import {
   IconUsers,
@@ -35,7 +35,7 @@ import {
   IconMessages, //alerts
   IconClipboard, //compliance
   IconVinyl, //intensity
-  IconCheckboxes, //performance
+  IconCheckbox, //performance
   IconTrees, // teams
   IconEye,
   IconPencil,
@@ -52,17 +52,117 @@ import {
 } from '@tabler/icons-react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
+// Define interfaces for type safety
+interface TeamOption {
+  value: string;
+  label: string;
+}
+
+interface Athlete {
+  id: string;
+  name: string;
+  avatar: string;
+  team: string;
+  position: string;
+  compliance: number;
+  readiness: number;
+  recovery: number;
+  performanceTrend: 'up' | 'down' | 'neutral';
+  lastCheckIn: string;
+  weeklyReviewSubmitted: boolean;
+  alerts: number;
+}
+
+interface TeamStats {
+  totalAthletes: number;
+  activeAthletes: number;
+  complianceRate: number;
+  alertCount: number;
+  checkInsToday: number;
+  weeklyReviewsSubmitted: number;
+}
+
+interface PersonalInfo {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  height: string;
+  weight: string;
+  team: string;
+  position: string;
+  experience: string;
+}
+
+interface WeeklyDataPoint {
+  day: string;
+  readiness: number;
+  sleep: number;
+  energy: number;
+  soreness: number;
+}
+
+interface TrainingLoadPoint {
+  week: string;
+  acute: number;
+  chronic: number;
+}
+
+interface Goal {
+  goal: string;
+  status: 'completed' | 'in-progress';
+  dueDate: string;
+}
+
+interface Alert {
+  type: string;
+  date: string;
+  message: string;
+  severity: 'high' | 'medium' | 'low';
+}
+
+interface Event {
+  name: string;
+  date: string;
+  location: string;
+}
+
+interface AthleteDetailData {
+  personalInfo: PersonalInfo;
+  weeklyData: WeeklyDataPoint[];
+  trainingLoad: TrainingLoadPoint[];
+  recentGoals: Goal[];
+  recentAlerts: Alert[];
+  upcomingEvents: Event[];
+}
+
+interface CheckInStatus {
+  status: string;
+  color: string;
+  text: string;
+}
+
+interface OverviewMetricCardProps {
+  title: string;
+  value: string | number;
+  icon: React.ReactNode;
+  color: string;
+  subtitle?: string;
+  progress?: number;
+}
+
 /**
  * AdminDashboard Component
  * Dashboard for coaches/administrators to monitor athlete performance,
  * wellbeing, and compliance across the team.
  */
-const AdminDashboard = () => {
+const AdminDashboard: React.FC = () => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState(false);
-  const [athletes, setAthletes] = useState([]);
-  const [teamStats, setTeamStats] = useState({
+  const [loading, setLoading] = useState<boolean>(false);
+  const [athletes, setAthletes] = useState<Athlete[]>([]);
+  const [teamStats, setTeamStats] = useState<TeamStats>({
     totalAthletes: 0,
     activeAthletes: 0,
     complianceRate: 0,
@@ -70,12 +170,12 @@ const AdminDashboard = () => {
     checkInsToday: 0,
     weeklyReviewsSubmitted: 0
   });
-  const [dateRange, setDateRange] = useState([new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), new Date()]);
-  const [selectedTeam, setSelectedTeam] = useState('all');
-  const [expandedAthlete, setExpandedAthlete] = useState(null);
-  const [expandedAthleteData, setExpandedAthleteData] = useState(null);
+  const [dateRange, setDateRange] = useState<[DateValue, DateValue]>([new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), new Date()]);
+  const [selectedTeam, setSelectedTeam] = useState<string>('all');
+  const [expandedAthlete, setExpandedAthlete] = useState<string | null>(null);
+  const [expandedAthleteData, setExpandedAthleteData] = useState<AthleteDetailData | null>(null);
 
-  const teams = [
+  const teams: TeamOption[] = [
     { value: 'all', label: 'All Teams' },
     { value: 'team1', label: 'National Team' },
     { value: 'team2', label: 'Development Team' },
@@ -91,9 +191,9 @@ const AdminDashboard = () => {
     try {
       // In a real implementation, these would be actual Supabase queries
       // Mocking the data for demonstration purposes
-      
+
       // Fetch athletes
-      const mockAthletes = [
+      const mockAthletes: Athlete[] = [
         {
           id: '1',
           name: 'John Smith',
@@ -167,8 +267,8 @@ const AdminDashboard = () => {
       ];
 
       // Filter by team if necessary
-      const filteredAthletes = selectedTeam === 'all' ? 
-        mockAthletes : 
+      const filteredAthletes = selectedTeam === 'all' ?
+        mockAthletes :
         mockAthletes.filter(athlete => athlete.team === selectedTeam);
 
       setAthletes(filteredAthletes);
@@ -201,13 +301,13 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleViewAthleteDetails = async (athleteId) => {
+  const handleViewAthleteDetails = async (athleteId: string) => {
     setExpandedAthlete(athleteId);
 
     try {
       // In a real implementation, this would fetch detailed data for the athlete
       // Mocking the data for demonstration purposes
-      const mockAthleteData = {
+      const mockAthleteData: AthleteDetailData = {
         personalInfo: {
           id: athleteId,
           name: athletes.find(a => a.id === athleteId)?.name || 'Unknown Athlete',
@@ -265,13 +365,13 @@ const AdminDashboard = () => {
     setExpandedAthleteData(null);
   };
 
-  const handleContactAthlete = (athleteId, method) => {
+  const handleContactAthlete = (athleteId: string, method: 'message' | 'email') => {
     // In a real application, this would open a modal to send a message or email
     alert(`Contact athlete ${athleteId} via ${method}`);
   };
 
   // Get trend icon based on trend direction
-  const getTrendIcon = (trend) => {
+  const getTrendIcon = (trend: 'up' | 'down' | 'neutral') => {
     switch (trend) {
       case 'up':
         return <IconArrowUp size={16} color={theme.colors.green[6]} />;
@@ -283,7 +383,7 @@ const AdminDashboard = () => {
   };
 
   // Get alert severity color
-  const getAlertColor = (count) => {
+  const getAlertColor = (count: number): string => {
     if (count === 0) return 'green';
     if (count === 1) return 'yellow';
     if (count === 2) return 'orange';
@@ -291,11 +391,11 @@ const AdminDashboard = () => {
   };
 
   // Get last check-in status
-  const getCheckInStatus = (lastCheckIn) => {
+  const getCheckInStatus = (lastCheckIn: string): CheckInStatus => {
     const lastDate = new Date(lastCheckIn);
     const now = new Date();
-    const diffDays = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
-    
+    const diffDays = Math.floor((now.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
+
     if (lastDate.toDateString() === now.toDateString()) {
       return { status: 'today', color: 'green', text: 'Today' };
     } else if (diffDays === 1) {
@@ -311,14 +411,14 @@ const AdminDashboard = () => {
   const renderAthletesList = () => {
     if (athletes.length === 0) {
       return (
-        <Text align="center" color="dimmed" py="xl">
+        <Text ta="center" c="dimmed" py="xl">
           No athletes found with the current filters.
         </Text>
       );
     }
 
     return (
-      <Table horizontalSpacing="md" verticalSpacing="sm" fontSize="sm">
+      <Table horizontalSpacing="md" verticalSpacing="sm">
         <thead>
           <tr>
             <th>Athlete</th>
@@ -332,21 +432,21 @@ const AdminDashboard = () => {
         <tbody>
           {athletes.map((athlete) => {
             const checkInStatus = getCheckInStatus(athlete.lastCheckIn);
-            
+
             return (
               <tr key={athlete.id}>
                 <td>
-                  <Group spacing="sm">
+                  <Group gap="sm">
                     <Avatar size={30} src={athlete.avatar} radius={30} />
                     <Box>
-                      <Text size="sm" weight={500}>{athlete.name}</Text>
-                      <Text size="xs" color="dimmed">{athlete.position}</Text>
+                      <Text size="sm" fw={500}>{athlete.name}</Text>
+                      <Text size="xs" c="dimmed">{athlete.position}</Text>
                     </Box>
                   </Group>
                 </td>
                 <td>
-                  <Group spacing="xs">
-                    <Text weight={500}>{athlete.readiness}</Text>
+                  <Group gap="xs">
+                    <Text fw={500}>{athlete.readiness}</Text>
                     {getTrendIcon(athlete.performanceTrend)}
                   </Group>
                 </td>
@@ -356,27 +456,27 @@ const AdminDashboard = () => {
                   </Badge>
                 </td>
                 <td>
-                  <Group spacing="xs" noWrap>
+                  <Group gap="xs" wrap="nowrap">
                     <Box style={{ flex: 1 }}>
-                      <Progress 
-                        value={athlete.compliance} 
-                        color={athlete.compliance < 70 ? 'red' : athlete.compliance < 85 ? 'yellow' : 'green'} 
+                      <Progress
+                        value={athlete.compliance}
+                        color={athlete.compliance < 70 ? 'red' : athlete.compliance < 85 ? 'yellow' : 'green'}
                         size="sm"
                       />
                     </Box>
-                    <Text size="xs" weight={500}>{athlete.compliance}%</Text>
+                    <Text size="xs" fw={500}>{athlete.compliance}%</Text>
                   </Group>
                 </td>
                 <td>
-                  <Badge 
-                    color={getAlertColor(athlete.alerts)} 
+                  <Badge
+                    color={getAlertColor(athlete.alerts)}
                     variant={athlete.alerts > 0 ? 'filled' : 'light'}
                   >
                     {athlete.alerts}
                   </Badge>
                 </td>
                 <td>
-                  <Group spacing={0}>
+                  <Group gap={0}>
                     <Tooltip label="View Details">
                       <ActionIcon
                         onClick={() => handleViewAthleteDetails(athlete.id)}
@@ -409,24 +509,24 @@ const AdminDashboard = () => {
   };
 
   // Create overview metric cards
-  const OverviewMetricCard = ({ title, value, icon, color, subtitle, progress }) => (
+  const OverviewMetricCard: React.FC<OverviewMetricCardProps> = ({ title, value, icon, color, subtitle, progress }) => (
     <Card p="md" radius="md" withBorder>
-      <Group position="apart" mb="xs">
-        <Text weight={500} size="sm" color="dimmed">{title}</Text>
+      <Group justify="space-between" mb="xs">
+        <Text fw={500} size="sm" c="dimmed">{title}</Text>
         <ThemeIcon color={color} variant="light" size={38} radius="md">
           {icon}
         </ThemeIcon>
       </Group>
-      <Group position="apart" align="flex-end" spacing="xs">
-        <Text weight={700} size="xl">{value}</Text>
-        {subtitle && <Text size="xs" color="dimmed">{subtitle}</Text>}
+      <Group justify="space-between" align="flex-end" gap="xs">
+        <Text fw={700} size="xl">{value}</Text>
+        {subtitle && <Text size="xs" c="dimmed">{subtitle}</Text>}
       </Group>
       {progress !== undefined && (
-        <Progress 
-          value={progress} 
-          size="sm" 
-          color={color} 
-          mt="md" 
+        <Progress
+          value={progress}
+          size="sm"
+          color={color}
+          mt="md"
         />
       )}
     </Card>
@@ -487,19 +587,19 @@ const AdminDashboard = () => {
 
     return (
       <Paper p="md" radius="md" withBorder mb="xl">
-        <Group position="apart" mb="md">
+        <Group justify="space-between" mb="md">
           <Group>
             <Avatar size={50} src={athletes.find(a => a.id === expandedAthlete)?.avatar} radius={50} />
             <Box>
               <Title order={3}>{personalInfo.name}</Title>
-              <Group spacing="xs">
+              <Group gap="xs">
                 <Text size="sm">{personalInfo.position}</Text>
-                <Text size="sm" color="dimmed">•</Text>
+                <Text size="sm" c="dimmed">•</Text>
                 <Text size="sm">{teams.find(t => t.value === personalInfo.team)?.label || personalInfo.team}</Text>
               </Group>
             </Box>
           </Group>
-          
+
           <Group>
             <Button variant="outline" onClick={() => handleContactAthlete(expandedAthlete, 'message')}>
               Message
@@ -514,10 +614,10 @@ const AdminDashboard = () => {
 
         <Tabs defaultValue="overview">
           <Tabs.List mb="md">
-            <Tabs.Tab value="overview" icon={<IconChartLine size={16} />}>Overview</Tabs.Tab>
-            <Tabs.Tab value="metrics" icon={<IconCheckboxes size={16} />}>Metrics</Tabs.Tab>
-            <Tabs.Tab value="goals" icon={<IconTarget size={16} />}>Goals</Tabs.Tab>
-            <Tabs.Tab value="alerts" icon={<IconMessages size={16} />}>Alerts</Tabs.Tab>
+            <Tabs.Tab value="overview" leftSection={<IconChartLine size={16} />}>Overview</Tabs.Tab>
+            <Tabs.Tab value="metrics" leftSection={<IconCheckbox size={16} />}>Metrics</Tabs.Tab>
+            <Tabs.Tab value="goals" leftSection={<IconFlag size={16} />}>Goals</Tabs.Tab>
+            <Tabs.Tab value="alerts" leftSection={<IconMessages size={16} />}>Alerts</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="overview">
@@ -559,13 +659,13 @@ const AdminDashboard = () => {
               <Paper p="md" withBorder>
                 <Title order={4} mb="md">Upcoming Events</Title>
                 {upcomingEvents.length > 0 ? (
-                  <Stack spacing="xs">
+                  <Stack gap="xs">
                     {upcomingEvents.map((event, index) => (
                       <Card key={index} p="sm" withBorder>
-                        <Group position="apart">
+                        <Group justify="space-between">
                           <Box>
-                            <Text weight={500}>{event.name}</Text>
-                            <Text size="xs" color="dimmed">{event.location}</Text>
+                            <Text fw={500}>{event.name}</Text>
+                            <Text size="xs" c="dimmed">{event.location}</Text>
                           </Box>
                           <Badge>{new Date(event.date).toLocaleDateString()}</Badge>
                         </Group>
@@ -573,35 +673,35 @@ const AdminDashboard = () => {
                     ))}
                   </Stack>
                 ) : (
-                  <Text color="dimmed">No upcoming events.</Text>
+                  <Text c="dimmed">No upcoming events.</Text>
                 )}
               </Paper>
 
               <Paper p="md" withBorder>
                 <Title order={4} mb="md">Personal Information</Title>
-                <Stack spacing="xs">
-                  <Group position="apart">
-                    <Text weight={500}>Date of Birth:</Text>
+                <Stack gap="xs">
+                  <Group justify="space-between">
+                    <Text fw={500}>Date of Birth:</Text>
                     <Text>{personalInfo.dateOfBirth}</Text>
                   </Group>
-                  <Group position="apart">
-                    <Text weight={500}>Height:</Text>
+                  <Group justify="space-between">
+                    <Text fw={500}>Height:</Text>
                     <Text>{personalInfo.height}</Text>
                   </Group>
-                  <Group position="apart">
-                    <Text weight={500}>Weight:</Text>
+                  <Group justify="space-between">
+                    <Text fw={500}>Weight:</Text>
                     <Text>{personalInfo.weight}</Text>
                   </Group>
-                  <Group position="apart">
-                    <Text weight={500}>Experience:</Text>
+                  <Group justify="space-between">
+                    <Text fw={500}>Experience:</Text>
                     <Text>{personalInfo.experience}</Text>
                   </Group>
-                  <Group position="apart">
-                    <Text weight={500}>Email:</Text>
+                  <Group justify="space-between">
+                    <Text fw={500}>Email:</Text>
                     <Text>{personalInfo.email}</Text>
                   </Group>
-                  <Group position="apart">
-                    <Text weight={500}>Phone:</Text>
+                  <Group justify="space-between">
+                    <Text fw={500}>Phone:</Text>
                     <Text>{personalInfo.phone}</Text>
                   </Group>
                 </Stack>
@@ -616,12 +716,12 @@ const AdminDashboard = () => {
 
           <Tabs.Panel value="goals">
             <Title order={4} mb="md">Athlete Goals</Title>
-            <Stack spacing="md">
+            <Stack gap="md">
               {recentGoals.map((goal, index) => (
                 <Card key={index} p="sm" withBorder>
-                  <Group position="apart">
-                    <Group spacing="md">
-                      <ThemeIcon 
+                  <Group justify="space-between">
+                    <Group gap="md">
+                      <ThemeIcon
                         color={goal.status === 'completed' ? 'green' : 'blue'}
                         variant={goal.status === 'completed' ? 'filled' : 'light'}
                         size="lg"
@@ -630,8 +730,8 @@ const AdminDashboard = () => {
                         {goal.status === 'completed' ? <IconCheck size={20} /> : <IconFlag size={20} />}
                       </ThemeIcon>
                       <Box>
-                        <Text weight={500}>{goal.goal}</Text>
-                        <Text size="xs" color="dimmed">Due: {new Date(goal.dueDate).toLocaleDateString()}</Text>
+                        <Text fw={500}>{goal.goal}</Text>
+                        <Text size="xs" c="dimmed">Due: {new Date(goal.dueDate).toLocaleDateString()}</Text>
                       </Box>
                     </Group>
                     <Badge color={goal.status === 'completed' ? 'green' : 'blue'}>
@@ -645,12 +745,12 @@ const AdminDashboard = () => {
 
           <Tabs.Panel value="alerts">
             <Title order={4} mb="md">Recent Alerts</Title>
-            <Stack spacing="md">
+            <Stack gap="md">
               {recentAlerts.map((alert, index) => (
                 <Card key={index} p="sm" withBorder>
-                  <Group position="apart">
-                    <Group spacing="md">
-                      <ThemeIcon 
+                  <Group justify="space-between">
+                    <Group gap="md">
+                      <ThemeIcon
                         color={alert.severity === 'high' ? 'red' : alert.severity === 'medium' ? 'orange' : 'yellow'}
                         variant="light"
                         size="lg"
@@ -659,8 +759,8 @@ const AdminDashboard = () => {
                         <IconMessages size={20} />
                       </ThemeIcon>
                       <Box>
-                        <Text weight={500}>{alert.message}</Text>
-                        <Text size="xs" color="dimmed">Date: {new Date(alert.date).toLocaleDateString()}</Text>
+                        <Text fw={500}>{alert.message}</Text>
+                        <Text size="xs" c="dimmed">Date: {new Date(alert.date).toLocaleDateString()}</Text>
                       </Box>
                     </Group>
                     <Badge color={alert.severity === 'high' ? 'red' : alert.severity === 'medium' ? 'orange' : 'yellow'}>
@@ -679,26 +779,26 @@ const AdminDashboard = () => {
   return (
     <Box>
       <Paper p="md" radius="md" withBorder mb="xl">
-        <Group position="apart" mb="xl">
+        <Group justify="space-between" mb="xl">
           <Box>
             <Title order={2}>Coach Dashboard</Title>
-            <Text color="dimmed">Monitor your athletes' performance and wellbeing</Text>
+            <Text c="dimmed">Monitor your athletes' performance and wellbeing</Text>
           </Box>
           <Group>
             <Select
               placeholder="Select Team"
               data={teams}
               value={selectedTeam}
-              onChange={setSelectedTeam}
+              onChange={(value) => setSelectedTeam(value || 'all')}
               w={200}
-              icon={<IconFilter size={14} />}
+              leftSection={<IconFilter size={14} />}
             />
-            <DateRangePicker
+            <DatePickerInput
+              type="range"
               placeholder="Date Range"
               value={dateRange}
               onChange={setDateRange}
               w={250}
-              allowSingleDateSelection={false}
               clearable={false}
             />
           </Group>
@@ -707,11 +807,11 @@ const AdminDashboard = () => {
         {renderTeamSummary()}
 
         <Divider my="xl" />
-        
+
         {expandedAthlete && expandedAthleteData && renderExpandedAthleteView()}
 
         <Paper p="md" radius="md" withBorder mt="xl">
-          <Group position="apart" mb="md">
+          <Group justify="space-between" mb="md">
             <Title order={3}>Athletes</Title>
             <Select
               placeholder="Sorted by Readiness"
@@ -725,7 +825,7 @@ const AdminDashboard = () => {
               w={200}
             />
           </Group>
-          
+
           <ScrollArea>
             {renderAthletesList()}
           </ScrollArea>

@@ -409,7 +409,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
   };
 
   // Custom day renderer for the calendar
-  const renderDay = (date: Date): JSX.Element => {
+  const renderDay = (date: Date): React.ReactNode => {
     const dayReflections = getReflectionsForDate(date);
     
     if (!dayReflections.length) {

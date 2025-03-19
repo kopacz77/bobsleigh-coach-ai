@@ -129,7 +129,7 @@ export function PerformanceChart({ athleteId = 1, days = 14 }: PerformanceChartP
   return (
     <Card withBorder p="md" radius="md">
       <Stack>
-        <Group position="apart">
+        <Group justify="space-between">
           <Title order={3}>Performance Management Chart</Title>
         </Group>
         

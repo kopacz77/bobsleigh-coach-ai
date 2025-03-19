@@ -9,6 +9,7 @@ import {
   Tabs,
   SimpleGrid,
   Card,
+  Select,
   Stack,
   RingProgress,
   Progress,
@@ -20,7 +21,7 @@ import {
   Avatar,
   ThemeIcon
 } from '@mantine/core';
-import { Calendar, DatePicker } from '@mantine/dates';
+import { Calendar, DatePicker, DateValue } from '@mantine/dates';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, Bar, BarChart, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import {
   IconActivity,
@@ -48,25 +49,141 @@ import {
 } from '@tabler/icons-react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
+// Type Definitions
+interface AthleteProfileProps {
+  userId: string;
+}
+
+interface UserProfile {
+  id: string;
+  firstName: string;
+  lastName: string;
+  avatar: string;
+  position: string;
+  team: string;
+  coachName: string;
+  joinDate: string;
+  nextCompetition?: {
+    name: string;
+    date: string;
+    location: string;
+  };
+}
+
+interface WellbeingData {
+  date: string;
+  readiness: number;
+  sleep_quality: number;
+  energy_level: number;
+  muscle_soreness: number;
+  stress_level: number;
+  overall_recovery: number;
+  weeklyAverage: number;
+  trend: 'up' | 'down' | 'neutral';
+}
+
+interface Workout {
+  id: string;
+  title: string;
+  date: string;
+  duration: number;
+  type: string;
+  location: string;
+  focus: string;
+  status: string;
+}
+
+interface WeeklyMetric {
+  day: string;
+  readiness: number;
+  sleep: number;
+  energy: number;
+  recovery: number;
+  workoutIntensity: number;
+}
+
+interface PerformanceData {
+  currentValues: {
+    pushTime: number;
+    squatMax: number;
+    reaction: number;
+    gripStrength: number;
+    sprintSpeed: number;
+    [key: string]: number;
+  };
+  targets: {
+    pushTime: number;
+    squatMax: number;
+    reaction: number;
+    gripStrength: number;
+    sprintSpeed: number;
+    [key: string]: number;
+  };
+  radarData: {
+    metric: string;
+    value: number;
+    fullMark: number;
+  }[];
+  recentPRs: {
+    metric: string;
+    value: string;
+    date: string;
+  }[];
+}
+
+interface CalendarEvent {
+  date: string;
+  type: 'workout' | 'check-in' | 'event';
+  intensity?: number;
+  completed?: boolean;
+  title?: string;
+}
+
+interface Goal {
+  id: string;
+  title: string;
+  status: 'in-progress' | 'completed';
+  progress: number;
+  dueDate: string;
+  category: string;
+}
+
+interface Notification {
+  id: string;
+  type: 'reminder' | 'coach' | 'schedule';
+  message: string;
+  timestamp: string;
+  read: boolean;
+}
+
+interface PerformanceItem {
+  key: string;
+  label: string;
+  unit: string;
+  isLowerBetter: boolean;
+  progress: number;
+  color: string;
+}
+
 /**
  * AthleteDashboard Component
  * Personal dashboard for athletes to view their training schedule,
  * progress, wellbeing metrics, and performance data.
  */
-const AthleteDashboard = ({ userId }) => {
+const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState(false);
-  const [todayDate] = useState(new Date());
-  const [userProfile, setUserProfile] = useState(null);
-  const [wellbeingData, setWellbeingData] = useState(null);
-  const [upcomingWorkouts, setUpcomingWorkouts] = useState([]);
-  const [weeklyMetrics, setWeeklyMetrics] = useState([]);
-  const [performanceData, setPerformanceData] = useState(null);
-  const [monthlyCalendarData, setMonthlyCalendarData] = useState([]);
-  const [goals, setGoals] = useState([]);
-  const [notifications, setNotifications] = useState([]);
-  
+  const [loading, setLoading] = useState<boolean>(false);
+  const [todayDate] = useState<Date>(new Date());
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [wellbeingData, setWellbeingData] = useState<WellbeingData | null>(null);
+  const [upcomingWorkouts, setUpcomingWorkouts] = useState<Workout[]>([]);
+  const [weeklyMetrics, setWeeklyMetrics] = useState<WeeklyMetric[]>([]);
+  const [performanceData, setPerformanceData] = useState<PerformanceData | null>(null);
+  const [monthlyCalendarData, setMonthlyCalendarData] = useState<CalendarEvent[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
   useEffect(() => {
     if (userId) {
       fetchDashboardData();
@@ -75,13 +192,13 @@ const AthleteDashboard = ({ userId }) => {
 
   const fetchDashboardData = async () => {
     setLoading(true);
-    
+
     try {
       // In a real implementation, these would be actual Supabase queries
       // For this demo, we're mocking the data
-      
+
       // Mock user profile
-      const mockProfile = {
+      const mockProfile: UserProfile = {
         id: userId,
         firstName: 'Alex',
         lastName: 'Johnson',
@@ -96,11 +213,11 @@ const AthleteDashboard = ({ userId }) => {
           location: 'Germany'
         }
       };
-      
+
       setUserProfile(mockProfile);
 
       // Mock wellbeing data (latest check-in)
-      const mockWellbeingData = {
+      const mockWellbeingData: WellbeingData = {
         date: new Date().toISOString(),
         readiness: 8.5,
         sleep_quality: 7,
@@ -111,11 +228,11 @@ const AthleteDashboard = ({ userId }) => {
         weeklyAverage: 7.8,
         trend: 'up'
       };
-      
+
       setWellbeingData(mockWellbeingData);
 
       // Mock upcoming workouts
-      const mockUpcomingWorkouts = [
+      const mockUpcomingWorkouts: Workout[] = [
         {
           id: '1',
           title: 'Push Start Practice',
@@ -157,11 +274,11 @@ const AthleteDashboard = ({ userId }) => {
           status: 'upcoming'
         }
       ];
-      
+
       setUpcomingWorkouts(mockUpcomingWorkouts);
 
       // Mock weekly metrics
-      const mockWeeklyData = [
+      const mockWeeklyData: WeeklyMetric[] = [
         {
           day: 'Mon',
           readiness: 7,
@@ -219,11 +336,11 @@ const AthleteDashboard = ({ userId }) => {
           workoutIntensity: 3
         },
       ];
-      
+
       setWeeklyMetrics(mockWeeklyData);
 
       // Mock performance data
-      const mockPerformanceData = {
+      const mockPerformanceData: PerformanceData = {
         currentValues: {
           pushTime: 5.23,
           squatMax: 165,
@@ -251,15 +368,15 @@ const AthleteDashboard = ({ userId }) => {
           { metric: 'Sprint 60m', value: '7.12s', date: '2023-11-05' }
         ]
       };
-      
+
       setPerformanceData(mockPerformanceData);
 
       // Mock monthly calendar data (workouts, check-ins, events)
       const currentMonth = new Date().getMonth();
       const currentYear = new Date().getFullYear();
-      
+
       // Generate random events for the current month
-      const calendarEvents = [];
+      const calendarEvents: CalendarEvent[] = [];
       for (let day = 1; day <= 28; day++) {
         // Add some random events
         if (day % 2 === 0) {
@@ -269,7 +386,7 @@ const AthleteDashboard = ({ userId }) => {
             intensity: Math.floor(Math.random() * 3) + 1 // 1-3
           });
         }
-        
+
         if (day % 3 === 0) {
           calendarEvents.push({
             date: new Date(currentYear, currentMonth, day).toISOString(),
@@ -277,7 +394,7 @@ const AthleteDashboard = ({ userId }) => {
             completed: true
           });
         }
-        
+
         if (day === 15) {
           calendarEvents.push({
             date: new Date(currentYear, currentMonth, day).toISOString(),
@@ -286,11 +403,11 @@ const AthleteDashboard = ({ userId }) => {
           });
         }
       }
-      
+
       setMonthlyCalendarData(calendarEvents);
 
       // Mock goals
-      const mockGoals = [
+      const mockGoals: Goal[] = [
         {
           id: '1',
           title: 'Improve push start time by 0.2s',
@@ -316,11 +433,11 @@ const AthleteDashboard = ({ userId }) => {
           category: 'technique'
         }
       ];
-      
+
       setGoals(mockGoals);
 
       // Mock notifications
-      const mockNotifications = [
+      const mockNotifications: Notification[] = [
         {
           id: '1',
           type: 'reminder',
@@ -343,7 +460,7 @@ const AthleteDashboard = ({ userId }) => {
           read: false
         }
       ];
-      
+
       setNotifications(mockNotifications);
 
     } catch (error) {
@@ -354,7 +471,7 @@ const AthleteDashboard = ({ userId }) => {
   };
 
   // Format date for display
-  const formatDate = (dateString, format = 'short') => {
+  const formatDate = (dateString: string, format: 'short' | 'time' | 'full' | 'day' = 'short'): string => {
     const date = new Date(dateString);
     if (format === 'short') {
       return date.toLocaleDateString();
@@ -369,7 +486,7 @@ const AthleteDashboard = ({ userId }) => {
   };
 
   // Get trend indicator
-  const getTrendIcon = (trend) => {
+  const getTrendIcon = (trend: 'up' | 'down' | 'neutral') => {
     switch (trend) {
       case 'up':
         return <IconArrowUp size={16} color={theme.colors.green[6]} />;
@@ -381,26 +498,26 @@ const AthleteDashboard = ({ userId }) => {
   };
 
   // Get progress color
-  const getProgressColor = (value) => {
+  const getProgressColor = (value: number): string => {
     if (value <= 30) return theme.colors.red[6];
     if (value <= 70) return theme.colors.yellow[6];
     return theme.colors.green[6];
   };
 
   // Get days until next competition
-  const getDaysUntilCompetition = () => {
+  const getDaysUntilCompetition = (): number | null => {
     if (!userProfile?.nextCompetition?.date) return null;
 
     const competitionDate = new Date(userProfile.nextCompetition.date);
     const today = new Date();
     const diffTime = competitionDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     return diffDays;
   };
 
   // Calculate progress percentage based on target and current value
-  const calculateProgressPercentage = (current, target, isLowerBetter = false) => {
+  const calculateProgressPercentage = (current: number, target: number, isLowerBetter = false): number => {
     if (isLowerBetter) {
       // For metrics where lower is better (e.g., sprint time)
       if (current <= target) return 100; // Already achieved target
@@ -415,7 +532,7 @@ const AthleteDashboard = ({ userId }) => {
   };
 
   // Filter events on the calendar
-  const getCalendarDayEvents = (date) => {
+  const getCalendarDayEvents = (date: Date): CalendarEvent[] => {
     const dateString = date.toISOString().split('T')[0];
     return monthlyCalendarData.filter(event => {
       const eventDate = new Date(event.date).toISOString().split('T')[0];
@@ -424,7 +541,7 @@ const AthleteDashboard = ({ userId }) => {
   };
 
   // Render date cell in calendar
-  const renderCalendarDay = (date) => {
+  const renderCalendarDay = (date: Date) => {
     const events = getCalendarDayEvents(date);
     if (events.length === 0) return null;
 
@@ -435,38 +552,38 @@ const AthleteDashboard = ({ userId }) => {
           {events.map((event, idx) => {
             if (event.type === 'workout') {
               return (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   style={{
-                    width: 6, 
-                    height: 6, 
-                    borderRadius: '50%', 
-                    backgroundColor: event.intensity === 3 ? theme.colors.red[6] : 
-                                    event.intensity === 2 ? theme.colors.yellow[6] : 
-                                    theme.colors.green[6]
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
+                    backgroundColor: event.intensity === 3 ? theme.colors.red[6] :
+                      event.intensity === 2 ? theme.colors.yellow[6] :
+                        theme.colors.green[6]
                   }}
                 />
               );
             } else if (event.type === 'check-in') {
               return (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   style={{
-                    width: 6, 
-                    height: 6, 
-                    borderRadius: '50%', 
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
                     backgroundColor: theme.colors.blue[6]
                   }}
                 />
               );
             } else if (event.type === 'event') {
               return (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   style={{
-                    width: 6, 
-                    height: 6, 
-                    borderRadius: '50%', 
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
                     backgroundColor: theme.colors.violet[6]
                   }}
                 />
@@ -486,32 +603,32 @@ const AthleteDashboard = ({ userId }) => {
     return (
       <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md">
         <Paper p="md" radius="md" withBorder>
-          <Group position="apart" mb="xs">
-            <Text weight={500} size="sm" color="dimmed">Training Readiness</Text>
+          <Group justify="space-between" mb="xs">
+            <Text fw={500} size="sm" c="dimmed">Training Readiness</Text>
             <Badge size="md" color="blue" variant="light">
-              <Group spacing={4}>
+              <Group gap={4}>
                 <Text>{wellbeingData.readiness}</Text>
                 {getTrendIcon(wellbeingData.trend)}
               </Group>
             </Badge>
           </Group>
-          <Progress 
-            value={wellbeingData.readiness * 10} 
-            color="blue" 
-            size="xl" 
+          <Progress
+            value={wellbeingData.readiness * 10}
+            color="blue"
+            size="xl"
             radius="xl"
             mb="sm"
           />
-          <Text size="xs" color="dimmed" align="center">
-            {wellbeingData.readiness >= 8 ? 'Ready for high intensity' : 
-             wellbeingData.readiness >= 6 ? 'Ready for moderate training' : 
-             'Recovery focus recommended'}
+          <Text size="xs" c="dimmed" ta="center">
+            {wellbeingData.readiness >= 8 ? 'Ready for high intensity' :
+              wellbeingData.readiness >= 6 ? 'Ready for moderate training' :
+                'Recovery focus recommended'}
           </Text>
         </Paper>
 
         <Paper p="md" radius="md" withBorder>
-          <Group position="apart" mb="xs">
-            <Text weight={500} size="sm" color="dimmed">Sleep Quality</Text>
+          <Group justify="space-between" mb="xs">
+            <Text fw={500} size="sm" c="dimmed">Sleep Quality</Text>
             <ThemeIcon color="violet" variant="light" size={24} radius="xl">
               <IconClockHour4 size={16} />
             </ThemeIcon>
@@ -520,16 +637,16 @@ const AthleteDashboard = ({ userId }) => {
             sections={[{ value: wellbeingData.sleep_quality * 10, color: theme.colors.violet[6] }]}
             size={80}
             thickness={8}
-            label={<Text align="center" weight={700} size="lg">{wellbeingData.sleep_quality}</Text>}
+            label={<Text ta="center" fw={700} size="lg">{wellbeingData.sleep_quality}</Text>}
             mx="auto"
             mb="sm"
           />
-          <Text size="xs" color="dimmed" align="center">/10 rating</Text>
+          <Text size="xs" c="dimmed" ta="center">/10 rating</Text>
         </Paper>
 
         <Paper p="md" radius="md" withBorder>
-          <Group position="apart" mb="xs">
-            <Text weight={500} size="sm" color="dimmed">Energy Level</Text>
+          <Group justify="space-between" mb="xs">
+            <Text fw={500} size="sm" c="dimmed">Energy Level</Text>
             <ThemeIcon color="yellow" variant="light" size={24} radius="xl">
               <IconBulb size={16} />
             </ThemeIcon>
@@ -538,16 +655,16 @@ const AthleteDashboard = ({ userId }) => {
             sections={[{ value: wellbeingData.energy_level * 10, color: theme.colors.yellow[6] }]}
             size={80}
             thickness={8}
-            label={<Text align="center" weight={700} size="lg">{wellbeingData.energy_level}</Text>}
+            label={<Text ta="center" fw={700} size="lg">{wellbeingData.energy_level}</Text>}
             mx="auto"
             mb="sm"
           />
-          <Text size="xs" color="dimmed" align="center">/10 rating</Text>
+          <Text size="xs" c="dimmed" ta="center">/10 rating</Text>
         </Paper>
 
         <Paper p="md" radius="md" withBorder>
-          <Group position="apart" mb="xs">
-            <Text weight={500} size="sm" color="dimmed">Recovery Status</Text>
+          <Group justify="space-between" mb="xs">
+            <Text fw={500} size="sm" c="dimmed">Recovery Status</Text>
             <ThemeIcon color="green" variant="light" size={24} radius="xl">
               <IconHeartbeat size={16} />
             </ThemeIcon>
@@ -556,11 +673,11 @@ const AthleteDashboard = ({ userId }) => {
             sections={[{ value: wellbeingData.overall_recovery * 10, color: theme.colors.green[6] }]}
             size={80}
             thickness={8}
-            label={<Text align="center" weight={700} size="lg">{wellbeingData.overall_recovery}</Text>}
+            label={<Text ta="center" fw={700} size="lg">{wellbeingData.overall_recovery}</Text>}
             mx="auto"
             mb="sm"
           />
-          <Text size="xs" color="dimmed" align="center">/10 rating</Text>
+          <Text size="xs" c="dimmed" ta="center">/10 rating</Text>
         </Paper>
       </SimpleGrid>
     );
@@ -570,38 +687,38 @@ const AthleteDashboard = ({ userId }) => {
   const renderUpcomingWorkouts = () => {
     if (!upcomingWorkouts.length) {
       return (
-        <Text color="dimmed" align="center" py="md">
+        <Text c="dimmed" ta="center" py="md">
           No upcoming workouts scheduled.
         </Text>
       );
     }
 
     return (
-      <Stack spacing="xs">
+      <Stack gap="xs">
         {upcomingWorkouts.slice(0, 4).map(workout => (
           <Card key={workout.id} p="md" radius="md" withBorder>
-            <Group position="apart" mb="xs">
-              <Group spacing="sm">
+            <Group justify="space-between" mb="xs">
+              <Group gap="sm">
                 <ThemeIcon color="blue" variant="light" size={30} radius="xl">
                   <IconBarbell size={18} />
                 </ThemeIcon>
                 <Box>
-                  <Text weight={500}>{workout.title}</Text>
-                  <Text size="xs" color="dimmed">{formatDate(workout.date, 'full')}</Text>
+                  <Text fw={500}>{workout.title}</Text>
+                  <Text size="xs" c="dimmed">{formatDate(workout.date, 'full')}</Text>
                 </Box>
               </Group>
-              <Group spacing={0}>
+              <Group gap={0}>
                 <Badge size="md">{workout.duration} min</Badge>
               </Group>
             </Group>
-            <Group position="apart" mt="xs">
-              <Group spacing="xs">
+            <Group justify="space-between" mt="xs">
+              <Group gap="xs">
                 <IconMapPin size={14} color={theme.colors.gray[6]} />
-                <Text size="xs" color="dimmed">{workout.location}</Text>
+                <Text size="xs" c="dimmed">{workout.location}</Text>
               </Group>
-              <Group spacing="xs">
+              <Group gap="xs">
                 <IconDirections size={14} color={theme.colors.gray[6]} />
-                <Text size="xs" color="dimmed">Focus: {workout.focus}</Text>
+                <Text size="xs" c="dimmed">Focus: {workout.focus}</Text>
               </Group>
             </Group>
           </Card>
@@ -657,66 +774,66 @@ const AthleteDashboard = ({ userId }) => {
 
     const { currentValues, targets } = performanceData;
 
-    const performanceItems = [
-      { 
-        key: 'pushTime', 
-        label: 'Push Time', 
+    const performanceItems: PerformanceItem[] = [
+      {
+        key: 'pushTime',
+        label: 'Push Time',
         unit: 's',
-        isLowerBetter: true, 
+        isLowerBetter: true,
         progress: calculateProgressPercentage(currentValues.pushTime, targets.pushTime, true),
         color: 'blue'
       },
-      { 
-        key: 'squatMax', 
-        label: 'Squat Max', 
+      {
+        key: 'squatMax',
+        label: 'Squat Max',
         unit: 'kg',
-        isLowerBetter: false, 
+        isLowerBetter: false,
         progress: calculateProgressPercentage(currentValues.squatMax, targets.squatMax),
         color: 'red'
       },
-      { 
-        key: 'reaction', 
-        label: 'Reaction Time', 
+      {
+        key: 'reaction',
+        label: 'Reaction Time',
         unit: 's',
-        isLowerBetter: true, 
+        isLowerBetter: true,
         progress: calculateProgressPercentage(currentValues.reaction, targets.reaction, true),
         color: 'yellow'
       },
-      { 
-        key: 'gripStrength', 
-        label: 'Grip Strength', 
+      {
+        key: 'gripStrength',
+        label: 'Grip Strength',
         unit: 'kg',
-        isLowerBetter: false, 
+        isLowerBetter: false,
         progress: calculateProgressPercentage(currentValues.gripStrength, targets.gripStrength),
         color: 'green'
       },
-      { 
-        key: 'sprintSpeed', 
-        label: 'Sprint Speed', 
+      {
+        key: 'sprintSpeed',
+        label: 'Sprint Speed',
         unit: 'm/s',
-        isLowerBetter: false, 
+        isLowerBetter: false,
         progress: calculateProgressPercentage(currentValues.sprintSpeed, targets.sprintSpeed),
         color: 'violet'
       }
     ];
 
     return (
-      <Stack spacing="xs">
+      <Stack gap="xs">
         {performanceItems.map(item => (
           <Box key={item.key}>
-            <Group position="apart" mb="xs">
+            <Group justify="space-between" mb="xs">
               <Text size="sm">{item.label}</Text>
-              <Group spacing={4}>
+              <Group gap={4}>
                 <Text size="sm">{currentValues[item.key]}</Text>
-                <Text size="sm" color="dimmed">{item.unit}</Text>
-                <Text size="sm" color="dimmed">/</Text>
-                <Text size="sm" color="dimmed">{targets[item.key]} {item.unit}</Text>
+                <Text size="sm" c="dimmed">{item.unit}</Text>
+                <Text size="sm" c="dimmed">/</Text>
+                <Text size="sm" c="dimmed">{targets[item.key]} {item.unit}</Text>
               </Group>
             </Group>
-            <Progress 
-              value={item.progress} 
-              color={theme.colors[item.color][6]} 
-              size="md" 
+            <Progress
+              value={item.progress}
+              color={theme.colors[item.color][6]}
+              size="md"
               radius="xl"
               mb="sm"
             />
@@ -731,19 +848,19 @@ const AthleteDashboard = ({ userId }) => {
     if (!performanceData?.recentPRs?.length) return null;
 
     return (
-      <Stack spacing="xs">
+      <Stack gap="xs">
         {performanceData.recentPRs.map((pr, index) => (
-          <Group key={index} position="apart">
-            <Group spacing="xs">
+          <Group key={index} justify="space-between">
+            <Group gap="xs">
               <ThemeIcon color="yellow" variant="light" size={24} radius="xl">
                 <IconStar size={16} />
               </ThemeIcon>
               <Text>{pr.metric}</Text>
             </Group>
             <Badge color="yellow" variant="light">
-              <Group spacing={4}>
+              <Group gap={4}>
                 <Text>{pr.value}</Text>
-                <Text color="dimmed">({formatDate(pr.date)})</Text>
+                <Text c="dimmed">({formatDate(pr.date)})</Text>
               </Group>
             </Badge>
           </Group>
@@ -756,43 +873,43 @@ const AthleteDashboard = ({ userId }) => {
   const renderGoals = () => {
     if (!goals.length) {
       return (
-        <Text color="dimmed" align="center" py="md">
+        <Text c="dimmed" ta="center" py="md">
           No goals set yet.
         </Text>
       );
     }
 
     return (
-      <Stack spacing="xs">
+      <Stack gap="xs">
         {goals.map(goal => (
           <Card key={goal.id} p="md" radius="md" withBorder>
-            <Group position="apart" mb="xs">
-              <Group spacing="sm">
-                <ThemeIcon 
-                  color={goal.status === 'completed' ? 'green' : 'blue'} 
-                  variant={goal.status === 'completed' ? 'filled' : 'light'} 
-                  size={30} 
+            <Group justify="space-between" mb="xs">
+              <Group gap="sm">
+                <ThemeIcon
+                  color={goal.status === 'completed' ? 'green' : 'blue'}
+                  variant={goal.status === 'completed' ? 'filled' : 'light'}
+                  size={30}
                   radius="xl"
                 >
                   <IconTrophy size={18} />
                 </ThemeIcon>
-                <Text weight={500}>{goal.title}</Text>
+                <Text fw={500}>{goal.title}</Text>
               </Group>
               <Badge color={goal.status === 'completed' ? 'green' : 'blue'}>
                 {goal.status === 'completed' ? 'Completed' : 'In Progress'}
               </Badge>
             </Group>
-            <Progress 
+            <Progress
               value={goal.progress}
               color={getProgressColor(goal.progress)}
               size="md"
               mb="xs"
               radius="xl"
             />
-            <Group position="apart">
-              <Text size="xs" color="dimmed">Category: {goal.category}</Text>
+            <Group justify="space-between">
+              <Text size="xs" c="dimmed">Category: {goal.category}</Text>
               {goal.status !== 'completed' && (
-                <Text size="xs" color="dimmed">Due: {formatDate(goal.dueDate)}</Text>
+                <Text size="xs" c="dimmed">Due: {formatDate(goal.dueDate)}</Text>
               )}
             </Group>
           </Card>
@@ -805,14 +922,14 @@ const AthleteDashboard = ({ userId }) => {
   const renderNotifications = () => {
     if (!notifications.length) {
       return (
-        <Text color="dimmed" align="center" py="md">
+        <Text c="dimmed" ta="center" py="md">
           No notifications.
         </Text>
       );
     }
 
     return (
-      <Stack spacing="xs">
+      <Stack gap="xs">
         {notifications.map(notification => {
           const notificationIcon = {
             'reminder': <IconBell size={16} />,
@@ -827,14 +944,14 @@ const AthleteDashboard = ({ userId }) => {
           }[notification.type] || 'gray';
 
           return (
-            <Group key={notification.id} position="apart">
-              <Group spacing="sm">
+            <Group key={notification.id} justify="space-between">
+              <Group gap="sm">
                 <ThemeIcon color={notificationColor} variant="light" size={24} radius="xl">
                   {notificationIcon}
                 </ThemeIcon>
                 <Box>
                   <Text size="sm">{notification.message}</Text>
-                  <Text size="xs" color="dimmed">{new Date(notification.timestamp).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}</Text>
+                  <Text size="xs" c="dimmed">{new Date(notification.timestamp).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}</Text>
                 </Box>
               </Group>
               {!notification.read && (
@@ -850,31 +967,31 @@ const AthleteDashboard = ({ userId }) => {
   return (
     <Box>
       <Paper p="md" radius="md" withBorder mb="xl">
-        <Group position="apart" mb="xl">
+        <Group justify="space-between" mb="xl">
           <Group>
             {userProfile && (
               <Avatar src={userProfile.avatar} size={50} radius={50} />
             )}
             <Box>
               <Title order={2}>Athlete Dashboard</Title>
-              <Text color="dimmed">
+              <Text c="dimmed">
                 {userProfile ? `${userProfile.firstName} ${userProfile.lastName} | ${userProfile.position}` : 'Loading...'}
               </Text>
             </Box>
           </Group>
-          
+
           {userProfile?.nextCompetition && (
             <Card p="sm" radius="md" withBorder>
-              <Group spacing="sm">
+              <Group gap="sm">
                 <ThemeIcon color="red" variant="light" size={38} radius="md">
                   <IconMedal size={20} />
                 </ThemeIcon>
                 <Box>
-                  <Text weight={500}>{userProfile.nextCompetition.name}</Text>
-                  <Group spacing={4}>
-                    <Text size="xs" color="dimmed">{formatDate(userProfile.nextCompetition.date)}</Text>
-                    <Text size="xs" color="dimmed">•</Text>
-                    <Text size="xs" color="dimmed">{userProfile.nextCompetition.location}</Text>
+                  <Text fw={500}>{userProfile.nextCompetition.name}</Text>
+                  <Group gap={4}>
+                    <Text size="xs" c="dimmed">{formatDate(userProfile.nextCompetition.date)}</Text>
+                    <Text size="xs" c="dimmed">•</Text>
+                    <Text size="xs" c="dimmed">{userProfile.nextCompetition.location}</Text>
                   </Group>
                 </Box>
                 <Badge color="red" size="lg">{getDaysUntilCompetition()} days</Badge>
@@ -888,57 +1005,57 @@ const AthleteDashboard = ({ userId }) => {
         <Box mt="xl">
           <Tabs defaultValue="dashboard">
             <Tabs.List mb="md">
-              <Tabs.Tab value="dashboard" icon={<IconActivity size={16} />}>Dashboard</Tabs.Tab>
-              <Tabs.Tab value="calendar" icon={<IconCalendarStats size={16} />}>Calendar</Tabs.Tab>
-              <Tabs.Tab value="performance" icon={<IconChartLine size={16} />}>Performance</Tabs.Tab>
+              <Tabs.Tab value="dashboard" leftSection={<IconActivity size={16} />}>Dashboard</Tabs.Tab>
+              <Tabs.Tab value="calendar" leftSection={<IconCalendarStats size={16} />}>Calendar</Tabs.Tab>
+              <Tabs.Tab value="performance" leftSection={<IconChartLine size={16} />}>Performance</Tabs.Tab>
             </Tabs.List>
 
             <Tabs.Panel value="dashboard">
               <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
-                <Stack spacing="lg">
+                <Stack gap="lg">
                   <Paper p="md" radius="md" withBorder>
-                    <Group position="apart" mb="md">
-                      <Text weight={600} size="lg">Upcoming Workouts</Text>
-                      <Button variant="subtle" rightIcon={<IconArrowRight size={16} />} compact>View All</Button>
+                    <Group justify="space-between" mb="md">
+                      <Text fw={600} size="lg">Upcoming Workouts</Text>
+                      <Button variant="subtle" rightSection={<IconArrowRight size={16} />} size="xs">View All</Button>
                     </Group>
                     {renderUpcomingWorkouts()}
                   </Paper>
 
                   <Paper p="md" radius="md" withBorder>
-                    <Text weight={600} size="lg" mb="md">Weekly Metrics</Text>
+                    <Text fw={600} size="lg" mb="md">Weekly Metrics</Text>
                     {renderWeeklyMetricsChart()}
                   </Paper>
                 </Stack>
 
-                <Stack spacing="lg">
+                <Stack gap="lg">
                   <Paper p="md" radius="md" withBorder>
-                    <Group position="apart" mb="md">
-                      <Text weight={600} size="lg">Goals</Text>
-                      <Button variant="subtle" rightIcon={<IconArrowRight size={16} />} compact>View All</Button>
+                    <Group justify="space-between" mb="md">
+                      <Text fw={600} size="lg">Goals</Text>
+                      <Button variant="subtle" rightSection={<IconArrowRight size={16} />} size="xs">View All</Button>
                     </Group>
                     {renderGoals()}
                   </Paper>
 
                   <Paper p="md" radius="md" withBorder>
-                    <Group position="apart" mb="md">
-                      <Text weight={600} size="lg">Today's Check-in</Text>
+                    <Group justify="space-between" mb="md">
+                      <Text fw={600} size="lg">Today's Check-in</Text>
                       <Button variant="filled" size="xs">Complete</Button>
                     </Group>
                     {!wellbeingData ? (
-                      <Text color="dimmed" align="center" py="md">
+                      <Text c="dimmed" ta="center" py="md">
                         You haven't completed your daily check-in yet.
                       </Text>
                     ) : (
-                      <Text color="dimmed" align="center" py="md">
+                      <Text c="dimmed" ta="center" py="md">
                         You've completed your daily check-in at {formatDate(wellbeingData.date, 'time')}.
                       </Text>
                     )}
                   </Paper>
 
                   <Paper p="md" radius="md" withBorder>
-                    <Group position="apart" mb="md">
-                      <Text weight={600} size="lg">Notifications</Text>
-                      <Text size="xs" color="dimmed">{notifications.filter(n => !n.read).length} unread</Text>
+                    <Group justify="space-between" mb="md">
+                      <Text fw={600} size="lg">Notifications</Text>
+                      <Text size="xs" c="dimmed">{notifications.filter(n => !n.read).length} unread</Text>
                     </Group>
                     {renderNotifications()}
                   </Paper>
@@ -949,13 +1066,13 @@ const AthleteDashboard = ({ userId }) => {
             <Tabs.Panel value="calendar">
               <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="lg">
                 <Paper p="md" radius="md" withBorder style={{ gridColumn: 'span 2' }}>
-                  <Text weight={600} size="lg" mb="md">Monthly Schedule</Text>
-                  <Calendar 
-                    size="lg" 
-                    fullWidth 
+                  <Text fw={600} size="lg" mb="md">Monthly Schedule</Text>
+                  <Calendar
+                    size="lg"
+                    w="100%"
                     renderDay={renderCalendarDay}
                   />
-                  <Group position="center" mt="sm" spacing="xs">
+                  <Group justify="center" mt="sm" gap="xs">
                     <Box style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                       <Box style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: theme.colors.green[6] }} />
                       <Text size="xs">Light Workout</Text>
@@ -979,9 +1096,9 @@ const AthleteDashboard = ({ userId }) => {
                   </Group>
                 </Paper>
 
-                <Stack spacing="lg">
+                <Stack gap="lg">
                   <Paper p="md" radius="md" withBorder>
-                    <Text weight={600} size="lg" mb="md">Today's Schedule</Text>
+                    <Text fw={600} size="lg" mb="md">Today's Schedule</Text>
                     {upcomingWorkouts.filter(workout => {
                       const workoutDate = new Date(workout.date).toDateString();
                       const today = new Date().toDateString();
@@ -989,15 +1106,15 @@ const AthleteDashboard = ({ userId }) => {
                     }).length ? (
                       renderUpcomingWorkouts()
                     ) : (
-                      <Text color="dimmed" align="center" py="md">
+                      <Text c="dimmed" ta="center" py="md">
                         No workouts scheduled for today.
                       </Text>
                     )}
                   </Paper>
 
                   <Paper p="md" radius="md" withBorder>
-                    <Group position="apart" mb="md">
-                      <Text weight={600} size="lg">Weekly Overview</Text>
+                    <Group justify="space-between" mb="md">
+                      <Text fw={600} size="lg">Weekly Overview</Text>
                       <Select
                         placeholder="This Week"
                         data={[
@@ -1009,18 +1126,18 @@ const AthleteDashboard = ({ userId }) => {
                         style={{ width: 130 }}
                       />
                     </Group>
-                    <Stack spacing="xs">
+                    <Stack gap="xs">
                       {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => {
                         const isToday = new Date().getDay() === (index + 1) % 7;
                         return (
-                          <Group key={day} position="apart" p="xs" bg={isToday ? 'blue.0' : undefined} style={{ borderRadius: 4 }}>
-                            <Text weight={isToday ? 500 : 400}>{day}</Text>
-                            <Badge color={weeklyMetrics[index].workoutIntensity > 7 ? 'red' : 
-                                   weeklyMetrics[index].workoutIntensity > 4 ? 'yellow' : 
-                                   weeklyMetrics[index].workoutIntensity > 0 ? 'green' : 'gray'}
+                          <Group key={day} justify="space-between" p="xs" bg={isToday ? 'blue.0' : undefined} style={{ borderRadius: 4 }}>
+                            <Text fw={isToday ? 500 : 400}>{day}</Text>
+                            <Badge color={weeklyMetrics[index].workoutIntensity > 7 ? 'red' :
+                              weeklyMetrics[index].workoutIntensity > 4 ? 'yellow' :
+                                weeklyMetrics[index].workoutIntensity > 0 ? 'green' : 'gray'}
                             >
-                              {weeklyMetrics[index].workoutIntensity > 0 ? 
-                               `${weeklyMetrics[index].workoutIntensity}/10` : 'Rest'}
+                              {weeklyMetrics[index].workoutIntensity > 0 ?
+                                `${weeklyMetrics[index].workoutIntensity}/10` : 'Rest'}
                             </Badge>
                           </Group>
                         );
@@ -1034,31 +1151,31 @@ const AthleteDashboard = ({ userId }) => {
             <Tabs.Panel value="performance">
               <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
                 <Paper p="md" radius="md" withBorder>
-                  <Text weight={600} size="lg" mb="md">Performance Overview</Text>
+                  <Text fw={600} size="lg" mb="md">Performance Overview</Text>
                   {renderPerformanceRadar()}
                 </Paper>
 
                 <Paper p="md" radius="md" withBorder>
-                  <Text weight={600} size="lg" mb="md">Progress to Targets</Text>
+                  <Text fw={600} size="lg" mb="md">Progress to Targets</Text>
                   {renderPerformanceProgress()}
                 </Paper>
 
                 <Paper p="md" radius="md" withBorder>
-                  <Group position="apart" mb="md">
-                    <Text weight={600} size="lg">Recent Personal Records</Text>
-                    <Button variant="subtle" rightIcon={<IconArrowRight size={16} />} compact>View All</Button>
+                  <Group justify="space-between" mb="md">
+                    <Text fw={600} size="lg">Recent Personal Records</Text>
+                    <Button variant="subtle" rightSection={<IconArrowRight size={16} />} size="xs">View All</Button>
                   </Group>
                   {renderRecentPRs()}
                 </Paper>
 
                 <Paper p="md" radius="md" withBorder>
-                  <Group position="apart" mb="md">
-                    <Text weight={600} size="lg">Performance Tests</Text>
-                    <Button variant="subtle" rightIcon={<IconArrowRight size={16} />} compact>Schedule Test</Button>
+                  <Group justify="space-between" mb="md">
+                    <Text fw={600} size="lg">Performance Tests</Text>
+                    <Button variant="subtle" rightSection={<IconArrowRight size={16} />} size="xs">Schedule Test</Button>
                   </Group>
                   <Box>
                     {/* Placeholder for performance tests */}
-                    <Text color="dimmed" align="center" py="md">
+                    <Text c="dimmed" ta="center" py="md">
                       No upcoming performance tests scheduled.
                     </Text>
                   </Box>

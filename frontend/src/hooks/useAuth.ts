@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase, signInWithGoogle, signOut, getCurrentUser } from '@/lib/supabase';
+import { User } from '@supabase/supabase-js';
 
 export function useAuth() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 

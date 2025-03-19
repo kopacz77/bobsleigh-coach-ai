@@ -402,7 +402,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   // Format chart tooltip
   type CustomTooltipProps = TooltipProps<number, string>;
   
-  const renderTooltip = (props: CustomTooltipProps): JSX.Element | null => {
+  const renderTooltip = (props: CustomTooltipProps): React.ReactNode | null => {
     const { active, payload, label } = props;
     
     if (active && payload && payload.length) {

@@ -270,7 +270,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
   };
 
   // Custom day renderer for the calendar
-  const renderDay = (date: Date): JSX.Element => {
+  const renderDay = (date: Date): React.ReactNode => {
     const moodEntry = getMoodEntryForDate(date);
     
     if (!moodEntry) {

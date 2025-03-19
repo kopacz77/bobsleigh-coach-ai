@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button, Card, Group, SegmentedControl, Stack, Switch, Text, Title } from '@mantine/core';
+import MFASetup from './MFASetup'; // Import the MFA component
 
 export function Settings() {
   const [units, setUnits] = useState('metric');
@@ -37,12 +38,12 @@ export function Settings() {
   };
   
   return (
-    <Stack spacing="lg">
+    <Stack gap="lg">
       <Card withBorder p="md" radius="md">
         <Stack>
           <Title order={3}>Application Settings</Title>
           
-          <Group position="apart">
+          <Group justify="space-between">
             <Text>Units</Text>
             <SegmentedControl
               value={units}
@@ -54,7 +55,7 @@ export function Settings() {
             />
           </Group>
           
-          <Group position="apart">
+          <Group justify="space-between">
             <Text>Push Notifications</Text>
             <Switch 
               checked={notifications} 
@@ -62,7 +63,7 @@ export function Settings() {
             />
           </Group>
           
-          <Group position="apart">
+          <Group justify="space-between">
             <Text>Email Updates</Text>
             <Switch 
               checked={emailUpdates} 
@@ -74,12 +75,19 @@ export function Settings() {
       
       <Card withBorder p="md" radius="md">
         <Stack>
+          <Title order={3}>Security Settings</Title>
+          <MFASetup />
+        </Stack>
+      </Card>
+      
+      <Card withBorder p="md" radius="md">
+        <Stack>
           <Title order={3}>Data Settings</Title>
           
-          <Group position="apart">
+          <Group justify="space-between">
             <div>
               <Text>Anonymous Data Sharing</Text>
-              <Text size="xs" color="dimmed">Share anonymous training data to improve AI recommendations</Text>
+              <Text size="xs" c="dimmed">Share anonymous training data to improve AI recommendations</Text>
             </div>
             <Switch 
               checked={dataSharing} 
@@ -87,10 +95,10 @@ export function Settings() {
             />
           </Group>
           
-          <Group position="apart">
+          <Group justify="space-between">
             <div>
               <Text>Auto-Sync Data</Text>
-              <Text size="xs" color="dimmed">Automatically sync data with connected devices</Text>
+              <Text size="xs" c="dimmed">Automatically sync data with connected devices</Text>
             </div>
             <Switch 
               checked={autoSync} 
@@ -100,7 +108,7 @@ export function Settings() {
         </Stack>
       </Card>
       
-      <Group position="right">
+      <Group justify="flex-end">
         <Button onClick={handleSubmit} loading={isSubmitting}>Save Settings</Button>
       </Group>
     </Stack>

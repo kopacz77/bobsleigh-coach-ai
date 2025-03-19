@@ -5,7 +5,7 @@ import { Stack, Title } from '@mantine/core';
 export default function SettingsPage() {
   return (
     <AppShell>
-      <Stack spacing="xl">
+      <Stack gap="xl">
         <Title>Settings</Title>
         
         <Settings />

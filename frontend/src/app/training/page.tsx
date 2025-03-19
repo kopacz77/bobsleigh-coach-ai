@@ -6,7 +6,7 @@ import { Grid, Stack, Title } from '@mantine/core';
 export default function TrainingPage() {
   return (
     <AppShell>
-      <Stack spacing="xl">
+      <Stack gap="xl">
         <Title>Training</Title>
         
         <Grid>
