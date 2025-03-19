@@ -2,6 +2,7 @@
 node_modules/
 .next/
 out/
+.pnpm-store/
 
 # Python
 __pycache__/
