@@ -1,24 +1,15 @@
 "use client";
 
-import React, { Component, ReactNode } from "react";
-import {
-  Card,
-  Stack,
-  Title,
-  Text,
-  Button,
-  Alert,
-  Group,
-  Code,
-  Collapse,
-} from "@mantine/core";
+import { Alert, Button, Card, Code, Collapse, Group, Stack, Text, Title } from "@mantine/core";
 import {
   IconAlertTriangle,
-  IconRefresh,
   IconBug,
   IconChevronDown,
   IconChevronUp,
+  IconRefresh,
 } from "@tabler/icons-react";
+import type React from "react";
+import { Component, type ReactNode } from "react";
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -59,7 +50,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
     // Log to external service
     console.error("ErrorBoundary caught an error:", error, errorInfo);
-    
+
     // Call optional error handler
     this.props.onError?.(error, errorInfo);
   }
@@ -78,7 +69,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   };
 
   toggleDetails = () => {
-    this.setState(prev => ({ showDetails: !prev.showDetails }));
+    this.setState((prev) => ({ showDetails: !prev.showDetails }));
   };
 
   render() {
@@ -102,8 +93,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 Oops! Something broke
               </Title>
               <Text c="dimmed" ta="center" maw={400}>
-                We've logged this error and will fix it soon. Try refreshing the page or 
-                resetting the component.
+                We've logged this error and will fix it soon. Try refreshing the page or resetting
+                the component.
               </Text>
             </Stack>
 
@@ -132,9 +123,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                   size="sm"
                   onClick={this.toggleDetails}
                   leftSection={
-                    this.state.showDetails ? 
-                      <IconChevronUp size={16} /> : 
+                    this.state.showDetails ? (
+                      <IconChevronUp size={16} />
+                    ) : (
                       <IconChevronDown size={16} />
+                    )
                   }
                 >
                   {this.state.showDetails ? "Hide" : "Show"} Error Details
@@ -142,24 +135,36 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
                 <Collapse in={this.state.showDetails}>
                   <Stack gap="xs">
-                    <Text size="sm" fw={500}>Error Message:</Text>
+                    <Text size="sm" fw={500}>
+                      Error Message:
+                    </Text>
                     <Code block color="red">
                       {this.state.error.message}
                     </Code>
-                    
+
                     {this.state.error.stack && (
                       <>
-                        <Text size="sm" fw={500} mt="sm">Stack Trace:</Text>
-                        <Code block style={{ fontSize: "11px", maxHeight: "200px", overflow: "auto" }}>
+                        <Text size="sm" fw={500} mt="sm">
+                          Stack Trace:
+                        </Text>
+                        <Code
+                          block
+                          style={{ fontSize: "11px", maxHeight: "200px", overflow: "auto" }}
+                        >
                           {this.state.error.stack}
                         </Code>
                       </>
                     )}
-                    
+
                     {this.state.errorInfo?.componentStack && (
                       <>
-                        <Text size="sm" fw={500} mt="sm">Component Stack:</Text>
-                        <Code block style={{ fontSize: "11px", maxHeight: "200px", overflow: "auto" }}>
+                        <Text size="sm" fw={500} mt="sm">
+                          Component Stack:
+                        </Text>
+                        <Code
+                          block
+                          style={{ fontSize: "11px", maxHeight: "200px", overflow: "auto" }}
+                        >
                           {this.state.errorInfo.componentStack}
                         </Code>
                       </>
@@ -180,7 +185,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 // Higher-order component for easy wrapping
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
-  errorBoundaryProps?: Omit<ErrorBoundaryProps, 'children'>
+  errorBoundaryProps?: Omit<ErrorBoundaryProps, "children">
 ) {
   const WrappedComponent = (props: P) => (
     <ErrorBoundary {...errorBoundaryProps}>

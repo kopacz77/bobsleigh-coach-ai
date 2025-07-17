@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Card, Grid, Group, Progress, RingProgress, Stack, Text, Title } from '@mantine/core';
+import { Card, Grid, Group, Progress, RingProgress, Stack, Text, Title } from "@mantine/core";
 
 export function PerformanceMetrics() {
   // In a real app, this data would come from the API
@@ -13,8 +13,8 @@ export function PerformanceMetrics() {
   };
 
   const speedMetrics = {
-    '30m_best': 4.1,
-    '60m_best': 7.3,
+    "30m_best": 4.1,
+    "60m_best": 7.3,
     speed_score: 78,
   };
 
@@ -25,13 +25,15 @@ export function PerformanceMetrics() {
     power_score: 82,
   };
 
-  const overallScore = Math.round((strengthMetrics.strength_score + speedMetrics.speed_score + powerMetrics.power_score) / 3);
+  const overallScore = Math.round(
+    (strengthMetrics.strength_score + speedMetrics.speed_score + powerMetrics.power_score) / 3
+  );
 
   return (
     <Card withBorder p="md" radius="md">
       <Stack>
         <Title order={3}>Performance Metrics</Title>
-        
+
         <Grid>
           <Grid.Col span={{ base: 12, md: 3 }}>
             <Stack align="center" spacing="xs">
@@ -39,18 +41,22 @@ export function PerformanceMetrics() {
                 size={120}
                 thickness={12}
                 roundCaps
-                sections={[{ value: overallScore, color: 'blue' }]}
+                sections={[{ value: overallScore, color: "blue" }]}
                 label={
                   <Text fw={700} ta="center" size="xl">
                     {overallScore}
                   </Text>
                 }
               />
-              <Text fw={500} size="lg">Overall Performance</Text>
-              <Text size="sm" c="dimmed" ta="center">Based on strength, speed, and power scores</Text>
+              <Text fw={500} size="lg">
+                Overall Performance
+              </Text>
+              <Text size="sm" c="dimmed" ta="center">
+                Based on strength, speed, and power scores
+              </Text>
             </Stack>
           </Grid.Col>
-          
+
           <Grid.Col span={{ base: 12, md: 3 }}>
             <Card withBorder h="100%">
               <Stack>
@@ -59,7 +65,7 @@ export function PerformanceMetrics() {
                   <Text fw={700}>{strengthMetrics.strength_score}/100</Text>
                 </Group>
                 <Progress value={strengthMetrics.strength_score} color="blue" size="md" />
-                
+
                 <Stack spacing={5} mt="xs">
                   <Group position="apart">
                     <Text size="sm">Squat 1RM</Text>
@@ -81,7 +87,7 @@ export function PerformanceMetrics() {
               </Stack>
             </Card>
           </Grid.Col>
-          
+
           <Grid.Col span={{ base: 12, md: 3 }}>
             <Card withBorder h="100%">
               <Stack>
@@ -90,21 +96,21 @@ export function PerformanceMetrics() {
                   <Text fw={700}>{speedMetrics.speed_score}/100</Text>
                 </Group>
                 <Progress value={speedMetrics.speed_score} color="green" size="md" />
-                
+
                 <Stack spacing={5} mt="xs">
                   <Group position="apart">
                     <Text size="sm">30m Sprint</Text>
-                    <Text size="sm">{speedMetrics['30m_best']} s</Text>
+                    <Text size="sm">{speedMetrics["30m_best"]} s</Text>
                   </Group>
                   <Group position="apart">
                     <Text size="sm">60m Sprint</Text>
-                    <Text size="sm">{speedMetrics['60m_best']} s</Text>
+                    <Text size="sm">{speedMetrics["60m_best"]} s</Text>
                   </Group>
                 </Stack>
               </Stack>
             </Card>
           </Grid.Col>
-          
+
           <Grid.Col span={{ base: 12, md: 3 }}>
             <Card withBorder h="100%">
               <Stack>
@@ -113,7 +119,7 @@ export function PerformanceMetrics() {
                   <Text fw={700}>{powerMetrics.power_score}/100</Text>
                 </Group>
                 <Progress value={powerMetrics.power_score} color="orange" size="md" />
-                
+
                 <Stack spacing={5} mt="xs">
                   <Group position="apart">
                     <Text size="sm">Vertical Jump</Text>

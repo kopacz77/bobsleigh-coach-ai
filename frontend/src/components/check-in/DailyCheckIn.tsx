@@ -1,30 +1,31 @@
-import React, { useState, useEffect } from 'react';
 import {
+  Badge,
   Box,
-  Title,
-  Text,
+  Button,
   Group,
   Paper,
-  SimpleGrid,
-  Button,
-  Slider,
-  Textarea,
   Select,
+  SimpleGrid,
+  Slider,
+  Text,
+  Textarea,
+  Title,
   useMantineTheme,
-  Badge
-} from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
-import { showNotification } from '@mantine/notifications';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+} from "@mantine/core";
+import { DatePickerInput } from "@mantine/dates";
+import { showNotification } from "@mantine/notifications";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
-  IconHeartFilled,
-  IconBrain,
-  IconZzz,
-  IconSalad,
-  IconMoodNervous, // Replaced IconStress with IconMoodNervous based on previous fixes
   IconActivity, // Replaced IconMuscle with IconActivity based on previous fixes
-  IconFlame
-} from '@tabler/icons-react';
+  IconBrain,
+  IconFlame,
+  IconHeartFilled,
+  IconMoodNervous, // Replaced IconStress with IconMoodNervous based on previous fixes
+  IconSalad,
+  IconZzz,
+} from "@tabler/icons-react";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Daily Check-In data from database
@@ -80,7 +81,7 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
   const supabase = useSupabaseClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [savedCheckIn, setSavedCheckIn] = useState<CheckIn | null>(null);
-  
+
   // Check-in form state
   const [checkIn, setCheckIn] = useState<CheckInForm>({
     sleep_quality: 5,
@@ -90,26 +91,27 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
     mental_readiness: 5,
     nutrition_quality: 5,
     hydration_level: 5,
-    injury_concerns: '',
-    notes: '',
-    training_readiness: 'ready'
+    injury_concerns: "",
+    notes: "",
+    training_readiness: "ready",
   });
 
-  const dateString = date.toISOString().split('T')[0];
+  const dateString = date.toISOString().split("T")[0];
 
   // Fetch existing check-in data for the given date
   useEffect(() => {
     const fetchCheckIn = async () => {
       try {
         const { data, error } = await supabase
-          .from('daily_checkins')
-          .select('*')
-          .eq('user_id', userId)
-          .eq('date', dateString)
+          .from("daily_checkins")
+          .select("*")
+          .eq("user_id", userId)
+          .eq("date", dateString)
           .single();
 
-        if (error && error.code !== 'PGRST116') { // Code for no rows returned
-          console.error('Error fetching daily check-in:', error);
+        if (error && error.code !== "PGRST116") {
+          // Code for no rows returned
+          console.error("Error fetching daily check-in:", error);
           return;
         }
 
@@ -123,13 +125,13 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
             mental_readiness: data.mental_readiness,
             nutrition_quality: data.nutrition_quality,
             hydration_level: data.hydration_level,
-            injury_concerns: data.injury_concerns || '',
-            notes: data.notes || '',
-            training_readiness: data.training_readiness
+            injury_concerns: data.injury_concerns || "",
+            notes: data.notes || "",
+            training_readiness: data.training_readiness,
           });
         }
       } catch (error) {
-        console.error('Error in daily check-in fetch:', error);
+        console.error("Error in daily check-in fetch:", error);
       }
     };
 
@@ -146,14 +148,15 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
   // Handle sleep hours change
   const handleSleepHoursChange = (value: string | null) => {
     if (value) {
-      setCheckIn((prev) => ({ ...prev, sleep_hours: parseInt(value, 10) }));
+      setCheckIn((prev) => ({ ...prev, sleep_hours: Number.parseInt(value, 10) }));
     }
   };
 
   // Handle text input changes
-  const handleTextChange = (field: keyof CheckInForm) => (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCheckIn((prev) => ({ ...prev, [field]: event.target.value }));
-  };
+  const handleTextChange =
+    (field: keyof CheckInForm) => (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setCheckIn((prev) => ({ ...prev, [field]: event.target.value }));
+    };
 
   // Handle training readiness selection
   const handleReadinessChange = (value: string | null) => {
@@ -165,60 +168,55 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
   // Submit check-in data
   const handleSubmit = async () => {
     setLoading(true);
-    
+
     try {
       const checkInData = {
         user_id: userId,
         date: dateString,
-        ...checkIn
+        ...checkIn,
       };
 
       let query;
-      
+
       if (savedCheckIn) {
         // Update existing check-in
-        query = supabase
-          .from('daily_checkins')
-          .update(checkInData)
-          .eq('id', savedCheckIn.id);
+        query = supabase.from("daily_checkins").update(checkInData).eq("id", savedCheckIn.id);
       } else {
         // Insert new check-in
-        query = supabase
-          .from('daily_checkins')
-          .insert(checkInData);
+        query = supabase.from("daily_checkins").insert(checkInData);
       }
 
       const { error } = await query;
-      
+
       if (error) {
         throw error;
       }
 
       showNotification({
-        title: 'Success',
-        message: 'Daily check-in saved successfully',
-        color: 'green',
+        title: "Success",
+        message: "Daily check-in saved successfully",
+        color: "green",
       });
 
       // Refresh data to get the ID if it was a new record
       if (!savedCheckIn) {
         const { data, error } = await supabase
-          .from('daily_checkins')
-          .select('*')
-          .eq('user_id', userId)
-          .eq('date', dateString)
+          .from("daily_checkins")
+          .select("*")
+          .eq("user_id", userId)
+          .eq("date", dateString)
           .single();
-          
+
         if (!error && data) {
           setSavedCheckIn(data as CheckIn);
         }
       }
     } catch (error) {
-      console.error('Error saving daily check-in:', error);
+      console.error("Error saving daily check-in:", error);
       showNotification({
-        title: 'Error',
-        message: 'Failed to save daily check-in',
-        color: 'red',
+        title: "Error",
+        message: "Failed to save daily check-in",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -232,12 +230,11 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
       if (value >= 7) return theme.colors.red[6];
       if (value >= 4) return theme.colors.yellow[6];
       return theme.colors.green[6];
-    } else {
-      // For metrics where higher is better (like sleep quality)
-      if (value <= 3) return theme.colors.red[6];
-      if (value <= 6) return theme.colors.yellow[6];
-      return theme.colors.green[6];
     }
+    // For metrics where higher is better (like sleep quality)
+    if (value <= 3) return theme.colors.red[6];
+    if (value <= 6) return theme.colors.yellow[6];
+    return theme.colors.green[6];
   };
 
   // Calculate overall readiness score
@@ -248,78 +245,94 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
       muscle_soreness,
       mental_readiness,
       nutrition_quality,
-      hydration_level
+      hydration_level,
     } = checkIn;
-    
+
     // Calculate weighted average (invert fatigue and soreness since lower is better)
     return Math.round(
-      (sleep_quality * 1.2 + 
-      (11 - fatigue_level) * 1.2 + 
-      (11 - muscle_soreness) * 1.0 + 
-      mental_readiness * 1.5 + 
-      nutrition_quality * 0.7 + 
-      hydration_level * 0.7) / 6.3
+      (sleep_quality * 1.2 +
+        (11 - fatigue_level) * 1.2 +
+        (11 - muscle_soreness) * 1.0 +
+        mental_readiness * 1.5 +
+        nutrition_quality * 0.7 +
+        hydration_level * 0.7) /
+        6.3
     );
   };
 
   // Get color for readiness badge
   const getReadinessColor = (status: string): string => {
     switch (status) {
-      case 'ready': return 'green';
-      case 'limited': return 'yellow';
-      case 'recovery': return 'orange';
-      case 'not_ready': return 'red';
-      default: return 'blue';
+      case "ready":
+        return "green";
+      case "limited":
+        return "yellow";
+      case "recovery":
+        return "orange";
+      case "not_ready":
+        return "red";
+      default:
+        return "blue";
     }
   };
 
   // Get label for readiness badge
   const getReadinessLabel = (status: string): string => {
     switch (status) {
-      case 'ready': return 'Ready to Train';
-      case 'limited': return 'Limited Training';
-      case 'recovery': return 'Recovery Needed';
-      case 'not_ready': return 'Not Ready to Train';
-      default: return 'Unspecified';
+      case "ready":
+        return "Ready to Train";
+      case "limited":
+        return "Limited Training";
+      case "recovery":
+        return "Recovery Needed";
+      case "not_ready":
+        return "Not Ready to Train";
+      default:
+        return "Unspecified";
     }
   };
 
   return (
     <Box>
-      <Title order={2} mb="md">Daily Check-In</Title>
+      <Title order={2} mb="md">
+        Daily Check-In
+      </Title>
       <Text color="dimmed" mb="xl">
-        Complete your daily wellness check to help optimize your training and ensure safe and effective sessions. 
-        This takes less than 2 minutes and provides valuable data for your coaches.
+        Complete your daily wellness check to help optimize your training and ensure safe and
+        effective sessions. This takes less than 2 minutes and provides valuable data for your
+        coaches.
       </Text>
 
       <Paper p="md" radius="md" withBorder mb="xl">
         <Group justify="apart">
           <Box>
-            <Text size="xl" fw={700}>Today's Readiness</Text>
-            <Text size="sm" color="dimmed" mb="md">Based on your metrics</Text>
+            <Text size="xl" fw={700}>
+              Today's Readiness
+            </Text>
+            <Text size="sm" color="dimmed" mb="md">
+              Based on your metrics
+            </Text>
           </Box>
-          
-          <Box style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+
+          <Box style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <Box
               style={{
                 width: 80,
                 height: 80,
-                borderRadius: '50%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                borderRadius: "50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
                 backgroundColor: getSliderColor(calculateReadinessScore()),
-                color: '#fff',
+                color: "#fff",
               }}
             >
-              <Text size="xl" fw={700}>{calculateReadinessScore()}</Text>
+              <Text size="xl" fw={700}>
+                {calculateReadinessScore()}
+              </Text>
             </Box>
-            
-            <Badge 
-              size="lg" 
-              color={getReadinessColor(checkIn.training_readiness)}
-              variant="filled"
-            >
+
+            <Badge size="lg" color={getReadinessColor(checkIn.training_readiness)} variant="filled">
               {getReadinessLabel(checkIn.training_readiness)}
             </Badge>
           </Box>
@@ -333,38 +346,42 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
               <IconZzz size={24} color={theme.colors.blue[6]} />
               <Text fw={600}>Sleep Metrics</Text>
             </Group>
-            
+
             <Box mb="lg">
-              <Text fw={500} size="sm">Sleep Quality</Text>
+              <Text fw={500} size="sm">
+                Sleep Quality
+              </Text>
               <Slider
                 value={checkIn.sleep_quality}
-                onChange={handleSliderChange('sleep_quality')}
+                onChange={handleSliderChange("sleep_quality")}
                 min={1}
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'Poor' },
-                  { value: 5, label: 'Average' },
-                  { value: 10, label: 'Excellent' },
+                  { value: 1, label: "Poor" },
+                  { value: 5, label: "Average" },
+                  { value: 10, label: "Excellent" },
                 ]}
                 color={getSliderColor(checkIn.sleep_quality)}
                 mb="sm"
               />
             </Box>
-            
+
             <Box mb="lg">
-              <Text fw={500} size="sm">Hours of Sleep</Text>
+              <Text fw={500} size="sm">
+                Hours of Sleep
+              </Text>
               <Select
                 value={checkIn.sleep_hours.toString()}
                 onChange={handleSleepHoursChange}
                 data={[
-                  { value: '4', label: 'Less than 5 hours' },
-                  { value: '5', label: '5 hours' },
-                  { value: '6', label: '6 hours' },
-                  { value: '7', label: '7 hours' },
-                  { value: '8', label: '8 hours' },
-                  { value: '9', label: '9 hours' },
-                  { value: '10', label: '10+ hours' },
+                  { value: "4", label: "Less than 5 hours" },
+                  { value: "5", label: "5 hours" },
+                  { value: "6", label: "6 hours" },
+                  { value: "7", label: "7 hours" },
+                  { value: "8", label: "8 hours" },
+                  { value: "9", label: "9 hours" },
+                  { value: "10", label: "10+ hours" },
                 ]}
                 mb="sm"
               />
@@ -378,37 +395,41 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
               <IconHeartFilled size={24} color={theme.colors.red[6]} />
               <Text fw={600}>Recovery Status</Text>
             </Group>
-            
+
             <Box mb="lg">
-              <Text fw={500} size="sm">Fatigue Level</Text>
+              <Text fw={500} size="sm">
+                Fatigue Level
+              </Text>
               <Slider
                 value={checkIn.fatigue_level}
-                onChange={handleSliderChange('fatigue_level')}
+                onChange={handleSliderChange("fatigue_level")}
                 min={1}
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'Fresh' },
-                  { value: 5, label: 'Moderate' },
-                  { value: 10, label: 'Exhausted' },
+                  { value: 1, label: "Fresh" },
+                  { value: 5, label: "Moderate" },
+                  { value: 10, label: "Exhausted" },
                 ]}
                 color={getSliderColor(checkIn.fatigue_level, true)}
                 mb="sm"
               />
             </Box>
-            
+
             <Box mb="lg">
-              <Text fw={500} size="sm">Muscle Soreness</Text>
+              <Text fw={500} size="sm">
+                Muscle Soreness
+              </Text>
               <Slider
                 value={checkIn.muscle_soreness}
-                onChange={handleSliderChange('muscle_soreness')}
+                onChange={handleSliderChange("muscle_soreness")}
                 min={1}
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'None' },
-                  { value: 5, label: 'Moderate' },
-                  { value: 10, label: 'Severe' },
+                  { value: 1, label: "None" },
+                  { value: 5, label: "Moderate" },
+                  { value: 10, label: "Severe" },
                 ]}
                 color={getSliderColor(checkIn.muscle_soreness, true)}
                 mb="sm"
@@ -423,19 +444,21 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
               <IconBrain size={24} color={theme.colors.violet[6]} />
               <Text fw={600}>Mental Readiness</Text>
             </Group>
-            
+
             <Box mb="lg">
-              <Text fw={500} size="sm">Mental Focus & Readiness</Text>
+              <Text fw={500} size="sm">
+                Mental Focus & Readiness
+              </Text>
               <Slider
                 value={checkIn.mental_readiness}
-                onChange={handleSliderChange('mental_readiness')}
+                onChange={handleSliderChange("mental_readiness")}
                 min={1}
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'Distracted' },
-                  { value: 5, label: 'Average' },
-                  { value: 10, label: 'Fully Focused' },
+                  { value: 1, label: "Distracted" },
+                  { value: 5, label: "Average" },
+                  { value: 10, label: "Fully Focused" },
                 ]}
                 color={getSliderColor(checkIn.mental_readiness)}
                 mb="sm"
@@ -450,37 +473,41 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
               <IconSalad size={24} color={theme.colors.green[6]} />
               <Text fw={600}>Nutrition & Hydration</Text>
             </Group>
-            
+
             <Box mb="lg">
-              <Text fw={500} size="sm">Nutrition Quality</Text>
+              <Text fw={500} size="sm">
+                Nutrition Quality
+              </Text>
               <Slider
                 value={checkIn.nutrition_quality}
-                onChange={handleSliderChange('nutrition_quality')}
+                onChange={handleSliderChange("nutrition_quality")}
                 min={1}
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'Poor' },
-                  { value: 5, label: 'Average' },
-                  { value: 10, label: 'Excellent' },
+                  { value: 1, label: "Poor" },
+                  { value: 5, label: "Average" },
+                  { value: 10, label: "Excellent" },
                 ]}
                 color={getSliderColor(checkIn.nutrition_quality)}
                 mb="sm"
               />
             </Box>
-            
+
             <Box mb="lg">
-              <Text fw={500} size="sm">Hydration Level</Text>
+              <Text fw={500} size="sm">
+                Hydration Level
+              </Text>
               <Slider
                 value={checkIn.hydration_level}
-                onChange={handleSliderChange('hydration_level')}
+                onChange={handleSliderChange("hydration_level")}
                 min={1}
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'Dehydrated' },
-                  { value: 5, label: 'Adequate' },
-                  { value: 10, label: 'Optimal' },
+                  { value: 1, label: "Dehydrated" },
+                  { value: 5, label: "Adequate" },
+                  { value: 10, label: "Optimal" },
                 ]}
                 color={getSliderColor(checkIn.hydration_level)}
                 mb="sm"
@@ -495,33 +522,37 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
           <IconActivity size={24} color={theme.colors.orange[6]} />
           <Text fw={600}>Injury & Concerns</Text>
         </Group>
-        
+
         <Textarea
           placeholder="Note any injury concerns, pain points, or physical limitations that may affect today's training"
           value={checkIn.injury_concerns}
-          onChange={handleTextChange('injury_concerns')}
+          onChange={handleTextChange("injury_concerns")}
           minRows={2}
           mb="lg"
         />
-        
-        <Text fw={500} size="sm" mb="xs">Today's Training Readiness</Text>
+
+        <Text fw={500} size="sm" mb="xs">
+          Today's Training Readiness
+        </Text>
         <Select
           value={checkIn.training_readiness}
           onChange={handleReadinessChange}
           data={[
-            { value: 'ready', label: 'Ready to Train (Full Intensity)' },
-            { value: 'limited', label: 'Limited Training (Moderate Intensity)' },
-            { value: 'recovery', label: 'Recovery Needed (Light Activity Only)' },
-            { value: 'not_ready', label: 'Not Ready to Train (Rest Day)' }
+            { value: "ready", label: "Ready to Train (Full Intensity)" },
+            { value: "limited", label: "Limited Training (Moderate Intensity)" },
+            { value: "recovery", label: "Recovery Needed (Light Activity Only)" },
+            { value: "not_ready", label: "Not Ready to Train (Rest Day)" },
           ]}
           mb="lg"
         />
-        
-        <Text fw={500} size="sm" mb="xs">Additional Notes</Text>
+
+        <Text fw={500} size="sm" mb="xs">
+          Additional Notes
+        </Text>
         <Textarea
           placeholder="Any other relevant information about your current status"
           value={checkIn.notes}
-          onChange={handleTextChange('notes')}
+          onChange={handleTextChange("notes")}
           minRows={3}
           mb="md"
         />
@@ -534,7 +565,7 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
             color="blue"
             leftSection={<IconFlame size={20} />}
           >
-            {savedCheckIn ? 'Update Check-In' : 'Submit Check-In'}
+            {savedCheckIn ? "Update Check-In" : "Submit Check-In"}
           </Button>
         </Group>
       </Paper>

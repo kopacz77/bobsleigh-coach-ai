@@ -1,30 +1,30 @@
 "use client";
 
 import {
-  Card,
-  Group,
-  Text,
-  Badge,
-  Stack,
-  Table,
-  Button,
-  Tooltip,
   ActionIcon,
   Alert,
+  Badge,
+  Button,
+  Card,
+  Group,
   Progress,
+  Stack,
+  Table,
+  Text,
+  Tooltip,
 } from "@mantine/core";
 import {
+  IconAlertTriangle,
   IconCheck,
   IconClock,
-  IconWeight,
-  IconRepeat,
   IconInfoCircle,
-  IconAlertTriangle,
-  IconTrendingUp,
-  IconTrendingDown,
   IconMinus,
+  IconRepeat,
+  IconTrendingDown,
+  IconTrendingUp,
+  IconWeight,
 } from "@tabler/icons-react";
-import { SessionExercise, ExerciseSet } from "@/lib/types/training";
+import { ExerciseSet, type SessionExercise } from "@/lib/types/training";
 
 interface ExerciseCardProps {
   sessionExercise: SessionExercise;
@@ -41,7 +41,7 @@ export function ExerciseCard({
 }: ExerciseCardProps) {
   const { exercise, sets, isMainExercise, adaptationReason, substitutedFrom } = sessionExercise;
 
-  const completedSets = sets.filter(set => set.completed).length;
+  const completedSets = sets.filter((set) => set.completed).length;
   const totalSets = sets.length;
   const completionPercentage = totalSets > 0 ? (completedSets / totalSets) * 100 : 0;
 
@@ -58,7 +58,7 @@ export function ExerciseCard({
 
   const getAdjustmentIcon = () => {
     if (!adaptationReason) return null;
-    
+
     if (adaptationReason.includes("reduce") || adaptationReason.includes("easier")) {
       return <IconTrendingDown size={16} color="orange" />;
     }
@@ -143,22 +143,18 @@ export function ExerciseCard({
               </Text>
               {getAdjustmentIcon()}
             </Group>
-            
+
             <Group gap="xs">
-              <Badge
-                color={getCategoryColor(exercise.category)}
-                variant="light"
-                size="sm"
-              >
+              <Badge color={getCategoryColor(exercise.category)} variant="light" size="sm">
                 {exercise.category}
               </Badge>
-              
+
               {isMainExercise && (
                 <Badge color="dark" variant="filled" size="sm">
                   Main Exercise
                 </Badge>
               )}
-              
+
               {exercise.equipment && (
                 <Badge color="gray" variant="outline" size="sm">
                   {exercise.equipment}
@@ -171,7 +167,7 @@ export function ExerciseCard({
             <Text size="sm" c="dimmed">
               {completedSets}/{totalSets} sets
             </Text>
-            
+
             {exercise.description && (
               <Tooltip label={exercise.description} multiline>
                 <ActionIcon variant="subtle" size="sm">
@@ -185,8 +181,12 @@ export function ExerciseCard({
         {/* Progress */}
         <Stack gap={4}>
           <Group justify="space-between">
-            <Text size="sm" fw={500}>Progress</Text>
-            <Text size="sm" c="dimmed">{Math.round(completionPercentage)}%</Text>
+            <Text size="sm" fw={500}>
+              Progress
+            </Text>
+            <Text size="sm" c="dimmed">
+              {Math.round(completionPercentage)}%
+            </Text>
           </Group>
           <Progress value={completionPercentage} size="sm" />
         </Stack>

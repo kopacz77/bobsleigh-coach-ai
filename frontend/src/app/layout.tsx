@@ -1,17 +1,17 @@
-import '@mantine/core/styles.css';
-import '@mantine/dates/styles.css';
-import '@mantine/notifications/styles.css';
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import "@mantine/notifications/styles.css";
 
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
-import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
-import { SupabaseProvider } from '@/providers/SupabaseProvider';
-import { AuthGuard } from '@/components/auth/AuthGuard';
-import { theme } from '@/styles/theme';
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
+import { AuthGuard } from "@/components/auth/AuthGuard";
+import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
+import { SupabaseProvider } from "@/providers/SupabaseProvider";
+import { theme } from "@/styles/theme";
 
 export const metadata = {
-  title: 'Bobsleigh Coach AI',
-  description: 'AI-powered training application for bobsleigh athletes',
+  title: "Bobsleigh Coach AI",
+  description: "AI-powered training application for bobsleigh athletes",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

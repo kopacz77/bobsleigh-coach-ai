@@ -1,22 +1,22 @@
 "use client";
 
 import {
+  Alert,
   Card,
-  Stack,
-  Text,
+  Group,
   Loader,
   Progress,
-  Group,
-  ThemeIcon,
   Skeleton,
-  Alert,
+  Stack,
+  Text,
+  ThemeIcon,
   Timeline,
 } from "@mantine/core";
 import {
-  IconBrain,
   IconActivity,
-  IconCheck,
+  IconBrain,
   IconChartLine,
+  IconCheck,
   IconTargetArrow,
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -31,12 +31,11 @@ export function AIProcessingLoader({ stage, progress = 0, message }: AIProcessin
   const [currentProgress, setCurrentProgress] = useState(0);
 
   useEffect(() => {
-    const targetProgress = stage === "analyzing" ? 25 : 
-                          stage === "adapting" ? 50 : 
-                          stage === "generating" ? 85 : 100;
-    
+    const targetProgress =
+      stage === "analyzing" ? 25 : stage === "adapting" ? 50 : stage === "generating" ? 85 : 100;
+
     const interval = setInterval(() => {
-      setCurrentProgress(prev => {
+      setCurrentProgress((prev) => {
         if (prev < targetProgress) {
           return Math.min(prev + 2, targetProgress);
         }
@@ -100,7 +99,7 @@ export function AIProcessingLoader({ stage, progress = 0, message }: AIProcessin
         </Group>
 
         <Progress value={currentProgress} size="lg" radius="xl" animated />
-        
+
         <Text size="xs" c="dimmed" ta="center">
           {currentProgress}% complete
         </Text>
@@ -131,7 +130,7 @@ export function ProcessingTimeline({ currentStep, steps }: ProcessingTimelinePro
         <Text fw={600} size="lg" ta="center">
           AI Processing Pipeline
         </Text>
-        
+
         <Timeline active={currentStep} bulletSize={24} lineWidth={2}>
           {steps.map((step, index) => (
             <Timeline.Item
@@ -177,9 +176,9 @@ export function ExerciseCardSkeleton() {
           </Stack>
           <Skeleton height={20} width={60} />
         </Group>
-        
+
         <Skeleton height={8} />
-        
+
         <Stack gap="xs">
           {Array.from({ length: 4 }, (_, i) => (
             <Group key={i} justify="space-between">
@@ -261,7 +260,7 @@ export function SmartLoadingWrapper({
     } else if (startTime) {
       const elapsed = Date.now() - startTime;
       const remaining = Math.max(0, minLoadingTime - elapsed);
-      
+
       setTimeout(() => {
         setShowLoading(false);
         setStartTime(null);

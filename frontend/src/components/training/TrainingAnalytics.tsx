@@ -1,37 +1,37 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
 import {
-  Card,
-  Group,
-  Title,
-  Text,
-  Stack,
-  SimpleGrid,
-  SegmentedControl,
-  RingProgress,
-  Paper,
-  ThemeIcon,
-  rem,
-  Tabs,
-  Grid,
-  List,
   Badge,
-} from '@mantine/core';
-import { Line, Bar } from 'react-chartjs-2';
+  Card,
+  Grid,
+  Group,
+  List,
+  Paper,
+  RingProgress,
+  rem,
+  SegmentedControl,
+  SimpleGrid,
+  Stack,
+  Tabs,
+  Text,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
+import { IconActivity, IconBarbell, IconChartBar, IconRun, IconWeight } from "@tabler/icons-react";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
   BarElement,
+  CategoryScale,
+  Chart as ChartJS,
   Title as ChartTitle,
-  Tooltip,
-  Legend,
   Filler,
-} from 'chart.js';
-import { IconActivity, IconBarbell, IconChartBar, IconRun, IconWeight } from '@tabler/icons-react';
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
+} from "chart.js";
+import { useState } from "react";
+import { Bar, Line } from "react-chartjs-2";
 
 // Register ChartJS components
 ChartJS.register(
@@ -47,8 +47,8 @@ ChartJS.register(
 );
 
 export function TrainingAnalytics() {
-  const [timeRange, setTimeRange] = useState('4w');
-  const [activeTab, setActiveTab] = useState('overview');
+  const [timeRange, setTimeRange] = useState("4w");
+  const [activeTab, setActiveTab] = useState("overview");
 
   // Mock data for training distribution
   const trainingDistribution = {
@@ -60,13 +60,13 @@ export function TrainingAnalytics() {
 
   // Training load chart data
   const loadChartData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
     datasets: [
       {
-        label: 'Training Load',
+        label: "Training Load",
         data: [520, 580, 620, 540],
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        borderColor: 'rgba(53, 162, 235, 1)',
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        borderColor: "rgba(53, 162, 235, 1)",
         borderWidth: 2,
       },
     ],
@@ -74,22 +74,22 @@ export function TrainingAnalytics() {
 
   // Training distribution chart data
   const distributionChartData = {
-    labels: ['Strength', 'Speed', 'Technical', 'Recovery'],
+    labels: ["Strength", "Speed", "Technical", "Recovery"],
     datasets: [
       {
-        label: 'Hours',
+        label: "Hours",
         data: [12, 9, 6, 3],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.6)',
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(75, 192, 192, 0.6)',
+          "rgba(255, 99, 132, 0.6)",
+          "rgba(54, 162, 235, 0.6)",
+          "rgba(255, 206, 86, 0.6)",
+          "rgba(75, 192, 192, 0.6)",
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
         ],
         borderWidth: 1,
       },
@@ -98,21 +98,17 @@ export function TrainingAnalytics() {
 
   // Intensity distribution chart data
   const intensityChartData = {
-    labels: ['Low', 'Medium', 'High'],
+    labels: ["Low", "Medium", "High"],
     datasets: [
       {
-        label: 'Hours',
+        label: "Hours",
         data: [6, 15, 9],
         backgroundColor: [
-          'rgba(75, 192, 192, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(255, 99, 132, 0.6)',
+          "rgba(75, 192, 192, 0.6)",
+          "rgba(255, 206, 86, 0.6)",
+          "rgba(255, 99, 132, 0.6)",
         ],
-        borderColor: [
-          'rgba(75, 192, 192, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(255, 99, 132, 1)',
-        ],
+        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 206, 86, 1)", "rgba(255, 99, 132, 1)"],
         borderWidth: 1,
       },
     ],
@@ -120,23 +116,23 @@ export function TrainingAnalytics() {
 
   // Performance metrics chart data
   const performanceChartData = {
-    labels: ['Jan', 'Feb', 'Mar'],
+    labels: ["Jan", "Feb", "Mar"],
     datasets: [
       {
-        label: 'Squat 1RM (kg)',
+        label: "Squat 1RM (kg)",
         data: [140, 145, 155],
-        borderColor: 'rgba(255, 99, 132, 1)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: "rgba(255, 99, 132, 1)",
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
         tension: 0.4,
-        yAxisID: 'y',
+        yAxisID: "y",
       },
       {
-        label: 'Sprint 30m (s)',
+        label: "Sprint 30m (s)",
         data: [4.3, 4.2, 4.1],
-        borderColor: 'rgba(54, 162, 235, 1)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: "rgba(54, 162, 235, 1)",
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
         tension: 0.4,
-        yAxisID: 'y1',
+        yAxisID: "y1",
       },
     ],
   };
@@ -144,26 +140,26 @@ export function TrainingAnalytics() {
   const options = {
     responsive: true,
     interaction: {
-      mode: 'index' as const,
+      mode: "index" as const,
       intersect: false,
     },
     scales: {
       y: {
-        type: 'linear' as const,
+        type: "linear" as const,
         display: true,
-        position: 'left' as const,
+        position: "left" as const,
         title: {
           display: true,
-          text: 'Weight (kg)',
+          text: "Weight (kg)",
         },
       },
       y1: {
-        type: 'linear' as const,
+        type: "linear" as const,
         display: true,
-        position: 'right' as const,
+        position: "right" as const,
         title: {
           display: true,
-          text: 'Time (s)',
+          text: "Time (s)",
         },
         grid: {
           drawOnChartArea: false,
@@ -177,16 +173,28 @@ export function TrainingAnalytics() {
     <Stack spacing="xl">
       <Tabs value={activeTab} onChange={setActiveTab}>
         <Tabs.List>
-          <Tabs.Tab value="overview" leftSection={<IconChartBar style={{ width: rem(16), height: rem(16) }} />}>
+          <Tabs.Tab
+            value="overview"
+            leftSection={<IconChartBar style={{ width: rem(16), height: rem(16) }} />}
+          >
             Overview
           </Tabs.Tab>
-          <Tabs.Tab value="performance" leftSection={<IconActivity style={{ width: rem(16), height: rem(16) }} />}>
+          <Tabs.Tab
+            value="performance"
+            leftSection={<IconActivity style={{ width: rem(16), height: rem(16) }} />}
+          >
             Performance
           </Tabs.Tab>
-          <Tabs.Tab value="strength" leftSection={<IconWeight style={{ width: rem(16), height: rem(16) }} />}>
+          <Tabs.Tab
+            value="strength"
+            leftSection={<IconWeight style={{ width: rem(16), height: rem(16) }} />}
+          >
             Strength
           </Tabs.Tab>
-          <Tabs.Tab value="speed" leftSection={<IconRun style={{ width: rem(16), height: rem(16) }} />}>
+          <Tabs.Tab
+            value="speed"
+            leftSection={<IconRun style={{ width: rem(16), height: rem(16) }} />}
+          >
             Speed
           </Tabs.Tab>
         </Tabs.List>
@@ -199,10 +207,10 @@ export function TrainingAnalytics() {
                 value={timeRange}
                 onChange={setTimeRange}
                 data={[
-                  { label: '4W', value: '4w' },
-                  { label: '3M', value: '3m' },
-                  { label: '6M', value: '6m' },
-                  { label: '1Y', value: '1y' },
+                  { label: "4W", value: "4w" },
+                  { label: "3M", value: "3m" },
+                  { label: "6M", value: "6m" },
+                  { label: "1Y", value: "1y" },
                 ]}
                 size="xs"
               />
@@ -212,15 +220,15 @@ export function TrainingAnalytics() {
               <Card withBorder shadow="sm" p="md">
                 <Stack spacing="md">
                   <Title order={4}>Weekly Training Load</Title>
-                  <Bar 
-                    data={loadChartData} 
+                  <Bar
+                    data={loadChartData}
                     options={{
                       scales: {
                         y: {
                           beginAtZero: true,
                           title: {
                             display: true,
-                            text: 'Training Load Units',
+                            text: "Training Load Units",
                           },
                         },
                       },
@@ -237,15 +245,19 @@ export function TrainingAnalytics() {
                       size={180}
                       thickness={20}
                       sections={[
-                        { value: trainingDistribution.strength, color: 'red' },
-                        { value: trainingDistribution.speed, color: 'blue' },
-                        { value: trainingDistribution.technical, color: 'yellow' },
-                        { value: trainingDistribution.recovery, color: 'teal' },
+                        { value: trainingDistribution.strength, color: "red" },
+                        { value: trainingDistribution.speed, color: "blue" },
+                        { value: trainingDistribution.technical, color: "yellow" },
+                        { value: trainingDistribution.recovery, color: "teal" },
                       ]}
                       label={
                         <Stack spacing={0} align="center">
-                          <Text fw={700} size="lg">30 hrs</Text>
-                          <Text size="xs" c="dimmed">Total</Text>
+                          <Text fw={700} size="lg">
+                            30 hrs
+                          </Text>
+                          <Text size="xs" c="dimmed">
+                            Total
+                          </Text>
                         </Stack>
                       }
                     />
@@ -297,7 +309,7 @@ export function TrainingAnalytics() {
                     <List.Item>Average Duration: 75 min</List.Item>
                     <List.Item>Completion Rate: 92%</List.Item>
                     <List.Item>
-                      Intensity Distribution: 
+                      Intensity Distribution:
                       <Group spacing="xs" mt={5}>
                         <Badge color="green">Low: 20%</Badge>
                         <Badge color="yellow">Med: 50%</Badge>
@@ -333,9 +345,15 @@ export function TrainingAnalytics() {
                     </ThemeIcon>
                     <Title order={5}>Training Balance</Title>
                   </Group>
-                  <Text size="sm">Your training balance is looking good with a proper mix of high-intensity and recovery sessions. Consider slightly increasing technical training sessions to enhance skill development.</Text>
+                  <Text size="sm">
+                    Your training balance is looking good with a proper mix of high-intensity and
+                    recovery sessions. Consider slightly increasing technical training sessions to
+                    enhance skill development.
+                  </Text>
                   <Group mt="sm">
-                    <Badge color="green" size="lg">Well Balanced</Badge>
+                    <Badge color="green" size="lg">
+                      Well Balanced
+                    </Badge>
                   </Group>
                 </Stack>
               </Paper>

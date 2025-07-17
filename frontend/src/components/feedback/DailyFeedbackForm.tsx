@@ -1,20 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import {
+  Alert,
+  Badge,
+  Button,
   Card,
-  Stack,
-  Title,
+  Group,
+  Progress,
   Slider,
+  Stack,
   Text,
   Textarea,
-  Button,
-  Group,
-  Badge,
-  Alert,
-  Progress,
+  Title,
 } from "@mantine/core";
-import { IconCheck, IconActivity, IconHeart, IconBrain } from "@tabler/icons-react";
+import { IconActivity, IconBrain, IconCheck, IconHeart } from "@tabler/icons-react";
+import { useState } from "react";
 
 interface DailyFeedback {
   sessionRpe: number;
@@ -63,7 +63,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
       energy: ["Exhausted", "Low", "Moderate", "High", "Excellent"],
       motivation: ["None", "Low", "Moderate", "High", "Excellent"],
     };
-    
+
     const index = Math.min(Math.floor((value - 1) / 2), 4);
     return labels[type][index];
   };
@@ -73,11 +73,10 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
       if (value <= 3) return "green";
       if (value <= 6) return "yellow";
       return "red";
-    } else {
-      if (value <= 3) return "red";
-      if (value <= 6) return "yellow";
-      return "green";
     }
+    if (value <= 3) return "red";
+    if (value <= 6) return "yellow";
+    return "green";
   };
 
   const renderStep = () => {
@@ -89,7 +88,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
             <Text size="sm" c="dimmed">
               Rate the overall intensity of your training session
             </Text>
-            
+
             <Stack gap="xs">
               <Group justify="space-between">
                 <Text fw={500}>Session RPE (Rate of Perceived Exertion)</Text>
@@ -97,7 +96,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                   {feedback.sessionRpe}/10 - {getScaleLabel(feedback.sessionRpe, "rpe")}
                 </Badge>
               </Group>
-              
+
               <Slider
                 value={feedback.sessionRpe}
                 onChange={(value) => setFeedback({ ...feedback, sessionRpe: value })}
@@ -113,10 +112,14 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                 ]}
                 color={getScaleColor(feedback.sessionRpe)}
               />
-              
+
               <Group justify="space-between">
-                <Text size="xs" c="dimmed">Very Easy</Text>
-                <Text size="xs" c="dimmed">Maximal</Text>
+                <Text size="xs" c="dimmed">
+                  Very Easy
+                </Text>
+                <Text size="xs" c="dimmed">
+                  Maximal
+                </Text>
               </Group>
             </Stack>
 
@@ -135,15 +138,16 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
             <Text size="sm" c="dimmed">
               Rate your current physical state
             </Text>
-            
+
             <Stack gap="xs">
               <Group justify="space-between">
                 <Text fw={500}>Muscle Soreness</Text>
                 <Badge color={getScaleColor(feedback.muscleSoreness, true)} variant="light">
-                  {feedback.muscleSoreness}/10 - {getScaleLabel(feedback.muscleSoreness, "soreness")}
+                  {feedback.muscleSoreness}/10 -{" "}
+                  {getScaleLabel(feedback.muscleSoreness, "soreness")}
                 </Badge>
               </Group>
-              
+
               <Slider
                 value={feedback.muscleSoreness}
                 onChange={(value) => setFeedback({ ...feedback, muscleSoreness: value })}
@@ -159,10 +163,14 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                 ]}
                 color={getScaleColor(feedback.muscleSoreness, true)}
               />
-              
+
               <Group justify="space-between">
-                <Text size="xs" c="dimmed">No Soreness</Text>
-                <Text size="xs" c="dimmed">Very Sore</Text>
+                <Text size="xs" c="dimmed">
+                  No Soreness
+                </Text>
+                <Text size="xs" c="dimmed">
+                  Very Sore
+                </Text>
               </Group>
             </Stack>
 
@@ -181,7 +189,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
             <Text size="sm" c="dimmed">
               Rate your energy and motivation levels
             </Text>
-            
+
             <Stack gap="xl">
               <Stack gap="xs">
                 <Group justify="space-between">
@@ -190,7 +198,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                     {feedback.energyLevel}/10 - {getScaleLabel(feedback.energyLevel, "energy")}
                   </Badge>
                 </Group>
-                
+
                 <Slider
                   value={feedback.energyLevel}
                   onChange={(value) => setFeedback({ ...feedback, energyLevel: value })}
@@ -204,10 +212,14 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                   ]}
                   color={getScaleColor(feedback.energyLevel)}
                 />
-                
+
                 <Group justify="space-between">
-                  <Text size="xs" c="dimmed">Exhausted</Text>
-                  <Text size="xs" c="dimmed">Excellent</Text>
+                  <Text size="xs" c="dimmed">
+                    Exhausted
+                  </Text>
+                  <Text size="xs" c="dimmed">
+                    Excellent
+                  </Text>
                 </Group>
               </Stack>
 
@@ -215,10 +227,11 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                 <Group justify="space-between">
                   <Text fw={500}>Motivation Level</Text>
                   <Badge color={getScaleColor(feedback.motivationLevel)} variant="light">
-                    {feedback.motivationLevel}/10 - {getScaleLabel(feedback.motivationLevel, "motivation")}
+                    {feedback.motivationLevel}/10 -{" "}
+                    {getScaleLabel(feedback.motivationLevel, "motivation")}
                   </Badge>
                 </Group>
-                
+
                 <Slider
                   value={feedback.motivationLevel}
                   onChange={(value) => setFeedback({ ...feedback, motivationLevel: value })}
@@ -232,10 +245,14 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                   ]}
                   color={getScaleColor(feedback.motivationLevel)}
                 />
-                
+
                 <Group justify="space-between">
-                  <Text size="xs" c="dimmed">None</Text>
-                  <Text size="xs" c="dimmed">Excellent</Text>
+                  <Text size="xs" c="dimmed">
+                    None
+                  </Text>
+                  <Text size="xs" c="dimmed">
+                    Excellent
+                  </Text>
                 </Group>
               </Stack>
             </Stack>
@@ -255,28 +272,34 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
             <Text size="sm" c="dimmed">
               Help us understand your training experience better (optional)
             </Text>
-            
+
             <Textarea
               label="What felt good today?"
               placeholder="e.g., Form felt solid on squats, good power on sprints..."
               value={feedback.whatFeltGood}
-              onChange={(event) => setFeedback({ ...feedback, whatFeltGood: event.currentTarget.value })}
+              onChange={(event) =>
+                setFeedback({ ...feedback, whatFeltGood: event.currentTarget.value })
+              }
               minRows={2}
             />
-            
+
             <Textarea
               label="What felt difficult?"
               placeholder="e.g., Lower back tight, couldn't maintain speed..."
               value={feedback.whatFeltDifficult}
-              onChange={(event) => setFeedback({ ...feedback, whatFeltDifficult: event.currentTarget.value })}
+              onChange={(event) =>
+                setFeedback({ ...feedback, whatFeltDifficult: event.currentTarget.value })
+              }
               minRows={2}
             />
-            
+
             <Textarea
               label="Suggestions for tomorrow?"
               placeholder="e.g., Need more warm-up, reduce weight, focus on technique..."
               value={feedback.suggestedChanges}
-              onChange={(event) => setFeedback({ ...feedback, suggestedChanges: event.currentTarget.value })}
+              onChange={(event) =>
+                setFeedback({ ...feedback, suggestedChanges: event.currentTarget.value })
+              }
               minRows={2}
             />
           </Stack>
@@ -297,11 +320,9 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
           </Text>
         </Group>
 
-        <Progress value={(currentStep + 1) / steps.length * 100} size="sm" />
+        <Progress value={((currentStep + 1) / steps.length) * 100} size="sm" />
 
-        <div style={{ minHeight: "300px" }}>
-          {renderStep()}
-        </div>
+        <div style={{ minHeight: "300px" }}>{renderStep()}</div>
 
         <Group justify="space-between">
           <Group>
@@ -315,11 +336,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
               </Button>
             )}
             {onCancel && (
-              <Button
-                variant="subtle"
-                onClick={onCancel}
-                disabled={isLoading}
-              >
+              <Button variant="subtle" onClick={onCancel} disabled={isLoading}>
                 Cancel
               </Button>
             )}
@@ -327,10 +344,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
 
           <Group>
             {currentStep < steps.length - 1 ? (
-              <Button
-                onClick={() => setCurrentStep(currentStep + 1)}
-                disabled={isLoading}
-              >
+              <Button onClick={() => setCurrentStep(currentStep + 1)} disabled={isLoading}>
                 Next
               </Button>
             ) : (

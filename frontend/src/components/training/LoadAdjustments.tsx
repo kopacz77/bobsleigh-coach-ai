@@ -1,29 +1,29 @@
 "use client";
 
 import {
-  Card,
-  Group,
-  Text,
-  Badge,
-  Stack,
-  Alert,
-  Progress,
-  ThemeIcon,
-  List,
-  Divider,
   ActionIcon,
+  Alert,
+  Badge,
+  Card,
+  Divider,
+  Group,
+  List,
+  Progress,
+  Stack,
+  Text,
+  ThemeIcon,
   Tooltip,
 } from "@mantine/core";
 import {
-  IconTrendingUp,
-  IconTrendingDown,
-  IconMinus,
   IconBrain,
-  IconTarget,
   IconChartLine,
   IconInfoCircle,
+  IconMinus,
+  IconTarget,
+  IconTrendingDown,
+  IconTrendingUp,
 } from "@tabler/icons-react";
-import { LoadAdjustment } from "@/lib/types/training";
+import type { LoadAdjustment } from "@/lib/types/training";
 
 interface LoadAdjustmentsProps {
   adjustments: LoadAdjustment[];
@@ -81,7 +81,7 @@ export function LoadAdjustments({
 
   const getPrimaryAdjustment = () => {
     if (adjustments.length === 0) return null;
-    return adjustments.reduce((max, adj) => 
+    return adjustments.reduce((max, adj) =>
       Math.abs(adj.percentage) > Math.abs(max.percentage) ? adj : max
     );
   };
@@ -94,11 +94,7 @@ export function LoadAdjustments({
         {/* Header */}
         <Group justify="space-between" align="center">
           <Group align="center" gap="sm">
-            <ThemeIcon
-              color="blue"
-              variant="light"
-              size="lg"
-            >
+            <ThemeIcon color="blue" variant="light" size="lg">
               <IconBrain size={20} />
             </ThemeIcon>
             <Stack gap={2}>
@@ -117,11 +113,7 @@ export function LoadAdjustments({
                 <IconInfoCircle size={16} />
               </ActionIcon>
             </Tooltip>
-            <Badge
-              color={getConfidenceColor(confidence)}
-              variant="light"
-              size="sm"
-            >
+            <Badge color={getConfidenceColor(confidence)} variant="light" size="sm">
               {getConfidenceLabel(confidence)}
             </Badge>
           </Group>
@@ -130,14 +122,14 @@ export function LoadAdjustments({
         {/* Confidence Meter */}
         <Stack gap={4}>
           <Group justify="space-between">
-            <Text size="sm" fw={500}>Prediction Confidence</Text>
-            <Text size="sm" c="dimmed">{Math.round(confidence * 100)}%</Text>
+            <Text size="sm" fw={500}>
+              Prediction Confidence
+            </Text>
+            <Text size="sm" c="dimmed">
+              {Math.round(confidence * 100)}%
+            </Text>
           </Group>
-          <Progress
-            value={confidence * 100}
-            size="sm"
-            color={getConfidenceColor(confidence)}
-          />
+          <Progress value={confidence * 100} size="sm" color={getConfidenceColor(confidence)} />
         </Stack>
 
         {/* Primary Adjustment Summary */}
@@ -149,7 +141,13 @@ export function LoadAdjustments({
             icon={getAdjustmentIcon(primaryAdjustment.type)}
           >
             <Text size="sm">
-              Training load {primaryAdjustment.type === "increase" ? "increased" : primaryAdjustment.type === "decrease" ? "decreased" : "maintained"} by{" "}
+              Training load{" "}
+              {primaryAdjustment.type === "increase"
+                ? "increased"
+                : primaryAdjustment.type === "decrease"
+                  ? "decreased"
+                  : "maintained"}{" "}
+              by{" "}
               <Text component="span" fw={600}>
                 {formatPercentage(Math.abs(primaryAdjustment.percentage))}
               </Text>
@@ -172,7 +170,7 @@ export function LoadAdjustments({
                   Detailed Adjustments
                 </Text>
               </Group>
-              
+
               {adjustments.map((adjustment, index) => (
                 <Card key={index} padding="sm" radius="sm" withBorder>
                   <Group justify="space-between" align="center">
@@ -193,13 +191,9 @@ export function LoadAdjustments({
                         </Text>
                       </Stack>
                     </Group>
-                    
+
                     <Stack gap={2} align="flex-end">
-                      <Badge
-                        color={getAdjustmentColor(adjustment.type)}
-                        variant="light"
-                        size="sm"
-                      >
+                      <Badge color={getAdjustmentColor(adjustment.type)} variant="light" size="sm">
                         {formatPercentage(adjustment.percentage)}
                       </Badge>
                       <Progress
@@ -224,7 +218,7 @@ export function LoadAdjustments({
                   AI Reasoning
                 </Text>
               </Group>
-              
+
               <List size="sm" spacing="xs">
                 {reasoning.map((reason, index) => (
                   <List.Item key={index}>
@@ -242,8 +236,8 @@ export function LoadAdjustments({
         {confidence < 0.6 && (
           <Alert color="yellow" variant="light" title="Low Confidence Warning">
             <Text size="sm">
-              The AI has low confidence in these recommendations. Consider manual review
-              or additional data collection before proceeding.
+              The AI has low confidence in these recommendations. Consider manual review or
+              additional data collection before proceeding.
             </Text>
           </Alert>
         )}

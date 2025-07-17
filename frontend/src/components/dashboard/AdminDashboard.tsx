@@ -1,56 +1,74 @@
-import React, { useState, useEffect } from 'react';
 import {
-  Box,
-  Title,
-  Text,
-  Group,
-  Paper,
-  Button,
-  Tabs,
-  SimpleGrid,
-  Card,
-  Stack,
-  RingProgress,
-  Progress,
-  Table,
+  ActionIcon,
   Avatar,
   Badge,
-  useMantineTheme,
+  Box,
+  Button,
+  Card,
   Divider,
-  ActionIcon,
+  Group,
+  Paper,
+  Progress,
+  RingProgress,
   ScrollArea,
-  Tooltip,
   Select,
-  ThemeIcon
-} from '@mantine/core';
-import { DatePickerInput, DateValue } from '@mantine/dates';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, Bar, BarChart, Rectangle, ComposedChart, Area } from 'recharts';
+  SimpleGrid,
+  Stack,
+  Table,
+  Tabs,
+  Text,
+  ThemeIcon,
+  Title,
+  Tooltip,
+  useMantineTheme,
+} from "@mantine/core";
+import { DatePickerInput, type DateValue } from "@mantine/dates";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
-  IconUsers,
-  IconCalendarEvent,
-  IconClipboardCheck,
-  IconFlag,
-  IconChartLine,
-  IconMessage2, //messages
-  IconMessages, //alerts
-  IconClipboard, //compliance
-  IconVinyl, //intensity
-  IconCheckbox, //performance
-  IconTrees, // teams
-  IconEye,
-  IconPencil,
-  IconX,
-  IconCheck,
   IconArrowDown,
   IconArrowUp,
-  IconFilter,
-  IconMaximize,
+  IconCalendarEvent,
+  IconChartLine,
+  IconCheck,
+  IconCheckbox, //performance
   IconChevronDown,
   IconChevronUp,
+  IconClipboard, //compliance
+  IconClipboardCheck,
+  IconEye,
+  IconFilter,
+  IconFlag,
   IconMail,
-  IconMinus
-} from '@tabler/icons-react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+  IconMaximize,
+  IconMessage2, //messages
+  IconMessages, //alerts
+  IconMinus,
+  IconPencil,
+  IconTrees, // teams
+  IconUsers,
+  IconVinyl, //intensity
+  IconX,
+} from "@tabler/icons-react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import {
+  Area,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Tooltip as ChartTooltip,
+  ComposedChart,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  Rectangle,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 // Define interfaces for type safety
 interface TeamOption {
@@ -67,7 +85,7 @@ interface Athlete {
   compliance: number;
   readiness: number;
   recovery: number;
-  performanceTrend: 'up' | 'down' | 'neutral';
+  performanceTrend: "up" | "down" | "neutral";
   lastCheckIn: string;
   weeklyReviewSubmitted: boolean;
   alerts: number;
@@ -111,7 +129,7 @@ interface TrainingLoadPoint {
 
 interface Goal {
   goal: string;
-  status: 'completed' | 'in-progress';
+  status: "completed" | "in-progress";
   dueDate: string;
 }
 
@@ -119,7 +137,7 @@ interface Alert {
   type: string;
   date: string;
   message: string;
-  severity: 'high' | 'medium' | 'low';
+  severity: "high" | "medium" | "low";
 }
 
 interface Event {
@@ -168,18 +186,21 @@ const AdminDashboard: React.FC = () => {
     complianceRate: 0,
     alertCount: 0,
     checkInsToday: 0,
-    weeklyReviewsSubmitted: 0
+    weeklyReviewsSubmitted: 0,
   });
-  const [dateRange, setDateRange] = useState<[DateValue, DateValue]>([new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), new Date()]);
-  const [selectedTeam, setSelectedTeam] = useState<string>('all');
+  const [dateRange, setDateRange] = useState<[DateValue, DateValue]>([
+    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    new Date(),
+  ]);
+  const [selectedTeam, setSelectedTeam] = useState<string>("all");
   const [expandedAthlete, setExpandedAthlete] = useState<string | null>(null);
   const [expandedAthleteData, setExpandedAthleteData] = useState<AthleteDetailData | null>(null);
 
   const teams: TeamOption[] = [
-    { value: 'all', label: 'All Teams' },
-    { value: 'team1', label: 'National Team' },
-    { value: 'team2', label: 'Development Team' },
-    { value: 'team3', label: 'Junior Team' },
+    { value: "all", label: "All Teams" },
+    { value: "team1", label: "National Team" },
+    { value: "team2", label: "Development Team" },
+    { value: "team3", label: "Junior Team" },
   ];
 
   useEffect(() => {
@@ -195,95 +216,104 @@ const AdminDashboard: React.FC = () => {
       // Fetch athletes
       const mockAthletes: Athlete[] = [
         {
-          id: '1',
-          name: 'John Smith',
-          avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80',
-          team: 'team1',
-          position: 'Driver',
+          id: "1",
+          name: "John Smith",
+          avatar:
+            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80",
+          team: "team1",
+          position: "Driver",
           compliance: 92,
           readiness: 8.5,
           recovery: 7.8,
-          performanceTrend: 'up',
+          performanceTrend: "up",
           lastCheckIn: new Date().toISOString(),
           weeklyReviewSubmitted: true,
-          alerts: 0
+          alerts: 0,
         },
         {
-          id: '2',
-          name: 'Sarah Johnson',
-          avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80',
-          team: 'team1',
-          position: 'Brakeman',
+          id: "2",
+          name: "Sarah Johnson",
+          avatar:
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80",
+          team: "team1",
+          position: "Brakeman",
           compliance: 85,
           readiness: 7.2,
           recovery: 6.5,
-          performanceTrend: 'neutral',
+          performanceTrend: "neutral",
           lastCheckIn: new Date().toISOString(),
           weeklyReviewSubmitted: false,
-          alerts: 1
+          alerts: 1,
         },
         {
-          id: '3',
-          name: 'Michael Lee',
-          avatar: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80',
-          team: 'team2',
-          position: 'Brakeman',
+          id: "3",
+          name: "Michael Lee",
+          avatar:
+            "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80",
+          team: "team2",
+          position: "Brakeman",
           compliance: 78,
           readiness: 6.8,
           recovery: 5.2,
-          performanceTrend: 'down',
+          performanceTrend: "down",
           lastCheckIn: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
           weeklyReviewSubmitted: true,
-          alerts: 2
+          alerts: 2,
         },
         {
-          id: '4',
-          name: 'Emma Wilson',
-          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80',
-          team: 'team2',
-          position: 'Driver',
+          id: "4",
+          name: "Emma Wilson",
+          avatar:
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80",
+          team: "team2",
+          position: "Driver",
           compliance: 95,
           readiness: 9.0,
           recovery: 8.7,
-          performanceTrend: 'up',
+          performanceTrend: "up",
           lastCheckIn: new Date().toISOString(),
           weeklyReviewSubmitted: true,
-          alerts: 0
+          alerts: 0,
         },
         {
-          id: '5',
-          name: 'Daniel Brown',
-          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80',
-          team: 'team3',
-          position: 'Brakeman',
+          id: "5",
+          name: "Daniel Brown",
+          avatar:
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=250&q=80",
+          team: "team3",
+          position: "Brakeman",
           compliance: 67,
           readiness: 5.8,
           recovery: 6.1,
-          performanceTrend: 'down',
+          performanceTrend: "down",
           lastCheckIn: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
           weeklyReviewSubmitted: false,
-          alerts: 3
+          alerts: 3,
         },
       ];
 
       // Filter by team if necessary
-      const filteredAthletes = selectedTeam === 'all' ?
-        mockAthletes :
-        mockAthletes.filter(athlete => athlete.team === selectedTeam);
+      const filteredAthletes =
+        selectedTeam === "all"
+          ? mockAthletes
+          : mockAthletes.filter((athlete) => athlete.team === selectedTeam);
 
       setAthletes(filteredAthletes);
 
       // Calculate team statistics
       const totalAthletes = filteredAthletes.length;
       const activeAthletes = filteredAthletes.filter(
-        athlete => new Date(athlete.lastCheckIn) > new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+        (athlete) => new Date(athlete.lastCheckIn) > new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
       ).length;
-      const complianceRate = filteredAthletes.reduce((sum, athlete) => sum + athlete.compliance, 0) / totalAthletes;
+      const complianceRate =
+        filteredAthletes.reduce((sum, athlete) => sum + athlete.compliance, 0) / totalAthletes;
       const alertCount = filteredAthletes.reduce((sum, athlete) => sum + athlete.alerts, 0);
       const checkInsToday = filteredAthletes.filter(
-        athlete => new Date(athlete.lastCheckIn).toDateString() === new Date().toDateString()
+        (athlete) => new Date(athlete.lastCheckIn).toDateString() === new Date().toDateString()
       ).length;
-      const weeklyReviewsSubmitted = filteredAthletes.filter(athlete => athlete.weeklyReviewSubmitted).length;
+      const weeklyReviewsSubmitted = filteredAthletes.filter(
+        (athlete) => athlete.weeklyReviewSubmitted
+      ).length;
 
       setTeamStats({
         totalAthletes,
@@ -291,11 +321,10 @@ const AdminDashboard: React.FC = () => {
         complianceRate,
         alertCount,
         checkInsToday,
-        weeklyReviewsSubmitted
+        weeklyReviewsSubmitted,
       });
-
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      console.error("Error fetching dashboard data:", error);
     } finally {
       setLoading(false);
     }
@@ -310,53 +339,67 @@ const AdminDashboard: React.FC = () => {
       const mockAthleteData: AthleteDetailData = {
         personalInfo: {
           id: athleteId,
-          name: athletes.find(a => a.id === athleteId)?.name || 'Unknown Athlete',
-          email: 'athlete@example.com',
-          phone: '+1 (555) 123-4567',
-          dateOfBirth: '1995-05-15',
-          height: '183 cm',
-          weight: '82 kg',
-          team: athletes.find(a => a.id === athleteId)?.team || 'Unknown Team',
-          position: athletes.find(a => a.id === athleteId)?.position || 'Unknown Position',
-          experience: '5 years'
+          name: athletes.find((a) => a.id === athleteId)?.name || "Unknown Athlete",
+          email: "athlete@example.com",
+          phone: "+1 (555) 123-4567",
+          dateOfBirth: "1995-05-15",
+          height: "183 cm",
+          weight: "82 kg",
+          team: athletes.find((a) => a.id === athleteId)?.team || "Unknown Team",
+          position: athletes.find((a) => a.id === athleteId)?.position || "Unknown Position",
+          experience: "5 years",
         },
         weeklyData: [
-          { day: 'Mon', readiness: 7, sleep: 8, energy: 7, soreness: 4 },
-          { day: 'Tue', readiness: 8, sleep: 7, energy: 8, soreness: 3 },
-          { day: 'Wed', readiness: 6, sleep: 6, energy: 6, soreness: 5 },
-          { day: 'Thu', readiness: 7, sleep: 8, energy: 7, soreness: 4 },
-          { day: 'Fri', readiness: 9, sleep: 9, energy: 9, soreness: 2 },
-          { day: 'Sat', readiness: 8, sleep: 7, energy: 8, soreness: 3 },
-          { day: 'Sun', readiness: 7, sleep: 8, energy: 7, soreness: 4 },
+          { day: "Mon", readiness: 7, sleep: 8, energy: 7, soreness: 4 },
+          { day: "Tue", readiness: 8, sleep: 7, energy: 8, soreness: 3 },
+          { day: "Wed", readiness: 6, sleep: 6, energy: 6, soreness: 5 },
+          { day: "Thu", readiness: 7, sleep: 8, energy: 7, soreness: 4 },
+          { day: "Fri", readiness: 9, sleep: 9, energy: 9, soreness: 2 },
+          { day: "Sat", readiness: 8, sleep: 7, energy: 8, soreness: 3 },
+          { day: "Sun", readiness: 7, sleep: 8, energy: 7, soreness: 4 },
         ],
         trainingLoad: [
-          { week: 'Week 1', acute: 600, chronic: 550 },
-          { week: 'Week 2', acute: 650, chronic: 570 },
-          { week: 'Week 3', acute: 500, chronic: 580 },
-          { week: 'Week 4', acute: 700, chronic: 590 },
-          { week: 'Week 5', acute: 600, chronic: 600 },
-          { week: 'Week 6', acute: 650, chronic: 610 },
+          { week: "Week 1", acute: 600, chronic: 550 },
+          { week: "Week 2", acute: 650, chronic: 570 },
+          { week: "Week 3", acute: 500, chronic: 580 },
+          { week: "Week 4", acute: 700, chronic: 590 },
+          { week: "Week 5", acute: 600, chronic: 600 },
+          { week: "Week 6", acute: 650, chronic: 610 },
         ],
         recentGoals: [
-          { goal: 'Improve push time by 0.1s', status: 'completed', dueDate: '2023-11-15' },
-          { goal: 'Increase squat 1RM to 150kg', status: 'in-progress', dueDate: '2023-12-01' },
-          { goal: 'Perfect loading technique', status: 'in-progress', dueDate: '2023-11-30' },
+          { goal: "Improve push time by 0.1s", status: "completed", dueDate: "2023-11-15" },
+          { goal: "Increase squat 1RM to 150kg", status: "in-progress", dueDate: "2023-12-01" },
+          { goal: "Perfect loading technique", status: "in-progress", dueDate: "2023-11-30" },
         ],
         recentAlerts: [
-          { type: 'high-soreness', date: '2023-11-14', message: 'Reported high soreness in lower back', severity: 'medium' },
-          { type: 'missed-check-in', date: '2023-11-10', message: 'Missed daily check-in', severity: 'low' },
-          { type: 'sleep-quality', date: '2023-11-05', message: 'Poor sleep quality for 3 consecutive days', severity: 'high' },
+          {
+            type: "high-soreness",
+            date: "2023-11-14",
+            message: "Reported high soreness in lower back",
+            severity: "medium",
+          },
+          {
+            type: "missed-check-in",
+            date: "2023-11-10",
+            message: "Missed daily check-in",
+            severity: "low",
+          },
+          {
+            type: "sleep-quality",
+            date: "2023-11-05",
+            message: "Poor sleep quality for 3 consecutive days",
+            severity: "high",
+          },
         ],
         upcomingEvents: [
-          { name: 'Team Training Camp', date: '2023-12-05', location: 'Lake Placid, NY' },
-          { name: 'World Cup Race 1', date: '2023-12-15', location: 'Winterberg, Germany' },
-        ]
+          { name: "Team Training Camp", date: "2023-12-05", location: "Lake Placid, NY" },
+          { name: "World Cup Race 1", date: "2023-12-15", location: "Winterberg, Germany" },
+        ],
       };
 
       setExpandedAthleteData(mockAthleteData);
-
     } catch (error) {
-      console.error('Error fetching athlete details:', error);
+      console.error("Error fetching athlete details:", error);
     }
   };
 
@@ -365,17 +408,17 @@ const AdminDashboard: React.FC = () => {
     setExpandedAthleteData(null);
   };
 
-  const handleContactAthlete = (athleteId: string, method: 'message' | 'email') => {
+  const handleContactAthlete = (athleteId: string, method: "message" | "email") => {
     // In a real application, this would open a modal to send a message or email
     alert(`Contact athlete ${athleteId} via ${method}`);
   };
 
   // Get trend icon based on trend direction
-  const getTrendIcon = (trend: 'up' | 'down' | 'neutral') => {
+  const getTrendIcon = (trend: "up" | "down" | "neutral") => {
     switch (trend) {
-      case 'up':
+      case "up":
         return <IconArrowUp size={16} color={theme.colors.green[6]} />;
-      case 'down':
+      case "down":
         return <IconArrowDown size={16} color={theme.colors.red[6]} />;
       default:
         return <IconMinus size={16} color={theme.colors.gray[6]} />;
@@ -384,10 +427,10 @@ const AdminDashboard: React.FC = () => {
 
   // Get alert severity color
   const getAlertColor = (count: number): string => {
-    if (count === 0) return 'green';
-    if (count === 1) return 'yellow';
-    if (count === 2) return 'orange';
-    return 'red';
+    if (count === 0) return "green";
+    if (count === 1) return "yellow";
+    if (count === 2) return "orange";
+    return "red";
   };
 
   // Get last check-in status
@@ -397,14 +440,15 @@ const AdminDashboard: React.FC = () => {
     const diffDays = Math.floor((now.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
 
     if (lastDate.toDateString() === now.toDateString()) {
-      return { status: 'today', color: 'green', text: 'Today' };
-    } else if (diffDays === 1) {
-      return { status: 'yesterday', color: 'blue', text: 'Yesterday' };
-    } else if (diffDays <= 3) {
-      return { status: 'recent', color: 'yellow', text: `${diffDays} days ago` };
-    } else {
-      return { status: 'overdue', color: 'red', text: `${diffDays} days ago` };
+      return { status: "today", color: "green", text: "Today" };
     }
+    if (diffDays === 1) {
+      return { status: "yesterday", color: "blue", text: "Yesterday" };
+    }
+    if (diffDays <= 3) {
+      return { status: "recent", color: "yellow", text: `${diffDays} days ago` };
+    }
+    return { status: "overdue", color: "red", text: `${diffDays} days ago` };
   };
 
   // Generate athletes list with readiness indicators
@@ -439,8 +483,12 @@ const AdminDashboard: React.FC = () => {
                   <Group gap="sm">
                     <Avatar size={30} src={athlete.avatar} radius={30} />
                     <Box>
-                      <Text size="sm" fw={500}>{athlete.name}</Text>
-                      <Text size="xs" c="dimmed">{athlete.position}</Text>
+                      <Text size="sm" fw={500}>
+                        {athlete.name}
+                      </Text>
+                      <Text size="xs" c="dimmed">
+                        {athlete.position}
+                      </Text>
                     </Box>
                   </Group>
                 </td>
@@ -460,17 +508,25 @@ const AdminDashboard: React.FC = () => {
                     <Box style={{ flex: 1 }}>
                       <Progress
                         value={athlete.compliance}
-                        color={athlete.compliance < 70 ? 'red' : athlete.compliance < 85 ? 'yellow' : 'green'}
+                        color={
+                          athlete.compliance < 70
+                            ? "red"
+                            : athlete.compliance < 85
+                              ? "yellow"
+                              : "green"
+                        }
                         size="sm"
                       />
                     </Box>
-                    <Text size="xs" fw={500}>{athlete.compliance}%</Text>
+                    <Text size="xs" fw={500}>
+                      {athlete.compliance}%
+                    </Text>
                   </Group>
                 </td>
                 <td>
                   <Badge
                     color={getAlertColor(athlete.alerts)}
-                    variant={athlete.alerts > 0 ? 'filled' : 'light'}
+                    variant={athlete.alerts > 0 ? "filled" : "light"}
                   >
                     {athlete.alerts}
                   </Badge>
@@ -478,23 +534,17 @@ const AdminDashboard: React.FC = () => {
                 <td>
                   <Group gap={0}>
                     <Tooltip label="View Details">
-                      <ActionIcon
-                        onClick={() => handleViewAthleteDetails(athlete.id)}
-                      >
+                      <ActionIcon onClick={() => handleViewAthleteDetails(athlete.id)}>
                         <IconEye size={16} />
                       </ActionIcon>
                     </Tooltip>
                     <Tooltip label="Message">
-                      <ActionIcon
-                        onClick={() => handleContactAthlete(athlete.id, 'message')}
-                      >
+                      <ActionIcon onClick={() => handleContactAthlete(athlete.id, "message")}>
                         <IconMessage2 size={16} />
                       </ActionIcon>
                     </Tooltip>
                     <Tooltip label="Email">
-                      <ActionIcon
-                        onClick={() => handleContactAthlete(athlete.id, 'email')}
-                      >
+                      <ActionIcon onClick={() => handleContactAthlete(athlete.id, "email")}>
                         <IconMail size={16} />
                       </ActionIcon>
                     </Tooltip>
@@ -509,26 +559,34 @@ const AdminDashboard: React.FC = () => {
   };
 
   // Create overview metric cards
-  const OverviewMetricCard: React.FC<OverviewMetricCardProps> = ({ title, value, icon, color, subtitle, progress }) => (
+  const OverviewMetricCard: React.FC<OverviewMetricCardProps> = ({
+    title,
+    value,
+    icon,
+    color,
+    subtitle,
+    progress,
+  }) => (
     <Card p="md" radius="md" withBorder>
       <Group justify="space-between" mb="xs">
-        <Text fw={500} size="sm" c="dimmed">{title}</Text>
+        <Text fw={500} size="sm" c="dimmed">
+          {title}
+        </Text>
         <ThemeIcon color={color} variant="light" size={38} radius="md">
           {icon}
         </ThemeIcon>
       </Group>
       <Group justify="space-between" align="flex-end" gap="xs">
-        <Text fw={700} size="xl">{value}</Text>
-        {subtitle && <Text size="xs" c="dimmed">{subtitle}</Text>}
+        <Text fw={700} size="xl">
+          {value}
+        </Text>
+        {subtitle && (
+          <Text size="xs" c="dimmed">
+            {subtitle}
+          </Text>
+        )}
       </Group>
-      {progress !== undefined && (
-        <Progress
-          value={progress}
-          size="sm"
-          color={color}
-          mt="md"
-        />
-      )}
+      {progress !== undefined && <Progress value={progress} size="sm" color={color} mt="md" />}
     </Card>
   );
 
@@ -559,7 +617,9 @@ const AdminDashboard: React.FC = () => {
         title="Compliance Rate"
         value={`${Math.round(teamStats.complianceRate)}%`}
         icon={<IconClipboard size={20} stroke={1.5} />}
-        color={teamStats.complianceRate < 70 ? 'red' : teamStats.complianceRate < 85 ? 'yellow' : 'blue'}
+        color={
+          teamStats.complianceRate < 70 ? "red" : teamStats.complianceRate < 85 ? "yellow" : "blue"
+        }
         progress={teamStats.complianceRate}
       />
       <OverviewMetricCard
@@ -583,25 +643,37 @@ const AdminDashboard: React.FC = () => {
   const renderExpandedAthleteView = () => {
     if (!expandedAthlete || !expandedAthleteData) return null;
 
-    const { personalInfo, weeklyData, trainingLoad, recentGoals, recentAlerts, upcomingEvents } = expandedAthleteData;
+    const { personalInfo, weeklyData, trainingLoad, recentGoals, recentAlerts, upcomingEvents } =
+      expandedAthleteData;
 
     return (
       <Paper p="md" radius="md" withBorder mb="xl">
         <Group justify="space-between" mb="md">
           <Group>
-            <Avatar size={50} src={athletes.find(a => a.id === expandedAthlete)?.avatar} radius={50} />
+            <Avatar
+              size={50}
+              src={athletes.find((a) => a.id === expandedAthlete)?.avatar}
+              radius={50}
+            />
             <Box>
               <Title order={3}>{personalInfo.name}</Title>
               <Group gap="xs">
                 <Text size="sm">{personalInfo.position}</Text>
-                <Text size="sm" c="dimmed">•</Text>
-                <Text size="sm">{teams.find(t => t.value === personalInfo.team)?.label || personalInfo.team}</Text>
+                <Text size="sm" c="dimmed">
+                  •
+                </Text>
+                <Text size="sm">
+                  {teams.find((t) => t.value === personalInfo.team)?.label || personalInfo.team}
+                </Text>
               </Group>
             </Box>
           </Group>
 
           <Group>
-            <Button variant="outline" onClick={() => handleContactAthlete(expandedAthlete, 'message')}>
+            <Button
+              variant="outline"
+              onClick={() => handleContactAthlete(expandedAthlete, "message")}
+            >
               Message
             </Button>
             <ActionIcon onClick={handleCloseAthleteDetails}>
@@ -614,16 +686,26 @@ const AdminDashboard: React.FC = () => {
 
         <Tabs defaultValue="overview">
           <Tabs.List mb="md">
-            <Tabs.Tab value="overview" leftSection={<IconChartLine size={16} />}>Overview</Tabs.Tab>
-            <Tabs.Tab value="metrics" leftSection={<IconCheckbox size={16} />}>Metrics</Tabs.Tab>
-            <Tabs.Tab value="goals" leftSection={<IconFlag size={16} />}>Goals</Tabs.Tab>
-            <Tabs.Tab value="alerts" leftSection={<IconMessages size={16} />}>Alerts</Tabs.Tab>
+            <Tabs.Tab value="overview" leftSection={<IconChartLine size={16} />}>
+              Overview
+            </Tabs.Tab>
+            <Tabs.Tab value="metrics" leftSection={<IconCheckbox size={16} />}>
+              Metrics
+            </Tabs.Tab>
+            <Tabs.Tab value="goals" leftSection={<IconFlag size={16} />}>
+              Goals
+            </Tabs.Tab>
+            <Tabs.Tab value="alerts" leftSection={<IconMessages size={16} />}>
+              Alerts
+            </Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="overview">
             <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
               <Paper p="md" withBorder>
-                <Title order={4} mb="md">Weekly Readiness</Title>
+                <Title order={4} mb="md">
+                  Weekly Readiness
+                </Title>
                 <Box style={{ height: 250 }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={weeklyData}>
@@ -631,17 +713,43 @@ const AdminDashboard: React.FC = () => {
                       <XAxis dataKey="day" />
                       <YAxis domain={[0, 10]} />
                       <ChartTooltip />
-                      <Line type="monotone" dataKey="readiness" name="Readiness" stroke={theme.colors.blue[6]} strokeWidth={2} />
-                      <Line type="monotone" dataKey="sleep" name="Sleep" stroke={theme.colors.violet[6]} strokeWidth={2} />
-                      <Line type="monotone" dataKey="energy" name="Energy" stroke={theme.colors.green[6]} strokeWidth={2} />
-                      <Line type="monotone" dataKey="soreness" name="Soreness" stroke={theme.colors.red[6]} strokeWidth={2} />
+                      <Line
+                        type="monotone"
+                        dataKey="readiness"
+                        name="Readiness"
+                        stroke={theme.colors.blue[6]}
+                        strokeWidth={2}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="sleep"
+                        name="Sleep"
+                        stroke={theme.colors.violet[6]}
+                        strokeWidth={2}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="energy"
+                        name="Energy"
+                        stroke={theme.colors.green[6]}
+                        strokeWidth={2}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="soreness"
+                        name="Soreness"
+                        stroke={theme.colors.red[6]}
+                        strokeWidth={2}
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 </Box>
               </Paper>
 
               <Paper p="md" withBorder>
-                <Title order={4} mb="md">Training Load</Title>
+                <Title order={4} mb="md">
+                  Training Load
+                </Title>
                 <Box style={{ height: 250 }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={trainingLoad}>
@@ -649,15 +757,28 @@ const AdminDashboard: React.FC = () => {
                       <XAxis dataKey="week" />
                       <YAxis />
                       <ChartTooltip />
-                      <Area type="monotone" dataKey="chronic" name="Chronic Load" fill={theme.colors.blue[1]} stroke={theme.colors.blue[6]} />
-                      <Bar dataKey="acute" name="Acute Load" barSize={20} fill={theme.colors.grape[6]} />
+                      <Area
+                        type="monotone"
+                        dataKey="chronic"
+                        name="Chronic Load"
+                        fill={theme.colors.blue[1]}
+                        stroke={theme.colors.blue[6]}
+                      />
+                      <Bar
+                        dataKey="acute"
+                        name="Acute Load"
+                        barSize={20}
+                        fill={theme.colors.grape[6]}
+                      />
                     </ComposedChart>
                   </ResponsiveContainer>
                 </Box>
               </Paper>
 
               <Paper p="md" withBorder>
-                <Title order={4} mb="md">Upcoming Events</Title>
+                <Title order={4} mb="md">
+                  Upcoming Events
+                </Title>
                 {upcomingEvents.length > 0 ? (
                   <Stack gap="xs">
                     {upcomingEvents.map((event, index) => (
@@ -665,7 +786,9 @@ const AdminDashboard: React.FC = () => {
                         <Group justify="space-between">
                           <Box>
                             <Text fw={500}>{event.name}</Text>
-                            <Text size="xs" c="dimmed">{event.location}</Text>
+                            <Text size="xs" c="dimmed">
+                              {event.location}
+                            </Text>
                           </Box>
                           <Badge>{new Date(event.date).toLocaleDateString()}</Badge>
                         </Group>
@@ -678,7 +801,9 @@ const AdminDashboard: React.FC = () => {
               </Paper>
 
               <Paper p="md" withBorder>
-                <Title order={4} mb="md">Personal Information</Title>
+                <Title order={4} mb="md">
+                  Personal Information
+                </Title>
                 <Stack gap="xs">
                   <Group justify="space-between">
                     <Text fw={500}>Date of Birth:</Text>
@@ -715,27 +840,35 @@ const AdminDashboard: React.FC = () => {
           </Tabs.Panel>
 
           <Tabs.Panel value="goals">
-            <Title order={4} mb="md">Athlete Goals</Title>
+            <Title order={4} mb="md">
+              Athlete Goals
+            </Title>
             <Stack gap="md">
               {recentGoals.map((goal, index) => (
                 <Card key={index} p="sm" withBorder>
                   <Group justify="space-between">
                     <Group gap="md">
                       <ThemeIcon
-                        color={goal.status === 'completed' ? 'green' : 'blue'}
-                        variant={goal.status === 'completed' ? 'filled' : 'light'}
+                        color={goal.status === "completed" ? "green" : "blue"}
+                        variant={goal.status === "completed" ? "filled" : "light"}
                         size="lg"
                         radius="xl"
                       >
-                        {goal.status === 'completed' ? <IconCheck size={20} /> : <IconFlag size={20} />}
+                        {goal.status === "completed" ? (
+                          <IconCheck size={20} />
+                        ) : (
+                          <IconFlag size={20} />
+                        )}
                       </ThemeIcon>
                       <Box>
                         <Text fw={500}>{goal.goal}</Text>
-                        <Text size="xs" c="dimmed">Due: {new Date(goal.dueDate).toLocaleDateString()}</Text>
+                        <Text size="xs" c="dimmed">
+                          Due: {new Date(goal.dueDate).toLocaleDateString()}
+                        </Text>
                       </Box>
                     </Group>
-                    <Badge color={goal.status === 'completed' ? 'green' : 'blue'}>
-                      {goal.status === 'completed' ? 'Completed' : 'In Progress'}
+                    <Badge color={goal.status === "completed" ? "green" : "blue"}>
+                      {goal.status === "completed" ? "Completed" : "In Progress"}
                     </Badge>
                   </Group>
                 </Card>
@@ -744,14 +877,22 @@ const AdminDashboard: React.FC = () => {
           </Tabs.Panel>
 
           <Tabs.Panel value="alerts">
-            <Title order={4} mb="md">Recent Alerts</Title>
+            <Title order={4} mb="md">
+              Recent Alerts
+            </Title>
             <Stack gap="md">
               {recentAlerts.map((alert, index) => (
                 <Card key={index} p="sm" withBorder>
                   <Group justify="space-between">
                     <Group gap="md">
                       <ThemeIcon
-                        color={alert.severity === 'high' ? 'red' : alert.severity === 'medium' ? 'orange' : 'yellow'}
+                        color={
+                          alert.severity === "high"
+                            ? "red"
+                            : alert.severity === "medium"
+                              ? "orange"
+                              : "yellow"
+                        }
                         variant="light"
                         size="lg"
                         radius="xl"
@@ -760,10 +901,20 @@ const AdminDashboard: React.FC = () => {
                       </ThemeIcon>
                       <Box>
                         <Text fw={500}>{alert.message}</Text>
-                        <Text size="xs" c="dimmed">Date: {new Date(alert.date).toLocaleDateString()}</Text>
+                        <Text size="xs" c="dimmed">
+                          Date: {new Date(alert.date).toLocaleDateString()}
+                        </Text>
                       </Box>
                     </Group>
-                    <Badge color={alert.severity === 'high' ? 'red' : alert.severity === 'medium' ? 'orange' : 'yellow'}>
+                    <Badge
+                      color={
+                        alert.severity === "high"
+                          ? "red"
+                          : alert.severity === "medium"
+                            ? "orange"
+                            : "yellow"
+                      }
+                    >
                       {alert.severity.charAt(0).toUpperCase() + alert.severity.slice(1)}
                     </Badge>
                   </Group>
@@ -789,7 +940,7 @@ const AdminDashboard: React.FC = () => {
               placeholder="Select Team"
               data={teams}
               value={selectedTeam}
-              onChange={(value) => setSelectedTeam(value || 'all')}
+              onChange={(value) => setSelectedTeam(value || "all")}
               w={200}
               leftSection={<IconFilter size={14} />}
             />
@@ -816,19 +967,17 @@ const AdminDashboard: React.FC = () => {
             <Select
               placeholder="Sorted by Readiness"
               data={[
-                { value: 'readiness', label: 'Readiness' },
-                { value: 'alerts', label: 'Alerts' },
-                { value: 'compliance', label: 'Compliance' },
-                { value: 'name', label: 'Name' }
+                { value: "readiness", label: "Readiness" },
+                { value: "alerts", label: "Alerts" },
+                { value: "compliance", label: "Compliance" },
+                { value: "name", label: "Name" },
               ]}
               defaultValue="readiness"
               w={200}
             />
           </Group>
 
-          <ScrollArea>
-            {renderAthletesList()}
-          </ScrollArea>
+          <ScrollArea>{renderAthletesList()}</ScrollArea>
         </Paper>
       </Paper>
     </Box>

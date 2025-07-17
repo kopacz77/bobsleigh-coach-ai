@@ -1,37 +1,50 @@
-import React, { useState, useEffect } from 'react';
+"use client";
+
 import {
-  Box,
-  Title,
-  Text,
-  Group,
-  Paper,
-  SimpleGrid,
-  Button,
-  NumberInput,
-  Select,
-  Modal,
   ActionIcon,
-  useMantineTheme,
+  Box,
+  Button,
   Divider,
+  Group,
+  List,
+  Modal,
+  NumberInput,
+  Paper,
+  Select,
+  SimpleGrid,
+  Text,
   ThemeIcon,
-  List
-} from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
-import { useDisclosure } from '@mantine/hooks';
-import { showNotification } from '@mantine/notifications';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { 
-  IconHeart, 
-  IconWeight, 
-  IconRuler2, 
-  IconZzz, 
-  IconPencil, 
-  IconPlus,
+  Title,
+  useMantineTheme,
+} from "@mantine/core";
+import { DatePickerInput } from "@mantine/dates";
+import { useDisclosure } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import {
   IconEye,
+  IconHeart,
   IconHeartRateMonitor,
-  IconTrash
-} from '@tabler/icons-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, TooltipProps } from 'recharts';
+  IconPencil,
+  IconPlus,
+  IconRuler2,
+  IconTrash,
+  IconWeight,
+  IconZzz,
+} from "@tabler/icons-react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  type TooltipProps,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 /**
  * Metric type definition
@@ -107,24 +120,42 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   const [addModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
   const [viewModalOpened, { open: openViewModal, close: closeViewModal }] = useDisclosure(false);
   const [selectedMetric, setSelectedMetric] = useState<Metric | null>(null);
-  const [selectedMetricType, setSelectedMetricType] = useState<string>('all');
-  const [timeRange, setTimeRange] = useState<string>('week');
+  const [selectedMetricType, setSelectedMetricType] = useState<string>("all");
+  const [timeRange, setTimeRange] = useState<string>("week");
 
   // Form state
   const [newMetric, setNewMetric] = useState<NewMetric>({
     date: new Date(),
-    type: '',
-    value: '',
-    notes: ''
+    type: "",
+    value: "",
+    notes: "",
   });
 
   // Available metric types
   const metricTypes: MetricType[] = [
-    { value: 'resting_heart_rate', label: 'Resting Heart Rate (bpm)', icon: IconHeart, color: 'red', unit: 'bpm' },
-    { value: 'weight', label: 'Weight', icon: IconWeight, color: 'blue', unit: 'kg' },
-    { value: 'body_fat', label: 'Body Fat %', icon: IconRuler2, color: 'orange', unit: '%' },
-    { value: 'sleep_duration', label: 'Sleep Duration', icon: IconZzz, color: 'violet', unit: 'hours' },
-    { value: 'hrv', label: 'Heart Rate Variability', icon: IconHeartRateMonitor, color: 'pink', unit: 'ms' }
+    {
+      value: "resting_heart_rate",
+      label: "Resting Heart Rate (bpm)",
+      icon: IconHeart,
+      color: "red",
+      unit: "bpm",
+    },
+    { value: "weight", label: "Weight", icon: IconWeight, color: "blue", unit: "kg" },
+    { value: "body_fat", label: "Body Fat %", icon: IconRuler2, color: "orange", unit: "%" },
+    {
+      value: "sleep_duration",
+      label: "Sleep Duration",
+      icon: IconZzz,
+      color: "violet",
+      unit: "hours",
+    },
+    {
+      value: "hrv",
+      label: "Heart Rate Variability",
+      icon: IconHeartRateMonitor,
+      color: "pink",
+      unit: "ms",
+    },
   ];
 
   // Fetch metrics data
@@ -134,54 +165,54 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
 
       try {
         let query = supabase
-          .from('physical_metrics')
-          .select('*')
-          .eq('user_id', userId)
-          .order('date', { ascending: false });
+          .from("physical_metrics")
+          .select("*")
+          .eq("user_id", userId)
+          .order("date", { ascending: false });
 
         // Apply time range filter
         const today = new Date();
         let startDate: Date;
-        
+
         switch (timeRange) {
-          case 'week':
+          case "week":
             startDate = new Date(today);
             startDate.setDate(today.getDate() - 7);
-            query = query.gte('date', startDate.toISOString().split('T')[0]);
+            query = query.gte("date", startDate.toISOString().split("T")[0]);
             break;
-          case 'month':
+          case "month":
             startDate = new Date(today);
             startDate.setMonth(today.getMonth() - 1);
-            query = query.gte('date', startDate.toISOString().split('T')[0]);
+            query = query.gte("date", startDate.toISOString().split("T")[0]);
             break;
-          case 'quarter':
+          case "quarter":
             startDate = new Date(today);
             startDate.setMonth(today.getMonth() - 3);
-            query = query.gte('date', startDate.toISOString().split('T')[0]);
+            query = query.gte("date", startDate.toISOString().split("T")[0]);
             break;
-          case 'year':
+          case "year":
             startDate = new Date(today);
             startDate.setFullYear(today.getFullYear() - 1);
-            query = query.gte('date', startDate.toISOString().split('T')[0]);
+            query = query.gte("date", startDate.toISOString().split("T")[0]);
             break;
           // 'all' case doesn't need additional filter
         }
 
         // Apply metric type filter
-        if (selectedMetricType !== 'all') {
-          query = query.eq('type', selectedMetricType);
+        if (selectedMetricType !== "all") {
+          query = query.eq("type", selectedMetricType);
         }
 
         const { data, error } = await query;
 
         if (error) {
-          console.error('Error fetching physical metrics:', error);
+          console.error("Error fetching physical metrics:", error);
           return;
         }
 
         setMetrics(data || []);
       } catch (error) {
-        console.error('Error in physical metrics fetch:', error);
+        console.error("Error in physical metrics fetch:", error);
       }
     };
 
@@ -191,23 +222,24 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   // Handle form field changes
   const handleDateChange = (value: Date | null) => {
     if (value) {
-      setNewMetric(prev => ({ ...prev, date: value }));
+      setNewMetric((prev) => ({ ...prev, date: value }));
     }
   };
-  
+
   const handleTypeChange = (value: string | null) => {
-    setNewMetric(prev => ({ ...prev, type: value || '', value: '' }));
+    setNewMetric((prev) => ({ ...prev, type: value || "", value: "" }));
   };
-  
-  const handleValueChange = (value: number | string) => setNewMetric(prev => ({ ...prev, value }));
-  
+
+  const handleValueChange = (value: number | string) =>
+    setNewMetric((prev) => ({ ...prev, value }));
+
   const handleNotesChange = (value: string | null) => {
-    setNewMetric(prev => ({ ...prev, notes: value || '' }));
+    setNewMetric((prev) => ({ ...prev, notes: value || "" }));
   };
 
   // Get metric type details
   const getMetricTypeDetails = (type: string): Partial<MetricType> => {
-    return metricTypes.find(metric => metric.value === type) || {};
+    return metricTypes.find((metric) => metric.value === type) || {};
   };
 
   // Format date for display
@@ -230,14 +262,14 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
         date: new Date(metric.date),
         type: metric.type,
         value: metric.value,
-        notes: metric.notes || ''
+        notes: metric.notes || "",
       });
     } else {
       setNewMetric({
         date: new Date(),
-        type: '',
-        value: '',
-        notes: ''
+        type: "",
+        value: "",
+        notes: "",
       });
     }
     openAddModal();
@@ -246,40 +278,40 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   // Delete metric
   const handleDeleteMetric = async () => {
     if (!selectedMetric) return;
-    
+
     setDeleteLoading(true);
-    
+
     try {
       const { error } = await supabase
-        .from('physical_metrics')
+        .from("physical_metrics")
         .delete()
-        .eq('id', selectedMetric.id);
-      
+        .eq("id", selectedMetric.id);
+
       if (error) {
         throw error;
       }
 
       showNotification({
-        title: 'Success',
-        message: 'Metric deleted successfully',
-        color: 'green',
+        title: "Success",
+        message: "Metric deleted successfully",
+        color: "green",
       });
 
       // Refresh metrics data
       const { data } = await supabase
-        .from('physical_metrics')
-        .select('*')
-        .eq('user_id', userId)
-        .order('date', { ascending: false });
+        .from("physical_metrics")
+        .select("*")
+        .eq("user_id", userId)
+        .order("date", { ascending: false });
 
       setMetrics(data || []);
       closeViewModal();
     } catch (error) {
-      console.error('Error deleting metric:', error);
+      console.error("Error deleting metric:", error);
       showNotification({
-        title: 'Error',
-        message: 'Failed to delete metric',
-        color: 'red',
+        title: "Error",
+        message: "Failed to delete metric",
+        color: "red",
       });
     } finally {
       setDeleteLoading(false);
@@ -290,66 +322,61 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   const handleSubmit = async () => {
     if (!newMetric.type || !newMetric.value) {
       showNotification({
-        title: 'Missing Information',
-        message: 'Please fill in all required fields',
-        color: 'orange',
+        title: "Missing Information",
+        message: "Please fill in all required fields",
+        color: "orange",
       });
       return;
     }
 
     setLoading(true);
-    
+
     try {
       const metricData = {
         user_id: userId,
-        date: newMetric.date.toISOString().split('T')[0],
+        date: newMetric.date.toISOString().split("T")[0],
         type: newMetric.type,
-        value: parseFloat(newMetric.value.toString()),
-        notes: newMetric.notes || null
+        value: Number.parseFloat(newMetric.value.toString()),
+        notes: newMetric.notes || null,
       };
 
       let query;
-      
+
       if (newMetric.id) {
         // Update existing metric
-        query = supabase
-          .from('physical_metrics')
-          .update(metricData)
-          .eq('id', newMetric.id);
+        query = supabase.from("physical_metrics").update(metricData).eq("id", newMetric.id);
       } else {
         // Insert new metric
-        query = supabase
-          .from('physical_metrics')
-          .insert(metricData);
+        query = supabase.from("physical_metrics").insert(metricData);
       }
 
       const { error } = await query;
-      
+
       if (error) {
         throw error;
       }
 
       showNotification({
-        title: 'Success',
-        message: 'Metric saved successfully',
-        color: 'green',
+        title: "Success",
+        message: "Metric saved successfully",
+        color: "green",
       });
 
       // Refresh metrics data
       const { data } = await supabase
-        .from('physical_metrics')
-        .select('*')
-        .eq('user_id', userId)
-        .order('date', { ascending: false });
+        .from("physical_metrics")
+        .select("*")
+        .eq("user_id", userId)
+        .order("date", { ascending: false });
 
       setMetrics(data || []);
       closeAddModal();
     } catch (error) {
-      console.error('Error saving metric:', error);
+      console.error("Error saving metric:", error);
       showNotification({
-        title: 'Error',
-        message: 'Failed to save metric',
-        color: 'red',
+        title: "Error",
+        message: "Failed to save metric",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -359,17 +386,18 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   // Prepare chart data
   const prepareChartData = (): ChartData[] => {
     if (!metrics.length) return [];
-    
+
     // Make a deep copy of metrics and sort by date
-    const sortedMetrics = [...metrics]
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const sortedMetrics = [...metrics].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
 
     // Group by date and type for the chart
     const chartData: ChartData[] = [];
-    
-    sortedMetrics.forEach(metric => {
-      const existingDateEntry = chartData.find(entry => entry.date === metric.date);
-      
+
+    sortedMetrics.forEach((metric) => {
+      const existingDateEntry = chartData.find((entry) => entry.date === metric.date);
+
       if (existingDateEntry) {
         existingDateEntry[metric.type] = metric.value;
       } else {
@@ -385,32 +413,32 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   const getUniqueMetricTypes = (): UniqueMetricType[] => {
     // Fix for Set iteration in TypeScript by using Array.from()
     const typeSet = new Set<string>();
-    metrics.forEach(metric => typeSet.add(metric.type));
+    metrics.forEach((metric) => typeSet.add(metric.type));
     const types = Array.from(typeSet);
-    
-    return types.map(type => {
+
+    return types.map((type) => {
       const details = getMetricTypeDetails(type);
       return {
         value: type,
-        color: details.color || 'gray',
+        color: details.color || "gray",
         label: details.label || type,
-        unit: details.unit || ''
+        unit: details.unit || "",
       };
     });
   };
 
   // Format chart tooltip
   type CustomTooltipProps = TooltipProps<number, string>;
-  
+
   const renderTooltip = (props: CustomTooltipProps): React.ReactNode | null => {
     const { active, payload, label } = props;
-    
+
     if (active && payload && payload.length) {
       return (
         <Paper p="xs" withBorder shadow="sm">
           <Text fw={600}>{formatDate(label)}</Text>
           {payload.map((entry, index) => {
-            const metricType = getMetricTypeDetails(entry.dataKey?.toString() || '');
+            const metricType = getMetricTypeDetails(entry.dataKey?.toString() || "");
             return (
               <Text key={index} size="sm" style={{ color: entry.color }}>
                 {metricType.label}: {entry.value} {metricType.unit}
@@ -426,7 +454,9 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
 
   return (
     <Box>
-      <Title order={2} mb="md">Physical Metrics Tracking</Title>
+      <Title order={2} mb="md">
+        Physical Metrics Tracking
+      </Title>
       <Text color="dimmed" mb="xl">
         Monitor your key physical measurements to track trends and inform your training.
       </Text>
@@ -434,7 +464,9 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl" mb="xl">
         <Paper p="md" radius="md" withBorder>
           <Group justify="apart" mb="lg">
-            <Text fw={600} size="lg">Recent Metrics</Text>
+            <Text fw={600} size="lg">
+              Recent Metrics
+            </Text>
             <Button
               leftSection={<IconPlus size={16} />}
               size="sm"
@@ -448,27 +480,24 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
             <Select
               label="Metric Type"
               value={selectedMetricType}
-              onChange={(value) => setSelectedMetricType(value || 'all')}
-              data={[
-                { value: 'all', label: 'All Metrics' },
-                ...metricTypes
-              ]}
+              onChange={(value) => setSelectedMetricType(value || "all")}
+              data={[{ value: "all", label: "All Metrics" }, ...metricTypes]}
               size="sm"
-              style={{ width: '48%' }}
+              style={{ width: "48%" }}
             />
             <Select
               label="Time Range"
               value={timeRange}
-              onChange={(value) => setTimeRange(value || 'week')}
+              onChange={(value) => setTimeRange(value || "week")}
               data={[
-                { value: 'week', label: 'Last 7 Days' },
-                { value: 'month', label: 'Last 30 Days' },
-                { value: 'quarter', label: 'Last 3 Months' },
-                { value: 'year', label: 'Last Year' },
-                { value: 'all', label: 'All Time' }
+                { value: "week", label: "Last 7 Days" },
+                { value: "month", label: "Last 30 Days" },
+                { value: "quarter", label: "Last 3 Months" },
+                { value: "year", label: "Last Year" },
+                { value: "all", label: "All Time" },
               ]}
               size="sm"
-              style={{ width: '48%' }}
+              style={{ width: "48%" }}
             />
           </Group>
 
@@ -481,18 +510,22 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
                   <List.Item
                     key={metric.id}
                     icon={
-                      <ThemeIcon color={metricType.color || 'blue'} size={24} radius="xl">
+                      <ThemeIcon color={metricType.color || "blue"} size={24} radius="xl">
                         {MetricIcon && <MetricIcon size={16} />}
                       </ThemeIcon>
                     }
                   >
-                    <Group justify="apart" style={{ flexWrap: 'nowrap' }}>
+                    <Group justify="apart" style={{ flexWrap: "nowrap" }}>
                       <Box>
-                        <Group style={{ gap: '0.5rem' }}>
+                        <Group style={{ gap: "0.5rem" }}>
                           <Text fw={500}>{metricType.label}:</Text>
-                          <Text>{metric.value} {metricType.unit}</Text>
+                          <Text>
+                            {metric.value} {metricType.unit}
+                          </Text>
                         </Group>
-                        <Text size="xs" color="dimmed">{formatDate(metric.date)}</Text>
+                        <Text size="xs" color="dimmed">
+                          {formatDate(metric.date)}
+                        </Text>
                       </Box>
                       <Group style={{ gap: 0 }}>
                         <ActionIcon onClick={() => handleViewMetric(metric)}>
@@ -521,8 +554,10 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
         </Paper>
 
         <Paper p="md" radius="md" withBorder>
-          <Text fw={600} size="lg" mb="lg">Metrics Trends</Text>
-          
+          <Text fw={600} size="lg" mb="lg">
+            Metrics Trends
+          </Text>
+
           {metrics.length > 0 ? (
             <Box style={{ height: 300 }}>
               <ResponsiveContainer width="100%" height="100%">
@@ -531,11 +566,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
                   margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-                  <XAxis 
-                    dataKey="date" 
-                    tickFormatter={formatDate}
-                    tick={{ fontSize: 12 }}
-                  />
+                  <XAxis dataKey="date" tickFormatter={formatDate} tick={{ fontSize: 12 }} />
                   <YAxis tick={{ fontSize: 12 }} />
                   <Tooltip content={renderTooltip} />
                   <Legend />
@@ -566,7 +597,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
       <Modal
         opened={addModalOpened}
         onClose={closeAddModal}
-        title={<Text fw={600}>{newMetric.id ? 'Edit Metric' : 'Add New Metric'}</Text>}
+        title={<Text fw={600}>{newMetric.id ? "Edit Metric" : "Add New Metric"}</Text>}
         size="md"
       >
         <DatePickerInput
@@ -592,9 +623,13 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
 
         {newMetric.type && (
           <NumberInput
-            label={`Value (${getMetricTypeDetails(newMetric.type).unit || ''})`}
+            label={`Value (${getMetricTypeDetails(newMetric.type).unit || ""})`}
             placeholder="Enter value"
-            value={typeof newMetric.value === 'string' ? parseFloat(newMetric.value) || undefined : newMetric.value}
+            value={
+              typeof newMetric.value === "string"
+                ? Number.parseFloat(newMetric.value) || undefined
+                : newMetric.value
+            }
             onChange={handleValueChange}
             // Remove precision prop as it's not supported
             min={0}
@@ -607,10 +642,10 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
           label="Notes (Optional)"
           placeholder="Add notes"
           data={[
-            { value: 'Measured in the morning', label: 'Measured in the morning' },
-            { value: 'Measured after workout', label: 'Measured after workout' },
-            { value: 'Feeling better than usual', label: 'Feeling better than usual' },
-            { value: 'Feeling worse than usual', label: 'Feeling worse than usual' },
+            { value: "Measured in the morning", label: "Measured in the morning" },
+            { value: "Measured after workout", label: "Measured after workout" },
+            { value: "Feeling better than usual", label: "Feeling better than usual" },
+            { value: "Feeling worse than usual", label: "Feeling worse than usual" },
           ]}
           value={newMetric.notes}
           onChange={handleNotesChange}
@@ -622,13 +657,15 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
         />
 
         <Group justify="right">
-          <Button variant="outline" onClick={closeAddModal}>Cancel</Button>
+          <Button variant="outline" onClick={closeAddModal}>
+            Cancel
+          </Button>
           <Button
             onClick={handleSubmit}
             loading={loading}
             disabled={!newMetric.type || !newMetric.value}
           >
-            {newMetric.id ? 'Update Metric' : 'Save Metric'}
+            {newMetric.id ? "Update Metric" : "Save Metric"}
           </Button>
         </Group>
       </Modal>
@@ -644,22 +681,30 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
           <Box>
             <SimpleGrid cols={2} spacing="md">
               <Box>
-                <Text size="sm" color="dimmed">Date</Text>
+                <Text size="sm" color="dimmed">
+                  Date
+                </Text>
                 <Text fw={500}>{formatDate(selectedMetric.date)}</Text>
               </Box>
               <Box>
-                <Text size="sm" color="dimmed">Metric Type</Text>
+                <Text size="sm" color="dimmed">
+                  Metric Type
+                </Text>
                 <Text fw={500}>{getMetricTypeDetails(selectedMetric.type).label}</Text>
               </Box>
               <Box>
-                <Text size="sm" color="dimmed">Value</Text>
+                <Text size="sm" color="dimmed">
+                  Value
+                </Text>
                 <Text fw={500}>
                   {selectedMetric.value} {getMetricTypeDetails(selectedMetric.type).unit}
                 </Text>
               </Box>
               {selectedMetric.notes && (
                 <Box>
-                  <Text size="sm" color="dimmed">Notes</Text>
+                  <Text size="sm" color="dimmed">
+                    Notes
+                  </Text>
                   <Text>{selectedMetric.notes}</Text>
                 </Box>
               )}
@@ -668,9 +713,9 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
             <Divider my="lg" />
 
             <Group justify="right">
-              <Button 
+              <Button
                 leftSection={<IconPencil size={16} />}
-                variant="outline" 
+                variant="outline"
                 onClick={() => {
                   closeViewModal();
                   handleAddEditMetric(selectedMetric);

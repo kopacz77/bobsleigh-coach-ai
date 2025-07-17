@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+
 import { 
   Box, 
-  Title, 
-  Text, 
-  SimpleGrid, 
-  Paper, 
-  Slider, 
-  Group, 
   Button, 
-  Textarea, 
+  Group, 
+  Paper, 
+  SimpleGrid, 
+  Slider, 
   Stack,
+  Text, 
+  Textarea, 
+  Title, 
   useMantineTheme
 } from '@mantine/core';
-import { 
-  IconHeartFilled, 
-  IconBrain, 
-  IconZzz, 
-  IconSalad, 
-  IconMoodNervous // Using IconMoodNervous instead of the missing IconStress
-} from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { 
+  IconBrain, 
+  IconHeartFilled, 
+  IconMoodNervous, // Using IconMoodNervous instead of the missing IconStress, 
+  IconSalad, 
+  IconZzz 
+} from '@tabler/icons-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * WellbeingAssessment props interface

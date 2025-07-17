@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
 import {
-  Card,
-  Group,
-  Title,
-  Text,
-  Stack,
+  ActionIcon,
   Badge,
   Button,
-  ThemeIcon,
+  Card,
+  Group,
   rem,
-  ActionIcon,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
   useMantineTheme,
-} from '@mantine/core';
-import { IconBarbell, IconCalendarEvent, IconDotsVertical } from '@tabler/icons-react';
+} from "@mantine/core";
+import { IconBarbell, IconCalendarEvent, IconDotsVertical } from "@tabler/icons-react";
 
 interface WorkoutProps {
   date: string;
@@ -21,47 +21,59 @@ interface WorkoutProps {
   title: string;
   type: string;
   duration: string;
-  intensity: 'Low' | 'Medium' | 'High';
+  intensity: "Low" | "Medium" | "High";
   isAI?: boolean;
 }
 
 function WorkoutItem({ date, day, title, type, duration, intensity, isAI = false }: WorkoutProps) {
   const theme = useMantineTheme();
-  
+
   const intensityColor = {
-    Low: 'green',
-    Medium: 'yellow',
-    High: 'red',
+    Low: "green",
+    Medium: "yellow",
+    High: "red",
   }[intensity];
 
   return (
     <Group position="apart" p="sm" style={{ borderBottom: `1px solid ${theme.colors.gray[1]}` }}>
       <Group>
         <ThemeIcon size="xl" radius="md" color="gray.2">
-          <Text fw={700} c="dark">{day}</Text>
+          <Text fw={700} c="dark">
+            {day}
+          </Text>
         </ThemeIcon>
-        
+
         <Stack spacing={0}>
           <Group spacing="xs">
             <Text fw={500}>{title}</Text>
-            {isAI && <Badge size="xs" color="blue">AI</Badge>}
+            {isAI && (
+              <Badge size="xs" color="blue">
+                AI
+              </Badge>
+            )}
           </Group>
           <Group spacing="xs">
             <Group spacing={4}>
               <IconBarbell style={{ width: rem(14), height: rem(14) }} />
               <Text size="xs">{type}</Text>
             </Group>
-            <Text size="xs" c="dimmed">•</Text>
+            <Text size="xs" c="dimmed">
+              •
+            </Text>
             <Group spacing={4}>
               <IconCalendarEvent style={{ width: rem(14), height: rem(14) }} />
               <Text size="xs">{duration}</Text>
             </Group>
-            <Text size="xs" c="dimmed">•</Text>
-            <Badge size="xs" color={intensityColor} variant="light">{intensity}</Badge>
+            <Text size="xs" c="dimmed">
+              •
+            </Text>
+            <Badge size="xs" color={intensityColor} variant="light">
+              {intensity}
+            </Badge>
           </Group>
         </Stack>
       </Group>
-      
+
       <ActionIcon variant="subtle">
         <IconDotsVertical style={{ width: rem(16), height: rem(16) }} />
       </ActionIcon>
@@ -72,39 +84,39 @@ function WorkoutItem({ date, day, title, type, duration, intensity, isAI = false
 export function UpcomingWorkouts() {
   const workouts = [
     {
-      date: '2025-03-16',
-      day: '16',
-      title: 'Sprint & Technique',
-      type: 'Speed',
-      duration: '90 min',
-      intensity: 'High' as const,
+      date: "2025-03-16",
+      day: "16",
+      title: "Sprint & Technique",
+      type: "Speed",
+      duration: "90 min",
+      intensity: "High" as const,
       isAI: true,
     },
     {
-      date: '2025-03-17',
-      day: '17',
-      title: 'Recovery Session',
-      type: 'Recovery',
-      duration: '45 min',
-      intensity: 'Low' as const,
+      date: "2025-03-17",
+      day: "17",
+      title: "Recovery Session",
+      type: "Recovery",
+      duration: "45 min",
+      intensity: "Low" as const,
       isAI: true,
     },
     {
-      date: '2025-03-18',
-      day: '18',
-      title: 'Strength Training',
-      type: 'Strength',
-      duration: '75 min',
-      intensity: 'Medium' as const,
+      date: "2025-03-18",
+      day: "18",
+      title: "Strength Training",
+      type: "Strength",
+      duration: "75 min",
+      intensity: "Medium" as const,
       isAI: true,
     },
     {
-      date: '2025-03-19',
-      day: '19',
-      title: 'Push Technique',
-      type: 'Technical',
-      duration: '60 min',
-      intensity: 'Medium' as const,
+      date: "2025-03-19",
+      day: "19",
+      title: "Push Technique",
+      type: "Technical",
+      duration: "60 min",
+      intensity: "Medium" as const,
     },
   ];
 
@@ -113,7 +125,7 @@ export function UpcomingWorkouts() {
       <Stack spacing={0}>
         <Group position="apart" px="md" pb="md">
           <Title order={3}>Upcoming Workouts</Title>
-          <Text c="blue" size="sm" style={{ cursor: 'pointer' }}>
+          <Text c="blue" size="sm" style={{ cursor: "pointer" }}>
             View Calendar
           </Text>
         </Group>

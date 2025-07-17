@@ -1,32 +1,32 @@
 "use client";
 
-import { useState } from "react";
 import {
-  Card,
-  Stack,
-  Title,
-  Text,
-  Group,
+  ActionIcon,
+  Alert,
   Badge,
   Button,
+  Card,
   Divider,
-  Alert,
+  Group,
   Modal,
+  Stack,
   Tabs,
-  ActionIcon,
+  Text,
+  Title,
   Tooltip,
 } from "@mantine/core";
 import {
-  IconCalendar,
-  IconClock,
-  IconTarget,
-  IconCheck,
-  IconEdit,
-  IconRefresh,
-  IconInfoCircle,
   IconActivity,
+  IconCalendar,
+  IconCheck,
+  IconClock,
+  IconEdit,
+  IconInfoCircle,
+  IconRefresh,
+  IconTarget,
 } from "@tabler/icons-react";
-import { SessionRecommendation } from "@/lib/types/training";
+import { useState } from "react";
+import type { SessionRecommendation } from "@/lib/types/training";
 import { ExerciseCard } from "./ExerciseCard";
 import { LoadAdjustments } from "./LoadAdjustments";
 
@@ -74,14 +74,17 @@ export function SessionRecommendations({
 
   const getTotalVolume = () => {
     return session.exercises.reduce((total, sessionExercise) => {
-      return total + sessionExercise.sets.reduce((exerciseTotal, set) => {
-        return exerciseTotal + (set.reps * set.weight);
-      }, 0);
+      return (
+        total +
+        sessionExercise.sets.reduce((exerciseTotal, set) => {
+          return exerciseTotal + set.reps * set.weight;
+        }, 0)
+      );
     }, 0);
   };
 
-  const getMainExercises = () => session.exercises.filter(ex => ex.isMainExercise);
-  const getAccessoryExercises = () => session.exercises.filter(ex => !ex.isMainExercise);
+  const getMainExercises = () => session.exercises.filter((ex) => ex.isMainExercise);
+  const getAccessoryExercises = () => session.exercises.filter((ex) => !ex.isMainExercise);
 
   const renderSessionSummary = () => (
     <Card padding="md" radius="sm" withBorder>
@@ -93,11 +96,7 @@ export function SessionRecommendations({
               {session.sessionType} Training
             </Text>
           </Group>
-          <Badge
-            color={getSessionTypeColor(session.sessionType)}
-            variant="light"
-            size="lg"
-          >
+          <Badge color={getSessionTypeColor(session.sessionType)} variant="light" size="lg">
             {session.sessionType.toUpperCase()}
           </Badge>
         </Group>
@@ -106,7 +105,9 @@ export function SessionRecommendations({
           <Group align="center" gap="xs">
             <IconCalendar size={16} />
             <Stack gap={2}>
-              <Text size="xs" c="dimmed">Date</Text>
+              <Text size="xs" c="dimmed">
+                Date
+              </Text>
               <Text size="sm" fw={500}>
                 {session.date.toLocaleDateString()}
               </Text>
@@ -116,7 +117,9 @@ export function SessionRecommendations({
           <Group align="center" gap="xs">
             <IconClock size={16} />
             <Stack gap={2}>
-              <Text size="xs" c="dimmed">Duration</Text>
+              <Text size="xs" c="dimmed">
+                Duration
+              </Text>
               <Text size="sm" fw={500}>
                 {formatDuration(session.plannedDuration)}
               </Text>
@@ -126,7 +129,9 @@ export function SessionRecommendations({
           <Group align="center" gap="xs">
             <IconTarget size={16} />
             <Stack gap={2}>
-              <Text size="xs" c="dimmed">Total Volume</Text>
+              <Text size="xs" c="dimmed">
+                Total Volume
+              </Text>
               <Text size="sm" fw={500}>
                 {Math.round(getTotalVolume())}kg
               </Text>
@@ -145,7 +150,9 @@ export function SessionRecommendations({
 
   const renderExercisesList = (exercises: typeof session.exercises, title: string) => (
     <Stack gap="md">
-      <Text fw={600} size="md">{title}</Text>
+      <Text fw={600} size="md">
+        {title}
+      </Text>
       {exercises.map((sessionExercise, index) => (
         <ExerciseCard
           key={sessionExercise.id}
@@ -173,14 +180,11 @@ export function SessionRecommendations({
 
             <Group align="center" gap="xs">
               <Tooltip label="View detailed analysis">
-                <ActionIcon
-                  variant="light"
-                  onClick={() => setShowDetails(true)}
-                >
+                <ActionIcon variant="light" onClick={() => setShowDetails(true)}>
                   <IconInfoCircle size={16} />
                 </ActionIcon>
               </Tooltip>
-              
+
               <Badge
                 color={confidence >= 0.8 ? "green" : confidence >= 0.6 ? "yellow" : "red"}
                 variant="light"
@@ -205,28 +209,32 @@ export function SessionRecommendations({
 
           {/* Main Exercises Preview */}
           <Stack gap="sm">
-            <Text fw={600} size="md">Main Exercises ({getMainExercises().length})</Text>
-            {getMainExercises().slice(0, 2).map((sessionExercise) => (
-              <Card key={sessionExercise.id} padding="sm" radius="sm" withBorder>
-                <Group justify="space-between" align="center">
-                  <Group align="center" gap="sm">
-                    <Text fw={500}>{sessionExercise.exercise.name}</Text>
-                    <Badge size="xs" variant="light">
-                      {sessionExercise.sets.length} sets
-                    </Badge>
+            <Text fw={600} size="md">
+              Main Exercises ({getMainExercises().length})
+            </Text>
+            {getMainExercises()
+              .slice(0, 2)
+              .map((sessionExercise) => (
+                <Card key={sessionExercise.id} padding="sm" radius="sm" withBorder>
+                  <Group justify="space-between" align="center">
+                    <Group align="center" gap="sm">
+                      <Text fw={500}>{sessionExercise.exercise.name}</Text>
+                      <Badge size="xs" variant="light">
+                        {sessionExercise.sets.length} sets
+                      </Badge>
+                    </Group>
+                    <Text size="sm" c="dimmed">
+                      {sessionExercise.sets[0]?.reps} × {sessionExercise.sets[0]?.weight}kg
+                    </Text>
                   </Group>
-                  <Text size="sm" c="dimmed">
-                    {sessionExercise.sets[0]?.reps} × {sessionExercise.sets[0]?.weight}kg
-                  </Text>
-                </Group>
-                {sessionExercise.adaptationReason && (
-                  <Text size="xs" c="blue" mt={4}>
-                    {sessionExercise.adaptationReason}
-                  </Text>
-                )}
-              </Card>
-            ))}
-            
+                  {sessionExercise.adaptationReason && (
+                    <Text size="xs" c="blue" mt={4}>
+                      {sessionExercise.adaptationReason}
+                    </Text>
+                  )}
+                </Card>
+              ))}
+
             {getMainExercises().length > 2 && (
               <Text size="sm" c="dimmed" ta="center">
                 +{getMainExercises().length - 2} more exercises
@@ -244,7 +252,7 @@ export function SessionRecommendations({
             >
               Start Session
             </Button>
-            
+
             <Button
               variant="light"
               leftSection={<IconEdit size={16} />}
@@ -254,7 +262,7 @@ export function SessionRecommendations({
             >
               Modify
             </Button>
-            
+
             <Button
               variant="subtle"
               leftSection={<IconRefresh size={16} />}
@@ -270,8 +278,8 @@ export function SessionRecommendations({
           {confidence < 0.6 && (
             <Alert color="yellow" variant="light" title="Low Confidence Warning">
               <Text size="sm">
-                The AI has lower confidence in today's recommendations. Consider reviewing
-                your recent feedback or consulting with a coach.
+                The AI has lower confidence in today's recommendations. Consider reviewing your
+                recent feedback or consulting with a coach.
               </Text>
             </Alert>
           )}
@@ -296,33 +304,41 @@ export function SessionRecommendations({
           <Tabs.Panel value="overview" pt="md">
             <Stack gap="md">
               {renderSessionSummary()}
-              
-              <Text fw={600} size="md">Exercise Summary</Text>
+
+              <Text fw={600} size="md">
+                Exercise Summary
+              </Text>
               <Group grow>
                 <Card padding="sm" withBorder>
                   <Stack gap={4} align="center">
                     <Text size="lg" fw={700} c="blue">
                       {getMainExercises().length}
                     </Text>
-                    <Text size="xs" c="dimmed">Main Exercises</Text>
+                    <Text size="xs" c="dimmed">
+                      Main Exercises
+                    </Text>
                   </Stack>
                 </Card>
-                
+
                 <Card padding="sm" withBorder>
                   <Stack gap={4} align="center">
                     <Text size="lg" fw={700} c="gray">
                       {getAccessoryExercises().length}
                     </Text>
-                    <Text size="xs" c="dimmed">Accessory</Text>
+                    <Text size="xs" c="dimmed">
+                      Accessory
+                    </Text>
                   </Stack>
                 </Card>
-                
+
                 <Card padding="sm" withBorder>
                   <Stack gap={4} align="center">
                     <Text size="lg" fw={700} c="green">
                       {session.exercises.reduce((total, ex) => total + ex.sets.length, 0)}
                     </Text>
-                    <Text size="xs" c="dimmed">Total Sets</Text>
+                    <Text size="xs" c="dimmed">
+                      Total Sets
+                    </Text>
                   </Stack>
                 </Card>
               </Group>
@@ -331,10 +347,9 @@ export function SessionRecommendations({
 
           <Tabs.Panel value="exercises" pt="md">
             <Stack gap="lg">
-              {getMainExercises().length > 0 && 
-                renderExercisesList(getMainExercises(), "Main Exercises")
-              }
-              
+              {getMainExercises().length > 0 &&
+                renderExercisesList(getMainExercises(), "Main Exercises")}
+
               {getAccessoryExercises().length > 0 && (
                 <>
                   <Divider />
