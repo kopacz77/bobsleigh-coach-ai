@@ -86,11 +86,11 @@ const Onboarding = ({ userId, userProfile }) => {
             </ThemeIcon>
           </Center>
 
-          <Title order={2} align="center" mb="md">
+          <Title order={2} ta="center" mb="md">
             Welcome to Bobsleigh Coach AI
           </Title>
 
-          <Text align="center" size="lg" mb="xl">
+          <Text ta="center" size="lg" mb="xl">
             Let's set up your profile and training environment to get you started on your bobsleigh
             journey.
           </Text>
@@ -102,32 +102,32 @@ const Onboarding = ({ userId, userProfile }) => {
               <ThemeIcon size={28} radius="xl" color="blue">
                 <IconUser size={16} />
               </ThemeIcon>
-              <Text weight={500}>Your athlete profile and physical attributes</Text>
+              <Text fw={500}>Your athlete profile and physical attributes</Text>
             </Group>
 
             <Group mb="md">
               <ThemeIcon size={28} radius="xl" color="green">
                 <IconTarget size={16} />
               </ThemeIcon>
-              <Text weight={500}>Your goals and competition targets</Text>
+              <Text fw={500}>Your goals and competition targets</Text>
             </Group>
 
             <Group mb="md">
               <ThemeIcon size={28} radius="xl" color="orange">
                 <IconBarbell size={16} />
               </ThemeIcon>
-              <Text weight={500}>Your training preferences and availability</Text>
+              <Text fw={500}>Your training preferences and availability</Text>
             </Group>
 
             <Group mb="md">
               <ThemeIcon size={28} radius="xl" color="red">
                 <IconClipboardCheck size={16} />
               </ThemeIcon>
-              <Text weight={500}>Initial performance assessment</Text>
+              <Text fw={500}>Initial performance assessment</Text>
             </Group>
           </Box>
 
-          <Text color="dimmed" mb="xl">
+          <Text c="dimmed" mb="xl">
             This information helps us create a personalized training program that's optimized for
             your needs and goals. You can update any of this information later in your profile
             settings.
@@ -183,7 +183,7 @@ const Onboarding = ({ userId, userProfile }) => {
             to be available soon.
           </Text>
 
-          <Text color="dimmed" mb="xl">
+          <Text c="dimmed" mb="xl">
             In the meantime, you can explore the dashboard, check out the resources section, and
             complete your daily check-ins to help us optimize your training.
           </Text>
@@ -272,7 +272,7 @@ const Onboarding = ({ userId, userProfile }) => {
       <Container size="lg" py="xl">
         <Paper shadow="md" radius="lg" p="xl" className="border-2 border-blue-400">
           <Box mb="xl">
-            <Group position="apart" mb="md">
+            <Group justify="space-between" mb="md">
               <Title order={2} className="text-blue-700">
                 Getting Started
               </Title>
@@ -292,7 +292,7 @@ const Onboarding = ({ userId, userProfile }) => {
               mb="sm"
             />
 
-            <Text align="center" color="dimmed">
+            <Text ta="center" c="dimmed">
               Step {step + 1} of {steps.length}: {steps[step].description}
             </Text>
           </Box>
@@ -312,12 +312,12 @@ const Onboarding = ({ userId, userProfile }) => {
             <CurrentStepComponent onComplete={handleStepComplete} />
           </Box>
 
-          <Group position="apart" mt="xl">
+          <Group justify="space-between" mt="xl">
             {step > 0 && step < steps.length - 1 && (
               <Button
                 variant="outline"
                 onClick={handlePreviousStep}
-                leftIcon={<IconChevronLeft size={16} />}
+                leftSection={<IconChevronLeft size={16} />}
                 size="md"
               >
                 Back
@@ -325,7 +325,7 @@ const Onboarding = ({ userId, userProfile }) => {
             )}
 
             {step === 0 && (
-              <Button onClick={handleNextStep} rightIcon={<IconChevronRight size={16} />} size="md">
+              <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
                 Get Started
               </Button>
             )}
@@ -339,7 +339,7 @@ const Onboarding = ({ userId, userProfile }) => {
             {step !== 0 && step !== steps.length - 1 && (
               <Button
                 onClick={handleNextStep}
-                rightIcon={<IconChevronRight size={16} />}
+                rightSection={<IconChevronRight size={16} />}
                 size="md"
                 variant="light"
               >

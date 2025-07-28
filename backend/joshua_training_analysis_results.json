@@ -1,0 +1,2466 @@
+{
+  "sheet_analysis": {
+    "Training Plan 3": {
+      "dimensions": [
+        723,
+        15
+      ],
+      "header_candidates": [
+        [
+          2,
+          "15",
+          [
+            "Week ",
+            "Day 1 ",
+            "2025-03-03 00:00:00",
+            "Day 2 ",
+            "2025-03-04 00:00:00",
+            "Day 3 ",
+            "2025-03-05 00:00:00",
+            "Day 4 ",
+            "2025-03-06 00:00:00",
+            "Day 5",
+            "2025-03-07 00:00:00",
+            "Day 6",
+            "2025-03-08 00:00:00",
+            "Day 7",
+            "2025-03-09 00:00:00"
+          ]
+        ],
+        [
+          3,
+          "15",
+          [
+            1,
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps"
+          ]
+        ],
+        [
+          5,
+          "8",
+          [
+            "Notes: ",
+            "Front SQ SLOW",
+            NaN,
+            "Running Shoes",
+            NaN,
+            "Front SQ SLOW",
+            NaN,
+            "Drills",
+            NaN,
+            "Front SQ SLOW",
+            NaN,
+            "Jog",
+            NaN,
+            "Off",
+            NaN
+          ]
+        ],
+        [
+          6,
+          "8",
+          [
+            NaN,
+            40,
+            8,
+            "Focussed drill",
+            NaN,
+            40,
+            8,
+            NaN,
+            NaN,
+            40,
+            8,
+            "45 min",
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          7,
+          "8",
+          [
+            "Daily Work:",
+            40,
+            8,
+            "technique",
+            NaN,
+            42.5,
+            8,
+            NaN,
+            NaN,
+            42.5,
+            8,
+            NaN,
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          8,
+          "7",
+          [
+            "Stretch adductors",
+            42.5,
+            8,
+            NaN,
+            NaN,
+            42.5,
+            8,
+            NaN,
+            NaN,
+            42.5,
+            8,
+            NaN,
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          9,
+          "7",
+          [
+            "like its your job",
+            45,
+            8,
+            NaN,
+            NaN,
+            45,
+            8,
+            NaN,
+            NaN,
+            45,
+            8,
+            NaN,
+            NaN,
+            NaN,
+            NaN
+          ]
+        ]
+      ],
+      "sample_data": {
+        "0": {
+          "0": "Road to Italy 2025",
+          "1": NaN,
+          "2": "Week ",
+          "3": 1,
+          "4": NaN,
+          "5": "Notes: ",
+          "6": NaN,
+          "7": "Daily Work:",
+          "8": "Stretch adductors",
+          "9": "like its your job"
+        },
+        "1": {
+          "0": "BODY WEIGHT START 101kg",
+          "1": NaN,
+          "2": "Day 1 ",
+          "3": "Type/weight kg",
+          "4": NaN,
+          "5": "Front SQ SLOW",
+          "6": 40,
+          "7": 40,
+          "8": 42.5,
+          "9": 45
+        },
+        "2": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2025-03-03 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": NaN,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "9": 8
+        },
+        "3": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 2 ",
+          "3": "Type/weight kg",
+          "4": NaN,
+          "5": "Running Shoes",
+          "6": "Focussed drill",
+          "7": "technique",
+          "8": NaN,
+          "9": NaN
+        },
+        "4": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2025-03-04 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "5": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 3 ",
+          "3": "Type/weight kg",
+          "4": NaN,
+          "5": "Front SQ SLOW",
+          "6": 40,
+          "7": 42.5,
+          "8": 42.5,
+          "9": 45
+        },
+        "6": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2025-03-05 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": NaN,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "9": 8
+        },
+        "7": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 4 ",
+          "3": "Type/weight kg",
+          "4": NaN,
+          "5": "Drills",
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "8": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2025-03-06 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "9": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 5",
+          "3": "Type/weight kg",
+          "4": NaN,
+          "5": "Front SQ SLOW",
+          "6": 40,
+          "7": 42.5,
+          "8": 42.5,
+          "9": 45
+        },
+        "10": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2025-03-07 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": NaN,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "9": 8
+        },
+        "11": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 6",
+          "3": "Type/weight kg",
+          "4": NaN,
+          "5": "Jog",
+          "6": "45 min",
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "12": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2025-03-08 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "13": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 7",
+          "3": "Type/weight kg",
+          "4": NaN,
+          "5": "Off",
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "14": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2025-03-09 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        }
+      }
+    },
+    "Training Plan 2": {
+      "dimensions": [
+        1785,
+        15
+      ],
+      "header_candidates": [
+        [
+          2,
+          "13",
+          [
+            "Week ",
+            "Day 1 ",
+            "2024-03-04 00:00:00",
+            "Day 2 ",
+            "2024-03-05 00:00:00",
+            "Day 3 ",
+            "2024-03-06 00:00:00",
+            "Day 4 ",
+            "2024-03-07 00:00:00",
+            "Day 5",
+            "2024-03-08 00:00:00",
+            "Day 6",
+            "2024-03-09 00:00:00",
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          3,
+          "13",
+          [
+            1,
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps",
+            "Type/weight kg",
+            "reps",
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          4,
+          "7",
+          [
+            "Notes: ",
+            "Front SQ SLOW",
+            NaN,
+            "Running Shoes",
+            NaN,
+            "Front SQ SLOW",
+            NaN,
+            "Drills",
+            NaN,
+            "Front SQ SLOW",
+            NaN,
+            "Jog",
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          5,
+          "8",
+          [
+            NaN,
+            40,
+            8,
+            "Focussed drill",
+            NaN,
+            40,
+            8,
+            NaN,
+            NaN,
+            40,
+            8,
+            "45 min",
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          6,
+          "8",
+          [
+            "Daily Work:",
+            40,
+            8,
+            "technique",
+            NaN,
+            42.5,
+            8,
+            NaN,
+            NaN,
+            42.5,
+            8,
+            NaN,
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          7,
+          "7",
+          [
+            "Stretch adductors",
+            42.5,
+            8,
+            NaN,
+            NaN,
+            42.5,
+            8,
+            NaN,
+            NaN,
+            42.5,
+            8,
+            NaN,
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          8,
+          "7",
+          [
+            "like its your job",
+            45,
+            8,
+            NaN,
+            NaN,
+            45,
+            8,
+            NaN,
+            NaN,
+            45,
+            8,
+            NaN,
+            NaN,
+            NaN,
+            NaN
+          ]
+        ]
+      ],
+      "sample_data": {
+        "0": {
+          "0": "Road to Italy 2024",
+          "1": NaN,
+          "2": "Week ",
+          "3": 1,
+          "4": "Notes: ",
+          "5": NaN,
+          "6": "Daily Work:",
+          "7": "Stretch adductors",
+          "8": "like its your job",
+          "9": NaN
+        },
+        "1": {
+          "0": "BODY WEIGHT START 101kg",
+          "1": NaN,
+          "2": "Day 1 ",
+          "3": "Type/weight kg",
+          "4": "Front SQ SLOW",
+          "5": 40,
+          "6": 40,
+          "7": 42.5,
+          "8": 45,
+          "9": NaN
+        },
+        "2": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2024-03-04 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": 8,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "9": NaN
+        },
+        "3": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 2 ",
+          "3": "Type/weight kg",
+          "4": "Running Shoes",
+          "5": "Focussed drill",
+          "6": "technique",
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "4": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2024-03-05 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "5": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 3 ",
+          "3": "Type/weight kg",
+          "4": "Front SQ SLOW",
+          "5": 40,
+          "6": 42.5,
+          "7": 42.5,
+          "8": 45,
+          "9": NaN
+        },
+        "6": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2024-03-06 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": 8,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "9": NaN
+        },
+        "7": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 4 ",
+          "3": "Type/weight kg",
+          "4": "Drills",
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "8": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2024-03-07 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "9": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 5",
+          "3": "Type/weight kg",
+          "4": "Front SQ SLOW",
+          "5": 40,
+          "6": 42.5,
+          "7": 42.5,
+          "8": 45,
+          "9": NaN
+        },
+        "10": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2024-03-08 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": 8,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "9": NaN
+        },
+        "11": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 6",
+          "3": "Type/weight kg",
+          "4": "Jog",
+          "5": "45 min",
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "12": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2024-03-09 00:00:00",
+          "3": "reps",
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "13": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "14": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        }
+      }
+    },
+    "Training Plan 1": {
+      "dimensions": [
+        907,
+        15
+      ],
+      "header_candidates": [
+        [
+          2,
+          "13",
+          [
+            "Week ",
+            "Day 1 ",
+            "2023-08-14 00:00:00",
+            "Day 2 ",
+            "2023-08-15 00:00:00",
+            "Day 3 ",
+            "2023-08-16 00:00:00",
+            "Day 4 ",
+            "2023-08-17 00:00:00",
+            "Day 5",
+            "2023-08-18 00:00:00",
+            "Day 6",
+            "2023-08-19 00:00:00",
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          3,
+          "13",
+          [
+            1,
+            "Type / reps",
+            "weight kg",
+            "Type / reps",
+            "weight kg",
+            "Type / reps",
+            "weight kg",
+            "Type / reps",
+            "weight kg",
+            "Type / reps",
+            "weight kg",
+            "Type / reps",
+            "weight kg",
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          4,
+          "7",
+          [
+            "Notes: ",
+            "Cleans from block",
+            NaN,
+            "Running Shoes",
+            NaN,
+            "Snatch from Blocks",
+            NaN,
+            "Drills",
+            NaN,
+            "cleans from block",
+            NaN,
+            "Running Shoes",
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          5,
+          "8",
+          [
+            NaN,
+            80,
+            3,
+            "6x6 hurdles",
+            NaN,
+            60,
+            3,
+            NaN,
+            NaN,
+            110,
+            3,
+            "Stairs",
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          6,
+          "8",
+          [
+            NaN,
+            90,
+            3,
+            "bounds",
+            "6x8",
+            65,
+            3,
+            NaN,
+            NaN,
+            120,
+            3,
+            NaN,
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          7,
+          "9",
+          [
+            "Stretch adductors",
+            100,
+            3,
+            NaN,
+            NaN,
+            70,
+            3,
+            "hurldes",
+            "6x6",
+            130,
+            3,
+            NaN,
+            NaN,
+            NaN,
+            NaN
+          ]
+        ]
+      ],
+      "sample_data": {
+        "0": {
+          "0": "Road to Italy 2023",
+          "1": NaN,
+          "2": "Week ",
+          "3": 1,
+          "4": "Notes: ",
+          "5": NaN,
+          "6": NaN,
+          "7": "Stretch adductors",
+          "8": "like its your job",
+          "9": NaN
+        },
+        "1": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 1 ",
+          "3": "Type / reps",
+          "4": "Cleans from block",
+          "5": 80,
+          "6": 90,
+          "7": 100,
+          "8": NaN,
+          "9": NaN
+        },
+        "2": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2023-08-14 00:00:00",
+          "3": "weight kg",
+          "4": NaN,
+          "5": 3,
+          "6": 3,
+          "7": 3,
+          "8": NaN,
+          "9": NaN
+        },
+        "3": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 2 ",
+          "3": "Type / reps",
+          "4": "Running Shoes",
+          "5": "6x6 hurdles",
+          "6": "bounds",
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "4": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2023-08-15 00:00:00",
+          "3": "weight kg",
+          "4": NaN,
+          "5": NaN,
+          "6": "6x8",
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "5": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 3 ",
+          "3": "Type / reps",
+          "4": "Snatch from Blocks",
+          "5": 60,
+          "6": 65,
+          "7": 70,
+          "8": NaN,
+          "9": NaN
+        },
+        "6": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2023-08-16 00:00:00",
+          "3": "weight kg",
+          "4": NaN,
+          "5": 3,
+          "6": 3,
+          "7": 3,
+          "8": NaN,
+          "9": NaN
+        },
+        "7": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 4 ",
+          "3": "Type / reps",
+          "4": "Drills",
+          "5": NaN,
+          "6": NaN,
+          "7": "hurldes",
+          "8": NaN,
+          "9": NaN
+        },
+        "8": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2023-08-17 00:00:00",
+          "3": "weight kg",
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": "6x6",
+          "8": NaN,
+          "9": NaN
+        },
+        "9": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 5",
+          "3": "Type / reps",
+          "4": "cleans from block",
+          "5": 110,
+          "6": 120,
+          "7": 130,
+          "8": NaN,
+          "9": NaN
+        },
+        "10": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2023-08-18 00:00:00",
+          "3": "weight kg",
+          "4": NaN,
+          "5": 3,
+          "6": 3,
+          "7": 3,
+          "8": NaN,
+          "9": NaN
+        },
+        "11": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Day 6",
+          "3": "Type / reps",
+          "4": "Running Shoes",
+          "5": "Stairs",
+          "6": NaN,
+          "7": NaN,
+          "8": "6x6 hurldes",
+          "9": NaN
+        },
+        "12": {
+          "0": NaN,
+          "1": NaN,
+          "2": "2023-08-19 00:00:00",
+          "3": "weight kg",
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": "medium",
+          "9": NaN
+        },
+        "13": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "14": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        }
+      }
+    },
+    "Farhtenspeil": {
+      "dimensions": [
+        17,
+        2
+      ],
+      "header_candidates": [
+        [
+          0,
+          "2",
+          [
+            "RUN (s)",
+            "WALK (s)"
+          ]
+        ],
+        [
+          1,
+          "2",
+          [
+            30,
+            30
+          ]
+        ],
+        [
+          2,
+          "2",
+          [
+            60,
+            60
+          ]
+        ],
+        [
+          3,
+          "2",
+          [
+            90,
+            90
+          ]
+        ],
+        [
+          4,
+          "2",
+          [
+            90,
+            90
+          ]
+        ],
+        [
+          5,
+          "2",
+          [
+            60,
+            60
+          ]
+        ],
+        [
+          6,
+          "2",
+          [
+            30,
+            30
+          ]
+        ],
+        [
+          7,
+          "2",
+          [
+            30,
+            30
+          ]
+        ],
+        [
+          8,
+          "2",
+          [
+            60,
+            60
+          ]
+        ],
+        [
+          9,
+          "2",
+          [
+            90,
+            90
+          ]
+        ]
+      ],
+      "sample_data": {
+        "0": {
+          "0": "RUN (s)",
+          "1": 30,
+          "2": 60,
+          "3": 90,
+          "4": 90,
+          "5": 60,
+          "6": 30,
+          "7": 30,
+          "8": 60,
+          "9": 90
+        },
+        "1": {
+          "0": "WALK (s)",
+          "1": 30,
+          "2": 60,
+          "3": 90,
+          "4": 90,
+          "5": 60,
+          "6": 30,
+          "7": 30,
+          "8": 60,
+          "9": 90
+        }
+      }
+    },
+    "PBs and Results": {
+      "dimensions": [
+        28,
+        18
+      ],
+      "header_candidates": [
+        [
+          0,
+          "14",
+          [
+            2023,
+            "PILOT",
+            "30m",
+            "60m",
+            "100m",
+            "Flying 30",
+            "Triple Broad Jump",
+            "Broad Jump",
+            NaN,
+            "Bath Push Track (30m)",
+            NaN,
+            "Oberhof",
+            NaN,
+            NaN,
+            "Clean",
+            "Snatch",
+            "Back Squat",
+            "Front Squat"
+          ]
+        ],
+        [
+          1,
+          "14",
+          [
+            NaN,
+            NaN,
+            "(s)",
+            "(s)",
+            "(s)",
+            "(s)",
+            "(m)",
+            "(m)",
+            NaN,
+            "Pilot Bar",
+            "Back",
+            "Pilot Bar",
+            "Back",
+            NaN,
+            "(kg)",
+            "(kg)",
+            "(kg)",
+            "(kg)"
+          ]
+        ],
+        [
+          2,
+          "12",
+          [
+            NaN,
+            NaN,
+            3.95,
+            "?",
+            11.8,
+            "?",
+            8.45,
+            3.15,
+            NaN,
+            3.97,
+            4.02,
+            NaN,
+            NaN,
+            NaN,
+            "140*3",
+            "90*2",
+            220,
+            180
+          ]
+        ],
+        [
+          9,
+          "14",
+          [
+            2024,
+            "PILOT",
+            "30m",
+            "60m",
+            "100m",
+            "Flying 30",
+            "Triple Broad Jump",
+            "Broad Jump",
+            NaN,
+            "Bath Push Track (30m)",
+            NaN,
+            "Oberhof",
+            NaN,
+            NaN,
+            "Clean",
+            "Snatch",
+            "Back Squat",
+            "Front Squat"
+          ]
+        ]
+      ],
+      "sample_data": {
+        "0": {
+          "0": 2023,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "Track",
+          "5": "Start Times",
+          "6": "Rank",
+          "7": "Circuit",
+          "8": NaN,
+          "9": 2024
+        },
+        "1": {
+          "0": "PILOT",
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "Lilleham",
+          "5": 5.19,
+          "6": "12th",
+          "7": "EC",
+          "8": NaN,
+          "9": "PILOT"
+        },
+        "2": {
+          "0": "30m",
+          "1": "(s)",
+          "2": 3.95,
+          "3": NaN,
+          "4": "Sigulda",
+          "5": 5.1,
+          "6": "7th",
+          "7": "EC",
+          "8": NaN,
+          "9": "30m"
+        },
+        "3": {
+          "0": "60m",
+          "1": "(s)",
+          "2": "?",
+          "3": NaN,
+          "4": "St.Mortiz",
+          "5": 5.33,
+          "6": "12th",
+          "7": "EC",
+          "8": NaN,
+          "9": "60m"
+        },
+        "4": {
+          "0": "100m",
+          "1": "(s)",
+          "2": 11.8,
+          "3": NaN,
+          "4": "Igls",
+          "5": 5.41,
+          "6": "18th",
+          "7": "EC",
+          "8": NaN,
+          "9": "100m"
+        },
+        "5": {
+          "0": "Flying 30",
+          "1": "(s)",
+          "2": "?",
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": "Flying 30"
+        },
+        "6": {
+          "0": "Triple Broad Jump",
+          "1": "(m)",
+          "2": 8.45,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": "Triple Broad Jump"
+        },
+        "7": {
+          "0": "Broad Jump",
+          "1": "(m)",
+          "2": 3.15,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": "Broad Jump"
+        },
+        "8": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "9": {
+          "0": "Bath Push Track (30m)",
+          "1": "Pilot Bar",
+          "2": 3.97,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": "Bath Push Track (30m)"
+        },
+        "10": {
+          "0": NaN,
+          "1": "Back",
+          "2": 4.02,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "11": {
+          "0": "Oberhof",
+          "1": "Pilot Bar",
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": "Oberhof"
+        },
+        "12": {
+          "0": NaN,
+          "1": "Back",
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "13": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "14": {
+          "0": "Clean",
+          "1": "(kg)",
+          "2": "140*3",
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": "Clean"
+        },
+        "15": {
+          "0": "Snatch",
+          "1": "(kg)",
+          "2": "90*2",
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": "Snatch"
+        },
+        "16": {
+          "0": "Back Squat",
+          "1": "(kg)",
+          "2": 220,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": "Back Squat"
+        },
+        "17": {
+          "0": "Front Squat",
+          "1": "(kg)",
+          "2": 180,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": "Front Squat"
+        }
+      }
+    },
+    "Feedback and Injuries": {
+      "dimensions": [
+        18,
+        5
+      ],
+      "header_candidates": [
+        [
+          2,
+          "2",
+          [
+            "Pre seaon injuries and misc Items",
+            NaN,
+            NaN,
+            NaN,
+            "Feedback from cyrus regarding season and training."
+          ]
+        ],
+        [
+          3,
+          "2",
+          [
+            "Low back pain, on and off.",
+            NaN,
+            NaN,
+            NaN,
+            "Not smooth transition for training feedback."
+          ]
+        ],
+        [
+          4,
+          "2",
+          [
+            "Overall in good spirits",
+            NaN,
+            NaN,
+            NaN,
+            "Think of new ideas to make coaching feedback more seamless."
+          ]
+        ],
+        [
+          5,
+          "2",
+          [
+            "good inter team feel",
+            NaN,
+            NaN,
+            NaN,
+            "Make time to video chat post workout over the summer for Cyrus."
+          ]
+        ]
+      ],
+      "sample_data": {
+        "0": {
+          "0": "2019/2020",
+          "1": NaN,
+          "2": "Pre seaon injuries and misc Items",
+          "3": "Low back pain, on and off.",
+          "4": "Overall in good spirits",
+          "5": "good inter team feel",
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "1": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "2": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "3": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "4": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Feedback from cyrus regarding season and training.",
+          "3": "Not smooth transition for training feedback.",
+          "4": "Think of new ideas to make coaching feedback more seamless.",
+          "5": "Make time to video chat post workout over the summer for Cyrus.",
+          "6": "Separate pictures for lift and sprints for ease of viewing.",
+          "7": "Change up Payment options. Wasn\u2019t good doing weekly basd on available funds.",
+          "8": NaN,
+          "9": NaN
+        }
+      }
+    },
+    "Analysis": {
+      "dimensions": [
+        155,
+        33
+      ],
+      "header_candidates": [],
+      "sample_data": {
+        "0": {
+          "0": "2018/2019 season",
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "1": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "2": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "3": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "4": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "5": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "6": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "7": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "8": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "9": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "10": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "11": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "12": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "13": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "14": {
+          "0": NaN,
+          "1": NaN,
+          "2": "Slope = 3.2",
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "15": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "16": {
+          "0": "2019/2020 season (projected and actual)",
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "17": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "18": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "19": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "20": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "21": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "22": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "23": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "24": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "25": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "26": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "27": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "28": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "29": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "30": {
+          "0": NaN,
+          "1": NaN,
+          "2": "MHG Actual Slope = ",
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "31": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "32": {
+          "0": NaN,
+          "1": NaN,
+          "2": 2.6,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        }
+      }
+    },
+    "Projected": {
+      "dimensions": [
+        52,
+        21
+      ],
+      "header_candidates": [
+        [
+          4,
+          "12",
+          [
+            NaN,
+            "SLOPE",
+            "SQUATS",
+            NaN,
+            "SLOPE",
+            "SNATCH",
+            NaN,
+            "SLOPE",
+            "CLEANS",
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            "SLOPE",
+            "SQUATS",
+            NaN,
+            "SLOPE",
+            "SNATCH",
+            NaN,
+            "SLOPE",
+            "CLEANS"
+          ]
+        ],
+        [
+          5,
+          "14",
+          [
+            "SESSIONS",
+            3,
+            100,
+            NaN,
+            2,
+            60,
+            NaN,
+            2,
+            80,
+            NaN,
+            NaN,
+            NaN,
+            "SESSIONS",
+            2.5,
+            100,
+            NaN,
+            1,
+            60,
+            NaN,
+            2,
+            80
+          ]
+        ],
+        [
+          6,
+          "8",
+          [
+            1,
+            NaN,
+            103,
+            NaN,
+            NaN,
+            62,
+            NaN,
+            NaN,
+            82,
+            NaN,
+            NaN,
+            NaN,
+            1,
+            NaN,
+            102.5,
+            NaN,
+            NaN,
+            61,
+            NaN,
+            NaN,
+            82
+          ]
+        ],
+        [
+          7,
+          "8",
+          [
+            2,
+            NaN,
+            106,
+            NaN,
+            NaN,
+            64,
+            NaN,
+            NaN,
+            84,
+            NaN,
+            NaN,
+            NaN,
+            2,
+            NaN,
+            105,
+            NaN,
+            NaN,
+            62,
+            NaN,
+            NaN,
+            84
+          ]
+        ],
+        [
+          8,
+          "8",
+          [
+            3,
+            NaN,
+            109,
+            NaN,
+            NaN,
+            66,
+            NaN,
+            NaN,
+            86,
+            NaN,
+            NaN,
+            NaN,
+            3,
+            NaN,
+            107.5,
+            NaN,
+            NaN,
+            63,
+            NaN,
+            NaN,
+            86
+          ]
+        ],
+        [
+          9,
+          "8",
+          [
+            4,
+            NaN,
+            112,
+            NaN,
+            NaN,
+            68,
+            NaN,
+            NaN,
+            88,
+            NaN,
+            NaN,
+            NaN,
+            4,
+            NaN,
+            110,
+            NaN,
+            NaN,
+            64,
+            NaN,
+            NaN,
+            88
+          ]
+        ]
+      ],
+      "sample_data": {
+        "0": {
+          "0": "Projected Weight targets Based on Previous Year Analysis MHG",
+          "1": NaN,
+          "2": "2019/2020",
+          "3": NaN,
+          "4": NaN,
+          "5": "SESSIONS",
+          "6": 1,
+          "7": 2,
+          "8": 3,
+          "9": 4
+        },
+        "1": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "SLOPE",
+          "5": 3,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "2": {
+          "0": NaN,
+          "1": NaN,
+          "2": "ALL in KG",
+          "3": NaN,
+          "4": "SQUATS",
+          "5": 100,
+          "6": 103,
+          "7": 106,
+          "8": 109,
+          "9": 112
+        },
+        "3": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "4": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "SLOPE",
+          "5": 2,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "5": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "SNATCH",
+          "5": 60,
+          "6": 62,
+          "7": 64,
+          "8": 66,
+          "9": 68
+        },
+        "6": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "7": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "SLOPE",
+          "5": 2,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "8": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "CLEANS",
+          "5": 80,
+          "6": 82,
+          "7": 84,
+          "8": 86,
+          "9": 88
+        },
+        "9": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "10": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "11": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "12": {
+          "0": "Projected Weight targets Based on Previous Year Analysis MHG",
+          "1": NaN,
+          "2": "2020/2021",
+          "3": NaN,
+          "4": NaN,
+          "5": "SESSIONS",
+          "6": 1,
+          "7": 2,
+          "8": 3,
+          "9": 4
+        },
+        "13": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "SLOPE",
+          "5": 2.5,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "14": {
+          "0": NaN,
+          "1": NaN,
+          "2": "ALL in KG",
+          "3": NaN,
+          "4": "SQUATS",
+          "5": 100,
+          "6": 102.5,
+          "7": 105,
+          "8": 107.5,
+          "9": 110
+        },
+        "15": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "16": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "SLOPE",
+          "5": 1,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "17": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "SNATCH",
+          "5": 60,
+          "6": 61,
+          "7": 62,
+          "8": 63,
+          "9": 64
+        },
+        "18": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": NaN,
+          "5": NaN,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "19": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "SLOPE",
+          "5": 2,
+          "6": NaN,
+          "7": NaN,
+          "8": NaN,
+          "9": NaN
+        },
+        "20": {
+          "0": NaN,
+          "1": NaN,
+          "2": NaN,
+          "3": NaN,
+          "4": "CLEANS",
+          "5": 80,
+          "6": 82,
+          "7": 84,
+          "8": 86,
+          "9": 88
+        }
+      }
+    }
+  },
+  "insights": {
+    "training_frequency_patterns": {},
+    "exercise_categories": [],
+    "performance_metrics": [
+      "Type/weight kg.6",
+      "Type/weight kg.5",
+      "weight kg.4",
+      "Make time to video chat post workout over the summer for Cyrus.",
+      "Type/weight kg.3",
+      "weight kg.5",
+      "Type/weight kg.4",
+      "weight kg.1",
+      "Type/weight kg.1",
+      "weight kg.2",
+      "Type/weight kg.2",
+      "weight kg",
+      "weight kg.3",
+      "Type/weight kg"
+    ],
+    "periodization_indicators": [],
+    "data_quality_assessment": {
+      "Training Plan 3": {
+        "completeness": 0.4685210941121929,
+        "total_cells": 10785,
+        "null_cells": "5732",
+        "usable_rows": 421
+      },
+      "Training Plan 2": {
+        "completeness": 0.42695115103874226,
+        "total_cells": 26715,
+        "null_cells": "15309",
+        "usable_rows": 998
+      },
+      "Training Plan 1": {
+        "completeness": 0.41063122923588036,
+        "total_cells": 13545,
+        "null_cells": "7983",
+        "usable_rows": 507
+      },
+      "Farhtenspeil": {
+        "completeness": 1.0,
+        "total_cells": 32,
+        "null_cells": "0",
+        "usable_rows": 16
+      },
+      "PBs and Results": {
+        "completeness": 0.3168724279835391,
+        "total_cells": 486,
+        "null_cells": "332",
+        "usable_rows": 8
+      },
+      "Feedback and Injuries": {
+        "completeness": 0.16666666666666663,
+        "total_cells": 60,
+        "null_cells": "50",
+        "usable_rows": 1
+      },
+      "Projected": {
+        "completeness": 0.3383991894630193,
+        "total_cells": 987,
+        "null_cells": "653",
+        "usable_rows": 31
+      }
+    },
+    "ml_features_potential": [
+      "load_metrics: 26 columns",
+      "performance: 1 columns"
+    ]
+  },
+  "recommendations": {
+    "data_preprocessing": [
+      "Implement robust missing data imputation strategy",
+      "Normalize date formats and create time-based features",
+      "Standardize exercise naming conventions",
+      "Handle outliers in performance metrics"
+    ],
+    "feature_engineering": [
+      "Calculate volume and intensity metrics",
+      "Create periodization phase indicators",
+      "Generate exercise-specific progression features",
+      "Develop recovery and adaptation indicators"
+    ],
+    "model_architecture": [
+      "Multi-task learning for different training outcomes",
+      "Attention mechanisms for exercise importance weighting"
+    ],
+    "training_strategy": [
+      "Use time-based train/validation splits",
+      "Implement cross-validation by training blocks",
+      "Monitor for temporal drift in training patterns"
+    ]
+  },
+  "analysis_timestamp": "2025-07-19T22:55:05.079383"
+}

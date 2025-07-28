@@ -1,0 +1,195 @@
+{
+  "strength_day": {
+    "name": "Strength Training Day",
+    "duration_minutes": "60-90",
+    "structure": [
+      {
+        "phase": "warm_up",
+        "duration": "10-15 min",
+        "exercises": [
+          "general_mobility",
+          "dynamic_stretching"
+        ]
+      },
+      {
+        "phase": "main_lifts",
+        "duration": "30-40 min",
+        "exercises": [
+          "squat_variation",
+          "olympic_lift"
+        ]
+      },
+      {
+        "phase": "accessory",
+        "duration": "15-20 min",
+        "exercises": [
+          "core",
+          "stability"
+        ]
+      },
+      {
+        "phase": "cool_down",
+        "duration": "5-10 min",
+        "exercises": [
+          "static_stretching"
+        ]
+      }
+    ],
+    "frequency_per_week": "2-3",
+    "intensity": "High",
+    "volume": "Medium-High"
+  },
+  "power_day": {
+    "name": "Power Training Day",
+    "duration_minutes": "45-75",
+    "structure": [
+      {
+        "phase": "warm_up",
+        "duration": "15-20 min",
+        "exercises": [
+          "dynamic_warm_up",
+          "activation"
+        ]
+      },
+      {
+        "phase": "power_development",
+        "duration": "25-35 min",
+        "exercises": [
+          "jumps",
+          "throws",
+          "olympic_lifts"
+        ]
+      },
+      {
+        "phase": "speed_strength",
+        "duration": "10-15 min",
+        "exercises": [
+          "light_resistance_sprints"
+        ]
+      },
+      {
+        "phase": "recovery",
+        "duration": "5-10 min",
+        "exercises": [
+          "light_mobility"
+        ]
+      }
+    ],
+    "frequency_per_week": "2-3",
+    "intensity": "Very High",
+    "volume": "Low-Medium"
+  },
+  "speed_day": {
+    "name": "Speed Training Day",
+    "duration_minutes": "45-60",
+    "structure": [
+      {
+        "phase": "warm_up",
+        "duration": "20-25 min",
+        "exercises": [
+          "progressive_running",
+          "drills"
+        ]
+      },
+      {
+        "phase": "acceleration",
+        "duration": "15-20 min",
+        "exercises": [
+          "short_sprints",
+          "starts"
+        ]
+      },
+      {
+        "phase": "max_velocity",
+        "duration": "10-15 min",
+        "exercises": [
+          "flying_sprints"
+        ]
+      },
+      {
+        "phase": "cool_down",
+        "duration": "10 min",
+        "exercises": [
+          "easy_jogging",
+          "stretching"
+        ]
+      }
+    ],
+    "frequency_per_week": "2-3",
+    "intensity": "Very High",
+    "volume": "Low"
+  },
+  "recovery_day": {
+    "name": "Recovery Training Day",
+    "duration_minutes": "30-60",
+    "structure": [
+      {
+        "phase": "active_recovery",
+        "duration": "20-30 min",
+        "exercises": [
+          "light_jogging",
+          "easy_bike"
+        ]
+      },
+      {
+        "phase": "mobility",
+        "duration": "15-20 min",
+        "exercises": [
+          "stretching",
+          "foam_rolling"
+        ]
+      },
+      {
+        "phase": "corrective",
+        "duration": "10-15 min",
+        "exercises": [
+          "activation",
+          "stability"
+        ]
+      }
+    ],
+    "frequency_per_week": "1-2",
+    "intensity": "Very Low",
+    "volume": "Low"
+  },
+  "competition_prep": {
+    "name": "Competition Preparation",
+    "duration_minutes": "45-60",
+    "structure": [
+      {
+        "phase": "specific_warm_up",
+        "duration": "15-20 min",
+        "exercises": [
+          "push_start_practice",
+          "technique_drills"
+        ]
+      },
+      {
+        "phase": "competition_simulation",
+        "duration": "20-25 min",
+        "exercises": [
+          "race_pace_efforts",
+          "starts"
+        ]
+      },
+      {
+        "phase": "fine_tuning",
+        "duration": "10-15 min",
+        "exercises": [
+          "technique_refinement"
+        ]
+      },
+      {
+        "phase": "preparation",
+        "duration": "5-10 min",
+        "exercises": [
+          "mental_preparation",
+          "light_stretching"
+        ]
+      }
+    ],
+    "frequency_per_week": "2-3",
+    "intensity": "Competition Specific",
+    "volume": "Low-Medium"
+  }
+}

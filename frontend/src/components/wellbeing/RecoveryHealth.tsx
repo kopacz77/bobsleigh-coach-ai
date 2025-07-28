@@ -706,7 +706,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       <Title order={2} mb="md">
         Recovery & Health Management
       </Title>
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Track your recovery methods, monitor injuries, and optimize your health for peak
         performance.
       </Text>
@@ -727,7 +727,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
               <>
                 <SimpleGrid cols={2} mb="xl">
                   <Paper p="md" withBorder radius="md">
-                    <Text ta="center" size="sm" color="dimmed">
+                    <Text ta="center" size="sm" c="dimmed">
                       Average Recovery Score
                     </Text>
                     <Group justify="center">
@@ -748,13 +748,13 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                           {calculateAverageRecoveryScore()}
                         </Text>
                       </Box>
-                      <Text size="xs" color="dimmed" style={{ maxWidth: 100 }}>
+                      <Text size="xs" c="dimmed" style={{ maxWidth: 100 }}>
                         Based on your last {recoveryData.length} recovery sessions
                       </Text>
                     </Group>
                   </Paper>
                   <Paper p="md" withBorder radius="md">
-                    <Text ta="center" size="sm" color="dimmed">
+                    <Text ta="center" size="sm" c="dimmed">
                       Most Used Recovery Methods
                     </Text>
                     <Box mt="md">
@@ -854,7 +854,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                 <Text size="lg" fw={500} mb="xs">
                   No recovery data yet
                 </Text>
-                <Text color="dimmed" mb="md">
+                <Text c="dimmed" mb="md">
                   Start tracking your recovery methods to optimize your performance and prevent
                   injuries.
                 </Text>
@@ -917,7 +917,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                           })()}
                         </Text>
 
-                        <Text size="sm" color="dimmed" mb="xs">
+                        <Text size="sm" c="dimmed" mb="xs">
                           Recorded on {formatDate(item.date)}
                         </Text>
 
@@ -994,7 +994,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                                   return `${area?.label || item.body_area} ${type?.label || item.injury_type}`;
                                 })()}
                               </Text>
-                              <Text size="xs" color="dimmed">
+                              <Text size="xs" c="dimmed">
                                 {formatDate(item.date)}
                               </Text>
                             </Box>
@@ -1015,7 +1015,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                 <Text size="lg" fw={500} mb="xs">
                   No injury data recorded
                 </Text>
-                <Text color="dimmed" mb="md">
+                <Text c="dimmed" mb="md">
                   Track injuries, pain points, and healing progress to maintain long-term health.
                 </Text>
                 <Button onClick={handleAddInjury}>Record First Injury/Pain</Button>

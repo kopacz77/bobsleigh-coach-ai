@@ -172,10 +172,10 @@ const GoalSetting = ({ userId, onComplete }) => {
 
   return (
     <Box>
-      <Group position="apart" mb="md">
+      <Group justify="space-between" mb="md">
         <Title order={2}>Goal Setting</Title>
         <Button
-          leftIcon={<IconArrowRight size={16} />}
+          leftSection={<IconArrowRight size={16} />}
           variant="subtle"
           onClick={() => {
             if (onComplete) onComplete({});
@@ -185,7 +185,7 @@ const GoalSetting = ({ userId, onComplete }) => {
         </Button>
       </Group>
 
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Define your goals to help structure your training program and track your progress
         effectively.
       </Text>
@@ -267,10 +267,10 @@ const GoalSetting = ({ userId, onComplete }) => {
           />
         </SimpleGrid>
 
-        <Text weight={500} mb="xs">
+        <Text fw={500} mb="xs">
           Development Areas
         </Text>
-        <Text size="sm" color="dimmed" mb="md">
+        <Text size="sm" c="dimmed" mb="md">
           Select the key areas you want to focus on improving
         </Text>
 
@@ -289,7 +289,7 @@ const GoalSetting = ({ userId, onComplete }) => {
           <Title order={3}>Specific Performance Targets</Title>
         </Group>
 
-        <Text size="sm" color="dimmed" mb="md">
+        <Text size="sm" c="dimmed" mb="md">
           Set specific, measurable targets for your key performance metrics
         </Text>
 
@@ -333,7 +333,7 @@ const GoalSetting = ({ userId, onComplete }) => {
 
         <SimpleGrid cols={{ base: 1, md: 3 }} spacing="lg">
           <Box>
-            <Text weight={500} mb="xs">
+            <Text fw={500} mb="xs">
               Short-Term Goal (1-3 months)
             </Text>
             <Textarea
@@ -345,7 +345,7 @@ const GoalSetting = ({ userId, onComplete }) => {
           </Box>
 
           <Box>
-            <Text weight={500} mb="xs">
+            <Text fw={500} mb="xs">
               Mid-Term Goal (3-6 months)
             </Text>
             <Textarea
@@ -357,7 +357,7 @@ const GoalSetting = ({ userId, onComplete }) => {
           </Box>
 
           <Box>
-            <Text weight={500} mb="xs">
+            <Text fw={500} mb="xs">
               Long-Term Goal (6-12+ months)
             </Text>
             <Textarea
@@ -370,10 +370,10 @@ const GoalSetting = ({ userId, onComplete }) => {
         </SimpleGrid>
       </Paper>
 
-      <Group position="right" mt="xl">
+      <Group justify="flex-end" mt="xl">
         <Button
           onClick={handleSaveGoals}
-          leftIcon={<IconDeviceFloppy size={16} />}
+          leftSection={<IconDeviceFloppy size={16} />}
           loading={loading}
           size="lg"
           color="green"

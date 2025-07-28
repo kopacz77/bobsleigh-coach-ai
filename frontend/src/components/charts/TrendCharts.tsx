@@ -143,9 +143,9 @@ export function TrendCharts({
   if (feedbackHistory.length === 0) {
     return (
       <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Stack gap="md" align="center">
+        <Stack gap="md" ta="center">
           <IconTarget size={48} color="gray" />
-          <Stack gap="xs" align="center">
+          <Stack gap="xs" ta="center">
             <Title order={4}>No Data Available</Title>
             <Text c="dimmed" ta="center">
               Submit some training feedback to see your trends and patterns
@@ -159,7 +159,7 @@ export function TrendCharts({
   return (
     <Stack gap="lg">
       {/* Controls */}
-      <Group justify="space-between" align="center">
+      <Group justify="space-between" ta="center">
         <Title order={3}>Training Trends</Title>
         <SegmentedControl
           value={timeRange}
@@ -194,12 +194,12 @@ export function TrendCharts({
         <Grid>
           <Grid.Col span={6}>
             <Card padding="sm" withBorder>
-              <Group justify="space-between" align="center">
+              <Group justify="space-between" ta="center">
                 <Stack gap={2}>
                   <Text size="xs" c="dimmed">
                     RPE Trend
                   </Text>
-                  <Group gap="xs" align="center">
+                  <Group gap="xs" ta="center">
                     {getTrendIcon(trendAnalysis.rpe)}
                     <Text size="sm" fw={500}>
                       {trendAnalysis.rpe > 0 ? "+" : ""}
@@ -220,12 +220,12 @@ export function TrendCharts({
 
           <Grid.Col span={6}>
             <Card padding="sm" withBorder>
-              <Group justify="space-between" align="center">
+              <Group justify="space-between" ta="center">
                 <Stack gap={2}>
                   <Text size="xs" c="dimmed">
                     Energy Trend
                   </Text>
-                  <Group gap="xs" align="center">
+                  <Group gap="xs" ta="center">
                     {getTrendIcon(trendAnalysis.energy)}
                     <Text size="sm" fw={500}>
                       {trendAnalysis.energy > 0 ? "+" : ""}

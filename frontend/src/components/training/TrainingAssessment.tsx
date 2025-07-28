@@ -428,7 +428,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
       <Title order={2} mb="md">
         Training Assessment
       </Title>
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Evaluate your training session to track progress and identify areas for improvement.
       </Text>
 
@@ -696,7 +696,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
             <Text fw={600} size="lg" mb="md">
               Coach Feedback
             </Text>
-            <Text size="sm" color="dimmed" mb="md">
+            <Text size="sm" c="dimmed" mb="md">
               This section can be filled out by your coach to provide feedback on your training
               session.
             </Text>

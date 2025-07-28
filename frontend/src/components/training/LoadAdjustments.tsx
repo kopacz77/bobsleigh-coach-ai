@@ -92,8 +92,8 @@ export function LoadAdjustments({
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Stack gap="md">
         {/* Header */}
-        <Group justify="space-between" align="center">
-          <Group align="center" gap="sm">
+        <Group justify="space-between" ta="center">
+          <Group ta="center" gap="sm">
             <ThemeIcon color="blue" variant="light" size="lg">
               <IconBrain size={20} />
             </ThemeIcon>
@@ -107,7 +107,7 @@ export function LoadAdjustments({
             </Stack>
           </Group>
 
-          <Group align="center" gap="xs">
+          <Group ta="center" gap="xs">
             <Tooltip label={`Model confidence: ${Math.round(confidence * 100)}%`}>
               <ActionIcon variant="subtle" size="sm">
                 <IconInfoCircle size={16} />
@@ -164,7 +164,7 @@ export function LoadAdjustments({
 
             {/* Detailed Adjustments */}
             <Stack gap="sm">
-              <Group align="center" gap="sm">
+              <Group ta="center" gap="sm">
                 <IconTarget size={16} />
                 <Text fw={500} size="sm">
                   Detailed Adjustments
@@ -173,8 +173,8 @@ export function LoadAdjustments({
 
               {adjustments.map((adjustment, index) => (
                 <Card key={index} padding="sm" radius="sm" withBorder>
-                  <Group justify="space-between" align="center">
-                    <Group align="center" gap="sm">
+                  <Group justify="space-between" ta="center">
+                    <Group ta="center" gap="sm">
                       <ThemeIcon
                         color={getAdjustmentColor(adjustment.type)}
                         variant="light"
@@ -212,7 +212,7 @@ export function LoadAdjustments({
 
             {/* Reasoning */}
             <Stack gap="sm">
-              <Group align="center" gap="sm">
+              <Group ta="center" gap="sm">
                 <IconChartLine size={16} />
                 <Text fw={500} size="sm">
                   AI Reasoning

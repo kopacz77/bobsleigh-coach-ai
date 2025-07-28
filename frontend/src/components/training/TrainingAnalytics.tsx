@@ -170,7 +170,7 @@ export function TrainingAnalytics() {
   };
 
   return (
-    <Stack spacing="xl">
+    <Stack gap="xl">
       <Tabs value={activeTab} onChange={setActiveTab}>
         <Tabs.List>
           <Tabs.Tab
@@ -200,8 +200,8 @@ export function TrainingAnalytics() {
         </Tabs.List>
 
         <Tabs.Panel value="overview" pt="xl">
-          <Stack spacing="xl">
-            <Group position="apart">
+          <Stack gap="xl">
+            <Group justify="space-between">
               <Title order={3}>Training Overview</Title>
               <SegmentedControl
                 value={timeRange}
@@ -218,7 +218,7 @@ export function TrainingAnalytics() {
 
             <SimpleGrid cols={{ base: 1, md: 2 }}>
               <Card withBorder shadow="sm" p="md">
-                <Stack spacing="md">
+                <Stack gap="md">
                   <Title order={4}>Weekly Training Load</Title>
                   <Bar
                     data={loadChartData}
@@ -238,9 +238,9 @@ export function TrainingAnalytics() {
               </Card>
 
               <Card withBorder shadow="sm" p="md">
-                <Stack spacing="md">
+                <Stack gap="md">
                   <Title order={4}>Training Type Distribution</Title>
-                  <Group position="center" align="start" spacing="xl">
+                  <Group justify="center" align="start" gap="xl">
                     <RingProgress
                       size={180}
                       thickness={20}
@@ -251,7 +251,7 @@ export function TrainingAnalytics() {
                         { value: trainingDistribution.recovery, color: "teal" },
                       ]}
                       label={
-                        <Stack spacing={0} align="center">
+                        <Stack gap={0} ta="center">
                           <Text fw={700} size="lg">
                             30 hrs
                           </Text>
@@ -261,20 +261,20 @@ export function TrainingAnalytics() {
                         </Stack>
                       }
                     />
-                    <Stack spacing="xs">
-                      <Group spacing="xs">
+                    <Stack gap="xs">
+                      <Group gap="xs">
                         <ThemeIcon color="red" size="sm" />
                         <Text size="sm">Strength - {trainingDistribution.strength}%</Text>
                       </Group>
-                      <Group spacing="xs">
+                      <Group gap="xs">
                         <ThemeIcon color="blue" size="sm" />
                         <Text size="sm">Speed - {trainingDistribution.speed}%</Text>
                       </Group>
-                      <Group spacing="xs">
+                      <Group gap="xs">
                         <ThemeIcon color="yellow" size="sm" />
                         <Text size="sm">Technical - {trainingDistribution.technical}%</Text>
                       </Group>
-                      <Group spacing="xs">
+                      <Group gap="xs">
                         <ThemeIcon color="teal" size="sm" />
                         <Text size="sm">Recovery - {trainingDistribution.recovery}%</Text>
                       </Group>
@@ -287,7 +287,7 @@ export function TrainingAnalytics() {
             <Grid gutter="md">
               <Grid.Col span={12}>
                 <Card withBorder shadow="sm" p="md">
-                  <Stack spacing="md">
+                  <Stack gap="md">
                     <Title order={4}>Key Performance Indicators</Title>
                     <Line data={performanceChartData} options={options} />
                   </Stack>
@@ -297,20 +297,20 @@ export function TrainingAnalytics() {
 
             <SimpleGrid cols={{ base: 1, md: 3 }}>
               <Paper withBorder p="md" radius="md">
-                <Stack spacing="xs">
+                <Stack gap="xs">
                   <Group>
                     <ThemeIcon color="blue" size="lg" radius="md">
                       <IconBarbell style={{ width: rem(20), height: rem(20) }} />
                     </ThemeIcon>
                     <Title order={5}>Workout Stats</Title>
                   </Group>
-                  <List spacing="xs" size="sm" center>
+                  <List spacing="xs" size="sm">
                     <List.Item>Total Workouts: 24</List.Item>
                     <List.Item>Average Duration: 75 min</List.Item>
                     <List.Item>Completion Rate: 92%</List.Item>
                     <List.Item>
                       Intensity Distribution:
-                      <Group spacing="xs" mt={5}>
+                      <Group gap="xs" mt={5}>
                         <Badge color="green">Low: 20%</Badge>
                         <Badge color="yellow">Med: 50%</Badge>
                         <Badge color="red">High: 30%</Badge>
@@ -321,14 +321,14 @@ export function TrainingAnalytics() {
               </Paper>
 
               <Paper withBorder p="md" radius="md">
-                <Stack spacing="xs">
+                <Stack gap="xs">
                   <Group>
                     <ThemeIcon color="red" size="lg" radius="md">
                       <IconActivity style={{ width: rem(20), height: rem(20) }} />
                     </ThemeIcon>
                     <Title order={5}>Progress Highlights</Title>
                   </Group>
-                  <List spacing="xs" size="sm" center>
+                  <List spacing="xs" size="sm">
                     <List.Item>Squat: +15kg (10.7% increase)</List.Item>
                     <List.Item>Sprint 30m: -0.2s (4.7% improvement)</List.Item>
                     <List.Item>Total Volume: +15% vs last month</List.Item>
@@ -338,7 +338,7 @@ export function TrainingAnalytics() {
               </Paper>
 
               <Paper withBorder p="md" radius="md">
-                <Stack spacing="xs">
+                <Stack gap="xs">
                   <Group>
                     <ThemeIcon color="green" size="lg" radius="md">
                       <IconRun style={{ width: rem(20), height: rem(20) }} />

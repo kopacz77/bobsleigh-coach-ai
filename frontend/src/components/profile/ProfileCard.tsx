@@ -138,7 +138,7 @@ export function ProfileCard() {
               {...form.getInputProps("birth_date")}
             />
 
-            <Group position="right" mt="md">
+            <Group justify="flex-end" mt="md">
               <Button variant="outline" onClick={() => setIsEditing(false)} disabled={isSubmitting}>
                 Cancel
               </Button>
@@ -151,7 +151,7 @@ export function ProfileCard() {
         </form>
       ) : (
         <Stack>
-          <Group position="apart">
+          <Group justify="space-between">
             <Group>
               <Avatar size="xl" radius="xl" color="blue">
                 {profileData.first_name.charAt(0)}
@@ -177,27 +177,27 @@ export function ProfileCard() {
             <Stack>
               <Title order={4}>Athlete Information</Title>
 
-              <Group position="apart">
+              <Group justify="space-between">
                 <Text fw={500}>Sport</Text>
                 <Text>{profileData.sport}</Text>
               </Group>
 
-              <Group position="apart">
+              <Group justify="space-between">
                 <Text fw={500}>Height</Text>
                 <Text>{profileData.height} cm</Text>
               </Group>
 
-              <Group position="apart">
+              <Group justify="space-between">
                 <Text fw={500}>Weight</Text>
                 <Text>{profileData.weight} kg</Text>
               </Group>
 
-              <Group position="apart">
+              <Group justify="space-between">
                 <Text fw={500}>Birth Date</Text>
                 <Text>{profileData.birth_date.toLocaleDateString()}</Text>
               </Group>
 
-              <Group position="apart">
+              <Group justify="space-between">
                 <Text fw={500}>Age</Text>
                 <Text>{new Date().getFullYear() - profileData.birth_date.getFullYear()}</Text>
               </Group>

@@ -87,7 +87,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               </Text>
             </Alert>
 
-            <Stack gap="md" align="center">
+            <Stack gap="md" ta="center">
               <IconBug size={48} color="gray" />
               <Title order={3} ta="center">
                 Oops! Something broke

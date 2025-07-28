@@ -457,7 +457,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
       <Title order={2} mb="md">
         Physical Metrics Tracking
       </Title>
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Monitor your key physical measurements to track trends and inform your training.
       </Text>
 
@@ -502,7 +502,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
           </Group>
 
           {metrics.length > 0 ? (
-            <List spacing="xs" size="sm" mb="xs" center>
+            <List spacing="xs" size="sm" mb="xs">
               {metrics.slice(0, 5).map((metric) => {
                 const metricType = getMetricTypeDetails(metric.type);
                 const MetricIcon = metricType.icon;
@@ -523,7 +523,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
                             {metric.value} {metricType.unit}
                           </Text>
                         </Group>
-                        <Text size="xs" color="dimmed">
+                        <Text size="xs" c="dimmed">
                           {formatDate(metric.date)}
                         </Text>
                       </Box>
@@ -541,13 +541,13 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
               })}
             </List>
           ) : (
-            <Text color="dimmed" ta="center" py="xl">
+            <Text c="dimmed" ta="center" py="xl">
               No metrics recorded in the selected time range.
             </Text>
           )}
 
           {metrics.length > 5 && (
-            <Text size="sm" ta="center" color="dimmed">
+            <Text size="sm" ta="center" c="dimmed">
               Showing 5 of {metrics.length} entries.
             </Text>
           )}
@@ -586,7 +586,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
               </ResponsiveContainer>
             </Box>
           ) : (
-            <Text color="dimmed" ta="center" py="xl">
+            <Text c="dimmed" ta="center" py="xl">
               No metrics data available to show trends.
             </Text>
           )}
@@ -681,19 +681,19 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
           <Box>
             <SimpleGrid cols={2} spacing="md">
               <Box>
-                <Text size="sm" color="dimmed">
+                <Text size="sm" c="dimmed">
                   Date
                 </Text>
                 <Text fw={500}>{formatDate(selectedMetric.date)}</Text>
               </Box>
               <Box>
-                <Text size="sm" color="dimmed">
+                <Text size="sm" c="dimmed">
                   Metric Type
                 </Text>
                 <Text fw={500}>{getMetricTypeDetails(selectedMetric.type).label}</Text>
               </Box>
               <Box>
-                <Text size="sm" color="dimmed">
+                <Text size="sm" c="dimmed">
                   Value
                 </Text>
                 <Text fw={500}>
@@ -702,7 +702,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
               </Box>
               {selectedMetric.notes && (
                 <Box>
-                  <Text size="sm" color="dimmed">
+                  <Text size="sm" c="dimmed">
                     Notes
                   </Text>
                   <Text>{selectedMetric.notes}</Text>

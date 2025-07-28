@@ -162,7 +162,7 @@ export function PerformanceTrends() {
   return (
     <Card withBorder p="md" radius="md">
       <Stack>
-        <Group position="apart">
+        <Group justify="space-between">
           <Title order={3}>Performance Trends</Title>
         </Group>
 

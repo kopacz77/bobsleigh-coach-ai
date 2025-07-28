@@ -84,7 +84,7 @@ export function AIProcessingLoader({ stage, progress = 0, message }: AIProcessin
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Stack gap="md">
-        <Group align="center" gap="sm">
+        <Group ta="center" gap="sm">
           <ThemeIcon color={stageInfo.color} variant="light" size="lg">
             {stageInfo.icon}
           </ThemeIcon>

@@ -30,9 +30,11 @@ import {
   IconClipboardCheck,
   IconClock,
   IconDots,
+  IconEye,
   IconFileAnalytics,
   IconFilter,
   IconMessageCircle,
+  IconPencil,
   IconStar,
   IconTarget,
   IconUsers,
@@ -45,14 +47,19 @@ import React, { useEffect, useState } from "react";
  * CoachDashboard component provides coaches with a comprehensive view of all athletes,
  * their wellbeing status, training progress, and alerts
  */
-const CoachDashboard = ({ userId, userProfile }) => {
+interface CoachDashboardProps {
+  userId: string;
+  userProfile: any;
+}
+
+const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const supabase = useSupabaseClient();
-  const [athletes, setAthletes] = useState([]);
-  const [recentCheckIns, setRecentCheckIns] = useState([]);
-  const [upcomingWorkouts, setUpcomingWorkouts] = useState([]);
-  const [alerts, setAlerts] = useState([]);
+  const [athletes, setAthletes] = useState<any[]>([]);
+  const [recentCheckIns, setRecentCheckIns] = useState<any[]>([]);
+  const [upcomingWorkouts, setUpcomingWorkouts] = useState<any[]>([]);
+  const [alerts, setAlerts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeFilter, setTimeFilter] = useState("today");
 
@@ -75,7 +82,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
           return;
         }
 
-        const athleteList = athletesData?.map((item) => item.athletes) || [];
+        const athleteList = athletesData?.flatMap((item) => item.athletes) || [];
         setAthletes(athleteList);
 
         if (athleteList.length > 0) {
@@ -165,10 +172,10 @@ const CoachDashboard = ({ userId, userProfile }) => {
           }
 
           // Generate alerts from check-ins and other data
-          const newAlerts = [];
+          const newAlerts: any[] = [];
 
           // Check for injury concerns
-          checkInsData
+          (checkInsData || [])
             .filter((checkIn) => checkIn.injury_concerns && checkIn.injury_concerns.trim() !== "")
             .forEach((checkIn) => {
               const athlete = athleteList.find((a) => a.id === checkIn.user_id);
@@ -186,7 +193,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
             });
 
           // Check for low readiness scores
-          checkInsData
+          (checkInsData || [])
             .filter((checkIn) => {
               // Calculate readiness score
               const readinessScore = Math.round(
@@ -214,7 +221,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
             });
 
           // Check for missed check-ins (only for today)
-          const todayCheckIns = checkInsData.filter((checkIn) => checkIn.date === todayStr);
+          const todayCheckIns = (checkInsData || []).filter((checkIn) => checkIn.date === todayStr);
           const athletesWithCheckIns = todayCheckIns.map((checkIn) => checkIn.user_id);
 
           athleteList.forEach((athlete) => {
@@ -246,19 +253,19 @@ const CoachDashboard = ({ userId, userProfile }) => {
   }, [userId, timeFilter, supabase]);
 
   // Format date for display
-  const formatDate = (dateString) => {
-    const options = { weekday: "short", month: "short", day: "numeric" };
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
   // Format time for display
-  const formatTime = (timeString) => {
+  const formatTime = (timeString: string) => {
     if (!timeString) return "No time set";
     return timeString.substring(0, 5); // Extract HH:MM from HH:MM:SS
   };
 
   // Get workout type label
-  const getWorkoutTypeLabel = (type) => {
+  const getWorkoutTypeLabel = (type: string) => {
     const workoutTypes = {
       on_ice_training: "On-Ice Training",
       push_start_practice: "Push Start Practice",
@@ -269,11 +276,11 @@ const CoachDashboard = ({ userId, userProfile }) => {
       recovery_session: "Recovery Session",
     };
 
-    return workoutTypes[type] || type;
+    return workoutTypes[type as keyof typeof workoutTypes] || type;
   };
 
   // Get readiness badge color
-  const getReadinessColor = (status) => {
+  const getReadinessColor = (status: string) => {
     switch (status) {
       case "ready":
         return "green";
@@ -289,7 +296,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
   };
 
   // Get alert icon based on type
-  const getAlertIcon = (type) => {
+  const getAlertIcon = (type: string) => {
     switch (type) {
       case "injury":
         return <IconAlertTriangle size={16} color={theme.colors.red[6]} />;
@@ -303,12 +310,12 @@ const CoachDashboard = ({ userId, userProfile }) => {
   };
 
   // Handle athlete click
-  const handleAthleteClick = (athleteId) => {
+  const handleAthleteClick = (athleteId: string) => {
     router.push(`/athletes/${athleteId}`);
   };
 
   // Calculate readiness score for display
-  const calculateReadinessScore = (checkIn) => {
+  const calculateReadinessScore = (checkIn: any) => {
     return Math.round(
       (checkIn.sleep_quality * 1.2 +
         (11 - checkIn.fatigue_level) * 1.2 +
@@ -320,16 +327,16 @@ const CoachDashboard = ({ userId, userProfile }) => {
 
   return (
     <Box>
-      <Group position="apart" mb="lg">
+      <Group justify="space-between" mb="lg">
         <Box>
           <Title order={2}>Coach Dashboard</Title>
-          <Text color="dimmed">Monitor your athletes' wellbeing and performance</Text>
+          <Text c="dimmed">Monitor your athletes' wellbeing and performance</Text>
         </Box>
 
         <Select
           value={timeFilter}
-          onChange={setTimeFilter}
-          icon={<IconFilter size={16} />}
+          onChange={(value) => setTimeFilter(value || "today")}
+          leftSection={<IconFilter size={16} />}
           data={[
             { value: "today", label: "Today's Data" },
             { value: "week", label: "Last 7 Days" },
@@ -341,18 +348,18 @@ const CoachDashboard = ({ userId, userProfile }) => {
 
       <Tabs defaultValue="athletes">
         <Tabs.List mb="md">
-          <Tabs.Tab value="athletes" icon={<IconUsers size={14} />}>
+          <Tabs.Tab value="athletes" leftSection={<IconUsers size={14} />}>
             Athletes
           </Tabs.Tab>
-          <Tabs.Tab value="check-ins" icon={<IconClipboardCheck size={14} />}>
+          <Tabs.Tab value="check-ins" leftSection={<IconClipboardCheck size={14} />}>
             Check-Ins
           </Tabs.Tab>
-          <Tabs.Tab value="workouts" icon={<IconBarbell size={14} />}>
+          <Tabs.Tab value="workouts" leftSection={<IconBarbell size={14} />}>
             Workouts
           </Tabs.Tab>
           <Tabs.Tab
             value="alerts"
-            icon={<IconAlertTriangle size={14} />}
+            leftSection={<IconAlertTriangle size={14} />}
             rightSection={
               alerts.length > 0 ? (
                 <Badge size="xs" p={3}>
@@ -368,17 +375,17 @@ const CoachDashboard = ({ userId, userProfile }) => {
         <Tabs.Panel value="athletes">
           <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
             <Paper p="md" radius="md" withBorder>
-              <Group position="apart" mb="md">
+              <Group justify="space-between" mb="md">
                 <Group>
                   <ThemeIcon size={36} radius="md" color="blue">
                     <IconUsers size={20} />
                   </ThemeIcon>
-                  <Text weight={600} size="lg">
+                  <Text fw={600} size="lg">
                     Team Athletes
                   </Text>
                 </Group>
 
-                <Text color="dimmed">{athletes.length} Athletes</Text>
+                <Text c="dimmed">{athletes.length} Athletes</Text>
               </Group>
 
               <Table>
@@ -400,12 +407,12 @@ const CoachDashboard = ({ userId, userProfile }) => {
                     return (
                       <tr key={athlete.id}>
                         <td>
-                          <Group spacing="sm">
+                          <Group gap="sm">
                             <Avatar src={athlete.avatar_url} radius="xl" size="sm" color="blue">
                               {athlete.first_name?.charAt(0)}
                               {athlete.last_name?.charAt(0)}
                             </Avatar>
-                            <Text weight={500}>
+                            <Text fw={500}>
                               {athlete.first_name} {athlete.last_name}
                             </Text>
                           </Group>
@@ -426,7 +433,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
                               {calculateReadinessScore(checkIn)}/10
                             </Badge>
                           ) : (
-                            <Text color="dimmed" size="sm">
+                            <Text c="dimmed" size="sm">
                               No data
                             </Text>
                           )}
@@ -440,15 +447,15 @@ const CoachDashboard = ({ userId, userProfile }) => {
                             </Menu.Target>
                             <Menu.Dropdown>
                               <Menu.Item
-                                icon={<IconFileAnalytics size={14} />}
+                                leftSection={<IconFileAnalytics size={14} />}
                                 onClick={() => handleAthleteClick(athlete.id)}
                               >
                                 View Profile
                               </Menu.Item>
-                              <Menu.Item icon={<IconMessageCircle size={14} />}>
+                              <Menu.Item leftSection={<IconMessageCircle size={14} />}>
                                 Message Athlete
                               </Menu.Item>
-                              <Menu.Item icon={<IconBarbell size={14} />}>Assign Workout</Menu.Item>
+                              <Menu.Item leftSection={<IconBarbell size={14} />}>Assign Workout</Menu.Item>
                             </Menu.Dropdown>
                           </Menu>
                         </td>
@@ -460,7 +467,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
 
               <Button
                 variant="subtle"
-                rightIcon={<IconArrowRight size={16} />}
+                rightSection={<IconArrowRight size={16} />}
                 mt="md"
                 onClick={() => router.push("/athletes")}
               >
@@ -470,12 +477,12 @@ const CoachDashboard = ({ userId, userProfile }) => {
 
             <Box>
               <Paper p="md" radius="md" withBorder mb="lg">
-                <Group position="apart" mb="md">
+                <Group justify="space-between" mb="md">
                   <Group>
                     <ThemeIcon size={36} radius="md" color="red">
                       <IconAlertTriangle size={20} />
                     </ThemeIcon>
-                    <Text weight={600} size="lg">
+                    <Text fw={600} size="lg">
                       Alerts
                     </Text>
                   </Group>
@@ -487,22 +494,22 @@ const CoachDashboard = ({ userId, userProfile }) => {
                   {alerts.length > 0 ? (
                     alerts.slice(0, 5).map((alert) => (
                       <Paper key={alert.id} p="sm" withBorder radius="md" mb="sm">
-                        <Group position="apart" mb="xs">
+                        <Group justify="space-between" mb="xs">
                           <Group>
                             {getAlertIcon(alert.type)}
-                            <Text weight={500}>{alert.message}</Text>
+                            <Text fw={500}>{alert.message}</Text>
                           </Group>
-                          <Text size="xs" color="dimmed">
+                          <Text size="xs" c="dimmed">
                             {formatDate(alert.date)}
                           </Text>
                         </Group>
-                        <Text size="sm" color="dimmed">
+                        <Text size="sm" c="dimmed">
                           {alert.details}
                         </Text>
                       </Paper>
                     ))
                   ) : (
-                    <Text color="dimmed" align="center" py="xl">
+                    <Text c="dimmed" ta="center" py="xl">
                       No active alerts at this time
                     </Text>
                   )}
@@ -510,21 +517,21 @@ const CoachDashboard = ({ userId, userProfile }) => {
               </Paper>
 
               <Paper p="md" radius="md" withBorder>
-                <Group position="apart" mb="md">
+                <Group justify="space-between" mb="md">
                   <Group>
                     <ThemeIcon size={36} radius="md" color="orange">
                       <IconTarget size={20} />
                     </ThemeIcon>
-                    <Text weight={600} size="lg">
+                    <Text fw={600} size="lg">
                       Team Performance
                     </Text>
                   </Group>
                 </Group>
 
                 <Box>
-                  <Group position="apart" mb="xs">
-                    <Text weight={500}>Average Start Time</Text>
-                    <Group spacing={4}>
+                  <Group justify="space-between" mb="xs">
+                    <Text fw={500}>Average Start Time</Text>
+                    <Group gap={4}>
                       <Text>5.24s</Text>
                       <Badge color="green" size="sm">
                         -0.12s
@@ -532,9 +539,9 @@ const CoachDashboard = ({ userId, userProfile }) => {
                     </Group>
                   </Group>
 
-                  <Group position="apart" mb="xs">
-                    <Text weight={500}>Team Coordination Score</Text>
-                    <Group spacing={4}>
+                  <Group justify="space-between" mb="xs">
+                    <Text fw={500}>Team Coordination Score</Text>
+                    <Group gap={4}>
                       <Text>7.8/10</Text>
                       <Badge color="green" size="sm">
                         +0.5
@@ -542,9 +549,9 @@ const CoachDashboard = ({ userId, userProfile }) => {
                     </Group>
                   </Group>
 
-                  <Group position="apart" mb="xs">
-                    <Text weight={500}>Avg. Weight Room Attendance</Text>
-                    <Group spacing={4}>
+                  <Group justify="space-between" mb="xs">
+                    <Text fw={500}>Avg. Weight Room Attendance</Text>
+                    <Group gap={4}>
                       <Text>92%</Text>
                       <Badge color="green" size="sm">
                         +4%
@@ -554,8 +561,8 @@ const CoachDashboard = ({ userId, userProfile }) => {
 
                   <Divider my="sm" />
 
-                  <Group position="apart">
-                    <Text weight={500}>Next Team Training</Text>
+                  <Group justify="space-between">
+                    <Text fw={500}>Next Team Training</Text>
                     <Badge>Tomorrow, 9:00 AM</Badge>
                   </Group>
                 </Box>
@@ -566,17 +573,17 @@ const CoachDashboard = ({ userId, userProfile }) => {
 
         <Tabs.Panel value="check-ins">
           <Paper p="md" radius="md" withBorder>
-            <Group position="apart" mb="md">
+            <Group justify="space-between" mb="md">
               <Group>
                 <ThemeIcon size={36} radius="md" color="green">
                   <IconClipboardCheck size={20} />
                 </ThemeIcon>
-                <Text weight={600} size="lg">
+                <Text fw={600} size="lg">
                   Recent Check-Ins
                 </Text>
               </Group>
 
-              <Text color="dimmed">
+              <Text c="dimmed">
                 {timeFilter === "today"
                   ? "Today's check-ins"
                   : timeFilter === "week"
@@ -605,11 +612,11 @@ const CoachDashboard = ({ userId, userProfile }) => {
                   return (
                     <tr key={checkIn.id}>
                       <td>
-                        <Group spacing="sm">
+                        <Group gap="sm">
                           <Avatar src={checkIn.avatar_url} radius="xl" size="xs" color="blue">
                             {checkIn.athlete_name
                               ?.split(" ")
-                              .map((n) => n[0])
+                              .map((n: string) => n[0])
                               .join("")}
                           </Avatar>
                           <Text size="sm">{checkIn.athlete_name}</Text>
@@ -700,7 +707,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
             </Table>
 
             {recentCheckIns.length === 0 && (
-              <Text color="dimmed" align="center" py="xl">
+              <Text c="dimmed" ta="center" py="xl">
                 No check-in data available for the selected period
               </Text>
             )}
@@ -709,19 +716,19 @@ const CoachDashboard = ({ userId, userProfile }) => {
 
         <Tabs.Panel value="workouts">
           <Paper p="md" radius="md" withBorder>
-            <Group position="apart" mb="md">
+            <Group justify="space-between" mb="md">
               <Group>
                 <ThemeIcon size={36} radius="md" color="orange">
                   <IconCalendarEvent size={20} />
                 </ThemeIcon>
-                <Text weight={600} size="lg">
+                <Text fw={600} size="lg">
                   Upcoming Workouts
                 </Text>
               </Group>
 
               <Button
                 size="sm"
-                leftIcon={<IconBarbell size={16} />}
+                leftSection={<IconBarbell size={16} />}
                 onClick={() => router.push("/workouts/create")}
               >
                 Assign Workout
@@ -743,19 +750,19 @@ const CoachDashboard = ({ userId, userProfile }) => {
                 {upcomingWorkouts.map((workout) => (
                   <tr key={workout.id}>
                     <td>
-                      <Group spacing="sm">
+                      <Group gap="sm">
                         <Avatar src={workout.avatar_url} radius="xl" size="sm" color="blue">
                           {workout.athlete_name
                             ?.split(" ")
-                            .map((n) => n[0])
+                            .map((n: string) => n[0])
                             .join("")}
                         </Avatar>
                         <Text>{workout.athlete_name}</Text>
                       </Group>
                     </td>
                     <td>
-                      <Text weight={500}>{formatDate(workout.date)}</Text>
-                      <Text size="xs" color="dimmed">
+                      <Text fw={500}>{formatDate(workout.date)}</Text>
+                      <Text size="xs" c="dimmed">
                         {formatTime(workout.start_time)} - {formatTime(workout.end_time)}
                       </Text>
                     </td>
@@ -775,7 +782,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
                       )}
                     </td>
                     <td>
-                      <Group spacing={0}>
+                      <Group gap={0}>
                         <ActionIcon
                           color="blue"
                           onClick={() => router.push(`/workouts/${workout.id}`)}
@@ -793,14 +800,14 @@ const CoachDashboard = ({ userId, userProfile }) => {
             </Table>
 
             {upcomingWorkouts.length === 0 && (
-              <Text color="dimmed" align="center" py="xl">
+              <Text c="dimmed" ta="center" py="xl">
                 No upcoming workouts scheduled
               </Text>
             )}
 
             <Button
               variant="subtle"
-              rightIcon={<IconArrowRight size={16} />}
+              rightSection={<IconArrowRight size={16} />}
               mt="md"
               onClick={() => router.push("/workouts")}
             >
@@ -811,12 +818,12 @@ const CoachDashboard = ({ userId, userProfile }) => {
 
         <Tabs.Panel value="alerts">
           <Paper p="md" radius="md" withBorder>
-            <Group position="apart" mb="md">
+            <Group justify="space-between" mb="md">
               <Group>
                 <ThemeIcon size={36} radius="md" color="red">
                   <IconAlertTriangle size={20} />
                 </ThemeIcon>
-                <Text weight={600} size="lg">
+                <Text fw={600} size="lg">
                   Athlete Alerts
                 </Text>
               </Group>
@@ -824,7 +831,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
               <Group>
                 <Select
                   placeholder="Filter alerts"
-                  icon={<IconFilter size={16} />}
+                  leftSection={<IconFilter size={16} />}
                   data={[
                     { value: "all", label: "All Alerts" },
                     { value: "injury", label: "Injuries" },
@@ -843,7 +850,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
               <SimpleGrid cols={1} spacing="md">
                 {alerts.map((alert) => (
                   <Paper key={alert.id} p="md" withBorder radius="md">
-                    <Group position="apart" mb="xs">
+                    <Group justify="space-between" mb="xs">
                       <Group>
                         {alert.type === "injury" && (
                           <ThemeIcon color="red" size={28} radius="xl">
@@ -861,8 +868,8 @@ const CoachDashboard = ({ userId, userProfile }) => {
                           </ThemeIcon>
                         )}
                         <Box>
-                          <Text weight={600}>{alert.message}</Text>
-                          <Text size="sm" color="dimmed">
+                          <Text fw={600}>{alert.message}</Text>
+                          <Text size="sm" c="dimmed">
                             {formatDate(alert.date)}
                           </Text>
                         </Box>
@@ -883,7 +890,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
 
                     <Text size="sm">{alert.details}</Text>
 
-                    <Group position="right" mt="sm">
+                    <Group justify="flex-end" mt="sm">
                       <Button
                         variant="subtle"
                         size="xs"
@@ -899,7 +906,7 @@ const CoachDashboard = ({ userId, userProfile }) => {
                 ))}
               </SimpleGrid>
             ) : (
-              <Text color="dimmed" align="center" py="xl">
+              <Text c="dimmed" ta="center" py="xl">
                 No active alerts at this time
               </Text>
             )}

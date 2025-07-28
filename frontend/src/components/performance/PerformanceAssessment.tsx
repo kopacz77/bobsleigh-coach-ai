@@ -665,7 +665,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
       <Title order={2} mb="md">
         Performance Assessment
       </Title>
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Track and analyze your performance metrics to measure progress and identify areas for
         improvement.
       </Text>
@@ -839,7 +839,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                         {best.value} {best.measurement_unit}
                       </Badge>
                     </Group>
-                    <Text size="sm" color="dimmed">
+                    <Text size="sm" c="dimmed">
                       {formatDate(best.date)}
                     </Text>
                     {getImprovementText(best) && (
@@ -870,7 +870,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                         {worst.value} {worst.measurement_unit}
                       </Badge>
                     </Group>
-                    <Text size="sm" color="dimmed">
+                    <Text size="sm" c="dimmed">
                       {formatDate(worst.date)}
                     </Text>
                     {getImprovementText(worst) && (
@@ -920,7 +920,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                     </span>
                   </Text>
 
-                  <Text size="sm" color="dimmed" mb="md">
+                  <Text size="sm" c="dimmed" mb="md">
                     {assessments.length} assessments recorded
                   </Text>
 
@@ -953,7 +953,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                                 {testInfo?.label || item.test_name}: {item.value}{" "}
                                 {item.measurement_unit}
                               </Text>
-                              <Text size="xs" color="dimmed">
+                              <Text size="xs" c="dimmed">
                                 {formatDate(item.date)}
                               </Text>
                             </Box>
@@ -1034,7 +1034,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
                 <Text size="lg" fw={500} mb="xs">
                   No performance data yet
                 </Text>
-                <Text color="dimmed" mb="md">
+                <Text c="dimmed" mb="md">
                   Select a test category and add your first assessment to start tracking
                   performance.
                 </Text>

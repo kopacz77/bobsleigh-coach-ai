@@ -297,7 +297,7 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
       <Title order={2} mb="md">
         Daily Check-In
       </Title>
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Complete your daily wellness check to help optimize your training and ensure safe and
         effective sessions. This takes less than 2 minutes and provides valuable data for your
         coaches.
@@ -309,7 +309,7 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
             <Text size="xl" fw={700}>
               Today's Readiness
             </Text>
-            <Text size="sm" color="dimmed" mb="md">
+            <Text size="sm" c="dimmed" mb="md">
               Based on your metrics
             </Text>
           </Box>

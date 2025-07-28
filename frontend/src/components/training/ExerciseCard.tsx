@@ -137,7 +137,7 @@ export function ExerciseCard({
         {/* Header */}
         <Group justify="space-between" align="flex-start">
           <Stack gap={4}>
-            <Group align="center" gap="sm">
+            <Group ta="center" gap="sm">
               <Text fw={700} size="lg">
                 {exercise.name}
               </Text>
@@ -163,7 +163,7 @@ export function ExerciseCard({
             </Group>
           </Stack>
 
-          <Group align="center" gap="xs">
+          <Group ta="center" gap="xs">
             <Text size="sm" c="dimmed">
               {completedSets}/{totalSets} sets
             </Text>

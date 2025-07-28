@@ -89,8 +89,8 @@ export function SessionRecommendations({
   const renderSessionSummary = () => (
     <Card padding="md" radius="sm" withBorder>
       <Stack gap="sm">
-        <Group justify="space-between" align="center">
-          <Group align="center" gap="sm">
+        <Group justify="space-between" ta="center">
+          <Group ta="center" gap="sm">
             <IconActivity size={20} />
             <Text fw={600} size="lg" tt="capitalize">
               {session.sessionType} Training
@@ -102,7 +102,7 @@ export function SessionRecommendations({
         </Group>
 
         <Group grow>
-          <Group align="center" gap="xs">
+          <Group ta="center" gap="xs">
             <IconCalendar size={16} />
             <Stack gap={2}>
               <Text size="xs" c="dimmed">
@@ -114,7 +114,7 @@ export function SessionRecommendations({
             </Stack>
           </Group>
 
-          <Group align="center" gap="xs">
+          <Group ta="center" gap="xs">
             <IconClock size={16} />
             <Stack gap={2}>
               <Text size="xs" c="dimmed">
@@ -126,7 +126,7 @@ export function SessionRecommendations({
             </Stack>
           </Group>
 
-          <Group align="center" gap="xs">
+          <Group ta="center" gap="xs">
             <IconTarget size={16} />
             <Stack gap={2}>
               <Text size="xs" c="dimmed">
@@ -170,7 +170,7 @@ export function SessionRecommendations({
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Stack gap="lg">
           {/* Header */}
-          <Group justify="space-between" align="center">
+          <Group justify="space-between" ta="center">
             <Stack gap={4}>
               <Title order={2}>Today's Training Recommendation</Title>
               <Text size="sm" c="dimmed">
@@ -178,7 +178,7 @@ export function SessionRecommendations({
               </Text>
             </Stack>
 
-            <Group align="center" gap="xs">
+            <Group ta="center" gap="xs">
               <Tooltip label="View detailed analysis">
                 <ActionIcon variant="light" onClick={() => setShowDetails(true)}>
                   <IconInfoCircle size={16} />
@@ -216,8 +216,8 @@ export function SessionRecommendations({
               .slice(0, 2)
               .map((sessionExercise) => (
                 <Card key={sessionExercise.id} padding="sm" radius="sm" withBorder>
-                  <Group justify="space-between" align="center">
-                    <Group align="center" gap="sm">
+                  <Group justify="space-between" ta="center">
+                    <Group ta="center" gap="sm">
                       <Text fw={500}>{sessionExercise.exercise.name}</Text>
                       <Badge size="xs" variant="light">
                         {sessionExercise.sets.length} sets
@@ -310,7 +310,7 @@ export function SessionRecommendations({
               </Text>
               <Group grow>
                 <Card padding="sm" withBorder>
-                  <Stack gap={4} align="center">
+                  <Stack gap={4} ta="center">
                     <Text size="lg" fw={700} c="blue">
                       {getMainExercises().length}
                     </Text>
@@ -321,7 +321,7 @@ export function SessionRecommendations({
                 </Card>
 
                 <Card padding="sm" withBorder>
-                  <Stack gap={4} align="center">
+                  <Stack gap={4} ta="center">
                     <Text size="lg" fw={700} c="gray">
                       {getAccessoryExercises().length}
                     </Text>
@@ -332,7 +332,7 @@ export function SessionRecommendations({
                 </Card>
 
                 <Card padding="sm" withBorder>
-                  <Stack gap={4} align="center">
+                  <Stack gap={4} ta="center">
                     <Text size="lg" fw={700} c="green">
                       {session.exercises.reduce((total, ex) => total + ex.sets.length, 0)}
                     </Text>

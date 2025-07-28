@@ -16,7 +16,9 @@
       "Bash(python -m pytest tests/ -v)",
       "Bash(python:*)",
       "Bash(~/.local/bin/pytest tests/ -v)",
-      "Bash(PYTHONPATH=/home/kopacz/Development/existing-projects/bobsleigh-coach-ai/backend ~/.local/bin/pytest tests/ -v)"
+      "Bash(PYTHONPATH=/home/kopacz/Development/existing-projects/bobsleigh-coach-ai/backend ~/.local/bin/pytest tests/ -v)",
+      "Bash(rm:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

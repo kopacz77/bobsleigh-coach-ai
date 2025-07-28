@@ -38,13 +38,18 @@ import { DailyCheckIn } from "../check-in";
  * AthleteOverview component serves as the main dashboard for athletes
  * to see their training status, upcoming sessions, and quick access to key features
  */
-const AthleteOverview = ({ userId, userProfile }) => {
+interface AthleteOverviewProps {
+  userId: string;
+  userProfile: any;
+}
+
+const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const supabase = useSupabaseClient();
-  const [todayCheckIn, setTodayCheckIn] = useState(null);
-  const [upcomingWorkouts, setUpcomingWorkouts] = useState([]);
-  const [recentPerformance, setRecentPerformance] = useState(null);
+  const [todayCheckIn, setTodayCheckIn] = useState<any>(null);
+  const [upcomingWorkouts, setUpcomingWorkouts] = useState<any[]>([]);
+  const [recentPerformance, setRecentPerformance] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showCheckIn, setShowCheckIn] = useState(false);
 
@@ -110,20 +115,20 @@ const AthleteOverview = ({ userId, userProfile }) => {
   }, [userId, supabase]);
 
   // Format date for display
-  const formatDate = (dateString) => {
-    const options = { weekday: "short", month: "short", day: "numeric" };
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
   // Format time for display
-  const formatTime = (timeString) => {
+  const formatTime = (timeString: string) => {
     if (!timeString) return "No time set";
     return timeString.substring(0, 5); // Extract HH:MM from HH:MM:SS
   };
 
   // Get workout type label
-  const getWorkoutTypeLabel = (type) => {
-    const workoutTypes = {
+  const getWorkoutTypeLabel = (type: string) => {
+    const workoutTypes: Record<string, string> = {
       on_ice_training: "On-Ice Training",
       push_start_practice: "Push Start Practice",
       track_walk: "Track Analysis",
@@ -137,14 +142,14 @@ const AthleteOverview = ({ userId, userProfile }) => {
   };
 
   // Get progress color based on value
-  const getProgressColor = (value) => {
+  const getProgressColor = (value: number) => {
     if (value < 30) return theme.colors.red[6];
     if (value < 70) return theme.colors.yellow[6];
     return theme.colors.green[6];
   };
 
   // Get training readiness badge color
-  const getReadinessColor = (status) => {
+  const getReadinessColor = (status: string) => {
     switch (status) {
       case "ready":
         return "green";
@@ -160,7 +165,7 @@ const AthleteOverview = ({ userId, userProfile }) => {
   };
 
   // Get training readiness label
-  const getReadinessLabel = (status) => {
+  const getReadinessLabel = (status: string) => {
     switch (status) {
       case "ready":
         return "Ready to Train";
@@ -198,18 +203,18 @@ const AthleteOverview = ({ userId, userProfile }) => {
   return (
     <Box>
       <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="lg">
-        <Box span={2}>
+        <Box>
           <Paper p="md" radius="md" withBorder mb="lg">
-            <Group position="apart" mb="md">
+            <Group justify="space-between" mb="md">
               <Group>
                 <ThemeIcon size={40} radius="md" color="blue">
                   <IconUser size={24} />
                 </ThemeIcon>
                 <Box>
-                  <Text size="xl" weight={700}>
+                  <Text size="xl" fw={700}>
                     {userProfile?.firstName} {userProfile?.lastName}
                   </Text>
-                  <Text color="dimmed" size="sm">
+                  <Text c="dimmed" size="sm">
                     Bobsleigh Athlete{" "}
                     {userProfile?.role === "athlete" ? "" : `• ${userProfile?.role}`}
                   </Text>
@@ -227,7 +232,7 @@ const AthleteOverview = ({ userId, userProfile }) => {
               ) : (
                 <Button
                   onClick={toggleCheckIn}
-                  leftIcon={<IconClipboardText size={20} />}
+                  leftSection={<IconClipboardText size={20} />}
                   variant="light"
                 >
                   {showCheckIn ? "Hide Check-In" : "Quick Check-In"}
@@ -243,34 +248,34 @@ const AthleteOverview = ({ userId, userProfile }) => {
 
             {!showCheckIn && (
               <>
-                <Text weight={500} mb="xs">
+                <Text fw={500} mb="xs">
                   Current Training Phase
                 </Text>
-                <Group position="apart" mb="lg">
+                <Group justify="space-between" mb="lg">
                   <Badge size="lg" color="orange" variant="filled">
                     Competition Season
                   </Badge>
-                  <Text size="sm" color="dimmed">
+                  <Text size="sm" c="dimmed">
                     Week 4 of 12
                   </Text>
                 </Group>
 
                 <Group grow mb="md">
                   <Box>
-                    <Text weight={500} mb="xs">
+                    <Text fw={500} mb="xs">
                       Next Competition
                     </Text>
-                    <Group spacing={6}>
+                    <Group gap={6}>
                       <IconCalendarEvent size={16} color={theme.colors.blue[6]} />
                       <Text>Mar 23 - World Cup Round 6</Text>
                     </Group>
                   </Box>
 
                   <Box>
-                    <Text weight={500} mb="xs">
+                    <Text fw={500} mb="xs">
                       Recent Performance
                     </Text>
-                    <Group spacing={6}>
+                    <Group gap={6}>
                       <IconChartLine size={16} color={theme.colors.green[6]} />
                       <Text>Start Time: 5.12s (↓0.08s)</Text>
                     </Group>
@@ -279,17 +284,17 @@ const AthleteOverview = ({ userId, userProfile }) => {
 
                 <Divider my="md" />
 
-                <Text weight={500} mb="xs">
+                <Text fw={500} mb="xs">
                   Weekly Goals Progress
                 </Text>
                 <SimpleGrid cols={3} mb="md">
                   <Box>
-                    <Group position="apart" mb={5}>
-                      <Group spacing={6}>
+                    <Group justify="space-between" mb={5}>
+                      <Group gap={6}>
                         <IconBolt size={16} color={theme.colors.yellow[6]} />
                         <Text size="sm">Start Speed</Text>
                       </Group>
-                      <Text size="sm" weight={500}>
+                      <Text size="sm" fw={500}>
                         75%
                       </Text>
                     </Group>
@@ -297,12 +302,12 @@ const AthleteOverview = ({ userId, userProfile }) => {
                   </Box>
 
                   <Box>
-                    <Group position="apart" mb={5}>
-                      <Group spacing={6}>
+                    <Group justify="space-between" mb={5}>
+                      <Group gap={6}>
                         <IconBarbell size={16} color={theme.colors.red[6]} />
                         <Text size="sm">Power Clean</Text>
                       </Group>
-                      <Text size="sm" weight={500}>
+                      <Text size="sm" fw={500}>
                         60%
                       </Text>
                     </Group>
@@ -310,12 +315,12 @@ const AthleteOverview = ({ userId, userProfile }) => {
                   </Box>
 
                   <Box>
-                    <Group position="apart" mb={5}>
-                      <Group spacing={6}>
+                    <Group justify="space-between" mb={5}>
+                      <Group gap={6}>
                         <IconRun size={16} color={theme.colors.blue[6]} />
                         <Text size="sm">Technique</Text>
                       </Group>
-                      <Text size="sm" weight={500}>
+                      <Text size="sm" fw={500}>
                         90%
                       </Text>
                     </Group>
@@ -327,19 +332,19 @@ const AthleteOverview = ({ userId, userProfile }) => {
           </Paper>
 
           <Paper p="md" radius="md" withBorder mb="lg">
-            <Group position="apart" mb="md">
+            <Group justify="space-between" mb="md">
               <Group>
                 <ThemeIcon size={36} radius="md" color="orange">
                   <IconCalendarEvent size={20} />
                 </ThemeIcon>
-                <Text weight={600} size="lg">
+                <Text fw={600} size="lg">
                   Upcoming Training
                 </Text>
               </Group>
 
               <Button
                 variant="subtle"
-                rightIcon={<IconArrowRight size={16} />}
+                rightSection={<IconArrowRight size={16} />}
                 onClick={handleGoToWorkouts}
               >
                 View All
@@ -355,15 +360,15 @@ const AthleteOverview = ({ userId, userProfile }) => {
                     withBorder={index !== 0}
                     radius="md"
                     mb="sm"
-                    sx={index === 0 ? { backgroundColor: theme.colors.blue[0] } : {}}
+                    style={index === 0 ? { backgroundColor: theme.colors.blue[0] } : {}}
                   >
-                    <Group position="apart">
+                    <Group justify="space-between">
                       <Box>
-                        <Group spacing={6} mb={2}>
+                        <Group gap={6} mb={2}>
                           <IconCalendarEvent size={16} />
-                          <Text weight={500}>{formatDate(workout.date)}</Text>
+                          <Text fw={500}>{formatDate(workout.date)}</Text>
                         </Group>
-                        <Group spacing={6}>
+                        <Group gap={6}>
                           <IconClock size={16} />
                           <Text size="sm">
                             {formatTime(workout.start_time)} - {formatTime(workout.end_time)}
@@ -373,7 +378,7 @@ const AthleteOverview = ({ userId, userProfile }) => {
 
                       <Box>
                         <Badge mb={2}>{getWorkoutTypeLabel(workout.workout_type)}</Badge>
-                        <Text size="sm" align="right">
+                        <Text size="sm" ta="right">
                           {workout.location || "No location set"}
                         </Text>
                       </Box>
@@ -382,14 +387,14 @@ const AthleteOverview = ({ userId, userProfile }) => {
                 ))}
               </Box>
             ) : (
-              <Text color="dimmed" align="center" py="xl">
+              <Text c="dimmed" ta="center" py="xl">
                 No upcoming training sessions scheduled
               </Text>
             )}
 
             <Button
               fullWidth
-              leftIcon={<IconCalendarEvent size={16} />}
+              leftSection={<IconCalendarEvent size={16} />}
               mt="md"
               variant="light"
               onClick={handleGoToWorkouts}
@@ -401,13 +406,13 @@ const AthleteOverview = ({ userId, userProfile }) => {
 
         <Box>
           <Paper p="md" radius="md" withBorder mb="lg">
-            <Text weight={600} size="lg" mb="lg">
+            <Text fw={600} size="lg" mb="lg">
               Quick Actions
             </Text>
 
             <Button
               fullWidth
-              leftIcon={<IconClipboardText size={20} />}
+              leftSection={<IconClipboardText size={20} />}
               mb="md"
               disabled={todayCheckIn !== null}
               onClick={handleGoToCheckIn}
@@ -417,7 +422,7 @@ const AthleteOverview = ({ userId, userProfile }) => {
 
             <Button
               fullWidth
-              leftIcon={<IconTarget size={20} />}
+              leftSection={<IconTarget size={20} />}
               mb="md"
               variant="outline"
               onClick={handleGoToWeeklyReview}
@@ -427,7 +432,7 @@ const AthleteOverview = ({ userId, userProfile }) => {
 
             <Button
               fullWidth
-              leftIcon={<IconBarbell size={20} />}
+              leftSection={<IconBarbell size={20} />}
               mb="md"
               variant="outline"
               onClick={() => router.push("/workouts/log")}
@@ -437,7 +442,7 @@ const AthleteOverview = ({ userId, userProfile }) => {
 
             <Button
               fullWidth
-              leftIcon={<IconChartLine size={20} />}
+              leftSection={<IconChartLine size={20} />}
               variant="outline"
               onClick={() => router.push("/performance")}
             >
@@ -446,19 +451,19 @@ const AthleteOverview = ({ userId, userProfile }) => {
           </Paper>
 
           <Paper p="md" radius="md" withBorder mb="lg">
-            <Group position="apart" mb="md">
+            <Group justify="space-between" mb="md">
               <Group>
                 <ThemeIcon size={36} radius="md" color="green">
                   <IconCheckbox size={20} />
                 </ThemeIcon>
-                <Text weight={600} size="lg">
+                <Text fw={600} size="lg">
                   Weekly Overview
                 </Text>
               </Group>
             </Group>
 
             <Box mb="md">
-              <Group position="apart" mb={5}>
+              <Group justify="space-between" mb={5}>
                 <Text>Check-ins Completed</Text>
                 <Badge>3/7</Badge>
               </Group>
@@ -466,7 +471,7 @@ const AthleteOverview = ({ userId, userProfile }) => {
             </Box>
 
             <Box mb="md">
-              <Group position="apart" mb={5}>
+              <Group justify="space-between" mb={5}>
                 <Text>Training Sessions</Text>
                 <Badge>4/5</Badge>
               </Group>
@@ -474,7 +479,7 @@ const AthleteOverview = ({ userId, userProfile }) => {
             </Box>
 
             <Box mb="md">
-              <Group position="apart" mb={5}>
+              <Group justify="space-between" mb={5}>
                 <Text>Recovery Sessions</Text>
                 <Badge>1/2</Badge>
               </Group>
@@ -484,7 +489,7 @@ const AthleteOverview = ({ userId, userProfile }) => {
             <Button
               fullWidth
               variant="light"
-              leftIcon={<IconTrophy size={16} />}
+              leftSection={<IconTrophy size={16} />}
               onClick={handleGoToWeeklyReview}
             >
               Complete Weekly Review
@@ -492,12 +497,12 @@ const AthleteOverview = ({ userId, userProfile }) => {
           </Paper>
 
           <Paper p="md" radius="md" withBorder>
-            <Group position="apart" mb="md">
+            <Group justify="space-between" mb="md">
               <Group>
                 <ThemeIcon size={36} radius="md" color="violet">
                   <IconAward size={20} />
                 </ThemeIcon>
-                <Text weight={600} size="lg">
+                <Text fw={600} size="lg">
                   Season Goals
                 </Text>
               </Group>
@@ -508,9 +513,9 @@ const AthleteOverview = ({ userId, userProfile }) => {
             </Group>
 
             <Box mb="md">
-              <Group position="apart" mb={5}>
+              <Group justify="space-between" mb={5}>
                 <Text>Reduce Start Time</Text>
-                <Text weight={500} size="sm">
+                <Text fw={500} size="sm">
                   5.12s / 5.00s
                 </Text>
               </Group>
@@ -518,9 +523,9 @@ const AthleteOverview = ({ userId, userProfile }) => {
             </Box>
 
             <Box mb="md">
-              <Group position="apart" mb={5}>
+              <Group justify="space-between" mb={5}>
                 <Text>Power Clean Max</Text>
-                <Text weight={500} size="sm">
+                <Text fw={500} size="sm">
                   110kg / 120kg
                 </Text>
               </Group>
@@ -528,9 +533,9 @@ const AthleteOverview = ({ userId, userProfile }) => {
             </Box>
 
             <Box mb="md">
-              <Group position="apart" mb={5}>
+              <Group justify="space-between" mb={5}>
                 <Text>World Cup Qualification</Text>
-                <Text weight={500} size="sm">
+                <Text fw={500} size="sm">
                   2/3 Criteria Met
                 </Text>
               </Group>

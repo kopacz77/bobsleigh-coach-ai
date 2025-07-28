@@ -211,7 +211,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
   return (
     <Box>
       <Title order={2} mb="md">Daily Wellbeing Assessment</Title>
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Rate your wellbeing metrics to help optimize your training and recovery. These metrics
         help our AI provide personalized recommendations for your training program.
       </Text>
@@ -220,7 +220,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
           <Box>
             <Text size="xl" fw={700}>Wellbeing Score</Text>
-            <Text size="sm" color="dimmed" mb="md">Aggregate score based on all metrics</Text>
+            <Text size="sm" c="dimmed" mb="md">Aggregate score based on all metrics</Text>
           </Box>
           <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Box
@@ -247,7 +247,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
             <IconZzz size={24} color={theme.colors.blue[6]} />
             <Text fw={600}>Sleep Quality</Text>
           </Group>
-          <Text size="sm" color="dimmed" mb="md">
+          <Text size="sm" c="dimmed" mb="md">
             How well did you sleep last night?
           </Text>
           <Slider
@@ -271,7 +271,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
             <IconMoodNervous size={24} color={theme.colors.orange[6]} />
             <Text fw={600}>Stress Level</Text>
           </Group>
-          <Text size="sm" color="dimmed" mb="md">
+          <Text size="sm" c="dimmed" mb="md">
             How stressed do you feel today?
           </Text>
           <Slider
@@ -296,7 +296,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
             <IconSalad size={24} color={theme.colors.green[6]} />
             <Text fw={600}>Nutrition Quality</Text>
           </Group>
-          <Text size="sm" color="dimmed" mb="md">
+          <Text size="sm" c="dimmed" mb="md">
             How well have you been eating in the last 24 hours?
           </Text>
           <Slider
@@ -320,7 +320,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
             <IconHeartFilled size={24} color={theme.colors.red[6]} />
             <Text fw={600}>Physical Readiness</Text>
           </Group>
-          <Text size="sm" color="dimmed" mb="md">
+          <Text size="sm" c="dimmed" mb="md">
             How physically ready do you feel for training?
           </Text>
           <Slider
@@ -345,7 +345,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
             <IconBrain size={24} color={theme.colors.violet[6]} />
             <Text fw={600}>Mental Clarity</Text>
           </Group>
-          <Text size="sm" color="dimmed" mb="md">
+          <Text size="sm" c="dimmed" mb="md">
             How mentally sharp and focused do you feel today?
           </Text>
           <Slider

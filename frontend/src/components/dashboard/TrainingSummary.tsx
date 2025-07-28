@@ -24,7 +24,7 @@ function Stat({ title, value, change, icon, color }: StatProps) {
         <Group bg={color} style={{ padding: "8px", borderRadius: "8px" }}>
           {icon}
         </Group>
-        <Stack spacing={0}>
+        <Stack gap={0}>
           <Text size="xs" c="dimmed">
             {title}
           </Text>
@@ -79,8 +79,8 @@ export function TrainingSummary() {
 
   return (
     <Card withBorder shadow="sm" p="md">
-      <Stack spacing="md">
-        <Group position="apart">
+      <Stack gap="md">
+        <Group justify="space-between">
           <Title order={3}>Weekly Training Summary</Title>
           <Text c="dimmed" fz="sm">
             Mar 9 - Mar 15, 2025
@@ -93,8 +93,8 @@ export function TrainingSummary() {
           ))}
         </SimpleGrid>
 
-        <Group position="apart" pt="sm">
-          <Stack spacing={0}>
+        <Group justify="space-between" pt="sm">
+          <Stack gap={0}>
             <Text fw={500}>Weekly Goal Progress</Text>
             <Text size="xs" c="dimmed">
               85% of weekly training target reached

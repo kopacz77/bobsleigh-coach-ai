@@ -1,0 +1,13 @@
+{
+  "total_training_sessions": 1,
+  "unique_exercises": 0,
+  "performance_tests": 8,
+  "injury_records": 3,
+  "exercise_type_distribution": {
+    "aerobic": 1
+  },
+  "training_frequency_by_plan": {
+    "Plan_0": 1
+  },
+  "weight_progression_analysis": {}
+}

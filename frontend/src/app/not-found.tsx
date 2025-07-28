@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <Container size="md" py="xl">
-      <Stack align="center" gap="xl" my="xl">
+      <Stack ta="center" gap="xl" my="xl">
         <Title order={1} size="3rem" ta="center">
           404
         </Title>
@@ -12,7 +12,7 @@ export default function NotFound() {
           Page Not Found
         </Title>
 
-        <Text ta="center" color="dimmed" size="lg">
+        <Text ta="center" c="dimmed" size="lg">
           The page you are looking for doesn't exist or has been moved.
         </Text>
 

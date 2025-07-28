@@ -177,8 +177,8 @@ export function WorkoutCalendar() {
 
       <Grid.Col span={{ base: 12, md: 4 }}>
         <Card withBorder shadow="sm" h="100%">
-          <Stack spacing="md">
-            <Group position="apart">
+          <Stack gap="md">
+            <Group justify="space-between">
               <Text fw={500}>
                 {selectedDate?.toLocaleDateString("en-US", {
                   weekday: "long",
@@ -192,16 +192,16 @@ export function WorkoutCalendar() {
             </Group>
 
             {isLoading ? (
-              <Stack spacing="md">
+              <Stack gap="md">
                 <Skeleton height={100} radius="md" />
                 <Skeleton height={100} radius="md" />
               </Stack>
             ) : todayEvents.length > 0 ? (
-              <Stack spacing="md">
+              <Stack gap="md">
                 {todayEvents.map((event) => (
                   <Paper key={event.id} withBorder p="md" radius="md">
-                    <Stack spacing="xs">
-                      <Group position="apart">
+                    <Stack gap="xs">
+                      <Group justify="space-between">
                         <Group>
                           <Text fw={500}>{event.name}</Text>
                           {event.isAI && (
@@ -220,13 +220,13 @@ export function WorkoutCalendar() {
                         <Badge color={getIntensityColor(event.intensity)}>{event.intensity}</Badge>
                       </Group>
 
-                      <Group spacing="lg">
+                      <Group gap="lg">
                         <Text size="sm">{event.type}</Text>
                         <Text size="sm">•</Text>
                         <Text size="sm">{event.duration} min</Text>
                       </Group>
 
-                      <Group position="apart" mt="xs">
+                      <Group justify="space-between" mt="xs">
                         <Button variant="light" size="xs">
                           {event.isCompleted ? "View Details" : "Start Workout"}
                         </Button>
@@ -239,7 +239,7 @@ export function WorkoutCalendar() {
                 ))}
               </Stack>
             ) : (
-              <Stack spacing="md" justify="center" align="center" style={{ height: "200px" }}>
+              <Stack gap="md" justify="center" ta="center" style={{ height: "200px" }}>
                 <Text c="dimmed">No workouts scheduled for this day</Text>
                 <Button variant="light" leftSection={<IconPlus size={16} />} size="xs">
                   Add Workout

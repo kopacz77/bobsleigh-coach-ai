@@ -74,7 +74,7 @@ export function RecoveryStatus() {
             thickness={12}
             sections={[{ value: recoveryScore, color: scoreColor }]}
             label={
-              <Stack gap={0} align="center">
+              <Stack gap={0} ta="center">
                 <Text fw={700} size="xl">
                   {recoveryScore}%
                 </Text>

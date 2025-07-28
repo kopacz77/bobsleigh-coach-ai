@@ -35,13 +35,18 @@ import React, { useState } from "react";
 /**
  * AthleteProfile component for onboarding new athletes with bobsleigh-specific profile fields
  */
-const AthleteProfile = ({ userId, onComplete }) => {
+interface AthleteProfileProps {
+  userId: string;
+  onComplete: (data: any) => void;
+}
+
+const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
   const theme = useMantineTheme();
   const supabase = useSupabaseClient();
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [avatarFile, setAvatarFile] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   // Profile form state
   const [profile, setProfile] = useState({
@@ -336,9 +341,9 @@ const AthleteProfile = ({ userId, onComplete }) => {
               mb="md"
             />
 
-            <Group position="center" mb="md">
-              <Box sx={{ textAlign: "center" }}>
-                <Text weight={500} mb="xs">
+            <Group justify="center" mb="md">
+              <Box style={{ textAlign: "center" }}>
+                <Text fw={500} mb="xs">
                   Profile Picture
                 </Text>
                 <Avatar src={avatarPreview} size={120} radius={60} mx="auto" mb="sm" />
@@ -353,8 +358,8 @@ const AthleteProfile = ({ userId, onComplete }) => {
             </Group>
           </Paper>
 
-          <Group position="right" mt="xl">
-            <Button onClick={handleNextStep} rightIcon={<IconChevronRight size={16} />} size="md">
+          <Group justify="flex-end" mt="xl">
+            <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
               Next Step
             </Button>
           </Group>
@@ -412,17 +417,17 @@ const AthleteProfile = ({ userId, onComplete }) => {
             </SimpleGrid>
           </Paper>
 
-          <Group position="apart" mt="xl">
+          <Group justify="space-between" mt="xl">
             <Button
               variant="outline"
               onClick={handlePreviousStep}
-              leftIcon={<IconChevronLeft size={16} />}
+              leftSection={<IconChevronLeft size={16} />}
               size="md"
             >
               Back
             </Button>
 
-            <Button onClick={handleNextStep} rightIcon={<IconChevronRight size={16} />} size="md">
+            <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
               Next Step
             </Button>
           </Group>
@@ -501,17 +506,17 @@ const AthleteProfile = ({ userId, onComplete }) => {
             />
           </Paper>
 
-          <Group position="apart" mt="xl">
+          <Group justify="space-between" mt="xl">
             <Button
               variant="outline"
               onClick={handlePreviousStep}
-              leftIcon={<IconChevronLeft size={16} />}
+              leftSection={<IconChevronLeft size={16} />}
               size="md"
             >
               Back
             </Button>
 
-            <Button onClick={handleNextStep} rightIcon={<IconChevronRight size={16} />} size="md">
+            <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
               Next Step
             </Button>
           </Group>
@@ -573,11 +578,11 @@ const AthleteProfile = ({ userId, onComplete }) => {
             </SimpleGrid>
           </Paper>
 
-          <Group position="apart" mt="xl">
+          <Group justify="space-between" mt="xl">
             <Button
               variant="outline"
               onClick={handlePreviousStep}
-              leftIcon={<IconChevronLeft size={16} />}
+              leftSection={<IconChevronLeft size={16} />}
               size="md"
             >
               Back
@@ -585,7 +590,7 @@ const AthleteProfile = ({ userId, onComplete }) => {
 
             <Button
               onClick={handleSaveProfile}
-              leftIcon={<IconDeviceFloppy size={16} />}
+              leftSection={<IconDeviceFloppy size={16} />}
               loading={loading}
               size="md"
               color="green"

@@ -197,7 +197,7 @@ export function WorkoutForm() {
                     onChange={(value) => handleExerciseChange(value || "", index)}
                   />
 
-                  <Group position="right" mt={24}>
+                  <Group justify="flex-end" mt={24}>
                     <ActionIcon
                       color="red"
                       onClick={() => removeExercise(index)}
@@ -258,11 +258,11 @@ export function WorkoutForm() {
             </Card>
           ))}
 
-          <Button leftIcon={<IconPlus size={16} />} variant="outline" onClick={addExercise}>
+          <Button leftSection={<IconPlus size={16} />} variant="outline" onClick={addExercise}>
             Add Exercise
           </Button>
 
-          <Group position="right" mt="md">
+          <Group justify="flex-end" mt="md">
             <Button type="submit" loading={isSubmitting}>
               Save Workout
             </Button>

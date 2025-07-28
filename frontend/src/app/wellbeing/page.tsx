@@ -22,7 +22,7 @@ export default function WellbeingPage() {
         <Title order={1} mb="sm">
           Athlete Wellbeing Dashboard
         </Title>
-        <Text color="dimmed" mb="xl">
+        <Text c="dimmed" mb="xl">
           Track and manage all aspects of your physical and mental wellbeing to optimize performance
           and recovery.
         </Text>

@@ -36,7 +36,7 @@ export function PerformanceMetrics() {
 
         <Grid>
           <Grid.Col span={{ base: 12, md: 3 }}>
-            <Stack align="center" spacing="xs">
+            <Stack ta="center" gap="xs">
               <RingProgress
                 size={120}
                 thickness={12}
@@ -60,26 +60,26 @@ export function PerformanceMetrics() {
           <Grid.Col span={{ base: 12, md: 3 }}>
             <Card withBorder h="100%">
               <Stack>
-                <Group position="apart">
+                <Group justify="space-between">
                   <Text fw={500}>Strength</Text>
                   <Text fw={700}>{strengthMetrics.strength_score}/100</Text>
                 </Group>
                 <Progress value={strengthMetrics.strength_score} color="blue" size="md" />
 
-                <Stack spacing={5} mt="xs">
-                  <Group position="apart">
+                <Stack gap={5} mt="xs">
+                  <Group justify="space-between">
                     <Text size="sm">Squat 1RM</Text>
                     <Text size="sm">{strengthMetrics.squat_1rm} kg</Text>
                   </Group>
-                  <Group position="apart">
+                  <Group justify="space-between">
                     <Text size="sm">Bench 1RM</Text>
                     <Text size="sm">{strengthMetrics.bench_1rm} kg</Text>
                   </Group>
-                  <Group position="apart">
+                  <Group justify="space-between">
                     <Text size="sm">Deadlift 1RM</Text>
                     <Text size="sm">{strengthMetrics.deadlift_1rm} kg</Text>
                   </Group>
-                  <Group position="apart">
+                  <Group justify="space-between">
                     <Text size="sm">Power Clean 1RM</Text>
                     <Text size="sm">{strengthMetrics.power_clean_1rm} kg</Text>
                   </Group>
@@ -91,18 +91,18 @@ export function PerformanceMetrics() {
           <Grid.Col span={{ base: 12, md: 3 }}>
             <Card withBorder h="100%">
               <Stack>
-                <Group position="apart">
+                <Group justify="space-between">
                   <Text fw={500}>Speed</Text>
                   <Text fw={700}>{speedMetrics.speed_score}/100</Text>
                 </Group>
                 <Progress value={speedMetrics.speed_score} color="green" size="md" />
 
-                <Stack spacing={5} mt="xs">
-                  <Group position="apart">
+                <Stack gap={5} mt="xs">
+                  <Group justify="space-between">
                     <Text size="sm">30m Sprint</Text>
                     <Text size="sm">{speedMetrics["30m_best"]} s</Text>
                   </Group>
-                  <Group position="apart">
+                  <Group justify="space-between">
                     <Text size="sm">60m Sprint</Text>
                     <Text size="sm">{speedMetrics["60m_best"]} s</Text>
                   </Group>
@@ -114,22 +114,22 @@ export function PerformanceMetrics() {
           <Grid.Col span={{ base: 12, md: 3 }}>
             <Card withBorder h="100%">
               <Stack>
-                <Group position="apart">
+                <Group justify="space-between">
                   <Text fw={500}>Power</Text>
                   <Text fw={700}>{powerMetrics.power_score}/100</Text>
                 </Group>
                 <Progress value={powerMetrics.power_score} color="orange" size="md" />
 
-                <Stack spacing={5} mt="xs">
-                  <Group position="apart">
+                <Stack gap={5} mt="xs">
+                  <Group justify="space-between">
                     <Text size="sm">Vertical Jump</Text>
                     <Text size="sm">{powerMetrics.vertical_jump} cm</Text>
                   </Group>
-                  <Group position="apart">
+                  <Group justify="space-between">
                     <Text size="sm">Broad Jump</Text>
                     <Text size="sm">{powerMetrics.broad_jump} cm</Text>
                   </Group>
-                  <Group position="apart">
+                  <Group justify="space-between">
                     <Text size="sm">Med Ball Throw</Text>
                     <Text size="sm">{powerMetrics.med_ball_throw} cm</Text>
                   </Group>

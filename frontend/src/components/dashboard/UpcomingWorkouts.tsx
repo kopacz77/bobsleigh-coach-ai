@@ -35,7 +35,7 @@ function WorkoutItem({ date, day, title, type, duration, intensity, isAI = false
   }[intensity];
 
   return (
-    <Group position="apart" p="sm" style={{ borderBottom: `1px solid ${theme.colors.gray[1]}` }}>
+    <Group justify="space-between" p="sm" style={{ borderBottom: `1px solid ${theme.colors.gray[1]}` }}>
       <Group>
         <ThemeIcon size="xl" radius="md" color="gray.2">
           <Text fw={700} c="dark">
@@ -43,8 +43,8 @@ function WorkoutItem({ date, day, title, type, duration, intensity, isAI = false
           </Text>
         </ThemeIcon>
 
-        <Stack spacing={0}>
-          <Group spacing="xs">
+        <Stack gap={0}>
+          <Group gap="xs">
             <Text fw={500}>{title}</Text>
             {isAI && (
               <Badge size="xs" color="blue">
@@ -52,15 +52,15 @@ function WorkoutItem({ date, day, title, type, duration, intensity, isAI = false
               </Badge>
             )}
           </Group>
-          <Group spacing="xs">
-            <Group spacing={4}>
+          <Group gap="xs">
+            <Group gap={4}>
               <IconBarbell style={{ width: rem(14), height: rem(14) }} />
               <Text size="xs">{type}</Text>
             </Group>
             <Text size="xs" c="dimmed">
               •
             </Text>
-            <Group spacing={4}>
+            <Group gap={4}>
               <IconCalendarEvent style={{ width: rem(14), height: rem(14) }} />
               <Text size="xs">{duration}</Text>
             </Group>
@@ -122,15 +122,15 @@ export function UpcomingWorkouts() {
 
   return (
     <Card withBorder shadow="sm" p={0} pt="md">
-      <Stack spacing={0}>
-        <Group position="apart" px="md" pb="md">
+      <Stack gap={0}>
+        <Group justify="space-between" px="md" pb="md">
           <Title order={3}>Upcoming Workouts</Title>
           <Text c="blue" size="sm" style={{ cursor: "pointer" }}>
             View Calendar
           </Text>
         </Group>
 
-        <Stack spacing={0}>
+        <Stack gap={0}>
           {workouts.map((workout, index) => (
             <WorkoutItem key={index} {...workout} />
           ))}

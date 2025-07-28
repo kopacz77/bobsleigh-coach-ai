@@ -86,7 +86,7 @@ export function TrainingRecommendations() {
           {recommendations.map((workout, index) => (
             <Accordion.Item key={index} value={workout.date}>
               <Accordion.Control>
-                <Group position="apart">
+                <Group justify="space-between">
                   <div>
                     <Text fw={500}>{formatDate(workout.date)}</Text>
                     <Text size="sm">
@@ -98,7 +98,7 @@ export function TrainingRecommendations() {
               </Accordion.Control>
 
               <Accordion.Panel>
-                <Stack spacing="xs">
+                <Stack gap="xs">
                   <Text size="sm" fw={500}>
                     Duration: {workout.duration} minutes
                   </Text>
@@ -122,7 +122,7 @@ export function TrainingRecommendations() {
                     </Card>
                   ))}
 
-                  <Button leftIcon={<IconCalendarPlus size={16} />} mt="sm" variant="light">
+                  <Button leftSection={<IconCalendarPlus size={16} />} mt="sm" variant="light">
                     Add to Training Log
                   </Button>
                 </Stack>

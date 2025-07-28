@@ -442,7 +442,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
       <Title order={2} mb="md">
         Reflections Journal
       </Title>
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Capture your thoughts, experiences, and insights to build self-awareness and track your
         mental progress.
       </Text>
@@ -477,7 +477,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
             style={{ width: "100%" }} // Add direct style prop instead
           />
 
-          <Text size="sm" color="dimmed" mt="md" ta="center">
+          <Text size="sm" c="dimmed" mt="md" ta="center">
             Blue dots indicate days with reflections.
           </Text>
         </Paper>
@@ -577,7 +577,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
                 <Text size="lg" fw={500} mb="xs">
                   No reflections for this day
                 </Text>
-                <Text color="dimmed" mb="md">
+                <Text c="dimmed" mb="md">
                   Record your thoughts and experiences to track your mental progress.
                 </Text>
                 <Button
@@ -609,7 +609,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
                     <Text fw={600}>{reflection.title}</Text>
                     <IconStarFilled size={16} color={theme.colors.yellow[6]} />
                   </Group>
-                  <Text size="xs" color="dimmed" mb="xs">
+                  <Text size="xs" c="dimmed" mb="xs">
                     {formatDate(reflection.date)}
                   </Text>
                   <Text size="sm" lineClamp={3} mb="sm">
@@ -752,7 +752,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
                   {reflectionTypes.find((t) => t.value === selectedReflection.type)?.label ||
                     selectedReflection.type}
                 </Badge>
-                <Text color="dimmed">{formatDate(selectedReflection.date)}</Text>
+                <Text c="dimmed">{formatDate(selectedReflection.date)}</Text>
               </Group>
               <Group>
                 <Tooltip

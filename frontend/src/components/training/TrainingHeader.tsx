@@ -12,7 +12,7 @@ import {
 export function TrainingHeader() {
   return (
     <Group justify="space-between" wrap="nowrap">
-      <Stack spacing="xs">
+      <Stack gap="xs">
         <Title order={1}>Training</Title>
         <Text c="dimmed">Manage your training sessions and view AI recommendations</Text>
       </Stack>

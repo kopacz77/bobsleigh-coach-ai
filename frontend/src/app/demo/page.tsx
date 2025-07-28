@@ -7,12 +7,12 @@ import {
   Card,
   Container,
   Group,
-  Notifications,
   Stack,
   Tabs,
   Text,
   Title,
 } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { IconActivity, IconBrain, IconChartLine, IconRocket } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { TrendCharts } from "@/components/charts/TrendCharts";
@@ -142,8 +142,8 @@ export default function DemoPage() {
         <Stack gap="xl">
           {/* Header */}
           <Card shadow="sm" padding="xl" radius="md" withBorder>
-            <Stack gap="md" align="center">
-              <Group align="center" gap="sm">
+            <Stack gap="md" ta="center">
+              <Group ta="center" gap="sm">
                 <IconRocket size={32} color="blue" />
                 <Title order={1} ta="center">
                   Adaptive Training AI Demo
@@ -175,7 +175,7 @@ export default function DemoPage() {
           </Alert>
 
           {/* Main Content */}
-          <Tabs value={activeTab} onChange={setActiveTab}>
+          <Tabs value={activeTab} onChange={(value) => setActiveTab(value || 'recommendations')}>
             <Tabs.List grow>
               <Tabs.Tab value="recommendations" leftSection={<IconActivity size={16} />}>
                 Today's Training
@@ -237,7 +237,7 @@ export default function DemoPage() {
 
                 {!showFeedbackForm ? (
                   <Card padding="xl" withBorder>
-                    <Stack gap="md" align="center">
+                    <Stack gap="md" ta="center">
                       <Text size="lg" c="dimmed">
                         Ready to submit today's training feedback?
                       </Text>
@@ -248,7 +248,13 @@ export default function DemoPage() {
                   </Card>
                 ) : (
                   <DailyFeedbackForm
-                    onSubmit={handleFeedbackSubmit}
+                    onSubmit={(feedback) => handleFeedbackSubmit({
+                      ...feedback,
+                      id: '',
+                      athleteId: '',
+                      date: new Date(),
+                      createdAt: new Date()
+                    })}
                     onCancel={() => setShowFeedbackForm(false)}
                     isLoading={isLoading}
                   />

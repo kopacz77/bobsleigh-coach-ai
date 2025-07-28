@@ -313,7 +313,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Stack gap="lg">
-        <Group justify="space-between" align="center">
+        <Group justify="space-between" ta="center">
           <Title order={2}>Daily Training Feedback</Title>
           <Text size="sm" c="dimmed">
             Step {currentStep + 1} of {steps.length}

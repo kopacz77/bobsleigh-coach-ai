@@ -303,7 +303,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
       <Title order={2} mb="md">
         Mood Tracking
       </Title>
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Track your daily mood and energy levels to identify patterns and optimize your mental
         well-being.
       </Text>
@@ -346,7 +346,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
             <Box>
               <SimpleGrid cols={2} spacing="xl" mb="xl">
                 <Paper p="xs" radius="md" withBorder>
-                  <Text ta="center" size="sm" color="dimmed">
+                  <Text ta="center" size="sm" c="dimmed">
                     Average Mood
                   </Text>
                   <Group justify="center" mt="xs">
@@ -367,7 +367,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
                 </Paper>
 
                 <Paper p="xs" radius="md" withBorder>
-                  <Text ta="center" size="sm" color="dimmed">
+                  <Text ta="center" size="sm" c="dimmed">
                     Top Emotion
                   </Text>
                   <Text ta="center" fw={600} size="xl" mt="xs">
@@ -389,13 +389,13 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
                 </Paper>
               </SimpleGrid>
 
-              <Text size="sm" color="dimmed">
+              <Text size="sm" c="dimmed">
                 You've tracked your mood on {moodData.length} days this month. Consistent tracking
                 helps identify patterns in your mental wellbeing and its impact on your performance.
               </Text>
             </Box>
           ) : (
-            <Text color="dimmed" ta="center" py="xl">
+            <Text c="dimmed" ta="center" py="xl">
               No mood data available for this month. Start tracking to see insights.
             </Text>
           )}
@@ -474,10 +474,10 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
             ))}
           </Group>
           <Group justify="apart" px="md">
-            <Text size="sm" color="dimmed">
+            <Text size="sm" c="dimmed">
               Low Energy
             </Text>
-            <Text size="sm" color="dimmed">
+            <Text size="sm" c="dimmed">
               High Energy
             </Text>
           </Group>

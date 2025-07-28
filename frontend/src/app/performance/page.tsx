@@ -16,7 +16,7 @@ export default function PerformancePage() {
         <Title order={1} mb="sm">
           Performance Metrics & Assessments
         </Title>
-        <Text color="dimmed" mb="xl">
+        <Text c="dimmed" mb="xl">
           Track your performance metrics, set targets, and analyze progress over time.
         </Text>
       </Paper>

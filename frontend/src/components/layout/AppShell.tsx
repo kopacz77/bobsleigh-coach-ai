@@ -119,3 +119,5 @@ export function AppShell({ children }: AppShellProps) {
     </MantineAppShell>
   );
 }
+
+export default AppShell;

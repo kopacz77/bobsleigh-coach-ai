@@ -138,7 +138,7 @@ export function WorkoutList() {
   };
 
   return (
-    <Stack spacing="md">
+    <Stack gap="md">
       <TextInput
         placeholder="Search workouts"
         leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} />}

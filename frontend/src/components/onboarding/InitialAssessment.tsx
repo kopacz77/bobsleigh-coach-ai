@@ -202,10 +202,10 @@ const InitialAssessment = ({ userId, onComplete }) => {
 
   return (
     <Box>
-      <Group position="apart" mb="md">
+      <Group justify="space-between" mb="md">
         <Title order={2}>Initial Performance Assessment</Title>
         <Button
-          leftIcon={<IconArrowRight size={16} />}
+          leftSection={<IconArrowRight size={16} />}
           variant="subtle"
           onClick={() => {
             if (onComplete) onComplete({});
@@ -215,7 +215,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
         </Button>
       </Group>
 
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Please provide your current performance metrics to establish a baseline for your training
         program. Fill in as many fields as you can - any unknown values can be measured during your
         first training session.
@@ -282,7 +282,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
           <Title order={3}>Sprint Metrics</Title>
         </Group>
 
-        <Text size="sm" color="dimmed" mb="lg">
+        <Text size="sm" c="dimmed" mb="lg">
           Sprinting ability is crucial for bobsleigh push starts. Please enter your best times if
           known.
         </Text>
@@ -325,7 +325,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
         <Text size="sm" mb="xs">
           Perceived Sprint Speed
         </Text>
-        <Text size="xs" color="dimmed" mb="xs">
+        <Text size="xs" c="dimmed" mb="xs">
           How would you rate your sprinting speed compared to other bobsleigh athletes?
         </Text>
         <Slider
@@ -346,7 +346,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
           <Title order={3}>Strength Metrics</Title>
         </Group>
 
-        <Text size="sm" color="dimmed" mb="lg">
+        <Text size="sm" c="dimmed" mb="lg">
           Strength is essential for bobsleigh starts. Enter your current 1RM (one-rep max) for each
           lift.
         </Text>
@@ -404,7 +404,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
         <Text size="sm" mb="xs">
           Perceived Strength Level
         </Text>
-        <Text size="xs" color="dimmed" mb="xs">
+        <Text size="xs" c="dimmed" mb="xs">
           How would you rate your overall strength compared to other bobsleigh athletes?
         </Text>
         <Slider
@@ -425,7 +425,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
           <Title order={3}>Power Metrics</Title>
         </Group>
 
-        <Text size="sm" color="dimmed" mb="lg">
+        <Text size="sm" c="dimmed" mb="lg">
           Explosive power is critical for bobsleigh performance. Enter your best results if known.
         </Text>
 
@@ -464,7 +464,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
         <Text size="sm" mb="xs">
           Perceived Power/Explosiveness
         </Text>
-        <Text size="xs" color="dimmed" mb="xs">
+        <Text size="xs" c="dimmed" mb="xs">
           How would you rate your explosive power compared to other bobsleigh athletes?
         </Text>
         <Slider
@@ -510,7 +510,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
         <Text size="sm" mb="xs">
           Perceived Endurance
         </Text>
-        <Text size="xs" color="dimmed" mb="xs">
+        <Text size="xs" c="dimmed" mb="xs">
           How would you rate your endurance and conditioning?
         </Text>
         <Slider
@@ -533,10 +533,10 @@ const InitialAssessment = ({ userId, onComplete }) => {
         />
       </Paper>
 
-      <Group position="right" mt="xl">
+      <Group justify="flex-end" mt="xl">
         <Button
           onClick={handleSaveAssessment}
-          leftIcon={<IconDeviceFloppy size={16} />}
+          leftSection={<IconDeviceFloppy size={16} />}
           loading={loading}
           size="lg"
           color="green"

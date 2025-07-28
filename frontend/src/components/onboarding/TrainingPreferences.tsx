@@ -181,10 +181,10 @@ const TrainingPreferences = ({ userId, onComplete }) => {
 
   return (
     <Box>
-      <Group position="apart" mb="md">
+      <Group justify="space-between" mb="md">
         <Title order={2}>Training Preferences</Title>
         <Button
-          leftIcon={<IconArrowRight size={16} />}
+          leftSection={<IconArrowRight size={16} />}
           variant="subtle"
           onClick={() => {
             if (onComplete) onComplete({});
@@ -194,7 +194,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
         </Button>
       </Group>
 
-      <Text color="dimmed" mb="xl">
+      <Text c="dimmed" mb="xl">
         Set your training availability and preferences to help us create an optimal training
         schedule for you.
       </Text>
@@ -205,7 +205,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
           <Title order={3}>Weekly Availability</Title>
         </Group>
 
-        <Text size="sm" color="dimmed" mb="md">
+        <Text size="sm" c="dimmed" mb="md">
           Select the days you are available for training
         </Text>
 
@@ -219,7 +219,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
                   p="md"
                   radius="md"
                   withBorder
-                  sx={{
+                  style={{
                     borderColor: preferences.availability[dayKey]
                       ? theme.colors.blue[4]
                       : undefined,
@@ -228,8 +228,8 @@ const TrainingPreferences = ({ userId, onComplete }) => {
                       : undefined,
                   }}
                 >
-                  <Stack align="center" spacing="xs">
-                    <Text weight={500}>{day}</Text>
+                  <Stack ta="center" gap="xs">
+                    <Text fw={500}>{day}</Text>
                     <Checkbox
                       checked={preferences.availability[dayKey]}
                       onChange={handleAvailabilityChange(dayKey)}
@@ -325,7 +325,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
           <Title order={3}>Training Type Preferences</Title>
         </Group>
 
-        <Text size="sm" color="dimmed" mb="md">
+        <Text size="sm" c="dimmed" mb="md">
           Select the types of training you prefer or excel in
         </Text>
 
@@ -337,7 +337,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
           mb="xl"
         />
 
-        <Text weight={500} mb="xs">
+        <Text fw={500} mb="xs">
           Preferred Training Style
         </Text>
         <Radio.Group
@@ -359,7 +359,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
           <Title order={3}>Recovery Preferences</Title>
         </Group>
 
-        <Text size="sm" color="dimmed" mb="md">
+        <Text size="sm" c="dimmed" mb="md">
           Select your preferred recovery methods
         </Text>
 
@@ -377,7 +377,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
 
         <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md" mb="md">
           <Group
-            position="apart"
+            justify="space-between"
             p="md"
             style={{ border: "1px solid " + theme.colors.gray[3], borderRadius: theme.radius.sm }}
           >
@@ -389,7 +389,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
           </Group>
 
           <Group
-            position="apart"
+            justify="space-between"
             p="md"
             style={{ border: "1px solid " + theme.colors.gray[3], borderRadius: theme.radius.sm }}
           >
@@ -398,13 +398,13 @@ const TrainingPreferences = ({ userId, onComplete }) => {
           </Group>
 
           <Group
-            position="apart"
+            justify="space-between"
             p="md"
             style={{ border: "1px solid " + theme.colors.gray[3], borderRadius: theme.radius.sm }}
           >
             <div>
               <Text>Adaptive Training</Text>
-              <Text size="xs" color="dimmed">
+              <Text size="xs" c="dimmed">
                 Adjust training based on daily readiness
               </Text>
             </div>
@@ -416,10 +416,10 @@ const TrainingPreferences = ({ userId, onComplete }) => {
         </SimpleGrid>
       </Paper>
 
-      <Group position="right" mt="xl">
+      <Group justify="flex-end" mt="xl">
         <Button
           onClick={handleSavePreferences}
-          leftIcon={<IconDeviceFloppy size={16} />}
+          leftSection={<IconDeviceFloppy size={16} />}
           loading={loading}
           size="lg"
           color="green"
