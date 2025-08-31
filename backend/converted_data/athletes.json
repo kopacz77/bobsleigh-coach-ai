@@ -1,0 +1,14 @@
+[
+  {
+    "id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "name": "Joshua Hudson",
+    "email": "josh.hudson@example.com",
+    "sport": "bobsleigh",
+    "position": "pilot",
+    "date_of_birth": "1995-01-01",
+    "height_cm": 180,
+    "weight_kg": 101,
+    "created_at": "2025-07-19T22:57:34.193012",
+    "updated_at": "2025-07-19T22:57:34.193029"
+  }
+]

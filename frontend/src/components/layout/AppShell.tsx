@@ -1,19 +1,25 @@
-'use client';
+"use client";
 
 import {
-  AppShell as MantineAppShell,
   Burger,
   Group,
+  AppShell as MantineAppShell,
+  rem,
   ScrollArea,
   Text,
   UnstyledButton,
-  rem,
-} from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { IconChartBar, IconDashboard, IconUser, IconSettings, IconBarbell } from '@tabler/icons-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ReactNode } from 'react';
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  IconBarbell,
+  IconChartBar,
+  IconDashboard,
+  IconSettings,
+  IconUser,
+} from "@tabler/icons-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 
 interface NavLinkProps {
   icon: ReactNode;
@@ -24,14 +30,14 @@ interface NavLinkProps {
 
 function NavLink({ icon, label, active, href }: NavLinkProps) {
   return (
-    <Link href={href} passHref style={{ textDecoration: 'none' }}>
+    <Link href={href} passHref style={{ textDecoration: "none" }}>
       <UnstyledButton
         w="100%"
         p="md"
         style={{
-          borderRadius: '6px',
-          backgroundColor: active ? 'var(--mantine-color-blue-light)' : 'transparent',
-          color: active ? 'var(--mantine-color-blue-filled)' : 'inherit',
+          borderRadius: "6px",
+          backgroundColor: active ? "var(--mantine-color-blue-light)" : "transparent",
+          color: active ? "var(--mantine-color-blue-filled)" : "inherit",
         }}
       >
         <Group>
@@ -55,28 +61,28 @@ export function AppShell({ children }: AppShellProps) {
   const navLinks = [
     {
       icon: <IconDashboard size={iconSize} stroke={1.5} />,
-      label: 'Dashboard',
-      href: '/',
+      label: "Dashboard",
+      href: "/",
     },
     {
       icon: <IconBarbell size={iconSize} stroke={1.5} />,
-      label: 'Training',
-      href: '/training',
+      label: "Training",
+      href: "/training",
     },
     {
       icon: <IconChartBar size={iconSize} stroke={1.5} />,
-      label: 'Performance',
-      href: '/performance',
+      label: "Performance",
+      href: "/performance",
     },
     {
       icon: <IconUser size={iconSize} stroke={1.5} />,
-      label: 'Profile',
-      href: '/profile',
+      label: "Profile",
+      href: "/profile",
     },
     {
       icon: <IconSettings size={iconSize} stroke={1.5} />,
-      label: 'Settings',
-      href: '/settings',
+      label: "Settings",
+      href: "/settings",
     },
   ];
 
@@ -85,7 +91,7 @@ export function AppShell({ children }: AppShellProps) {
       header={{ height: 60 }}
       navbar={{
         width: 300,
-        breakpoint: 'sm',
+        breakpoint: "sm",
         collapsed: { mobile: !opened },
       }}
       padding="md"
@@ -102,22 +108,16 @@ export function AppShell({ children }: AppShellProps) {
       <MantineAppShell.Navbar p="md">
         <MantineAppShell.Section grow component={ScrollArea}>
           {navLinks.map((link) => (
-            <NavLink
-              key={link.href}
-              {...link}
-              active={pathname === link.href}
-            />
+            <NavLink key={link.href} {...link} active={pathname === link.href} />
           ))}
         </MantineAppShell.Section>
 
-        <MantineAppShell.Section>
-          {/* Footer content if needed */}
-        </MantineAppShell.Section>
+        <MantineAppShell.Section>{/* Footer content if needed */}</MantineAppShell.Section>
       </MantineAppShell.Navbar>
 
-      <MantineAppShell.Main>
-        {children}
-      </MantineAppShell.Main>
+      <MantineAppShell.Main>{children}</MantineAppShell.Main>
     </MantineAppShell>
   );
 }
+
+export default AppShell;

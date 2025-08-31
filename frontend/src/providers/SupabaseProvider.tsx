@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useEffect, useState } from 'react';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type SupabaseContext = {
   supabase: SupabaseClient | null;
@@ -27,15 +27,13 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
       });
       setSupabase(client);
     } else {
-      console.error('Supabase credentials not found');
+      console.error("Supabase credentials not found");
     }
     setLoading(false);
   }, []);
 
   return (
-    <SupabaseContext.Provider value={{ supabase, loading }}>
-      {children}
-    </SupabaseContext.Provider>
+    <SupabaseContext.Provider value={{ supabase, loading }}>{children}</SupabaseContext.Provider>
   );
 }
 

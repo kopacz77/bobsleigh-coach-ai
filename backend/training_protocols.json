@@ -1,0 +1,160 @@
+{
+  "fartlek_standard": {
+    "name": "Standard Fartlek Protocol",
+    "type": "aerobic_interval",
+    "description": "Progressive interval training with varying work-rest periods",
+    "intervals": [
+      {
+        "run_seconds": 60,
+        "walk_seconds": 60,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 90,
+        "walk_seconds": 90,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 90,
+        "walk_seconds": 90,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 60,
+        "walk_seconds": 60,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 30,
+        "walk_seconds": 30,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 30,
+        "walk_seconds": 30,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 60,
+        "walk_seconds": 60,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 90,
+        "walk_seconds": 90,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 90,
+        "walk_seconds": 90,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 60,
+        "walk_seconds": 60,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 30,
+        "walk_seconds": 30,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 30,
+        "walk_seconds": 30,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 30,
+        "walk_seconds": 30,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 60,
+        "walk_seconds": 60,
+        "work_rest_ratio": 1.0
+      },
+      {
+        "run_seconds": 90,
+        "walk_seconds": 90,
+        "work_rest_ratio": 1.0
+      }
+    ],
+    "total_intervals": 15,
+    "total_duration_minutes": 30.0,
+    "equipment": [
+      "running_shoes"
+    ],
+    "intensity": "moderate_to_high",
+    "bobsleigh_relevance": "high",
+    "purpose": "aerobic_capacity_and_recovery"
+  },
+  "sprint_protocols": {
+    "short_acceleration": {
+      "distances": [
+        "10m",
+        "20m",
+        "30m"
+      ],
+      "purpose": "Start and early acceleration",
+      "rest_periods": "90-120 seconds between reps",
+      "volume": "6-10 reps",
+      "intensity": "100% effort"
+    },
+    "speed_development": {
+      "distances": [
+        "40m",
+        "50m",
+        "60m"
+      ],
+      "purpose": "Maximum velocity development",
+      "rest_periods": "2-3 minutes between reps",
+      "volume": "4-6 reps",
+      "intensity": "98-100% effort"
+    },
+    "flying_sprints": {
+      "distances": [
+        "30m flying",
+        "40m flying"
+      ],
+      "purpose": "Top speed maintenance",
+      "rest_periods": "3-4 minutes between reps",
+      "volume": "3-5 reps",
+      "intensity": "100% effort"
+    }
+  },
+  "strength_protocols": {
+    "max_strength": {
+      "intensity": "85-100% 1RM",
+      "sets": "3-6",
+      "reps": "1-5",
+      "rest": "3-5 minutes",
+      "exercises": [
+        "Back Squat",
+        "Front Squat",
+        "Deadlift"
+      ]
+    },
+    "power_development": {
+      "intensity": "70-85% 1RM",
+      "sets": "3-5",
+      "reps": "1-3",
+      "rest": "3-4 minutes",
+      "exercises": [
+        "Power Clean",
+        "Power Snatch"
+      ]
+    },
+    "strength_endurance": {
+      "intensity": "65-80% 1RM",
+      "sets": "3-4",
+      "reps": "6-12",
+      "rest": "2-3 minutes",
+      "exercises": [
+        "Squat variations",
+        "Press variations"
+      ]
+    }
+  },
+  "performance_benchmarks": {}
+}

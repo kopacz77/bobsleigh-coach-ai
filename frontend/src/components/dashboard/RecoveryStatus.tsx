@@ -1,44 +1,46 @@
-'use client';
+"use client";
 
 import {
   Card,
   Group,
-  Title,
-  Text,
-  Stack,
   Progress,
   RingProgress,
-  SimpleGrid,
-  useMantineTheme,
-  ThemeIcon,
   rem,
-} from '@mantine/core';
-import { IconBattery3, IconHeartbeat, IconMoon, IconBarbell } from '@tabler/icons-react';
+  SimpleGrid,
+  Stack,
+  Text,
+  ThemeIcon,
+  Title,
+  useMantineTheme,
+} from "@mantine/core";
+import { IconBarbell, IconBattery3, IconHeartbeat, IconMoon } from "@tabler/icons-react";
 
 export function RecoveryStatus() {
   const theme = useMantineTheme();
 
   const metrics = [
     {
-      name: 'Sleep',
-      value: '7.3 hrs',
+      name: "Sleep",
+      value: "7.3 hrs",
       score: 82,
       icon: <IconMoon style={{ width: rem(18), height: rem(18) }} stroke={1.5} color="white" />,
-      color: 'indigo',
+      color: "indigo",
     },
     {
-      name: 'Muscle',
-      value: 'Good',
+      name: "Muscle",
+      value: "Good",
       score: 78,
       icon: <IconBarbell style={{ width: rem(18), height: rem(18) }} stroke={1.5} color="white" />,
-      color: 'orange',
+      color: "orange",
     },
     {
-      name: 'HRV',
-      value: '72 ms',
+      name: "HRV",
+      value: "72 ms",
       score: 85,
-      icon: <IconHeartbeat style={{ width: rem(18), height: rem(18) }} stroke={1.5} color="white" />,
-      color: 'red',
+      icon: (
+        <IconHeartbeat style={{ width: rem(18), height: rem(18) }} stroke={1.5} color="white" />
+      ),
+      color: "red",
     },
   ];
 
@@ -53,7 +55,7 @@ export function RecoveryStatus() {
     if (score >= 60) return theme.colors.yellow[6];
     return theme.colors.red[6];
   };
-  
+
   const scoreColor = getScoreColor(recoveryScore);
 
   return (
@@ -72,7 +74,7 @@ export function RecoveryStatus() {
             thickness={12}
             sections={[{ value: recoveryScore, color: scoreColor }]}
             label={
-              <Stack gap={0} align="center">
+              <Stack gap={0} ta="center">
                 <Text fw={700} size="xl">
                   {recoveryScore}%
                 </Text>
@@ -86,7 +88,7 @@ export function RecoveryStatus() {
 
         <Stack gap="md">
           <Title order={5}>Recovery Metrics</Title>
-          
+
           <SimpleGrid cols={1}>
             {metrics.map((metric) => (
               <Stack key={metric.name} gap={2}>
@@ -117,7 +119,11 @@ export function RecoveryStatus() {
 
         <Text size="xs" c="dimmed" mt="md">
           Based on your recent training load and recovery metrics, your body is in a
-          {recoveryScore >= 80 ? ' well-recovered ' : recoveryScore >= 60 ? ' moderately recovered ' : ' fatigued '}
+          {recoveryScore >= 80
+            ? " well-recovered "
+            : recoveryScore >= 60
+              ? " moderately recovered "
+              : " fatigued "}
           state.
         </Text>
       </Stack>

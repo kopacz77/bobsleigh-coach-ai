@@ -1,0 +1,82 @@
+[
+  {
+    "id": "2df8f137-ee79-4a60-a63b-16457caae93d",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "test_name": "30m",
+    "result_value": 3.95,
+    "unit": "seconds",
+    "test_date": "2023-01-01",
+    "notes": "",
+    "created_at": "2025-07-19T22:57:34.193040"
+  },
+  {
+    "id": "e1a55139-a0e1-4eca-bd07-00e2134c2689",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "test_name": "100m",
+    "result_value": 11.8,
+    "unit": "seconds",
+    "test_date": "2023-01-01",
+    "notes": "",
+    "created_at": "2025-07-19T22:57:34.193046"
+  },
+  {
+    "id": "3e89eb0f-6e49-4c45-841f-f51e6a467501",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "test_name": "Triple Broad Jump",
+    "result_value": 8.45,
+    "unit": "meters",
+    "test_date": "2023-01-01",
+    "notes": "",
+    "created_at": "2025-07-19T22:57:34.193049"
+  },
+  {
+    "id": "d5beea50-a62b-49bd-a748-58ee2ceee1e2",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "test_name": "Broad Jump",
+    "result_value": 3.15,
+    "unit": "meters",
+    "test_date": "2023-01-01",
+    "notes": "",
+    "created_at": "2025-07-19T22:57:34.193053"
+  },
+  {
+    "id": "f89bae4c-5ac1-44e6-9429-113d3ef35d8f",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "test_name": "Clean",
+    "result_value": 140.0,
+    "unit": "kg",
+    "test_date": "2023-01-01",
+    "notes": "",
+    "created_at": "2025-07-19T22:57:34.193056"
+  },
+  {
+    "id": "3676fbc8-b950-4cb2-8aab-37a8e7f4a2d4",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "test_name": "Snatch",
+    "result_value": 90.0,
+    "unit": "kg",
+    "test_date": "2023-01-01",
+    "notes": "",
+    "created_at": "2025-07-19T22:57:34.193058"
+  },
+  {
+    "id": "7bbcaee7-a39f-4cdb-92f3-62b720b1710e",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "test_name": "Back Squat",
+    "result_value": 220,
+    "unit": "kg",
+    "test_date": "2023-01-01",
+    "notes": "",
+    "created_at": "2025-07-19T22:57:34.193062"
+  },
+  {
+    "id": "3de8f78b-f176-462e-8ec6-32e2744e7cf3",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "test_name": "Front Squat",
+    "result_value": 180,
+    "unit": "kg",
+    "test_date": "2023-01-01",
+    "notes": "",
+    "created_at": "2025-07-19T22:57:34.193065"
+  }
+]

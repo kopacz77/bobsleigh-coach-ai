@@ -1,21 +1,24 @@
-// Path: c:\users\a_kop\bobsleigh-coach-ai\frontend\src\app\wellbeing\page.tsx
-
 'use client';
 
 import { useState } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { Tabs, Title, Stack, Group, Button } from '@mantine/core';
 import { IconChartLine, IconCalendarStats, IconClipboardHeart, IconNotebook, IconHeartbeat } from '@tabler/icons-react';
-import WellbeingAssessment from '@/components/wellbeing/WellbeingAssessment';
+import {
+  MoodTracking,
+  PhysicalMetrics,
+  RecoveryHealth,
+  Reflection,
+  WellbeingAssessment,
+} from '@/components/wellbeing';
 import { WellbeingCalendar } from '@/components/wellbeing/WellbeingCalendar';
 import { WellbeingTrends } from '@/components/wellbeing/WellbeingTrends';
-import RecoveryHealth from '@/components/wellbeing/RecoveryHealth';
-import Reflection from '@/components/wellbeing/Reflection';
 import { useRouter } from 'next/navigation';
 
 export default function WellbeingPage() {
   const [activeTab, setActiveTab] = useState<string | null>('assessment');
   const router = useRouter();
+  const currentUserId = "123e4567-e89b-12d3-a456-426614174000";
 
   return (
     <AppShell>
@@ -47,7 +50,7 @@ export default function WellbeingPage() {
           </Tabs.List>
 
           <Tabs.Panel value="assessment" pt="md">
-            <WellbeingAssessment userId="mock-user-id" />
+            <WellbeingAssessment userId={currentUserId} />
           </Tabs.Panel>
 
           <Tabs.Panel value="calendar" pt="md">
@@ -59,11 +62,20 @@ export default function WellbeingPage() {
           </Tabs.Panel>
 
           <Tabs.Panel value="recovery" pt="md">
-            <RecoveryHealth userId="mock-user-id" />
+            <RecoveryHealth userId={currentUserId} />
           </Tabs.Panel>
 
           <Tabs.Panel value="reflections" pt="md">
-            <Reflection userId="mock-user-id" />
+            <Reflection userId={currentUserId} />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="mood" pt="md">
+            <MoodTracking userId={currentUserId} />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="metrics" pt="md">
+            <PhysicalMetrics userId={currentUserId} />
+          </Tabs.Panel>
           </Tabs.Panel>
         </Tabs>
       </Stack>

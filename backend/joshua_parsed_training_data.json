@@ -1,0 +1,153 @@
+{
+  "training_sessions": [
+    {
+      "date": "2023-01-01",
+      "exercise": "Fartlek Training",
+      "exercise_type": "aerobic",
+      "notes": "Fartlek with 16 intervals",
+      "special_data": {
+        "type": "fartlek",
+        "intervals": [
+          {
+            "run_seconds": "30",
+            "walk_seconds": "30"
+          },
+          {
+            "run_seconds": "60",
+            "walk_seconds": "60"
+          },
+          {
+            "run_seconds": "90",
+            "walk_seconds": "90"
+          },
+          {
+            "run_seconds": "90",
+            "walk_seconds": "90"
+          },
+          {
+            "run_seconds": "60",
+            "walk_seconds": "60"
+          },
+          {
+            "run_seconds": "30",
+            "walk_seconds": "30"
+          },
+          {
+            "run_seconds": "30",
+            "walk_seconds": "30"
+          },
+          {
+            "run_seconds": "60",
+            "walk_seconds": "60"
+          },
+          {
+            "run_seconds": "90",
+            "walk_seconds": "90"
+          },
+          {
+            "run_seconds": "90",
+            "walk_seconds": "90"
+          },
+          {
+            "run_seconds": "60",
+            "walk_seconds": "60"
+          },
+          {
+            "run_seconds": "30",
+            "walk_seconds": "30"
+          },
+          {
+            "run_seconds": "30",
+            "walk_seconds": "30"
+          },
+          {
+            "run_seconds": "30",
+            "walk_seconds": "30"
+          },
+          {
+            "run_seconds": "60",
+            "walk_seconds": "60"
+          },
+          {
+            "run_seconds": "90",
+            "walk_seconds": "90"
+          }
+        ]
+      }
+    }
+  ],
+  "performance_tests": [
+    {
+      "test_name": "30m",
+      "result": 3.95,
+      "date": "2023-01-01",
+      "unit": "seconds"
+    },
+    {
+      "test_name": "100m",
+      "result": 11.8,
+      "date": "2023-01-01",
+      "unit": "seconds"
+    },
+    {
+      "test_name": "Triple Broad Jump",
+      "result": 8.45,
+      "date": "2023-01-01",
+      "unit": "meters"
+    },
+    {
+      "test_name": "Broad Jump",
+      "result": 3.15,
+      "date": "2023-01-01",
+      "unit": "meters"
+    },
+    {
+      "test_name": "Clean",
+      "result": 140.0,
+      "date": "2023-01-01",
+      "unit": "kg"
+    },
+    {
+      "test_name": "Snatch",
+      "result": 90.0,
+      "date": "2023-01-01",
+      "unit": "kg"
+    },
+    {
+      "test_name": "Back Squat",
+      "result": 220,
+      "date": "2023-01-01",
+      "unit": "kg"
+    },
+    {
+      "test_name": "Front Squat",
+      "result": 180,
+      "date": "2023-01-01",
+      "unit": "kg"
+    }
+  ],
+  "exercises": [],
+  "athlete_profile": {},
+  "periodization": [],
+  "wellbeing": [],
+  "injuries": [
+    {
+      "description": "Low back pain, on and off.",
+      "date": "2023-01-01",
+      "severity": "unknown",
+      "body_part": "back"
+    },
+    {
+      "description": "Back sore (light injury) needs to",
+      "date": "2023-01-01",
+      "severity": "unknown",
+      "body_part": "back"
+    },
+    {
+      "description": "Right Ankle Injury , hurts after sprints",
+      "date": "2023-01-01",
+      "severity": "unknown",
+      "body_part": "ankle"
+    }
+  ]
+}

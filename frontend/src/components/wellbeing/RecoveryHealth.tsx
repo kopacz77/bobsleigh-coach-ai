@@ -1,51 +1,53 @@
-// Path: c:\users\a_kop\bobsleigh-coach-ai\frontend\src\components\wellbeing\RecoveryHealth.tsx
+"use client";
 
 import type React from 'react';
 import { useState, useEffect } from 'react';
 import {
+  ActionIcon,
+  Badge,
   Box,
-  Title,
-  Text,
-  Group,
-  Paper,
-  SimpleGrid,
   Button,
-  Select,
+  Divider,
+  Group,
+  List,
+  Modal,
   MultiSelect,
   NumberInput,
-  Textarea,
+  Paper,
   Progress,
+  Select,
+  SimpleGrid,
   Slider,
-  useMantineTheme,
   Stack,
-  Badge,
+  Text,
+  Textarea,
   ThemeIcon,
-  List,
-  Divider,
-  ActionIcon,
+  Title,
   Tooltip,
-  Modal
-} from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
-import { useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+  useMantineTheme,
+} from "@mantine/core";
+import { DatePickerInput } from "@mantine/dates";
+import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
   IconActivity,
-  IconHeartbeat,
-  IconZzz,
-  IconMassage,
-  IconStretching,
-  IconIceCream,
-  IconTemperature,
-  IconPlus,
-  IconTrash,
-  IconEdit,
   IconAlertCircle,
+  IconBandage,
+  IconEdit,
+  IconHeartbeat,
+  IconIceCream,
   IconInfoCircle,
+  IconMassage,
   IconMedicalCross,
-  IconBandage
-} from '@tabler/icons-react';
+  IconPlus,
+  IconStretching,
+  IconTemperature,
+  IconTrash,
+  IconZzz,
+} from "@tabler/icons-react";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Option type for select inputs
@@ -136,7 +138,7 @@ interface RecoveryHealthProps {
 }
 
 /**
- * RecoveryHealth component tracks athlete recovery methods, 
+ * RecoveryHealth component tracks athlete recovery methods,
  * injury prevention, and overall recovery status.
  */
 const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
@@ -148,10 +150,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   const [injuryData, setInjuryData] = useState<Injury[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
-  const [injuryModalOpened, { open: openInjuryModal, close: closeInjuryModal }] = useDisclosure(false);
+  const [injuryModalOpened, { open: openInjuryModal, close: closeInjuryModal }] =
+    useDisclosure(false);
   const [selectedRecovery, setSelectedRecovery] = useState<RecoverySession | null>(null);
   const [selectedInjury, setSelectedInjury] = useState<Injury | null>(null);
-  
+
   // Form state for recovery
   const [recovery, setRecovery] = useState<RecoveryForm>({
     date: new Date(),
@@ -161,86 +164,86 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
     overall_recovery_score: 5,
     soreness_areas: [],
     pain_level: 0,
-    notes: ''
+    notes: "",
   });
 
   // Form state for injury/pain
   const [injury, setInjury] = useState<InjuryForm>({
     date: new Date(),
-    body_area: '',
-    injury_type: '',
-    severity: 'mild',
+    body_area: "",
+    injury_type: "",
+    severity: "mild",
     pain_level: 3,
     symptoms: [],
-    impact_on_training: 'minor',
-    treatment_plan: '',
-    expected_recovery_time: '',
-    status: 'active'
+    impact_on_training: "minor",
+    treatment_plan: "",
+    expected_recovery_time: "",
+    status: "active",
   });
 
   // Options for selects
   const recoveryMethods: SelectOption[] = [
-    { value: 'sleep', label: 'Sleep Optimization', icon: IconZzz },
-    { value: 'massage', label: 'Massage', icon: IconMassage },
-    { value: 'stretching', label: 'Stretching', icon: IconStretching },
-    { value: 'ice_bath', label: 'Ice Bath', icon: IconIceCream },
-    { value: 'compression', label: 'Compression Garments', icon: IconBandage },
-    { value: 'contrast_bath', label: 'Contrast Bath', icon: IconTemperature },
-    { value: 'nutrition', label: 'Recovery Nutrition', icon: IconActivity },
-    { value: 'active_recovery', label: 'Active Recovery', icon: IconHeartbeat },
-    { value: 'foam_rolling', label: 'Foam Rolling', icon: IconMassage },
-    { value: 'meditation', label: 'Meditation/Relaxation', icon: IconZzz },
-    { value: 'physiotherapy', label: 'Physiotherapy', icon: IconMedicalCross },
-    { value: 'heat_therapy', label: 'Heat Therapy', icon: IconTemperature }
+    { value: "sleep", label: "Sleep Optimization", icon: IconZzz },
+    { value: "massage", label: "Massage", icon: IconMassage },
+    { value: "stretching", label: "Stretching", icon: IconStretching },
+    { value: "ice_bath", label: "Ice Bath", icon: IconIceCream },
+    { value: "compression", label: "Compression Garments", icon: IconBandage },
+    { value: "contrast_bath", label: "Contrast Bath", icon: IconTemperature },
+    { value: "nutrition", label: "Recovery Nutrition", icon: IconActivity },
+    { value: "active_recovery", label: "Active Recovery", icon: IconHeartbeat },
+    { value: "foam_rolling", label: "Foam Rolling", icon: IconMassage },
+    { value: "meditation", label: "Meditation/Relaxation", icon: IconZzz },
+    { value: "physiotherapy", label: "Physiotherapy", icon: IconMedicalCross },
+    { value: "heat_therapy", label: "Heat Therapy", icon: IconTemperature },
   ];
 
   const bodyAreas: SelectOption[] = [
-    { value: 'shoulder', label: 'Shoulder' },
-    { value: 'upper_back', label: 'Upper Back' },
-    { value: 'lower_back', label: 'Lower Back' },
-    { value: 'neck', label: 'Neck' },
-    { value: 'elbow', label: 'Elbow' },
-    { value: 'wrist', label: 'Wrist' },
-    { value: 'hand', label: 'Hand/Fingers' },
-    { value: 'hip', label: 'Hip' },
-    { value: 'knee', label: 'Knee' },
-    { value: 'ankle', label: 'Ankle' },
-    { value: 'foot', label: 'Foot' },
-    { value: 'quads', label: 'Quadriceps' },
-    { value: 'hamstrings', label: 'Hamstrings' },
-    { value: 'calves', label: 'Calves' },
-    { value: 'glutes', label: 'Glutes' },
-    { value: 'chest', label: 'Chest' },
-    { value: 'abdominals', label: 'Abdominals' }
+    { value: "shoulder", label: "Shoulder" },
+    { value: "upper_back", label: "Upper Back" },
+    { value: "lower_back", label: "Lower Back" },
+    { value: "neck", label: "Neck" },
+    { value: "elbow", label: "Elbow" },
+    { value: "wrist", label: "Wrist" },
+    { value: "hand", label: "Hand/Fingers" },
+    { value: "hip", label: "Hip" },
+    { value: "knee", label: "Knee" },
+    { value: "ankle", label: "Ankle" },
+    { value: "foot", label: "Foot" },
+    { value: "quads", label: "Quadriceps" },
+    { value: "hamstrings", label: "Hamstrings" },
+    { value: "calves", label: "Calves" },
+    { value: "glutes", label: "Glutes" },
+    { value: "chest", label: "Chest" },
+    { value: "abdominals", label: "Abdominals" },
   ];
 
   const injuryTypes: SelectOption[] = [
-    { value: 'strain', label: 'Muscle Strain' },
-    { value: 'sprain', label: 'Sprain' },
-    { value: 'contusion', label: 'Contusion/Bruise' },
-    { value: 'tendonitis', label: 'Tendonitis' },
-    { value: 'bursitis', label: 'Bursitis' },
-    { value: 'stress_fracture', label: 'Stress Fracture' },
-    { value: 'tear', label: 'Tear (Ligament/Tendon)' },
-    { value: 'nerve_injury', label: 'Nerve Injury' },
-    { value: 'inflammation', label: 'Inflammation' },
-    { value: 'dislocation', label: 'Dislocation' },
-    { value: 'fracture', label: 'Fracture' }
+    { value: "strain", label: "Muscle Strain" },
+    { value: "sprain", label: "Sprain" },
+    { value: "contusion", label: "Contusion/Bruise" },
+    { value: "tendonitis", label: "Tendonitis" },
+    { value: "bursitis", label: "Bursitis" },
+    { value: "stress_fracture", label: "Stress Fracture" },
+    { value: "tear", label: "Tear (Ligament/Tendon)" },
+    { value: "nerve_injury", label: "Nerve Injury" },
+    { value: "inflammation", label: "Inflammation" },
+    { value: "dislocation", label: "Dislocation" },
+    { value: "fracture", label: "Fracture" },
   ];
 
   const symptomOptions: SelectOption[] = [
-    { value: 'pain', label: 'Pain' },
-    { value: 'swelling', label: 'Swelling' },
-    { value: 'stiffness', label: 'Stiffness' },
-    { value: 'weakness', label: 'Weakness' },
-    { value: 'limited_mobility', label: 'Limited Mobility' },
-    { value: 'redness', label: 'Redness' },
-    { value: 'warmth', label: 'Warmth in Area' },
-    { value: 'numbness', label: 'Numbness' },
-    { value: 'tingling', label: 'Tingling' },
-    { value: 'instability', label: 'Joint Instability' },
-    { value: 'popping', label: 'Popping/Clicking' },
-    { value: 'locking', label: 'Joint Locking' }
+    { value: "pain", label: "Pain" },
+    { value: "swelling", label: "Swelling" },
+    { value: "stiffness", label: "Stiffness" },
+    { value: "weakness", label: "Weakness" },
+    { value: "limited_mobility", label: "Limited Mobility" },
+    { value: "redness", label: "Redness" },
+    { value: "warmth", label: "Warmth in Area" },
+    { value: "numbness", label: "Numbness" },
+    { value: "tingling", label: "Tingling" },
+    { value: "instability", label: "Joint Instability" },
+    { value: "popping", label: "Popping/Clicking" },
+    { value: "locking", label: "Joint Locking" },
   ];
 
   // Fetch recovery data
@@ -253,20 +256,20 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         startDate.setDate(startDate.getDate() - 14); // Get last 2 weeks
 
         const { data, error } = await supabase
-          .from('recovery_sessions')
-          .select('*')
-          .eq('user_id', userId)
-          .gte('date', startDate.toISOString().split('T')[0])
-          .order('date', { ascending: false });
+          .from("recovery_sessions")
+          .select("*")
+          .eq("user_id", userId)
+          .gte("date", startDate.toISOString().split("T")[0])
+          .order("date", { ascending: false });
 
         if (error) {
-          console.error('Error fetching recovery data:', error);
+          console.error("Error fetching recovery data:", error);
           return;
         }
 
         setRecoveryData(data || []);
       } catch (error) {
-        console.error('Error in recovery data fetch:', error);
+        console.error("Error in recovery data fetch:", error);
       }
     };
 
@@ -280,19 +283,19 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
 
       try {
         const { data, error } = await supabase
-          .from('injuries')
-          .select('*')
-          .eq('user_id', userId)
-          .order('date', { ascending: false });
+          .from("injuries")
+          .select("*")
+          .eq("user_id", userId)
+          .order("date", { ascending: false });
 
         if (error) {
-          console.error('Error fetching injury data:', error);
+          console.error("Error fetching injury data:", error);
           return;
         }
 
         setInjuryData(data || []);
       } catch (error) {
-        console.error('Error in injury data fetch:', error);
+        console.error("Error in injury data fetch:", error);
       }
     };
 
@@ -308,41 +311,61 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   // Handle recovery form field changes
   const handleRecoveryDateChange = (value: Date | null) => {
     if (value) {
-      setRecovery(prev => ({ ...prev, date: value }));
+      setRecovery((prev) => ({ ...prev, date: value }));
     }
   };
-  
-  const handleRecoveryMethodsChange = (value: string[]) => setRecovery(prev => ({ ...prev, recovery_methods: value }));
-  const handleSleepHoursChange = (value: string | number) => setRecovery(prev => ({ ...prev, sleep_hours: typeof value === 'string' ? Number.parseFloat(value) : value }));
-  const handleHydrationChange = (value: string | number) => setRecovery(prev => ({ ...prev, hydration_liters: typeof value === 'string' ? Number.parseFloat(value) : value }));
-  const handleRecoveryScoreChange = (value: number) => setRecovery(prev => ({ ...prev, overall_recovery_score: value }));
-  const handleSorenessAreasChange = (value: string[]) => setRecovery(prev => ({ ...prev, soreness_areas: value }));
-  const handlePainLevelChange = (value: number) => setRecovery(prev => ({ ...prev, pain_level: value }));
-  
+
+  const handleRecoveryMethodsChange = (value: string[]) =>
+    setRecovery((prev) => ({ ...prev, recovery_methods: value }));
+  const handleSleepHoursChange = (value: string | number) =>
+    setRecovery((prev) => ({
+      ...prev,
+      sleep_hours: typeof value === "string" ? Number.parseFloat(value) : value,
+    }));
+  const handleHydrationChange = (value: string | number) =>
+    setRecovery((prev) => ({
+      ...prev,
+      hydration_liters: typeof value === "string" ? Number.parseFloat(value) : value,
+    }));
+  const handleRecoveryScoreChange = (value: number) =>
+    setRecovery((prev) => ({ ...prev, overall_recovery_score: value }));
+  const handleSorenessAreasChange = (value: string[]) =>
+    setRecovery((prev) => ({ ...prev, soreness_areas: value }));
+  const handlePainLevelChange = (value: number) =>
+    setRecovery((prev) => ({ ...prev, pain_level: value }));
+
   const handleRecoveryNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setRecovery(prev => ({ ...prev, notes: event.target.value }));
+    setRecovery((prev) => ({ ...prev, notes: event.target.value }));
   };
 
   // Handle injury form field changes
   const handleInjuryDateChange = (value: Date | null) => {
     if (value) {
-      setInjury(prev => ({ ...prev, date: value }));
+      setInjury((prev) => ({ ...prev, date: value }));
     }
   };
-  
-  const handleBodyAreaChange = (value: string | null) => setInjury(prev => ({ ...prev, body_area: value || '' }));
-  const handleInjuryTypeChange = (value: string | null) => setInjury(prev => ({ ...prev, injury_type: value || '' }));
-  const handleSeverityChange = (value: string | null) => setInjury(prev => ({ ...prev, severity: value || 'mild' }));
-  const handleInjuryPainLevelChange = (value: number) => setInjury(prev => ({ ...prev, pain_level: value }));
-  const handleSymptomsChange = (value: string[]) => setInjury(prev => ({ ...prev, symptoms: value }));
-  const handleImpactOnTrainingChange = (value: string | null) => setInjury(prev => ({ ...prev, impact_on_training: value || 'minor' }));
-  
+
+  const handleBodyAreaChange = (value: string | null) =>
+    setInjury((prev) => ({ ...prev, body_area: value || "" }));
+  const handleInjuryTypeChange = (value: string | null) =>
+    setInjury((prev) => ({ ...prev, injury_type: value || "" }));
+  const handleSeverityChange = (value: string | null) =>
+    setInjury((prev) => ({ ...prev, severity: value || "mild" }));
+  const handleInjuryPainLevelChange = (value: number) =>
+    setInjury((prev) => ({ ...prev, pain_level: value }));
+  const handleSymptomsChange = (value: string[]) =>
+    setInjury((prev) => ({ ...prev, symptoms: value }));
+  const handleImpactOnTrainingChange = (value: string | null) =>
+    setInjury((prev) => ({ ...prev, impact_on_training: value || "minor" }));
+
   const handleTreatmentPlanChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInjury(prev => ({ ...prev, treatment_plan: event.target.value }));
+    setInjury((prev) => ({ ...prev, treatment_plan: event.target.value }));
   };
-  
-  const handleExpectedRecoveryTimeChange = (value: string | null) => setInjury(prev => ({ ...prev, expected_recovery_time: value || '' }));
-  const handleStatusChange = (value: string | null) => setInjury(prev => ({ ...prev, status: value || 'active' }));
+
+  const handleExpectedRecoveryTimeChange = (value: string | null) =>
+    setInjury((prev) => ({ ...prev, expected_recovery_time: value || "" }));
+  const handleStatusChange = (value: string | null) =>
+    setInjury((prev) => ({ ...prev, status: value || "active" }));
 
   // Open recovery form modal
   const handleAddRecovery = () => {
@@ -354,7 +377,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       overall_recovery_score: 5,
       soreness_areas: [],
       pain_level: 0,
-      notes: ''
+      notes: "",
     });
     setSelectedRecovery(null);
     openModal();
@@ -371,7 +394,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       overall_recovery_score: recovery.overall_recovery_score,
       soreness_areas: recovery.soreness_areas || [],
       pain_level: recovery.pain_level || 0,
-      notes: recovery.notes || ''
+      notes: recovery.notes || "",
     });
     setSelectedRecovery(recovery);
     openModal();
@@ -380,21 +403,18 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   // Delete recovery session
   const handleDeleteRecovery = async (recoveryId: number) => {
     setDeleteLoading(true);
-    
+
     try {
-      const { error } = await supabase
-        .from('recovery_sessions')
-        .delete()
-        .eq('id', recoveryId);
-      
+      const { error } = await supabase.from("recovery_sessions").delete().eq("id", recoveryId);
+
       if (error) {
         throw error;
       }
 
       notifications.show({
-        title: 'Success',
-        message: 'Recovery session deleted successfully',
-        color: 'green',
+        title: "Success",
+        message: "Recovery session deleted successfully",
+        color: "green",
       });
 
       // Refresh recovery data
@@ -402,20 +422,20 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       startDate.setDate(startDate.getDate() - 14);
 
       const { data } = await supabase
-        .from('recovery_sessions')
-        .select('*')
-        .eq('user_id', userId)
-        .gte('date', startDate.toISOString().split('T')[0])
-        .order('date', { ascending: false });
+        .from("recovery_sessions")
+        .select("*")
+        .eq("user_id", userId)
+        .gte("date", startDate.toISOString().split("T")[0])
+        .order("date", { ascending: false });
 
       setRecoveryData(data || []);
       closeModal();
     } catch (error) {
-      console.error('Error deleting recovery session:', error);
+      console.error("Error deleting recovery session:", error);
       notifications.show({
-        title: 'Error',
-        message: 'Failed to delete recovery session',
-        color: 'red',
+        title: "Error",
+        message: "Failed to delete recovery session",
+        color: "red",
       });
     } finally {
       setDeleteLoading(false);
@@ -426,26 +446,26 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   const handleSubmitRecovery = async () => {
     if (recovery.recovery_methods.length === 0) {
       notifications.show({
-        title: 'Missing Information',
-        message: 'Please select at least one recovery method',
-        color: 'orange',
+        title: "Missing Information",
+        message: "Please select at least one recovery method",
+        color: "orange",
       });
       return;
     }
 
     setLoading(true);
-    
+
     try {
       const recoveryData = {
         user_id: userId,
-        date: recovery.date.toISOString().split('T')[0],
+        date: recovery.date.toISOString().split("T")[0],
         recovery_methods: recovery.recovery_methods,
         sleep_hours: recovery.sleep_hours,
         hydration_liters: recovery.hydration_liters,
         overall_recovery_score: recovery.overall_recovery_score,
         soreness_areas: recovery.soreness_areas.length > 0 ? recovery.soreness_areas : null,
         pain_level: recovery.pain_level,
-        notes: recovery.notes || null
+        notes: recovery.notes || null,
       };
 
       if (selectedRecovery) {
@@ -473,6 +493,29 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         title: 'Success',
         message: 'Recovery data saved successfully',
         color: 'green',
+      let query;
+
+      if (selectedRecovery) {
+        // Update existing recovery
+        query = supabase
+          .from("recovery_sessions")
+          .update(recoveryData)
+          .eq("id", selectedRecovery.id);
+      } else {
+        // Insert new recovery
+        query = supabase.from("recovery_sessions").insert(recoveryData);
+      }
+
+      const { error } = await query;
+
+      if (error) {
+        throw error;
+      }
+
+      notifications.show({
+        title: "Success",
+        message: "Recovery data saved successfully",
+        color: "green",
       });
 
       // Refresh recovery data
@@ -480,11 +523,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       startDate.setDate(startDate.getDate() - 14);
 
       const { data } = await supabase
-        .from('recovery_sessions')
-        .select('*')
-        .eq('user_id', userId)
-        .gte('date', startDate.toISOString().split('T')[0])
-        .order('date', { ascending: false });
+        .from("recovery_sessions")
+        .select("*")
+        .eq("user_id", userId)
+        .gte("date", startDate.toISOString().split("T")[0])
+        .order("date", { ascending: false });
 
       setRecoveryData(data || []);
       closeModal();
@@ -494,6 +537,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         title: 'Error',
         message: 'Failed to save recovery data',
         color: 'red',
+      console.error("Error saving recovery data:", error);
+      notifications.show({
+        title: "Error",
+        message: "Failed to save recovery data",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -504,15 +552,15 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   const handleAddInjury = () => {
     setInjury({
       date: new Date(),
-      body_area: '',
-      injury_type: '',
-      severity: 'mild',
+      body_area: "",
+      injury_type: "",
+      severity: "mild",
       pain_level: 3,
       symptoms: [],
-      impact_on_training: 'minor',
-      treatment_plan: '',
-      expected_recovery_time: '',
-      status: 'active'
+      impact_on_training: "minor",
+      treatment_plan: "",
+      expected_recovery_time: "",
+      status: "active",
     });
     setSelectedInjury(null);
     openInjuryModal();
@@ -529,9 +577,9 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       pain_level: injury.pain_level,
       symptoms: injury.symptoms || [],
       impact_on_training: injury.impact_on_training,
-      treatment_plan: injury.treatment_plan || '',
-      expected_recovery_time: injury.expected_recovery_time || '',
-      status: injury.status
+      treatment_plan: injury.treatment_plan || "",
+      expected_recovery_time: injury.expected_recovery_time || "",
+      status: injury.status,
     });
     setSelectedInjury(injury);
     openInjuryModal();
@@ -540,13 +588,10 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   // Delete injury
   const handleDeleteInjury = async (injuryId: number) => {
     setDeleteLoading(true);
-    
+
     try {
-      const { error } = await supabase
-        .from('injuries')
-        .delete()
-        .eq('id', injuryId);
-      
+      const { error } = await supabase.from("injuries").delete().eq("id", injuryId);
+
       if (error) {
         throw error;
       }
@@ -555,14 +600,18 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         title: 'Success',
         message: 'Injury record deleted successfully',
         color: 'green',
+      notifications.show({
+        title: "Success",
+        message: "Injury record deleted successfully",
+        color: "green",
       });
 
       // Refresh injury data
       const { data } = await supabase
-        .from('injuries')
-        .select('*')
-        .eq('user_id', userId)
-        .order('date', { ascending: false });
+        .from("injuries")
+        .select("*")
+        .eq("user_id", userId)
+        .order("date", { ascending: false });
 
       setInjuryData(data || []);
       closeInjuryModal();
@@ -572,6 +621,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         title: 'Error',
         message: 'Failed to delete injury record',
         color: 'red',
+      console.error("Error deleting injury record:", error);
+      notifications.show({
+        title: "Error",
+        message: "Failed to delete injury record",
+        color: "red",
       });
     } finally {
       setDeleteLoading(false);
@@ -585,16 +639,20 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         title: 'Missing Information',
         message: 'Please fill in all required fields',
         color: 'orange',
+      notifications.show({
+        title: "Missing Information",
+        message: "Please fill in all required fields",
+        color: "orange",
       });
       return;
     }
 
     setLoading(true);
-    
+
     try {
       const injuryData = {
         user_id: userId,
-        date: injury.date.toISOString().split('T')[0],
+        date: injury.date.toISOString().split("T")[0],
         body_area: injury.body_area,
         injury_type: injury.injury_type,
         severity: injury.severity,
@@ -603,7 +661,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         impact_on_training: injury.impact_on_training,
         treatment_plan: injury.treatment_plan || null,
         expected_recovery_time: injury.expected_recovery_time || null,
-        status: injury.status
+        status: injury.status,
       };
 
       if (selectedInjury) {
@@ -631,14 +689,34 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         title: 'Success',
         message: 'Injury data saved successfully',
         color: 'green',
+      let query;
+
+      if (selectedInjury) {
+        // Update existing injury
+        query = supabase.from("injuries").update(injuryData).eq("id", selectedInjury.id);
+      } else {
+        // Insert new injury
+        query = supabase.from("injuries").insert(injuryData);
+      }
+
+      const { error } = await query;
+
+      if (error) {
+        throw error;
+      }
+
+      notifications.show({
+        title: "Success",
+        message: "Injury data saved successfully",
+        color: "green",
       });
 
       // Refresh injury data
       const { data } = await supabase
-        .from('injuries')
-        .select('*')
-        .eq('user_id', userId)
-        .order('date', { ascending: false });
+        .from("injuries")
+        .select("*")
+        .eq("user_id", userId)
+        .order("date", { ascending: false });
 
       setInjuryData(data || []);
       closeInjuryModal();
@@ -648,6 +726,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         title: 'Error',
         message: 'Failed to save injury data',
         color: 'red',
+      console.error("Error saving injury data:", error);
+      notifications.show({
+        title: "Error",
+        message: "Failed to save injury data",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -657,7 +740,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   // Calculate average recovery score
   const calculateAverageRecoveryScore = (): string | null => {
     if (!recoveryData.length) return null;
-    
+
     const sum = recoveryData.reduce((acc, item) => acc + item.overall_recovery_score, 0);
     return (sum / recoveryData.length).toFixed(1);
   };
@@ -665,42 +748,53 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   // Get severity badge color
   const getSeverityColor = (severity: string): string => {
     switch (severity) {
-      case 'mild': return 'green';
-      case 'moderate': return 'yellow';
-      case 'severe': return 'orange';
-      case 'critical': return 'red';
-      default: return 'gray';
+      case "mild":
+        return "green";
+      case "moderate":
+        return "yellow";
+      case "severe":
+        return "orange";
+      case "critical":
+        return "red";
+      default:
+        return "gray";
     }
   };
 
   // Get status badge color
   const getStatusColor = (status: string): string => {
     switch (status) {
-      case 'active': return 'red';
-      case 'recovering': return 'yellow';
-      case 'monitoring': return 'blue';
-      case 'resolved': return 'green';
-      default: return 'gray';
+      case "active":
+        return "red";
+      case "recovering":
+        return "yellow";
+      case "monitoring":
+        return "blue";
+      case "resolved":
+        return "green";
+      default:
+        return "gray";
     }
   };
 
   return (
     <Box>
-      <Title order={2} mb="md">Recovery & Health Management</Title>
-      <Text color="dimmed" mb="xl">
-        Track your recovery methods, monitor injuries, and optimize your health for peak performance.
+      <Title order={2} mb="md">
+        Recovery & Health Management
+      </Title>
+      <Text c="dimmed" mb="xl">
+        Track your recovery methods, monitor injuries, and optimize your health for peak
+        performance.
       </Text>
 
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
         <Box>
           <Paper p="md" radius="md" withBorder mb="xl">
             <Group justify="apart" mb="lg">
-              <Text fw={600} size="lg">Recovery Tracking</Text>
-              <Button
-                leftSection={<IconPlus size={16} />}
-                size="sm"
-                onClick={handleAddRecovery}
-              >
+              <Text fw={600} size="lg">
+                Recovery Tracking
+              </Text>
+              <Button leftSection={<IconPlus size={16} />} size="sm" onClick={handleAddRecovery}>
                 Add Recovery Session
               </Button>
             </Group>
@@ -709,47 +803,53 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
               <>
                 <SimpleGrid cols={2} mb="xl">
                   <Paper p="md" withBorder radius="md">
-                    <Text ta="center" size="sm" color="dimmed">Average Recovery Score</Text>
+                    <Text ta="center" size="sm" c="dimmed">
+                      Average Recovery Score
+                    </Text>
                     <Group justify="center">
                       <Box
                         style={{
                           width: 60,
                           height: 60,
-                          borderRadius: '50%',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
+                          borderRadius: "50%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
                           backgroundColor: theme.colors.blue[6],
-                          color: '#fff',
-                          marginTop: 10
+                          color: "#fff",
+                          marginTop: 10,
                         }}
                       >
-                        <Text fw={700} size="xl">{calculateAverageRecoveryScore()}</Text>
+                        <Text fw={700} size="xl">
+                          {calculateAverageRecoveryScore()}
+                        </Text>
                       </Box>
-                      <Text size="xs" color="dimmed" style={{ maxWidth: 100 }}>
+                      <Text size="xs" c="dimmed" style={{ maxWidth: 100 }}>
                         Based on your last {recoveryData.length} recovery sessions
                       </Text>
                     </Group>
                   </Paper>
                   <Paper p="md" withBorder radius="md">
-                    <Text ta="center" size="sm" color="dimmed">Most Used Recovery Methods</Text>
+                    <Text ta="center" size="sm" c="dimmed">
+                      Most Used Recovery Methods
+                    </Text>
                     <Box mt="md">
                       {(() => {
                         // Count method frequencies
                         const methodCounts: Record<string, number> = {};
-                        for (const item of recoveryData) {
-                          for (const method of (item.recovery_methods || [])) {
+                        recoveryData.forEach((item) => {
+                          (item.recovery_methods || []).forEach((method) => {
                             methodCounts[method] = (methodCounts[method] || 0) + 1;
-                          }
-                        }
-                        
+                          });
+                        });
+
                         // Sort by frequency
                         const sortedMethods = Object.entries(methodCounts)
                           .sort((a, b) => b[1] - a[1])
                           .slice(0, 3);
-                        
+
                         return sortedMethods.map(([method, count]) => {
-                          const methodInfo = recoveryMethods.find(m => m.value === method);
+                          const methodInfo = recoveryMethods.find((m) => m.value === method);
                           const MethodIcon = methodInfo?.icon;
                           return (
                             <Group key={method} mb="xs" wrap="nowrap">
@@ -762,18 +862,18 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                             </Group>
                           );
                         });
-                      })()} 
+                      })()}
                     </Box>
                   </Paper>
                 </SimpleGrid>
 
-                <Text fw={500} mb="xs">Recent Recovery Sessions</Text>
+                <Text fw={500} mb="xs">
+                  Recent Recovery Sessions
+                </Text>
                 {recoveryData.slice(0, 3).map((item) => (
                   <Paper key={item.id} p="sm" withBorder radius="md" mb="md">
                     <Group justify="apart" mb="xs">
-                      <Text fw={500}>
-                        {formatDate(item.date)}
-                      </Text>
+                      <Text fw={500}>{formatDate(item.date)}</Text>
                       <Group>
                         <Tooltip label="Edit">
                           <ActionIcon size="sm" onClick={() => handleEditRecovery(item)}>
@@ -781,16 +881,20 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                           </ActionIcon>
                         </Tooltip>
                         <Tooltip label="Delete">
-                          <ActionIcon size="sm" color="red" onClick={() => handleDeleteRecovery(item.id)}>
+                          <ActionIcon
+                            size="sm"
+                            color="red"
+                            onClick={() => handleDeleteRecovery(item.id)}
+                          >
                             <IconTrash size={16} />
                           </ActionIcon>
                         </Tooltip>
                       </Group>
                     </Group>
-                    
+
                     <Group>
-                      {(item.recovery_methods || []).map(method => {
-                        const methodInfo = recoveryMethods.find(m => m.value === method);
+                      {(item.recovery_methods || []).map((method) => {
+                        const methodInfo = recoveryMethods.find((m) => m.value === method);
                         return (
                           <Badge key={method} size="sm">
                             {methodInfo?.label || method}
@@ -798,27 +902,37 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                         );
                       })}
                     </Group>
-                    
+
                     <Text size="sm">Recovery score: {item.overall_recovery_score}/10</Text>
                     <Text size="sm">Sleep: {item.sleep_hours} hours</Text>
-                    
+
                     {item.soreness_areas && item.soreness_areas.length > 0 && (
                       <Text size="sm">
-                        Soreness: {item.soreness_areas.map(area => {
-                          const areaInfo = bodyAreas.find(a => a.value === area);
-                          return areaInfo?.label || area;
-                        }).join(', ')}
+                        Soreness:{" "}
+                        {item.soreness_areas
+                          .map((area) => {
+                            const areaInfo = bodyAreas.find((a) => a.value === area);
+                            return areaInfo?.label || area;
+                          })
+                          .join(", ")}
                       </Text>
                     )}
                   </Paper>
                 ))}
               </>
             ) : (
-              <Box py="xl" style={{ textAlign: 'center' }}>
-                <IconInfoCircle size={40} color={theme.colors.gray[5]} style={{ marginBottom: 10 }} />
-                <Text size="lg" fw={500} mb="xs">No recovery data yet</Text>
-                <Text color="dimmed" mb="md">
-                  Start tracking your recovery methods to optimize your performance and prevent injuries.
+              <Box py="xl" style={{ textAlign: "center" }}>
+                <IconInfoCircle
+                  size={40}
+                  color={theme.colors.gray[5]}
+                  style={{ marginBottom: 10 }}
+                />
+                <Text size="lg" fw={500} mb="xs">
+                  No recovery data yet
+                </Text>
+                <Text c="dimmed" mb="md">
+                  Start tracking your recovery methods to optimize your performance and prevent
+                  injuries.
                 </Text>
                 <Button onClick={handleAddRecovery}>Add First Recovery Session</Button>
               </Box>
@@ -829,12 +943,10 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         <Box>
           <Paper p="md" radius="md" withBorder mb="xl">
             <Group justify="apart" mb="lg">
-              <Text fw={600} size="lg">Injury Tracking</Text>
-              <Button
-                leftSection={<IconPlus size={16} />}
-                size="sm"
-                onClick={handleAddInjury}
-              >
+              <Text fw={600} size="lg">
+                Injury Tracking
+              </Text>
+              <Button leftSection={<IconPlus size={16} />} size="sm" onClick={handleAddInjury}>
                 Record Injury/Pain
               </Button>
             </Group>
@@ -842,9 +954,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             {injuryData.length > 0 ? (
               <>
                 <Box mb="xl">
-                  <Text fw={500} mb="xs">Active Injuries/Issues</Text>
+                  <Text fw={500} mb="xs">
+                    Active Injuries/Issues
+                  </Text>
                   {injuryData
-                    .filter(item => item.status !== 'resolved')
+                    .filter((item) => item.status !== "resolved")
                     .slice(0, 3)
                     .map((item) => (
                       <Paper key={item.id} p="sm" withBorder radius="md" mb="md">
@@ -860,62 +974,81 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                               </ActionIcon>
                             </Tooltip>
                             <Tooltip label="Delete">
-                              <ActionIcon size="sm" color="red" onClick={() => handleDeleteInjury(item.id)}>
+                              <ActionIcon
+                                size="sm"
+                                color="red"
+                                onClick={() => handleDeleteInjury(item.id)}
+                              >
                                 <IconTrash size={16} />
                               </ActionIcon>
                             </Tooltip>
                           </Group>
                         </Group>
-                        
+
                         <Text fw={500} mb="xs">
                           {(() => {
-                            const area = bodyAreas.find(a => a.value === item.body_area);
-                            const type = injuryTypes.find(t => t.value === item.injury_type);
+                            const area = bodyAreas.find((a) => a.value === item.body_area);
+                            const type = injuryTypes.find((t) => t.value === item.injury_type);
                             return `${area?.label || item.body_area} ${type?.label || item.injury_type}`;
                           })()}
                         </Text>
-                        
-                        <Text size="sm" color="dimmed" mb="xs">Recorded on {formatDate(item.date)}</Text>
-                        
+
+                        <Text size="sm" c="dimmed" mb="xs">
+                          Recorded on {formatDate(item.date)}
+                        </Text>
+
                         <Group mb="xs">
                           <Text size="sm">Pain Level:</Text>
                           <Progress
                             value={item.pain_level * 10}
-                            color={item.pain_level <= 3 ? 'green' : item.pain_level <= 6 ? 'yellow' : 'red'}
+                            color={
+                              item.pain_level <= 3
+                                ? "green"
+                                : item.pain_level <= 6
+                                  ? "yellow"
+                                  : "red"
+                            }
                             size="sm"
                             style={{ flex: 1 }}
                           />
                         </Group>
-                        
+
                         {item.symptoms && item.symptoms.length > 0 && (
                           <Text size="sm" mb="xs">
-                            Symptoms: {item.symptoms.map(symptom => {
-                              const symptomInfo = symptomOptions.find(s => s.value === symptom);
-                              return symptomInfo?.label || symptom;
-                            }).join(', ')}
+                            Symptoms:{" "}
+                            {item.symptoms
+                              .map((symptom) => {
+                                const symptomInfo = symptomOptions.find((s) => s.value === symptom);
+                                return symptomInfo?.label || symptom;
+                              })
+                              .join(", ")}
                           </Text>
                         )}
-                        
+
                         <Text size="sm" mb="xs">
-                          Impact on Training: {item.impact_on_training.charAt(0).toUpperCase() + item.impact_on_training.slice(1)}
+                          Impact on Training:{" "}
+                          {item.impact_on_training.charAt(0).toUpperCase() +
+                            item.impact_on_training.slice(1)}
                         </Text>
-                        
+
                         {item.treatment_plan && (
                           <Text size="sm" lineClamp={2}>
                             Treatment: {item.treatment_plan}
                           </Text>
                         )}
                       </Paper>
-                  ))}
+                    ))}
                 </Box>
-                
+
                 <Divider mb="md" />
-                
+
                 <Box>
-                  <Text fw={500} mb="xs">Injury History</Text>
+                  <Text fw={500} mb="xs">
+                    Injury History
+                  </Text>
                   <List spacing="sm">
                     {injuryData
-                      .filter(item => item.status === 'resolved')
+                      .filter((item) => item.status === "resolved")
                       .slice(0, 5)
                       .map((item) => (
                         <List.Item
@@ -930,25 +1063,35 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                             <Box>
                               <Text size="sm">
                                 {(() => {
-                                  const area = bodyAreas.find(a => a.value === item.body_area);
-                                  const type = injuryTypes.find(t => t.value === item.injury_type);
+                                  const area = bodyAreas.find((a) => a.value === item.body_area);
+                                  const type = injuryTypes.find(
+                                    (t) => t.value === item.injury_type
+                                  );
                                   return `${area?.label || item.body_area} ${type?.label || item.injury_type}`;
                                 })()}
                               </Text>
-                              <Text size="xs" color="dimmed">{formatDate(item.date)}</Text>
+                              <Text size="xs" c="dimmed">
+                                {formatDate(item.date)}
+                              </Text>
                             </Box>
                             <Badge color="green">Resolved</Badge>
                           </Group>
                         </List.Item>
-                    ))}
+                      ))}
                   </List>
                 </Box>
               </>
             ) : (
-              <Box py="xl" style={{ textAlign: 'center' }}>
-                <IconAlertCircle size={40} color={theme.colors.gray[5]} style={{ marginBottom: 10 }} />
-                <Text size="lg" fw={500} mb="xs">No injury data recorded</Text>
-                <Text color="dimmed" mb="md">
+              <Box py="xl" style={{ textAlign: "center" }}>
+                <IconAlertCircle
+                  size={40}
+                  color={theme.colors.gray[5]}
+                  style={{ marginBottom: 10 }}
+                />
+                <Text size="lg" fw={500} mb="xs">
+                  No injury data recorded
+                </Text>
+                <Text c="dimmed" mb="md">
                   Track injuries, pain points, and healing progress to maintain long-term health.
                 </Text>
                 <Button onClick={handleAddInjury}>Record First Injury/Pain</Button>
@@ -962,7 +1105,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       <Modal
         opened={modalOpened}
         onClose={closeModal}
-        title={<Text fw={600}>{selectedRecovery ? 'Edit Recovery Session' : 'Add Recovery Session'}</Text>}
+        title={
+          <Text fw={600}>
+            {selectedRecovery ? "Edit Recovery Session" : "Add Recovery Session"}
+          </Text>
+        }
         size="lg"
       >
         <DatePickerInput
@@ -1010,7 +1157,9 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         </Group>
 
         <Box mb="md">
-          <Text fw={500} size="sm" mb="xs">Overall Recovery Score</Text>
+          <Text fw={500} size="sm" mb="xs">
+            Overall Recovery Score
+          </Text>
           <Slider
             value={recovery.overall_recovery_score}
             onChange={handleRecoveryScoreChange}
@@ -1018,12 +1167,17 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             max={10}
             step={1}
             marks={[
-              { value: 1, label: 'Poor' },
-              { value: 5, label: 'Average' },
-              { value: 10, label: 'Excellent' },
+              { value: 1, label: "Poor" },
+              { value: 5, label: "Average" },
+              { value: 10, label: "Excellent" },
             ]}
-            color={recovery.overall_recovery_score <= 3 ? 'red' : 
-                   recovery.overall_recovery_score <= 6 ? 'yellow' : 'green'}
+            color={
+              recovery.overall_recovery_score <= 3
+                ? "red"
+                : recovery.overall_recovery_score <= 6
+                  ? "yellow"
+                  : "green"
+            }
           />
         </Box>
 
@@ -1041,7 +1195,9 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
 
         {recovery.soreness_areas.length > 0 && (
           <Box mb="md">
-            <Text fw={500} size="sm" mb="xs">Pain Level (if sore)</Text>
+            <Text fw={500} size="sm" mb="xs">
+              Pain Level (if sore)
+            </Text>
             <Slider
               value={recovery.pain_level}
               onChange={handlePainLevelChange}
@@ -1049,12 +1205,13 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
               max={10}
               step={1}
               marks={[
-                { value: 0, label: 'None' },
-                { value: 5, label: 'Moderate' },
-                { value: 10, label: 'Severe' },
+                { value: 0, label: "None" },
+                { value: 5, label: "Moderate" },
+                { value: 10, label: "Severe" },
               ]}
-              color={recovery.pain_level <= 3 ? 'green' : 
-                     recovery.pain_level <= 6 ? 'yellow' : 'red'}
+              color={
+                recovery.pain_level <= 3 ? "green" : recovery.pain_level <= 6 ? "yellow" : "red"
+              }
             />
           </Box>
         )}
@@ -1069,7 +1226,9 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         />
 
         <Group justify="right">
-          <Button variant="outline" onClick={closeModal}>Cancel</Button>
+          <Button variant="outline" onClick={closeModal}>
+            Cancel
+          </Button>
           {selectedRecovery && (
             <Button
               color="red"
@@ -1085,7 +1244,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             loading={loading}
             disabled={recovery.recovery_methods.length === 0}
           >
-            {selectedRecovery ? 'Update' : 'Save'}
+            {selectedRecovery ? "Update" : "Save"}
           </Button>
         </Group>
       </Modal>
@@ -1094,7 +1253,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       <Modal
         opened={injuryModalOpened}
         onClose={closeInjuryModal}
-        title={<Text fw={600}>{selectedInjury ? 'Edit Injury Record' : 'Record Injury/Pain'}</Text>}
+        title={<Text fw={600}>{selectedInjury ? "Edit Injury Record" : "Record Injury/Pain"}</Text>}
         size="lg"
       >
         <DatePickerInput
@@ -1135,10 +1294,10 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             label="Severity"
             placeholder="Select severity"
             data={[
-              { value: 'mild', label: 'Mild' },
-              { value: 'moderate', label: 'Moderate' },
-              { value: 'severe', label: 'Severe' },
-              { value: 'critical', label: 'Critical' }
+              { value: "mild", label: "Mild" },
+              { value: "moderate", label: "Moderate" },
+              { value: "severe", label: "Severe" },
+              { value: "critical", label: "Critical" },
             ]}
             value={injury.severity}
             onChange={handleSeverityChange}
@@ -1148,11 +1307,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             label="Impact on Training"
             placeholder="Select impact level"
             data={[
-              { value: 'none', label: 'No Impact' },
-              { value: 'minor', label: 'Minor Modifications' },
-              { value: 'moderate', label: 'Moderate Limitations' },
-              { value: 'major', label: 'Major Limitations' },
-              { value: 'prevent', label: 'Prevents Training' }
+              { value: "none", label: "No Impact" },
+              { value: "minor", label: "Minor Modifications" },
+              { value: "moderate", label: "Moderate Limitations" },
+              { value: "major", label: "Major Limitations" },
+              { value: "prevent", label: "Prevents Training" },
             ]}
             value={injury.impact_on_training}
             onChange={handleImpactOnTrainingChange}
@@ -1160,7 +1319,9 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         </SimpleGrid>
 
         <Box mb="md">
-          <Text fw={500} size="sm" mb="xs">Pain Level</Text>
+          <Text fw={500} size="sm" mb="xs">
+            Pain Level
+          </Text>
           <Slider
             value={injury.pain_level}
             onChange={handleInjuryPainLevelChange}
@@ -1168,12 +1329,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             max={10}
             step={1}
             marks={[
-              { value: 0, label: 'None' },
-              { value: 5, label: 'Moderate' },
-              { value: 10, label: 'Severe' },
+              { value: 0, label: "None" },
+              { value: 5, label: "Moderate" },
+              { value: 10, label: "Severe" },
             ]}
-            color={injury.pain_level <= 3 ? 'green' : 
-                   injury.pain_level <= 6 ? 'yellow' : 'red'}
+            color={injury.pain_level <= 3 ? "green" : injury.pain_level <= 6 ? "yellow" : "red"}
           />
         </Box>
 
@@ -1201,14 +1361,14 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             label="Expected Recovery Time"
             placeholder="Select expected timeline"
             data={[
-              { value: 'days', label: 'Days' },
-              { value: '1_week', label: '~1 Week' },
-              { value: '2_weeks', label: '~2 Weeks' },
-              { value: '1_month', label: '~1 Month' },
-              { value: '3_months', label: '2-3 Months' },
-              { value: '6_months', label: '4-6 Months' },
-              { value: 'long_term', label: 'Long-term / Chronic' },
-              { value: 'unknown', label: 'Unknown' }
+              { value: "days", label: "Days" },
+              { value: "1_week", label: "~1 Week" },
+              { value: "2_weeks", label: "~2 Weeks" },
+              { value: "1_month", label: "~1 Month" },
+              { value: "3_months", label: "2-3 Months" },
+              { value: "6_months", label: "4-6 Months" },
+              { value: "long_term", label: "Long-term / Chronic" },
+              { value: "unknown", label: "Unknown" },
             ]}
             value={injury.expected_recovery_time}
             onChange={handleExpectedRecoveryTimeChange}
@@ -1218,10 +1378,10 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             label="Current Status"
             placeholder="Select current status"
             data={[
-              { value: 'active', label: 'Active Injury' },
-              { value: 'recovering', label: 'Recovering' },
-              { value: 'monitoring', label: 'Monitoring' },
-              { value: 'resolved', label: 'Resolved' }
+              { value: "active", label: "Active Injury" },
+              { value: "recovering", label: "Recovering" },
+              { value: "monitoring", label: "Monitoring" },
+              { value: "resolved", label: "Resolved" },
             ]}
             value={injury.status}
             onChange={handleStatusChange}
@@ -1230,7 +1390,9 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
         </SimpleGrid>
 
         <Group justify="right" mt="xl">
-          <Button variant="outline" onClick={closeInjuryModal}>Cancel</Button>
+          <Button variant="outline" onClick={closeInjuryModal}>
+            Cancel
+          </Button>
           {selectedInjury && (
             <Button
               color="red"
@@ -1246,7 +1408,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
             loading={loading}
             disabled={!injury.body_area || !injury.injury_type}
           >
-            {selectedInjury ? 'Update' : 'Save'}
+            {selectedInjury ? "Update" : "Save"}
           </Button>
         </Group>
       </Modal>

@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(for file in *.jsx)",
+      "Bash(do mv \"$file\" \"$file%.jsx.tsx\")",
+      "Bash(done)",
+      "Bash(python3:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run type-check:*)",
+      "Bash(mv:*)",
+      "Bash(biome migrate:*)",
+      "Bash(npm run lint:*)",
+      "Bash(pip install:*)",
+      "Bash(npm run build:*)",
+      "Bash(python -m pytest tests/ -v)",
+      "Bash(python:*)",
+      "Bash(~/.local/bin/pytest tests/ -v)",
+      "Bash(PYTHONPATH=/home/kopacz/Development/existing-projects/bobsleigh-coach-ai/backend ~/.local/bin/pytest tests/ -v)",
+      "Bash(rm:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": []
+  }
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "722fd2ac-10bc-438e-a212-d8efe0c0d397",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "injury_date": "2023-01-01",
+    "body_part": "back",
+    "description": "Low back pain, on and off.",
+    "severity": "unknown",
+    "recovery_date": null,
+    "treatment": "",
+    "created_at": "2025-07-19T22:57:34.193094"
+  },
+  {
+    "id": "ef047b11-397c-4d25-a435-01c685392862",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "injury_date": "2023-01-01",
+    "body_part": "back",
+    "description": "Back sore (light injury) needs to",
+    "severity": "unknown",
+    "recovery_date": null,
+    "treatment": "",
+    "created_at": "2025-07-19T22:57:34.193098"
+  },
+  {
+    "id": "8c58fb95-6fbe-491e-862a-aa4e0418d7ad",
+    "athlete_id": "73248eb6-9c6a-4395-b864-3f57e764112e",
+    "injury_date": "2023-01-01",
+    "body_part": "ankle",
+    "description": "Right Ankle Injury , hurts after sprints",
+    "severity": "unknown",
+    "recovery_date": null,
+    "treatment": "",
+    "created_at": "2025-07-19T22:57:34.193103"
+  }
+]

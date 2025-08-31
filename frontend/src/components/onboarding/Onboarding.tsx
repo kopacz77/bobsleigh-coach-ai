@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from 'react';
 import {
   Box,
-  Title,
-  Text,
+  Button,
+  Center,
+  Container,
   Group,
   Paper,
-  Button,
-  Stepper,
   Progress,
+  Stepper,
+  Text,
+  ThemeIcon,
+  Title,
   useMantineTheme,
-  Container,
-  Center,
-  ThemeIcon
-} from '@mantine/core';
-import { useRouter } from 'next/router';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { showNotification } from '@mantine/notifications';
+} from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
-  IconUser,
-  IconTarget,
   IconBarbell,
-  IconClipboardCheck,
-  IconChevronRight,
-  IconChevronLeft,
   IconCheck,
-  IconRocket
-} from '@tabler/icons-react';
+  IconChevronLeft,
+  IconChevronRight,
+  IconClipboardCheck,
+  IconRocket,
+  IconTarget,
+  IconUser,
+} from "@tabler/icons-react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 // Import onboarding step components
-import AthleteProfile from './AthleteProfile';
-import GoalSetting from './GoalSetting';
-import TrainingPreferences from './TrainingPreferences';
-import InitialAssessment from './InitialAssessment';
+import AthleteProfile from "./AthleteProfile";
+import GoalSetting from "./GoalSetting";
+import InitialAssessment from "./InitialAssessment";
+import TrainingPreferences from "./TrainingPreferences";
 
 /**
  * Main Onboarding component that guides new athletes through the setup process
@@ -53,21 +53,21 @@ const Onboarding = ({ userId, userProfile }) => {
 
       try {
         const { data, error } = await supabase
-          .from('users')
-          .select('onboarding_completed')
-          .eq('id', userId)
+          .from("users")
+          .select("onboarding_completed")
+          .eq("id", userId)
           .single();
 
         if (error) {
-          console.error('Error checking onboarding status:', error);
+          console.error("Error checking onboarding status:", error);
           return;
         }
 
         if (data && data.onboarding_completed) {
-          router.push('/dashboard');
+          router.push("/dashboard");
         }
       } catch (error) {
-        console.error('Error in onboarding status check:', error);
+        console.error("Error in onboarding status check:", error);
       }
     };
 
@@ -79,122 +79,130 @@ const Onboarding = ({ userId, userProfile }) => {
     {
       title: "Welcome",
       component: () => (
-        <Box p="xl" style={{ maxWidth: 600, margin: '0 auto' }}>
+        <Box p="xl" style={{ maxWidth: 600, margin: "0 auto" }}>
           <Center mb="xl">
             <ThemeIcon size={80} radius={40} color="blue">
               <IconRocket size={40} />
             </ThemeIcon>
           </Center>
-          
-          <Title order={2} align="center" mb="md">Welcome to Bobsleigh Coach AI</Title>
-          
-          <Text align="center" size="lg" mb="xl">
-            Let's set up your profile and training environment to get you started on your bobsleigh journey.
+
+          <Title order={2} ta="center" mb="md">
+            Welcome to Bobsleigh Coach AI
+          </Title>
+
+          <Text ta="center" size="lg" mb="xl">
+            Let's set up your profile and training environment to get you started on your bobsleigh
+            journey.
           </Text>
-          
-          <Text mb="md">
-            During this onboarding process, we'll collect information about:
-          </Text>
-          
+
+          <Text mb="md">During this onboarding process, we'll collect information about:</Text>
+
           <Box mb="xl">
             <Group mb="md">
               <ThemeIcon size={28} radius="xl" color="blue">
                 <IconUser size={16} />
               </ThemeIcon>
-              <Text weight={500}>Your athlete profile and physical attributes</Text>
+              <Text fw={500}>Your athlete profile and physical attributes</Text>
             </Group>
-            
+
             <Group mb="md">
               <ThemeIcon size={28} radius="xl" color="green">
                 <IconTarget size={16} />
               </ThemeIcon>
-              <Text weight={500}>Your goals and competition targets</Text>
+              <Text fw={500}>Your goals and competition targets</Text>
             </Group>
-            
+
             <Group mb="md">
               <ThemeIcon size={28} radius="xl" color="orange">
                 <IconBarbell size={16} />
               </ThemeIcon>
-              <Text weight={500}>Your training preferences and availability</Text>
+              <Text fw={500}>Your training preferences and availability</Text>
             </Group>
-            
+
             <Group mb="md">
               <ThemeIcon size={28} radius="xl" color="red">
                 <IconClipboardCheck size={16} />
               </ThemeIcon>
-              <Text weight={500}>Initial performance assessment</Text>
+              <Text fw={500}>Initial performance assessment</Text>
             </Group>
           </Box>
-          
-          <Text color="dimmed" mb="xl">
-            This information helps us create a personalized training program that's optimized for your needs and goals.
-            You can update any of this information later in your profile settings.
+
+          <Text c="dimmed" mb="xl">
+            This information helps us create a personalized training program that's optimized for
+            your needs and goals. You can update any of this information later in your profile
+            settings.
           </Text>
         </Box>
       ),
-      description: "Welcome & Introduction"
+      description: "Welcome & Introduction",
     },
     {
       title: "Athlete Profile",
       component: ({ onComplete }) => <AthleteProfile userId={userId} onComplete={onComplete} />,
-      description: "Basic information"
+      description: "Basic information",
     },
     {
       title: "Goal Setting",
       component: ({ onComplete }) => <GoalSetting userId={userId} onComplete={onComplete} />,
-      description: "Set your goals"
+      description: "Set your goals",
     },
     {
       title: "Training Preferences",
-      component: ({ onComplete }) => <TrainingPreferences userId={userId} onComplete={onComplete} />,
-      description: "Training schedule"
+      component: ({ onComplete }) => (
+        <TrainingPreferences userId={userId} onComplete={onComplete} />
+      ),
+      description: "Training schedule",
     },
     {
       title: "Initial Assessment",
       component: ({ onComplete }) => <InitialAssessment userId={userId} onComplete={onComplete} />,
-      description: "Baseline metrics"
+      description: "Baseline metrics",
     },
     {
       title: "All Set!",
       component: () => (
-        <Box p="xl" style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center' }}>
+        <Box p="xl" style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
           <Center mb="xl">
             <ThemeIcon size={100} radius={50} color="green">
               <IconCheck size={50} />
             </ThemeIcon>
           </Center>
-          
-          <Title order={2} mb="md">You're All Set!</Title>
-          
+
+          <Title order={2} mb="md">
+            You're All Set!
+          </Title>
+
           <Text size="lg" mb="xl">
-            Your profile has been set up successfully. You're ready to start your bobsleigh training program.
+            Your profile has been set up successfully. You're ready to start your bobsleigh training
+            program.
           </Text>
-          
+
           <Text mb="xl">
-            Your coach will review your profile and assessments to create a personalized training plan
-            that aligns with your goals and schedule. You can expect your first training week to be available soon.
+            Your coach will review your profile and assessments to create a personalized training
+            plan that aligns with your goals and schedule. You can expect your first training week
+            to be available soon.
           </Text>
-          
-          <Text color="dimmed" mb="xl">
-            In the meantime, you can explore the dashboard, check out the resources section,
-            and complete your daily check-ins to help us optimize your training.
+
+          <Text c="dimmed" mb="xl">
+            In the meantime, you can explore the dashboard, check out the resources section, and
+            complete your daily check-ins to help us optimize your training.
           </Text>
         </Box>
       ),
-      description: "Setup complete"
-    }
+      description: "Setup complete",
+    },
   ];
 
   // Handle step completion
   const handleStepComplete = async (data) => {
-    setCompletedSteps(prev => [...prev, step]);
+    setCompletedSteps((prev) => [...prev, step]);
     handleNextStep();
   };
 
   // Handle next step
   const handleNextStep = () => {
     if (step < steps.length - 1) {
-      setStep(prev => prev + 1);
+      setStep((prev) => prev + 1);
     } else {
       completeOnboarding();
     }
@@ -203,7 +211,7 @@ const Onboarding = ({ userId, userProfile }) => {
   // Handle previous step
   const handlePreviousStep = () => {
     if (step > 0) {
-      setStep(prev => prev - 1);
+      setStep((prev) => prev - 1);
     }
   };
 
@@ -225,9 +233,9 @@ const Onboarding = ({ userId, userProfile }) => {
     try {
       // Update user's onboarding status
       const { error } = await supabase
-        .from('users')
+        .from("users")
         .update({ onboarding_completed: true, updated_at: new Date().toISOString() })
-        .eq('id', userId);
+        .eq("id", userId);
 
       if (error) {
         throw error;
@@ -236,21 +244,21 @@ const Onboarding = ({ userId, userProfile }) => {
       setOnboardingComplete(true);
 
       showNotification({
-        title: 'Welcome aboard!',
-        message: 'Your profile has been set up successfully.',
-        color: 'green',
+        title: "Welcome aboard!",
+        message: "Your profile has been set up successfully.",
+        color: "green",
       });
 
       // Redirect to dashboard after a short delay
       setTimeout(() => {
-        router.push('/dashboard');
+        router.push("/dashboard");
       }, 1500);
     } catch (error) {
-      console.error('Error completing onboarding:', error);
+      console.error("Error completing onboarding:", error);
       showNotification({
-        title: 'Error',
-        message: 'There was an error completing the setup.',
-        color: 'red',
+        title: "Error",
+        message: "There was an error completing the setup.",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -264,20 +272,18 @@ const Onboarding = ({ userId, userProfile }) => {
       <Container size="lg" py="xl">
         <Paper shadow="md" radius="lg" p="xl" className="border-2 border-blue-400">
           <Box mb="xl">
-            <Group position="apart" mb="md">
-              <Title order={2} className="text-blue-700">Getting Started</Title>
-              
+            <Group justify="space-between" mb="md">
+              <Title order={2} className="text-blue-700">
+                Getting Started
+              </Title>
+
               {step === 0 && (
-                <Button
-                  variant="subtle"
-                  color="gray"
-                  onClick={handleSkipSetup}
-                >
+                <Button variant="subtle" color="gray" onClick={handleSkipSetup}>
                   Skip Setup
                 </Button>
               )}
             </Group>
-            
+
             <Progress
               value={((step + 1) / steps.length) * 100}
               size="xl"
@@ -285,18 +291,13 @@ const Onboarding = ({ userId, userProfile }) => {
               color="blue"
               mb="sm"
             />
-            
-            <Text align="center" color="dimmed">
+
+            <Text ta="center" c="dimmed">
               Step {step + 1} of {steps.length}: {steps[step].description}
             </Text>
           </Box>
 
-          <Stepper
-            active={step}
-            onStepClick={setStep}
-            breakpoint="sm"
-            allowNextStepsSelect={false}
-          >
+          <Stepper active={step} onStepClick={setStep} breakpoint="sm" allowNextStepsSelect={false}>
             {steps.map((s, index) => (
               <Stepper.Step
                 key={index}
@@ -311,43 +312,34 @@ const Onboarding = ({ userId, userProfile }) => {
             <CurrentStepComponent onComplete={handleStepComplete} />
           </Box>
 
-          <Group position="apart" mt="xl">
+          <Group justify="space-between" mt="xl">
             {step > 0 && step < steps.length - 1 && (
               <Button
                 variant="outline"
                 onClick={handlePreviousStep}
-                leftIcon={<IconChevronLeft size={16} />}
+                leftSection={<IconChevronLeft size={16} />}
                 size="md"
               >
                 Back
               </Button>
             )}
-            
+
             {step === 0 && (
-              <Button
-                onClick={handleNextStep}
-                rightIcon={<IconChevronRight size={16} />}
-                size="md"
-              >
+              <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
                 Get Started
               </Button>
             )}
-            
+
             {step === steps.length - 1 && (
-              <Button
-                onClick={completeOnboarding}
-                loading={loading}
-                size="md"
-                color="green"
-              >
+              <Button onClick={completeOnboarding} loading={loading} size="md" color="green">
                 Go to Dashboard
               </Button>
             )}
-            
+
             {step !== 0 && step !== steps.length - 1 && (
               <Button
                 onClick={handleNextStep}
-                rightIcon={<IconChevronRight size={16} />}
+                rightSection={<IconChevronRight size={16} />}
                 size="md"
                 variant="light"
               >

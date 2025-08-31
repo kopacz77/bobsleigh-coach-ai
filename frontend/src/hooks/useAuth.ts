@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { supabase, signInWithGoogle, signOut, getCurrentUser } from '@/lib/supabase';
-import { User } from '@supabase/supabase-js';
+import type { User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getCurrentUser, signInWithGoogle, signOut, supabase } from "@/lib/supabase";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -10,7 +10,9 @@ export function useAuth() {
 
   useEffect(() => {
     // Set up Supabase auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
         setUser(session.user);
       } else {
@@ -25,7 +27,7 @@ export function useAuth() {
         const user = await getCurrentUser();
         setUser(user);
       } catch (error) {
-        console.error('Error getting current user:', error);
+        console.error("Error getting current user:", error);
       } finally {
         setLoading(false);
       }
@@ -45,7 +47,7 @@ export function useAuth() {
   const logout = async () => {
     const { error } = await signOut();
     if (error) throw error;
-    router.push('/auth/login');
+    router.push("/auth/login");
   };
 
   return {

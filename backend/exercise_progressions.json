@@ -1,0 +1,844 @@
+{
+  "Drills": {
+    "min_weight": 3.0,
+    "max_weight": 6.0,
+    "average_progression_kg_per_session": 0.3,
+    "total_progression_kg": 3.0,
+    "progression_pattern": "linear"
+  },
+  "Technique Drills": {
+    "min_weight": 8.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.1,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "Daily Work:": {
+    "min_weight": 1.0,
+    "max_weight": 145.0,
+    "average_progression_kg_per_session": 2.4,
+    "total_progression_kg": 144.0,
+    "progression_pattern": "linear"
+  },
+  "Technique": {
+    "min_weight": 8.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.1,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "Stretch Adductors": {
+    "min_weight": 2.0,
+    "max_weight": 150.0,
+    "average_progression_kg_per_session": 2.0,
+    "total_progression_kg": 148.0,
+    "progression_pattern": "linear"
+  },
+  "Like Its Your Job": {
+    "min_weight": 1.0,
+    "max_weight": 120.0,
+    "average_progression_kg_per_session": 3.1,
+    "total_progression_kg": 119.0,
+    "progression_pattern": "linear"
+  },
+  "Kossack Stretches": {
+    "min_weight": 460.0,
+    "max_weight": 2670.0,
+    "average_progression_kg_per_session": 65.0,
+    "total_progression_kg": 2210.0,
+    "progression_pattern": "linear"
+  },
+  "#Value!": {
+    "min_weight": 22.5,
+    "max_weight": 3480.0,
+    "average_progression_kg_per_session": 9.1,
+    "total_progression_kg": 3457.5,
+    "progression_pattern": "linear"
+  },
+  "Mhg": {
+    "min_weight": 22.5,
+    "max_weight": 222.1428571,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 199.6428571,
+    "progression_pattern": "linear"
+  },
+  "#Div/0!": {
+    "min_weight": 42.5,
+    "max_weight": 222.1428571,
+    "average_progression_kg_per_session": 1.4,
+    "total_progression_kg": 179.6428571,
+    "progression_pattern": "linear"
+  },
+  "Tibialis Raises": {},
+  "50 Sets Daily": {},
+  "Bench": {},
+  "Over Head Press": {},
+  "100M \"Slow\"": {
+    "min_weight": 8.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.1,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "3 Min": {
+    "min_weight": 8.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.1,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "4 Sets Of 20 Deadbugs": {
+    "min_weight": 4.0,
+    "max_weight": 210.0,
+    "average_progression_kg_per_session": 3.5,
+    "total_progression_kg": 206.0,
+    "progression_pattern": "linear"
+  },
+  "3Min": {
+    "min_weight": 8.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.1,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "Neck Work": {
+    "min_weight": 3.0,
+    "max_weight": 215.0,
+    "average_progression_kg_per_session": 3.5,
+    "total_progression_kg": 212.0,
+    "progression_pattern": "linear"
+  },
+  "100M \"Fast\"": {
+    "min_weight": 8.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "Add In Shoulders, Bis": {
+    "min_weight": 30.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "And Tris As You Want": {},
+  "100M Tempo Is To Be 14S": {
+    "min_weight": 8.0,
+    "max_weight": 8.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Time": {},
+  "120M \"Slow\"": {
+    "min_weight": 10.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "120M \"Fast\"": {
+    "min_weight": 10.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Overhead Press": {},
+  "Up To 5- X Wickets": {
+    "min_weight": 10.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "50 M": {
+    "min_weight": 10.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Front Squatuat 1.5 Rep": {},
+  "Walking Lunges With Barbell": {},
+  "Do Your Nordics 3X10-15 After": {
+    "min_weight": 69.16666667,
+    "max_weight": 108.3333333,
+    "average_progression_kg_per_session": 9.8,
+    "total_progression_kg": 39.16666663000001,
+    "progression_pattern": "linear"
+  },
+  "Back Squatuat 1.5": {},
+  "Front Squatuat": {},
+  "4X1": {
+    "min_weight": 3.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 1.2,
+    "total_progression_kg": 7.0,
+    "progression_pattern": "linear"
+  },
+  "Broad Jump": {
+    "min_weight": 3.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 2.4,
+    "total_progression_kg": 57.0,
+    "progression_pattern": "linear"
+  },
+  "8X8 Hurdle Jumps": {
+    "min_weight": 4.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.3,
+    "total_progression_kg": 6.0,
+    "progression_pattern": "linear"
+  },
+  "4X3": {
+    "min_weight": 3.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.3,
+    "total_progression_kg": 7.0,
+    "progression_pattern": "linear"
+  },
+  "Frog": {
+    "min_weight": 3.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 7.0,
+    "progression_pattern": "linear"
+  },
+  "4X8 Bounding": {
+    "min_weight": 3.0,
+    "max_weight": 8.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 5.0,
+    "progression_pattern": "linear"
+  },
+  "4X8": {
+    "min_weight": 8.0,
+    "max_weight": 10.0,
+    "average_progression_kg_per_session": 0.5,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "Bounding": {
+    "min_weight": 3.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.7,
+    "total_progression_kg": 27.0,
+    "progression_pattern": "linear"
+  },
+  "Single Leg Db Bulgarian": {},
+  "3 Sets": {
+    "min_weight": 30.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Technical": {
+    "min_weight": 8.0,
+    "max_weight": 8.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Watch Video": {},
+  "Fast": {
+    "min_weight": 8.0,
+    "max_weight": 8.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "2-3 Min Per Set": {
+    "min_weight": 30.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 7.5,
+    "total_progression_kg": 30.0,
+    "progression_pattern": "linear"
+  },
+  "Kossac Stretches": {
+    "min_weight": 837.5,
+    "max_weight": 2910.0,
+    "average_progression_kg_per_session": 94.2,
+    "total_progression_kg": 2072.5,
+    "progression_pattern": "linear"
+  },
+  "Bulgarian Split": {},
+  "Do Hamstrings After": {
+    "min_weight": 67.5,
+    "max_weight": 222.1428571,
+    "average_progression_kg_per_session": 3.6,
+    "total_progression_kg": 154.6428571,
+    "progression_pattern": "linear"
+  },
+  "3X15": {
+    "min_weight": 3.0,
+    "max_weight": 100.0,
+    "average_progression_kg_per_session": 2.4,
+    "total_progression_kg": 97.0,
+    "progression_pattern": "linear"
+  },
+  "Split Jerks": {
+    "min_weight": 40.0,
+    "max_weight": 80.0,
+    "average_progression_kg_per_session": 3.3,
+    "total_progression_kg": 40.0,
+    "progression_pattern": "linear"
+  },
+  "Do 4 L, Then 4 R. Or Reverse": {
+    "min_weight": 30.0,
+    "max_weight": 80.0,
+    "average_progression_kg_per_session": 4.2,
+    "total_progression_kg": 50.0,
+    "progression_pattern": "linear"
+  },
+  "Or Each One Switch": {
+    "min_weight": 30.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Mat": {
+    "min_weight": 20.0,
+    "max_weight": 40.0,
+    "average_progression_kg_per_session": 2.9,
+    "total_progression_kg": 20.0,
+    "progression_pattern": "linear"
+  },
+  "#Ref!": {
+    "min_weight": 45.0,
+    "max_weight": 450.0,
+    "average_progression_kg_per_session": 57.9,
+    "total_progression_kg": 405.0,
+    "progression_pattern": "linear"
+  },
+  "6X1": {
+    "min_weight": 5.0,
+    "max_weight": 8.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 3.0,
+    "progression_pattern": "linear"
+  },
+  "5X8": {
+    "min_weight": 3.0,
+    "max_weight": 8.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 5.0,
+    "progression_pattern": "linear"
+  },
+  "8 Min Rest": {},
+  "3X5": {
+    "min_weight": 3.0,
+    "max_weight": 6.0,
+    "average_progression_kg_per_session": 0.3,
+    "total_progression_kg": 3.0,
+    "progression_pattern": "linear"
+  },
+  "5X8 Bounding": {
+    "min_weight": 3.0,
+    "max_weight": 4.0,
+    "average_progression_kg_per_session": 0.1,
+    "total_progression_kg": 1.0,
+    "progression_pattern": "linear"
+  },
+  "6X5 Hurdle Jumps": {
+    "min_weight": 2.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.4,
+    "total_progression_kg": 3.0,
+    "progression_pattern": "linear"
+  },
+  "Medium Height": {
+    "min_weight": 5.0,
+    "max_weight": 6.0,
+    "average_progression_kg_per_session": 0.3,
+    "total_progression_kg": 1.0,
+    "progression_pattern": "linear"
+  },
+  "4 Sprints Up Hill": {
+    "min_weight": 30.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 3.8,
+    "total_progression_kg": 30.0,
+    "progression_pattern": "linear"
+  },
+  "2X Push From Breaks (Heavy)": {
+    "min_weight": 30.0,
+    "max_weight": 40.0,
+    "average_progression_kg_per_session": 1.2,
+    "total_progression_kg": 10.0,
+    "progression_pattern": "linear"
+  },
+  "2X Push From Pilot Bar (Light)": {
+    "min_weight": 30.0,
+    "max_weight": 40.0,
+    "average_progression_kg_per_session": 1.7,
+    "total_progression_kg": 10.0,
+    "progression_pattern": "linear"
+  },
+  "2X Heavy Pilot Bar (Deep)": {
+    "min_weight": 20.0,
+    "max_weight": 50.0,
+    "average_progression_kg_per_session": 2.5,
+    "total_progression_kg": 30.0,
+    "progression_pattern": "linear"
+  },
+  "2X Pilot Bar Light (Deep)": {
+    "min_weight": 20.0,
+    "max_weight": 20.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Romanian Dead 1 Leg": {},
+  "Up To 10- X Wickets": {},
+  "When You Land": {},
+  "Wait And See": {
+    "min_weight": 8.0,
+    "max_weight": 8.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "5 Min": {
+    "min_weight": 8.0,
+    "max_weight": 8.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Glute Bridge": {
+    "min_weight": 40.0,
+    "max_weight": 80.0,
+    "average_progression_kg_per_session": 13.3,
+    "total_progression_kg": 40.0,
+    "progression_pattern": "linear"
+  },
+  "Lie On Your Back With One Leg": {
+    "min_weight": 60.0,
+    "max_weight": 80.0,
+    "average_progression_kg_per_session": 6.7,
+    "total_progression_kg": 20.0,
+    "progression_pattern": "linear"
+  },
+  "Extended And The Other Foot": {
+    "min_weight": 40.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 6.7,
+    "total_progression_kg": 20.0,
+    "progression_pattern": "linear"
+  },
+  "Flat On The Ground.": {
+    "min_weight": 30.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Lift Your Hips Towards The": {},
+  "Ceiling, Squeezing Your Glutes": {},
+  "Do Jumps Into Sand Or Mat": {
+    "min_weight": 30.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 4.3,
+    "total_progression_kg": 30.0,
+    "progression_pattern": "linear"
+  },
+  "6X8 Hurdle Jumps": {
+    "min_weight": 2.0,
+    "max_weight": 6.0,
+    "average_progression_kg_per_session": 1.0,
+    "total_progression_kg": 4.0,
+    "progression_pattern": "linear"
+  },
+  "(8 Feet Apart)": {
+    "min_weight": 4.0,
+    "max_weight": 6.0,
+    "average_progression_kg_per_session": 0.7,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "5X3": {
+    "min_weight": 3.0,
+    "max_weight": 6.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 3.0,
+    "progression_pattern": "linear"
+  },
+  "For Fun": {
+    "min_weight": 8.0,
+    "max_weight": 80.0,
+    "average_progression_kg_per_session": 3.0,
+    "total_progression_kg": 72.0,
+    "progression_pattern": "linear"
+  },
+  "Frog - Up Stair Running": {
+    "min_weight": 3.0,
+    "max_weight": 6.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 3.0,
+    "progression_pattern": "linear"
+  },
+  "Fast Feet 20S": {
+    "min_weight": 60.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "5X5": {
+    "min_weight": 2.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.4,
+    "total_progression_kg": 3.0,
+    "progression_pattern": "linear"
+  },
+  "8X3": {
+    "min_weight": 3.0,
+    "max_weight": 3.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Are We A Bitch?": {},
+  "Flying 30 (Ask)": {
+    "min_weight": 8.0,
+    "max_weight": 40.0,
+    "average_progression_kg_per_session": 2.9,
+    "total_progression_kg": 32.0,
+    "progression_pattern": "linear"
+  },
+  "Super Set With": {
+    "min_weight": 60.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Squats!!!": {
+    "min_weight": 30.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "2 Sprints Up Hill": {
+    "min_weight": 30.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 5.0,
+    "total_progression_kg": 30.0,
+    "progression_pattern": "linear"
+  },
+  "4 X Light - Short (Pilot Bar)": {
+    "min_weight": 20.0,
+    "max_weight": 40.0,
+    "average_progression_kg_per_session": 6.7,
+    "total_progression_kg": 20.0,
+    "progression_pattern": "linear"
+  },
+  "2 X Light Full Speed, Full Depth": {
+    "min_weight": 20.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 8.0,
+    "total_progression_kg": 40.0,
+    "progression_pattern": "linear"
+  },
+  "8X5": {
+    "min_weight": 3.0,
+    "max_weight": 3.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "8X4": {
+    "min_weight": 6.0,
+    "max_weight": 6.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Bench Jumps": {
+    "min_weight": 2.0,
+    "max_weight": 8.0,
+    "average_progression_kg_per_session": 0.5,
+    "total_progression_kg": 6.0,
+    "progression_pattern": "linear"
+  },
+  "Post Pushing": {},
+  "Talk To Alex": {},
+  "Flying 30": {
+    "min_weight": 5.0,
+    "max_weight": 40.0,
+    "average_progression_kg_per_session": 11.7,
+    "total_progression_kg": 35.0,
+    "progression_pattern": "linear"
+  },
+  "3 X 8": {},
+  "All Variations": {
+    "min_weight": 40.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 6.7,
+    "total_progression_kg": 20.0,
+    "progression_pattern": "linear"
+  },
+  "10X5": {
+    "min_weight": 3.0,
+    "max_weight": 3.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "(5 Stair Running At A Time)": {
+    "min_weight": 2.0,
+    "max_weight": 2.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "(Spotter)": {},
+  "4X Height": {
+    "min_weight": 30.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "4X Front": {
+    "min_weight": 40.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 10.0,
+    "total_progression_kg": 20.0,
+    "progression_pattern": "linear"
+  },
+  "4X Back": {
+    "min_weight": 30.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "2X Light - Short (Pilot Bar)": {
+    "min_weight": 20.0,
+    "max_weight": 20.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Power Cleans": {},
+  "1Pm Lift Time": {},
+  "Testing": {},
+  "Stair Running": {
+    "min_weight": 3.0,
+    "max_weight": 3.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "6X2": {
+    "min_weight": 4.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 1.0,
+    "progression_pattern": "linear"
+  },
+  "X2 Means 2 Steps": {
+    "min_weight": 4.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 1.0,
+    "progression_pattern": "linear"
+  },
+  "5X1": {
+    "min_weight": 3.0,
+    "max_weight": 6.0,
+    "average_progression_kg_per_session": 0.4,
+    "total_progression_kg": 3.0,
+    "progression_pattern": "linear"
+  },
+  "6X Means Flights": {
+    "min_weight": 3.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.3,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "4X4": {
+    "min_weight": 2.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.5,
+    "total_progression_kg": 3.0,
+    "progression_pattern": "linear"
+  },
+  "Challenge Height": {},
+  "Hard Effort": {
+    "min_weight": 5.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "10 Min Slow Jog": {},
+  "4X6": {},
+  "Do 4 Sets Each": {
+    "min_weight": 5.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Double": {
+    "min_weight": 5.0,
+    "max_weight": 215.0,
+    "average_progression_kg_per_session": 105.0,
+    "total_progression_kg": 210.0,
+    "progression_pattern": "linear"
+  },
+  "Triple": {
+    "min_weight": 5.0,
+    "max_weight": 220.0,
+    "average_progression_kg_per_session": 107.5,
+    "total_progression_kg": 215.0,
+    "progression_pattern": "linear"
+  },
+  "Quad": {
+    "min_weight": 5.0,
+    "max_weight": 225.0,
+    "average_progression_kg_per_session": 110.0,
+    "total_progression_kg": 220.0,
+    "progression_pattern": "linear"
+  },
+  "Start 1": {
+    "min_weight": 5.1,
+    "max_weight": 5.1,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Start 2": {
+    "min_weight": 5.14,
+    "max_weight": 5.14,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "4X5 Hurdle Jumps": {
+    "min_weight": 5.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Do In Flats": {
+    "min_weight": 30.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "2X Heavy": {},
+  "2Xlight & Deep": {},
+  "2X Heavy Team Push": {},
+  "Track Warm Up": {},
+  "Don Do Broad Jumps If No": {},
+  "Form Focus": {},
+  "6-8 Sets": {},
+  "Mix It Up": {},
+  "6X6 Hurdles": {
+    "min_weight": 3.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "6X8": {
+    "min_weight": 3.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.2,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "Hurdles": {},
+  "6X6": {
+    "min_weight": 3.0,
+    "max_weight": 3.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "1 Leg Split Squat": {
+    "min_weight": 60.0,
+    "max_weight": 60.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Have One Leg Behind You": {
+    "min_weight": 30.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "And Raised": {
+    "min_weight": 40.0,
+    "max_weight": 40.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Into Sprint": {
+    "min_weight": 3.0,
+    "max_weight": 5.0,
+    "average_progression_kg_per_session": 0.4,
+    "total_progression_kg": 2.0,
+    "progression_pattern": "linear"
+  },
+  "Broad Jump Into Sand/Mat": {
+    "min_weight": 3.0,
+    "max_weight": 3.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "2X3": {
+    "min_weight": 3.0,
+    "max_weight": 3.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "With Heavy Pull, You Can Go": {
+    "min_weight": 30.0,
+    "max_weight": 30.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "No Single Leg!": {},
+  "Bounding Into Sprints": {
+    "min_weight": 3.0,
+    "max_weight": 3.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "Do 5 Sets": {},
+  "Do Accessories": {},
+  "Alternating": {
+    "min_weight": 6.0,
+    "max_weight": 6.0,
+    "average_progression_kg_per_session": 0.0,
+    "total_progression_kg": 0.0,
+    "progression_pattern": "varied"
+  },
+  "3 Sets Per Movement": {},
+  "2 Movements": {},
+  "3 Movements": {},
+  "Of Use": {},
+  "Be Sure To Wear Lots Of Layers": {},
+  "Mid Shin": {},
+  "To Knee Height": {},
+  "Box Or Similar": {}
+}

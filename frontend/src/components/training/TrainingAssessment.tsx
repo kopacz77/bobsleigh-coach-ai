@@ -1,37 +1,38 @@
-import React, { useState, useEffect } from 'react';
 import {
   Box,
-  Title,
-  Text,
-  Group,
-  Paper,
-  SimpleGrid,
   Button,
-  Slider,
-  TextInput,
-  Textarea,
-  Select,
+  Divider,
+  Group,
+  List,
   MultiSelect,
   NumberInput,
-  Divider,
+  Paper,
+  Select,
+  SimpleGrid,
+  Slider,
+  Text,
+  Textarea,
+  TextInput,
+  ThemeIcon,
+  Title,
   useMantineTheme,
-  List,
-  ThemeIcon
-} from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
-import { showNotification } from '@mantine/notifications';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+} from "@mantine/core";
+import { DatePickerInput } from "@mantine/dates";
+import { showNotification } from "@mantine/notifications";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
-  IconBarbell,
-  IconHeartFilled,
-  IconGauge,
-  IconArrowsRightLeft,
   IconActivity, // Replaced IconMuscle with IconActivity
-  IconCheckbox,
   IconArrowDown,
+  IconArrowsRightLeft,
   IconArrowUp,
-  IconMinus
-} from '@tabler/icons-react';
+  IconBarbell,
+  IconCheckbox,
+  IconGauge,
+  IconHeartFilled,
+  IconMinus,
+} from "@tabler/icons-react";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Training area option
@@ -114,7 +115,7 @@ interface AssessmentForm {
  */
 interface PerformanceChange {
   value: string;
-  direction: 'up' | 'down' | 'same';
+  direction: "up" | "down" | "same";
   color: string;
 }
 
@@ -136,11 +137,11 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
   const [loading, setLoading] = useState<boolean>(false);
   const [workout, setWorkout] = useState<Workout | null>(null);
   const [previousAssessment, setPreviousAssessment] = useState<TrainingAssessmentData | null>(null);
-  
+
   // Assessment form state
   const [assessment, setAssessment] = useState<AssessmentForm>({
     date: new Date(),
-    workout_type: '',
+    workout_type: "",
     duration_minutes: 60,
     perceived_exertion: 5,
     technical_quality: 5,
@@ -150,45 +151,45 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
     performance_level: 5,
     areas_of_success: [],
     areas_for_improvement: [],
-    notes: '',
-    coach_feedback: ''
+    notes: "",
+    coach_feedback: "",
   });
 
   // Training areas options
   const trainingAreas: TrainingAreaOption[] = [
-    { value: 'push_technique', label: 'Push Technique' },
-    { value: 'loading_technique', label: 'Loading Technique' },
-    { value: 'driving_technique', label: 'Driving Technique' },
-    { value: 'track_awareness', label: 'Track Awareness' },
-    { value: 'turn_execution', label: 'Turn Execution' },
-    { value: 'start_speed', label: 'Start Speed' },
-    { value: 'team_coordination', label: 'Team Coordination' },
-    { value: 'physical_strength', label: 'Physical Strength' },
-    { value: 'explosive_power', label: 'Explosive Power' },
-    { value: 'speed', label: 'Speed' },
-    { value: 'endurance', label: 'Endurance' },
-    { value: 'mental_focus', label: 'Mental Focus' },
-    { value: 'decision_making', label: 'Decision Making' },
-    { value: 'equipment_setup', label: 'Equipment Setup' },
-    { value: 'weather_adaptation', label: 'Weather Adaptation' }
+    { value: "push_technique", label: "Push Technique" },
+    { value: "loading_technique", label: "Loading Technique" },
+    { value: "driving_technique", label: "Driving Technique" },
+    { value: "track_awareness", label: "Track Awareness" },
+    { value: "turn_execution", label: "Turn Execution" },
+    { value: "start_speed", label: "Start Speed" },
+    { value: "team_coordination", label: "Team Coordination" },
+    { value: "physical_strength", label: "Physical Strength" },
+    { value: "explosive_power", label: "Explosive Power" },
+    { value: "speed", label: "Speed" },
+    { value: "endurance", label: "Endurance" },
+    { value: "mental_focus", label: "Mental Focus" },
+    { value: "decision_making", label: "Decision Making" },
+    { value: "equipment_setup", label: "Equipment Setup" },
+    { value: "weather_adaptation", label: "Weather Adaptation" },
   ];
 
   // Workout types specific to bobsleigh
   const workoutTypes: WorkoutTypeOption[] = [
-    { value: 'on_ice_training', label: 'On-Ice Training' },
-    { value: 'push_start_practice', label: 'Push Start Practice' },
-    { value: 'track_walk', label: 'Track Walk/Analysis' },
-    { value: 'sled_maintenance', label: 'Sled Maintenance' },
-    { value: 'strength_training', label: 'Strength Training' },
-    { value: 'sprint_training', label: 'Sprint Training' },
-    { value: 'plyometrics', label: 'Plyometrics' },
-    { value: 'endurance_training', label: 'Endurance Training' },
-    { value: 'technical_drills', label: 'Technical Drills' },
-    { value: 'video_analysis', label: 'Video Analysis' },
-    { value: 'competition_simulation', label: 'Competition Simulation' },
-    { value: 'recovery_session', label: 'Recovery Session' },
-    { value: 'team_building', label: 'Team Building' },
-    { value: 'mental_training', label: 'Mental Training' }
+    { value: "on_ice_training", label: "On-Ice Training" },
+    { value: "push_start_practice", label: "Push Start Practice" },
+    { value: "track_walk", label: "Track Walk/Analysis" },
+    { value: "sled_maintenance", label: "Sled Maintenance" },
+    { value: "strength_training", label: "Strength Training" },
+    { value: "sprint_training", label: "Sprint Training" },
+    { value: "plyometrics", label: "Plyometrics" },
+    { value: "endurance_training", label: "Endurance Training" },
+    { value: "technical_drills", label: "Technical Drills" },
+    { value: "video_analysis", label: "Video Analysis" },
+    { value: "competition_simulation", label: "Competition Simulation" },
+    { value: "recovery_session", label: "Recovery Session" },
+    { value: "team_building", label: "Team Building" },
+    { value: "mental_training", label: "Mental Training" },
   ];
 
   // Fetch workout details if workoutId is provided
@@ -199,36 +200,37 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
       try {
         // Fetch workout details
         const { data: workoutData, error: workoutError } = await supabase
-          .from('workouts')
-          .select('*')
-          .eq('id', workoutId)
+          .from("workouts")
+          .select("*")
+          .eq("id", workoutId)
           .single();
 
         if (workoutError) {
-          console.error('Error fetching workout:', workoutError);
+          console.error("Error fetching workout:", workoutError);
           return;
         }
 
         if (workoutData) {
           setWorkout(workoutData);
-          
+
           // Pre-fill workout type and date
-          setAssessment(prev => ({
+          setAssessment((prev) => ({
             ...prev,
             date: new Date(workoutData.date),
-            workout_type: workoutData.workout_type
+            workout_type: workoutData.workout_type,
           }));
 
           // Check if assessment already exists for this workout
           const { data: assessmentData, error: assessmentError } = await supabase
-            .from('training_assessments')
-            .select('*')
-            .eq('workout_id', workoutId)
-            .eq('user_id', userId)
+            .from("training_assessments")
+            .select("*")
+            .eq("workout_id", workoutId)
+            .eq("user_id", userId)
             .single();
 
-          if (assessmentError && assessmentError.code !== 'PGRST116') { // Code for no rows returned
-            console.error('Error fetching assessment:', assessmentError);
+          if (assessmentError && assessmentError.code !== "PGRST116") {
+            // Code for no rows returned
+            console.error("Error fetching assessment:", assessmentError);
             return;
           }
 
@@ -247,19 +249,19 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
               performance_level: assessmentData.performance_level,
               areas_of_success: assessmentData.areas_of_success || [],
               areas_for_improvement: assessmentData.areas_for_improvement || [],
-              notes: assessmentData.notes || '',
-              coach_feedback: assessmentData.coach_feedback || ''
+              notes: assessmentData.notes || "",
+              coach_feedback: assessmentData.coach_feedback || "",
             });
           }
 
           // Fetch previous assessment for comparison
           const { data: previousData } = await supabase
-            .from('training_assessments')
-            .select('*')
-            .eq('user_id', userId)
-            .eq('workout_type', workoutData.workout_type)
-            .neq('workout_id', workoutId)
-            .order('date', { ascending: false })
+            .from("training_assessments")
+            .select("*")
+            .eq("user_id", userId)
+            .eq("workout_type", workoutData.workout_type)
+            .neq("workout_id", workoutId)
+            .order("date", { ascending: false })
             .limit(1);
 
           if (previousData && previousData.length > 0) {
@@ -267,7 +269,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
           }
         }
       } catch (error) {
-        console.error('Error in workout/assessment fetch:', error);
+        console.error("Error in workout/assessment fetch:", error);
       }
     };
 
@@ -277,60 +279,67 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
   // Handle form field changes
   const handleDateChange = (value: Date | null) => {
     if (value) {
-      setAssessment(prev => ({ ...prev, date: value }));
+      setAssessment((prev) => ({ ...prev, date: value }));
     }
   };
-  
+
   const handleWorkoutTypeChange = (value: string | null) => {
     if (value) {
-      setAssessment(prev => ({ ...prev, workout_type: value }));
+      setAssessment((prev) => ({ ...prev, workout_type: value }));
     }
   };
-  
+
   // Update handler functions to match the NumberInput onChange type
   const handleDurationChange = (value: string | number) => {
-    const numValue = typeof value === 'string' ? parseInt(value, 10) : value;
-    setAssessment(prev => ({ ...prev, duration_minutes: numValue || 0 }));
+    const numValue = typeof value === "string" ? Number.parseInt(value, 10) : value;
+    setAssessment((prev) => ({ ...prev, duration_minutes: numValue || 0 }));
   };
-  const handleExertionChange = (value: number) => setAssessment(prev => ({ ...prev, perceived_exertion: value }));
-  const handleTechnicalQualityChange = (value: number) => setAssessment(prev => ({ ...prev, technical_quality: value }));
-  const handleEnergyLevelChange = (value: number) => setAssessment(prev => ({ ...prev, energy_level: value }));
-  const handleFocusLevelChange = (value: number) => setAssessment(prev => ({ ...prev, focus_level: value }));
+  const handleExertionChange = (value: number) =>
+    setAssessment((prev) => ({ ...prev, perceived_exertion: value }));
+  const handleTechnicalQualityChange = (value: number) =>
+    setAssessment((prev) => ({ ...prev, technical_quality: value }));
+  const handleEnergyLevelChange = (value: number) =>
+    setAssessment((prev) => ({ ...prev, energy_level: value }));
+  const handleFocusLevelChange = (value: number) =>
+    setAssessment((prev) => ({ ...prev, focus_level: value }));
   const handleCompletionToggle = (value: string | null) => {
     if (value !== null) {
-      setAssessment(prev => ({ ...prev, completed_as_planned: value === 'true' }));
+      setAssessment((prev) => ({ ...prev, completed_as_planned: value === "true" }));
     }
   };
-  const handlePerformanceLevelChange = (value: number) => setAssessment(prev => ({ ...prev, performance_level: value }));
-  const handleSuccessAreasChange = (value: string[]) => setAssessment(prev => ({ ...prev, areas_of_success: value }));
-  const handleImprovementAreasChange = (value: string[]) => setAssessment(prev => ({ ...prev, areas_for_improvement: value }));
-  
+  const handlePerformanceLevelChange = (value: number) =>
+    setAssessment((prev) => ({ ...prev, performance_level: value }));
+  const handleSuccessAreasChange = (value: string[]) =>
+    setAssessment((prev) => ({ ...prev, areas_of_success: value }));
+  const handleImprovementAreasChange = (value: string[]) =>
+    setAssessment((prev) => ({ ...prev, areas_for_improvement: value }));
+
   const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setAssessment(prev => ({ ...prev, notes: event.target.value }));
+    setAssessment((prev) => ({ ...prev, notes: event.target.value }));
   };
-  
+
   const handleCoachFeedbackChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setAssessment(prev => ({ ...prev, coach_feedback: event.target.value }));
+    setAssessment((prev) => ({ ...prev, coach_feedback: event.target.value }));
   };
 
   // Submit assessment
   const handleSubmit = async () => {
     if (!assessment.workout_type) {
       showNotification({
-        title: 'Missing Information',
-        message: 'Please select a workout type',
-        color: 'orange',
+        title: "Missing Information",
+        message: "Please select a workout type",
+        color: "orange",
       });
       return;
     }
 
     setLoading(true);
-    
+
     try {
       const assessmentData = {
         user_id: userId,
         workout_id: workoutId,
-        date: assessment.date.toISOString().split('T')[0],
+        date: assessment.date.toISOString().split("T")[0],
         workout_type: assessment.workout_type,
         duration_minutes: assessment.duration_minutes,
         perceived_exertion: assessment.perceived_exertion,
@@ -342,49 +351,44 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
         areas_of_success: assessment.areas_of_success,
         areas_for_improvement: assessment.areas_for_improvement,
         notes: assessment.notes || null,
-        coach_feedback: assessment.coach_feedback || null
+        coach_feedback: assessment.coach_feedback || null,
       };
 
       let query;
-      
+
       if (assessment.id) {
         // Update existing assessment
         query = supabase
-          .from('training_assessments')
+          .from("training_assessments")
           .update(assessmentData)
-          .eq('id', assessment.id);
+          .eq("id", assessment.id);
       } else {
         // Insert new assessment
-        query = supabase
-          .from('training_assessments')
-          .insert(assessmentData);
+        query = supabase.from("training_assessments").insert(assessmentData);
       }
 
       const { error } = await query;
-      
+
       if (error) {
         throw error;
       }
 
       showNotification({
-        title: 'Success',
-        message: 'Training assessment saved successfully',
-        color: 'green',
+        title: "Success",
+        message: "Training assessment saved successfully",
+        color: "green",
       });
 
       if (workout && workoutId) {
         // Mark the workout as assessed
-        await supabase
-          .from('workouts')
-          .update({ is_assessed: true })
-          .eq('id', workoutId);
+        await supabase.from("workouts").update({ is_assessed: true }).eq("id", workoutId);
       }
     } catch (error) {
-      console.error('Error saving training assessment:', error);
+      console.error("Error saving training assessment:", error);
       showNotification({
-        title: 'Error',
-        message: 'Failed to save training assessment',
-        color: 'red',
+        title: "Error",
+        message: "Failed to save training assessment",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -401,36 +405,40 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
   // Calculate performance change for comparison
   const getPerformanceChange = (metric: keyof AssessmentForm): PerformanceChange | null => {
     if (!previousAssessment || !assessment[metric]) return null;
-    
+
     // Cast to avoid TypeScript issues with comparison
     const currentValue = Number(assessment[metric]);
     const previousValue = Number(previousAssessment[metric]);
-    
+
     if (isNaN(currentValue) || isNaN(previousValue)) return null;
-    
+
     const diff = currentValue - previousValue;
-    
+
     if (diff > 0) {
-      return { value: `+${diff}`, direction: 'up', color: theme.colors.green[6] };
-    } else if (diff < 0) {
-      return { value: diff.toString(), direction: 'down', color: theme.colors.red[6] };
-    } else {
-      return { value: '0', direction: 'same', color: theme.colors.gray[6] };
+      return { value: `+${diff}`, direction: "up", color: theme.colors.green[6] };
     }
+    if (diff < 0) {
+      return { value: diff.toString(), direction: "down", color: theme.colors.red[6] };
+    }
+    return { value: "0", direction: "same", color: theme.colors.gray[6] };
   };
 
   return (
     <Box>
-      <Title order={2} mb="md">Training Assessment</Title>
-      <Text color="dimmed" mb="xl">
+      <Title order={2} mb="md">
+        Training Assessment
+      </Title>
+      <Text c="dimmed" mb="xl">
         Evaluate your training session to track progress and identify areas for improvement.
       </Text>
 
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
         <Box>
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Text fw={600} size="lg" mb="lg">Session Details</Text>
-            
+            <Text fw={600} size="lg" mb="lg">
+              Session Details
+            </Text>
+
             <DatePickerInput
               label="Date"
               placeholder="Select date"
@@ -467,17 +475,19 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
             <Select
               label="Completed as Planned"
               data={[
-                { value: 'true', label: 'Yes' },
-                { value: 'false', label: 'No' }
+                { value: "true", label: "Yes" },
+                { value: "false", label: "No" },
               ]}
-              value={assessment.completed_as_planned ? 'true' : 'false'}
+              value={assessment.completed_as_planned ? "true" : "false"}
               onChange={handleCompletionToggle}
               mb="xl"
             />
           </Paper>
 
           <Paper p="md" radius="md" withBorder>
-            <Text fw={600} size="lg" mb="lg">Subjective Evaluation</Text>
+            <Text fw={600} size="lg" mb="lg">
+              Subjective Evaluation
+            </Text>
 
             <Box mb="xl">
               <Group mb="xs">
@@ -491,9 +501,9 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'Very Easy' },
-                  { value: 5, label: 'Moderate' },
-                  { value: 10, label: 'Maximum' },
+                  { value: 1, label: "Very Easy" },
+                  { value: 5, label: "Moderate" },
+                  { value: 10, label: "Maximum" },
                 ]}
                 color={getSliderColor(assessment.perceived_exertion)}
                 mb="md"
@@ -512,9 +522,9 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'Poor' },
-                  { value: 5, label: 'Average' },
-                  { value: 10, label: 'Excellent' },
+                  { value: 1, label: "Poor" },
+                  { value: 5, label: "Average" },
+                  { value: 10, label: "Excellent" },
                 ]}
                 color={getSliderColor(assessment.technical_quality)}
                 mb="md"
@@ -533,9 +543,9 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'Low' },
-                  { value: 5, label: 'Medium' },
-                  { value: 10, label: 'High' },
+                  { value: 1, label: "Low" },
+                  { value: 5, label: "Medium" },
+                  { value: 10, label: "High" },
                 ]}
                 color={getSliderColor(assessment.energy_level)}
                 mb="md"
@@ -554,9 +564,9 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'Distracted' },
-                  { value: 5, label: 'Average' },
-                  { value: 10, label: 'Fully Focused' },
+                  { value: 1, label: "Distracted" },
+                  { value: 5, label: "Average" },
+                  { value: 10, label: "Fully Focused" },
                 ]}
                 color={getSliderColor(assessment.focus_level)}
                 mb="md"
@@ -575,9 +585,9 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
                 max={10}
                 step={1}
                 marks={[
-                  { value: 1, label: 'Poor' },
-                  { value: 5, label: 'Average' },
-                  { value: 10, label: 'Excellent' },
+                  { value: 1, label: "Poor" },
+                  { value: 5, label: "Average" },
+                  { value: 10, label: "Excellent" },
                 ]}
                 color={getSliderColor(assessment.performance_level)}
                 mb="md"
@@ -588,7 +598,9 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
 
         <Box>
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Text fw={600} size="lg" mb="lg">Key Areas</Text>
+            <Text fw={600} size="lg" mb="lg">
+              Key Areas
+            </Text>
 
             <MultiSelect
               label="Areas of Success"
@@ -623,35 +635,44 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
           {previousAssessment && (
             <Paper p="md" radius="md" withBorder mb="xl">
               <Text fw={600} size="lg" mb="lg">
-                Comparison with Previous {workoutTypes.find(w => w.value === assessment.workout_type)?.label}
+                Comparison with Previous{" "}
+                {workoutTypes.find((w) => w.value === assessment.workout_type)?.label}
               </Text>
-              
+
               <List spacing="md">
-                {(['technical_quality', 'energy_level', 'focus_level', 'performance_level'] as const).map(metric => {
+                {(
+                  ["technical_quality", "energy_level", "focus_level", "performance_level"] as const
+                ).map((metric) => {
                   const change = getPerformanceChange(metric);
                   if (!change) return null;
-                  
+
                   const metricLabels: Record<string, string> = {
-                    technical_quality: 'Technical Quality',
-                    energy_level: 'Energy Level',
-                    focus_level: 'Mental Focus',
-                    performance_level: 'Overall Performance'
+                    technical_quality: "Technical Quality",
+                    energy_level: "Energy Level",
+                    focus_level: "Mental Focus",
+                    performance_level: "Overall Performance",
                   };
-                  
+
                   return (
                     <List.Item
                       key={metric}
                       icon={
                         <ThemeIcon color={change.color} size={24} radius="xl">
-                          {change.direction === 'up' ? <IconArrowUp size={16} /> : 
-                           change.direction === 'down' ? <IconArrowDown size={16} /> : 
-                           <IconMinus size={16} />}
+                          {change.direction === "up" ? (
+                            <IconArrowUp size={16} />
+                          ) : change.direction === "down" ? (
+                            <IconArrowDown size={16} />
+                          ) : (
+                            <IconMinus size={16} />
+                          )}
                         </ThemeIcon>
                       }
                     >
                       <Group justify="apart">
                         <Text>{metricLabels[metric]}</Text>
-                        <Text fw={500} color={change.color}>{change.value} points</Text>
+                        <Text fw={500} color={change.color}>
+                          {change.value} points
+                        </Text>
                       </Group>
                     </List.Item>
                   );
@@ -663,18 +684,23 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
                     </ThemeIcon>
                   }
                 >
-                  <Text>Previous session: {new Date(previousAssessment.date).toLocaleDateString()}</Text>
+                  <Text>
+                    Previous session: {new Date(previousAssessment.date).toLocaleDateString()}
+                  </Text>
                 </List.Item>
               </List>
             </Paper>
           )}
 
           <Paper p="md" radius="md" withBorder mb="xl">
-            <Text fw={600} size="lg" mb="md">Coach Feedback</Text>
-            <Text size="sm" color="dimmed" mb="md">
-              This section can be filled out by your coach to provide feedback on your training session.
+            <Text fw={600} size="lg" mb="md">
+              Coach Feedback
             </Text>
-            
+            <Text size="sm" c="dimmed" mb="md">
+              This section can be filled out by your coach to provide feedback on your training
+              session.
+            </Text>
+
             <Textarea
               placeholder="Coach feedback will appear here"
               value={assessment.coach_feedback}
@@ -691,7 +717,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
               loading={loading}
               disabled={!assessment.workout_type}
             >
-              {assessment.id ? 'Update Assessment' : 'Save Assessment'}
+              {assessment.id ? "Update Assessment" : "Save Assessment"}
             </Button>
           </Group>
         </Box>

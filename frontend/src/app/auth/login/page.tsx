@@ -1,53 +1,53 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
 import {
   Button,
-  Container,
   Card,
-  Stack,
-  TextInput,
-  PasswordInput,
-  Group,
-  Title,
-  Text,
+  Container,
   Divider,
-} from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { IconBrandGoogle } from '@tabler/icons-react';
-import { signInWithGoogle } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
+  Group,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { IconBrandGoogle } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { signInWithGoogle } from "@/lib/supabase";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const form = useForm({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-      password: (value) => (value.length >= 6 ? null : 'Password must be at least 6 characters'),
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      password: (value) => (value.length >= 6 ? null : "Password must be at least 6 characters"),
     },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
-    setError('');
+    setError("");
     try {
       // In a real app, you would submit to your API or Supabase directly
-      console.log('Login with:', values);
-      
+      console.log("Login with:", values);
+
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      
+
       // Redirect to dashboard
-      router.push('/dashboard');
+      router.push("/dashboard");
     } catch (err: any) {
-      setError(err.message || 'An error occurred during login');
+      setError(err.message || "An error occurred during login");
     } finally {
       setLoading(false);
     }
@@ -55,13 +55,13 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     setLoading(true);
-    setError('');
+    setError("");
     try {
       const { error } = await signInWithGoogle();
       if (error) throw error;
       // No need to redirect, Supabase will handle it automatically
     } catch (err: any) {
-      setError(err.message || 'An error occurred during Google login');
+      setError(err.message || "An error occurred during Google login");
       setLoading(false);
     }
   };
@@ -76,20 +76,24 @@ export default function LoginPage() {
 
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Stack>
-              {error && <Text color="red" size="sm">{error}</Text>}
-              
+              {error && (
+                <Text color="red" size="sm">
+                  {error}
+                </Text>
+              )}
+
               <TextInput
                 label="Email"
                 placeholder="your@email.com"
                 required
-                {...form.getInputProps('email')}
+                {...form.getInputProps("email")}
               />
-              
+
               <PasswordInput
                 label="Password"
                 placeholder="Your password"
                 required
-                {...form.getInputProps('password')}
+                {...form.getInputProps("password")}
               />
 
               <Button type="submit" mt="xl" loading={loading}>
@@ -102,7 +106,7 @@ export default function LoginPage() {
 
           <Group grow>
             <Button
-              leftIcon={<IconBrandGoogle size="1rem" />}
+              leftSection={<IconBrandGoogle size="1rem" />}
               variant="outline"
               onClick={handleGoogleLogin}
               loading={loading}
