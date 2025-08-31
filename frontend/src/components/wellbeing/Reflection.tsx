@@ -1,3 +1,5 @@
+// Path: c:\users\a_kop\bobsleigh-coach-ai\frontend\src\components\wellbeing\Reflection.tsx
+
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -18,7 +20,7 @@ import {
 } from '@mantine/core';
 import { Calendar } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
-import { showNotification } from '@mantine/notifications';
+import { notifications } from '@mantine/notifications';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import {
   IconPlus,
@@ -34,6 +36,8 @@ import {
   IconBulb
 } from '@tabler/icons-react';
 
+type DateChangeHandler = (date: Date) => void;
+
 /**
  * Reflection type
  */
@@ -48,6 +52,7 @@ interface ReflectionType {
 interface SentimentOption {
   value: string;
   label: string;
+  // biome-ignore lint/suspicious/noExplicitAny: Required for Tabler icon components (known issue)
   icon: React.FC<any> | null;
   color: string;
 }
@@ -257,7 +262,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
         throw error;
       }
 
-      showNotification({
+      notifications.show({
         title: 'Success',
         message: 'Reflection deleted successfully',
         color: 'green',
@@ -279,7 +284,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
       closeViewModal();
     } catch (error) {
       console.error('Error deleting reflection:', error);
-      showNotification({
+      notifications.show({
         title: 'Error',
         message: 'Failed to delete reflection',
         color: 'red',
@@ -292,7 +297,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
   // Submit reflection
   const handleSubmit = async () => {
     if (!newReflection.title || !newReflection.content) {
-      showNotification({
+      notifications.show({
         title: 'Missing Information',
         message: 'Please fill in all required fields',
         color: 'orange',
@@ -314,28 +319,28 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
         is_favorite: newReflection.is_favorite
       };
 
-      let query;
-      
       if (newReflection.id) {
         // Update existing reflection
-        query = supabase
+        const { error } = await supabase
           .from('reflections')
           .update(reflectionData)
           .eq('id', newReflection.id);
+        
+        if (error) {
+          throw error;
+        }
       } else {
         // Insert new reflection
-        query = supabase
+        const { error } = await supabase
           .from('reflections')
           .insert(reflectionData);
+        
+        if (error) {
+          throw error;
+        }
       }
 
-      const { error } = await query;
-      
-      if (error) {
-        throw error;
-      }
-
-      showNotification({
+      notifications.show({
         title: 'Success',
         message: 'Reflection saved successfully',
         color: 'green',
@@ -357,7 +362,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
       closeAddModal();
     } catch (error) {
       console.error('Error saving reflection:', error);
-      showNotification({
+      notifications.show({
         title: 'Error',
         message: 'Failed to save reflection',
         color: 'red',
@@ -393,14 +398,14 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
         setSelectedReflection({ ...selectedReflection, is_favorite: !selectedReflection.is_favorite });
       }
 
-      showNotification({
+      notifications.show({
         title: 'Success',
         message: `Reflection ${reflection.is_favorite ? 'removed from' : 'added to'} favorites`,
         color: 'green',
       });
     } catch (error) {
       console.error('Error toggling favorite status:', error);
-      showNotification({
+      notifications.show({
         title: 'Error',
         message: 'Failed to update favorite status',
         color: 'red',
@@ -461,7 +466,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
           <Calendar
             date={selectedDate}
             // Cast handleDateChange to any to work around the type issue
-            onDateChange={handleDateChange as any}
+            onDateChange={handleDateChange as DateChangeHandler}
             size="lg"
             styles={{
               day: {
@@ -508,6 +513,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
                       size="sm"
                       color={getSentimentDetails(reflection.sentiment).color}
                       leftSection={getSentimentDetails(reflection.sentiment).icon && 
+                         // biome-ignore lint/suspicious/noExplicitAny: Required for Tabler icon components (known issue)
                         React.createElement(getSentimentDetails(reflection.sentiment).icon as React.FC<any>, { size: 10 })}
                     >
                       {getSentimentDetails(reflection.sentiment).label}
@@ -607,7 +613,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
             <Calendar
               date={newReflection.date}
               // Cast handleDateChange to any to work around the type issue
-              onDateChange={handleDateChange as any}
+              onDateChange={handleDateChange as DateChangeHandler}
               maxDate={new Date()}
               size="sm"
             />
@@ -727,6 +733,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
               mb="lg"
               color={getSentimentDetails(selectedReflection.sentiment).color}
               leftSection={getSentimentDetails(selectedReflection.sentiment).icon && 
+                // biome-ignore lint/suspicious/noExplicitAny: Required for Tabler icon components (known issue)
                 React.createElement(getSentimentDetails(selectedReflection.sentiment).icon as React.FC<any>, { size: 10 })}
             >
               {getSentimentDetails(selectedReflection.sentiment).label}

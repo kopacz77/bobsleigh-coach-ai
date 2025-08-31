@@ -1,0 +1,5620 @@
+{
+  "workouts": [
+    {
+      "id": "b91fff2e-6491-4f06-b40b-f4390797e6e3",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 1 - Day 1",
+      "date": "2024-01-01",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Front SQ SLOW",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "6f6c948d-8225-4523-8352-cc464ebd90d2",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 1 - Day 2",
+      "date": "2024-01-02",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Running Shoes",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "bc485676-298d-4105-b49f-65e532fe0d64",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 1 - Day 3",
+      "date": "2024-01-03",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Front SQ SLOW",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "cc6232ec-3498-40fc-b7b1-beecc3abe674",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 1 - Day 4",
+      "date": "2024-01-04",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Drills",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "a0af1772-93f3-4604-8d14-81fca7e9bf69",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 1 - Day 5",
+      "date": "2024-01-05",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Front SQ SLOW",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "3aa10003-d14d-4ba6-b1c7-780e9a48bc65",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 1 - Day 6",
+      "date": "2024-01-06",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Jog",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "9094b55c-5b26-41dd-acfa-1759ce2630f5",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 2 - Day 1",
+      "date": "2024-01-08",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Front SQ SLOW",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "aa05cd2c-ba01-4b4c-aac4-f04c934e8bc3",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 2 - Day 2",
+      "date": "2024-01-09",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Running Shoes",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "b98849c5-99d1-48a7-ae2d-f7583080f226",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 2 - Day 3",
+      "date": "2024-01-10",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Front SQ SLOW",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "49beaeaf-59b2-4336-a4b4-f6c3597f180e",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 2 - Day 4",
+      "date": "2024-01-11",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Drills",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "ef46f863-85f8-402b-beb5-4f4d4d3a84dd",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 2 - Day 5",
+      "date": "2024-01-12",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Front SQ SLOW",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "164fc710-a0ac-4df4-8447-65a029c8bc15",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 2 - Day 6",
+      "date": "2024-01-13",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Jog",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "ae789f8e-d07f-4660-b295-f59ecc585d4a",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 3 - Day 1",
+      "date": "2024-01-15",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Front SQ SLOW",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "2d1f2507-06c6-461c-bbac-b3888003656f",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 3 - Day 2",
+      "date": "2024-01-16",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Running Shoes",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "a997134f-0947-4b59-80b3-30968f1ac206",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 3 - Day 3",
+      "date": "2024-01-17",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Bulgarian Split Sq Slow",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "95ea38cb-ba5f-478e-b9b8-ce1e3ac86848",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 3 - Day 4",
+      "date": "2024-01-18",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Drills",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "08c72316-b84a-4d01-97fd-e864beecfac9",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 3 - Day 5",
+      "date": "2024-01-19",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Overhead Squat Slow",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "af83af10-a596-4b28-80eb-12a6c0766997",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 3 - Day 6",
+      "date": "2024-01-20",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Jog",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "cc82b966-dbb5-4ae7-91a6-885417597b76",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 4 - Day 1",
+      "date": "2024-01-22",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Front SQ SLOW",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "28313df9-9a08-48d8-8e4e-3be6a7f786f0",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 4 - Day 2",
+      "date": "2024-01-23",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Running Shoes",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "c7edf9ca-dc37-4acc-9b41-4cee1e606960",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 4 - Day 3",
+      "date": "2024-01-24",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Bulgarian Split Sq Slow",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "5061c51a-c229-4a77-a85f-d773a4a4f549",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 4 - Day 4",
+      "date": "2024-01-25",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Drills",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "3969a43e-956a-4754-8620-fb73a50fb893",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 4 - Day 5",
+      "date": "2024-01-26",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Overhead Squat Slow",
+      "phase": "General Preparation"
+    },
+    {
+      "id": "a37b78a3-4512-472a-9793-a729bf640206",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 4 - Day 6",
+      "date": "2024-01-27",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": null,
+      "phase": "General Preparation"
+    },
+    {
+      "id": "ec67c93f-42c7-44f8-8ff1-3279d5433711",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 5 - Day 1",
+      "date": "2024-01-29",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Front SQ SLOW",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "befcca75-8c4b-46a1-b6ea-afbff0b4c443",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 5 - Day 2",
+      "date": "2024-01-30",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Running Shoes",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "ca8271ab-673b-41fd-8c41-3d347691f9db",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 5 - Day 3",
+      "date": "2024-01-31",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Bulgarian Split Sq Slow",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "4efe5ed9-f3da-43b8-867e-709bd3626810",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 5 - Day 4",
+      "date": "2024-02-01",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Drills",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "ce6da239-8d60-4480-a627-5072f5860b89",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 5 - Day 5",
+      "date": "2024-02-02",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Overhead Squat Slow",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "2d20a094-1289-4e81-a77d-9c32a10dd5c4",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 5 - Day 6",
+      "date": "2024-02-03",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": null,
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "f0498e71-0760-463a-b3a6-1bedfff6f00d",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 6 - Day 1",
+      "date": "2024-02-05",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Hang Snatch",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "932c13bc-dbb2-463e-be94-42c3b030006e",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 6 - Day 2",
+      "date": "2024-02-06",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Running Shoes",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "67289709-174e-49b9-b832-039d8601576d",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 6 - Day 3",
+      "date": "2024-02-07",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Hang Snatch",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "40e0475b-65fd-450c-a58e-aff1f4ee8491",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 6 - Day 4",
+      "date": "2024-02-08",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Travel Day",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "17532b0a-b279-4504-96bb-10a55f404d2a",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 6 - Day 5",
+      "date": "2024-02-09",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Hang Snatch",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "9f2730ea-2940-4e08-86f2-e39c698af0d9",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 6 - Day 6",
+      "date": "2024-02-10",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": null,
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "46b34b07-cc1d-4ba6-a2bf-5fd8b910108a",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 7 - Day 1",
+      "date": "2024-02-12",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Hang Clean",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "83748be2-4a82-4158-8b91-676404d8abcf",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 7 - Day 2",
+      "date": "2024-02-13",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Running Shoes",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "596e8edd-6398-453b-a97f-190fe3566910",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 7 - Day 3",
+      "date": "2024-02-14",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Hang Snatch",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "9bdf5259-b536-40dd-8aff-42cd814333d1",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 7 - Day 4",
+      "date": "2024-02-15",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Drills",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "3e03cfbd-7505-498e-a5a6-04560b9b94ac",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 7 - Day 5",
+      "date": "2024-02-16",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Hang Clean",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "1d6cab67-7023-4dee-aec6-d81db300813d",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 7 - Day 6",
+      "date": "2024-02-17",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": null,
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "649ef209-4fb7-4b22-8418-c8046bc26a41",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 8 - Day 1",
+      "date": "2024-02-19",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Hang Clean",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "7b9027fb-4bdb-4acf-99ca-5f39fb5f2a3b",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 8 - Day 2",
+      "date": "2024-02-20",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Running Shoes",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "0ef7fc97-99a7-41d1-aed3-d11e482a7f02",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 8 - Day 3",
+      "date": "2024-02-21",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Hang Snatch",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "7261bbec-8b55-4d7c-8937-35ec151a71d3",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 8 - Day 4",
+      "date": "2024-02-22",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Drills",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "8bbab997-c50b-4667-a868-cbead06300ab",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 8 - Day 5",
+      "date": "2024-02-23",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": "Hang Clean",
+      "phase": "Specific Preparation"
+    },
+    {
+      "id": "5648717a-d94a-4830-91ab-893e61dab13e",
+      "athlete_id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Week 8 - Day 6",
+      "date": "2024-02-24",
+      "duration": 60,
+      "type": "Strength & Conditioning",
+      "notes": null,
+      "phase": "Specific Preparation"
+    }
+  ],
+  "exercise_groups": [
+    {
+      "id": "da543daa-094d-42e7-b352-deb8c3eb7f66",
+      "workout_id": "b91fff2e-6491-4f06-b40b-f4390797e6e3",
+      "name": "Exercise Group 1",
+      "mhg": 41.875
+    },
+    {
+      "id": "798c8d62-4942-47d8-8ebe-26233d301778",
+      "workout_id": "b91fff2e-6491-4f06-b40b-f4390797e6e3",
+      "name": "Exercise Group 2",
+      "mhg": 91.875
+    },
+    {
+      "id": "849b7266-bcc1-43c8-9199-e962beb15719",
+      "workout_id": "b91fff2e-6491-4f06-b40b-f4390797e6e3",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "709462d8-0fe9-43fb-a4e5-76265edd285c",
+      "workout_id": "6f6c948d-8225-4523-8352-cc464ebd90d2",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "77be315d-d129-4ae7-aab3-95c2f4a16d3f",
+      "workout_id": "6f6c948d-8225-4523-8352-cc464ebd90d2",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "e3eb9898-07a8-4b67-a0e1-d58f9126d190",
+      "workout_id": "6f6c948d-8225-4523-8352-cc464ebd90d2",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "1545a15c-6a64-4786-b041-2de28da3d82c",
+      "workout_id": "bc485676-298d-4105-b49f-65e532fe0d64",
+      "name": "Exercise Group 1",
+      "mhg": 42.5
+    },
+    {
+      "id": "96ab84aa-5a6b-4e78-9078-0fbf0377dda2",
+      "workout_id": "bc485676-298d-4105-b49f-65e532fe0d64",
+      "name": "Exercise Group 2",
+      "mhg": 60.625
+    },
+    {
+      "id": "4674bb54-9047-4a8d-b322-8d1ddf1037b0",
+      "workout_id": "bc485676-298d-4105-b49f-65e532fe0d64",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "e69b1838-a95c-42c1-94d9-716c9d54c9a8",
+      "workout_id": "cc6232ec-3498-40fc-b7b1-beecc3abe674",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "08c6f0fd-60d5-4902-87b0-8900cb195b77",
+      "workout_id": "cc6232ec-3498-40fc-b7b1-beecc3abe674",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "046eb8fe-0998-4a73-9b3b-3d7248ba65ea",
+      "workout_id": "cc6232ec-3498-40fc-b7b1-beecc3abe674",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "93169bf6-e49a-4bec-ae07-d5da05c73d84",
+      "workout_id": "a0af1772-93f3-4604-8d14-81fca7e9bf69",
+      "name": "Exercise Group 1",
+      "mhg": 42.5
+    },
+    {
+      "id": "c45e26ce-d75d-4e3e-bdc6-cb58566d891b",
+      "workout_id": "a0af1772-93f3-4604-8d14-81fca7e9bf69",
+      "name": "Exercise Group 2",
+      "mhg": 63.75
+    },
+    {
+      "id": "7b94a7f2-15e7-4aee-8110-7dcde093c071",
+      "workout_id": "a0af1772-93f3-4604-8d14-81fca7e9bf69",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "ab96e608-f05a-401c-84cf-8d043374a694",
+      "workout_id": "3aa10003-d14d-4ba6-b1c7-780e9a48bc65",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "8b360b86-ad9c-48e8-a821-dce03010e4c8",
+      "workout_id": "3aa10003-d14d-4ba6-b1c7-780e9a48bc65",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "e7efa7e5-99b1-465f-b81c-4cd31a62dcac",
+      "workout_id": "3aa10003-d14d-4ba6-b1c7-780e9a48bc65",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "f43e3de1-217a-4f5d-a2b8-2cc7c13a36d4",
+      "workout_id": "9094b55c-5b26-41dd-acfa-1759ce2630f5",
+      "name": "Exercise Group 1",
+      "mhg": 43.75
+    },
+    {
+      "id": "2483cd95-8218-4f01-a5a8-861a663dc70c",
+      "workout_id": "9094b55c-5b26-41dd-acfa-1759ce2630f5",
+      "name": "Exercise Group 2",
+      "mhg": 95.0
+    },
+    {
+      "id": "d300d1c7-df78-4fe8-8a4c-7a75c674c568",
+      "workout_id": "9094b55c-5b26-41dd-acfa-1759ce2630f5",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "bb8218fc-f609-4925-aa63-3101b576c958",
+      "workout_id": "aa05cd2c-ba01-4b4c-aac4-f04c934e8bc3",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "5340dd3d-3a55-4b87-a227-b1f32b4f58be",
+      "workout_id": "aa05cd2c-ba01-4b4c-aac4-f04c934e8bc3",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "e1f0fbc0-990c-4d0c-88e1-243ff339280e",
+      "workout_id": "aa05cd2c-ba01-4b4c-aac4-f04c934e8bc3",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "89007c6e-b3f6-4214-8e26-76376ec3f985",
+      "workout_id": "b98849c5-99d1-48a7-ae2d-f7583080f226",
+      "name": "Exercise Group 1",
+      "mhg": 44.375
+    },
+    {
+      "id": "b49ea55a-4023-41f6-b137-a3315cfaa29f",
+      "workout_id": "b98849c5-99d1-48a7-ae2d-f7583080f226",
+      "name": "Exercise Group 2",
+      "mhg": 60.625
+    },
+    {
+      "id": "51626dca-1184-45a4-bc17-bf4662da0d6c",
+      "workout_id": "b98849c5-99d1-48a7-ae2d-f7583080f226",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "a68d5156-d5ae-47d8-9f37-2286b55656a6",
+      "workout_id": "49beaeaf-59b2-4336-a4b4-f6c3597f180e",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "67a3ae58-3eeb-400f-a146-4278971b0d31",
+      "workout_id": "49beaeaf-59b2-4336-a4b4-f6c3597f180e",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "d2b76993-4090-4a93-bb53-9c4ed0f47187",
+      "workout_id": "49beaeaf-59b2-4336-a4b4-f6c3597f180e",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "96386d41-f06a-4a31-bec1-7573a0b3d102",
+      "workout_id": "ef46f863-85f8-402b-beb5-4f4d4d3a84dd",
+      "name": "Exercise Group 1",
+      "mhg": 45.0
+    },
+    {
+      "id": "18141cbd-cbbc-4900-bae9-369ffbe60f3c",
+      "workout_id": "ef46f863-85f8-402b-beb5-4f4d4d3a84dd",
+      "name": "Exercise Group 2",
+      "mhg": 63.75
+    },
+    {
+      "id": "a6c89f00-0894-4a5e-85a9-91f1011d01d0",
+      "workout_id": "ef46f863-85f8-402b-beb5-4f4d4d3a84dd",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "0ca61f83-8303-400d-a084-7f67195acd66",
+      "workout_id": "164fc710-a0ac-4df4-8447-65a029c8bc15",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "d72a34c6-0d04-4927-b146-cd892f52e0a4",
+      "workout_id": "164fc710-a0ac-4df4-8447-65a029c8bc15",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "d291d69e-0704-47bb-a360-bccbb6369da8",
+      "workout_id": "164fc710-a0ac-4df4-8447-65a029c8bc15",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "f3945ff0-9e1d-41bb-9b7a-6a9ab8553c7e",
+      "workout_id": "ae789f8e-d07f-4660-b295-f59ecc585d4a",
+      "name": "Exercise Group 1",
+      "mhg": 46.25
+    },
+    {
+      "id": "5b3e4091-a78d-42d6-bd55-63e8d080d5b6",
+      "workout_id": "ae789f8e-d07f-4660-b295-f59ecc585d4a",
+      "name": "Exercise Group 2",
+      "mhg": 102.5
+    },
+    {
+      "id": "ffff64c0-ee6b-4a37-b7f6-3f7bfdef3856",
+      "workout_id": "ae789f8e-d07f-4660-b295-f59ecc585d4a",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "3d448816-a8b6-4ed5-b7da-fba4f43cf35b",
+      "workout_id": "2d1f2507-06c6-461c-bbac-b3888003656f",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "5ab8c657-0550-470b-ae7a-1d2573faf94b",
+      "workout_id": "2d1f2507-06c6-461c-bbac-b3888003656f",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "3ce597ba-7c27-48f5-b629-780c30b9faed",
+      "workout_id": "2d1f2507-06c6-461c-bbac-b3888003656f",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "a277f88f-87bc-4860-bee7-cf1b4f6349fe",
+      "workout_id": "a997134f-0947-4b59-80b3-30968f1ac206",
+      "name": "Exercise Group 1",
+      "mhg": 22.5
+    },
+    {
+      "id": "06358f09-38ac-4c68-a802-73955e43579c",
+      "workout_id": "a997134f-0947-4b59-80b3-30968f1ac206",
+      "name": "Exercise Group 2",
+      "mhg": 66.875
+    },
+    {
+      "id": "8093dd35-90d4-4387-baa3-4dc3c58ad915",
+      "workout_id": "a997134f-0947-4b59-80b3-30968f1ac206",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "965183ec-1dc3-425a-adc2-c04ab5f04696",
+      "workout_id": "95ea38cb-ba5f-478e-b9b8-ce1e3ac86848",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "7bf37e2b-d4e6-4949-ac88-19b50dcd953e",
+      "workout_id": "95ea38cb-ba5f-478e-b9b8-ce1e3ac86848",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "d1c06851-77b0-41bf-851a-fc9281843566",
+      "workout_id": "95ea38cb-ba5f-478e-b9b8-ce1e3ac86848",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "e53ae93a-a91a-4a2a-8fb6-656d8edc0c1d",
+      "workout_id": "08c72316-b84a-4d01-97fd-e864beecfac9",
+      "name": "Exercise Group 1",
+      "mhg": 45.0
+    },
+    {
+      "id": "26f29700-a662-452e-8645-409af3c55130",
+      "workout_id": "08c72316-b84a-4d01-97fd-e864beecfac9",
+      "name": "Exercise Group 2",
+      "mhg": 63.75
+    },
+    {
+      "id": "f1c4d791-e8dc-42c2-bfb6-b32de65f65e8",
+      "workout_id": "08c72316-b84a-4d01-97fd-e864beecfac9",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "b183eda4-e877-4a40-8ad8-1f278857b058",
+      "workout_id": "af83af10-a596-4b28-80eb-12a6c0766997",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "7d0cd7f8-0283-42d5-887a-65c196ac2e0a",
+      "workout_id": "af83af10-a596-4b28-80eb-12a6c0766997",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "a16e2f6e-4eed-425a-a278-b00c17af5696",
+      "workout_id": "af83af10-a596-4b28-80eb-12a6c0766997",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "27986058-3314-4be1-a55f-4d1f975a36b4",
+      "workout_id": "cc82b966-dbb5-4ae7-91a6-885417597b76",
+      "name": "Exercise Group 1",
+      "mhg": 48.125
+    },
+    {
+      "id": "3acc1c4a-4abb-457c-80c4-0c3b620117fa",
+      "workout_id": "cc82b966-dbb5-4ae7-91a6-885417597b76",
+      "name": "Exercise Group 2",
+      "mhg": 64.375
+    },
+    {
+      "id": "281278db-8a0f-4bda-b494-1642a0f4de8f",
+      "workout_id": "cc82b966-dbb5-4ae7-91a6-885417597b76",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "a51dd815-da67-4dd5-838e-6fcb46f08fc3",
+      "workout_id": "28313df9-9a08-48d8-8e4e-3be6a7f786f0",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "cc4d7e41-7bf6-4372-992f-641f544b9415",
+      "workout_id": "28313df9-9a08-48d8-8e4e-3be6a7f786f0",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "183b7e8e-0874-4b9e-8adf-c34233650a89",
+      "workout_id": "28313df9-9a08-48d8-8e4e-3be6a7f786f0",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "bbce3878-cbcf-4d98-858f-83d44af1249f",
+      "workout_id": "c7edf9ca-dc37-4acc-9b41-4cee1e606960",
+      "name": "Exercise Group 1",
+      "mhg": 23.125
+    },
+    {
+      "id": "523e2f71-eb53-488e-9ccc-ab1c7ca1a9f2",
+      "workout_id": "c7edf9ca-dc37-4acc-9b41-4cee1e606960",
+      "name": "Exercise Group 2",
+      "mhg": 68.75
+    },
+    {
+      "id": "34a3ad6b-865a-4691-8d75-08e366d8446e",
+      "workout_id": "c7edf9ca-dc37-4acc-9b41-4cee1e606960",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "972c15d9-343c-45d4-848c-e42b2c357608",
+      "workout_id": "5061c51a-c229-4a77-a85f-d773a4a4f549",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "a51f152b-08fe-42ed-9a26-7ef4f2c4b1e8",
+      "workout_id": "5061c51a-c229-4a77-a85f-d773a4a4f549",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "79662a4b-ccee-4f4a-8a6a-e934e8b73568",
+      "workout_id": "5061c51a-c229-4a77-a85f-d773a4a4f549",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "05b0b034-0869-414f-bb95-90700af817d5",
+      "workout_id": "3969a43e-956a-4754-8620-fb73a50fb893",
+      "name": "Exercise Group 1",
+      "mhg": 45.625
+    },
+    {
+      "id": "9433755b-623e-473e-bf60-50369b2a6ad9",
+      "workout_id": "3969a43e-956a-4754-8620-fb73a50fb893",
+      "name": "Exercise Group 2",
+      "mhg": 104.375
+    },
+    {
+      "id": "c75ff72f-601c-4195-a542-5060128ad110",
+      "workout_id": "3969a43e-956a-4754-8620-fb73a50fb893",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "12ec4688-046f-42df-bc24-d53e5255c3b3",
+      "workout_id": "a37b78a3-4512-472a-9793-a729bf640206",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "72f11933-dd52-4ebe-9dfd-7a49a716995b",
+      "workout_id": "a37b78a3-4512-472a-9793-a729bf640206",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "e656c975-a7ec-4e23-af22-3ac33aa8c0b8",
+      "workout_id": "a37b78a3-4512-472a-9793-a729bf640206",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "ffdb91d5-5ae8-4b37-9615-1caa8abca8e3",
+      "workout_id": "ec67c93f-42c7-44f8-8ff1-3279d5433711",
+      "name": "Exercise Group 1",
+      "mhg": 53.75
+    },
+    {
+      "id": "31cd1b7a-45ea-4be4-b0b2-d69de555d093",
+      "workout_id": "ec67c93f-42c7-44f8-8ff1-3279d5433711",
+      "name": "Exercise Group 2",
+      "mhg": 67.5
+    },
+    {
+      "id": "cf53feca-a3a0-4402-8606-78a58639a4e5",
+      "workout_id": "ec67c93f-42c7-44f8-8ff1-3279d5433711",
+      "name": "Exercise Group 3",
+      "mhg": 55.0
+    },
+    {
+      "id": "454f06f3-7cd4-4533-b78c-af4e6468048f",
+      "workout_id": "befcca75-8c4b-46a1-b6ea-afbff0b4c443",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "414b6e7a-14c5-4f0c-bfdc-4e0e401b09c4",
+      "workout_id": "befcca75-8c4b-46a1-b6ea-afbff0b4c443",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "b742b390-3408-4016-8d44-5ea60d914660",
+      "workout_id": "befcca75-8c4b-46a1-b6ea-afbff0b4c443",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "7cd3f136-95c1-478e-922d-b1348c2a49dd",
+      "workout_id": "ca8271ab-673b-41fd-8c41-3d347691f9db",
+      "name": "Exercise Group 1",
+      "mhg": 25.625
+    },
+    {
+      "id": "8ca7d861-6377-448f-9722-88926df3d3d4",
+      "workout_id": "ca8271ab-673b-41fd-8c41-3d347691f9db",
+      "name": "Exercise Group 2",
+      "mhg": 0.0
+    },
+    {
+      "id": "12a34d96-307d-43f5-8b04-57789a8b20e0",
+      "workout_id": "ca8271ab-673b-41fd-8c41-3d347691f9db",
+      "name": "Exercise Group 3",
+      "mhg": 56.66666667
+    },
+    {
+      "id": "acadacb4-a848-4ce8-be17-3036dfa70ef0",
+      "workout_id": "4efe5ed9-f3da-43b8-867e-709bd3626810",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "facae1bc-5c58-41ab-bf7a-cb597fc2bf24",
+      "workout_id": "4efe5ed9-f3da-43b8-867e-709bd3626810",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "5811af7b-73b7-4ff7-8108-ac1908b2fe89",
+      "workout_id": "4efe5ed9-f3da-43b8-867e-709bd3626810",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "2d742ae8-9e8b-43cc-be23-760249e1fc53",
+      "workout_id": "ce6da239-8d60-4480-a627-5072f5860b89",
+      "name": "Exercise Group 1",
+      "mhg": 48.75
+    },
+    {
+      "id": "1d1d3ef5-1651-46ea-ba55-729931c3d49c",
+      "workout_id": "ce6da239-8d60-4480-a627-5072f5860b89",
+      "name": "Exercise Group 2",
+      "mhg": 55.0
+    },
+    {
+      "id": "9303868a-e5f4-4af0-9b44-8bfe1148c10c",
+      "workout_id": "ce6da239-8d60-4480-a627-5072f5860b89",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "db9d8ebc-0788-41d0-a328-77b38de73ae0",
+      "workout_id": "2d20a094-1289-4e81-a77d-9c32a10dd5c4",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "1a451417-a1bd-4ace-b1b0-03f84cd48ae5",
+      "workout_id": "2d20a094-1289-4e81-a77d-9c32a10dd5c4",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "e1f57fcd-3517-4b11-beb6-2616adaa6f32",
+      "workout_id": "2d20a094-1289-4e81-a77d-9c32a10dd5c4",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "159179b6-1057-4fc9-baa0-2e8a677f35f8",
+      "workout_id": "f0498e71-0760-463a-b3a6-1bedfff6f00d",
+      "name": "Exercise Group 1",
+      "mhg": 55.0
+    },
+    {
+      "id": "8e664faf-f10a-4665-bbb0-0c98e87baac3",
+      "workout_id": "f0498e71-0760-463a-b3a6-1bedfff6f00d",
+      "name": "Exercise Group 2",
+      "mhg": 67.5
+    },
+    {
+      "id": "3fae6740-db86-4778-8953-5a7ce0448f7e",
+      "workout_id": "f0498e71-0760-463a-b3a6-1bedfff6f00d",
+      "name": "Exercise Group 3",
+      "mhg": 55.0
+    },
+    {
+      "id": "4e1685be-f056-40f0-a70b-bc576632c24b",
+      "workout_id": "932c13bc-dbb2-463e-be94-42c3b030006e",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "0ea8fe1a-3aea-4647-bfc8-84ff025a1516",
+      "workout_id": "932c13bc-dbb2-463e-be94-42c3b030006e",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "cd675f57-8d3e-417b-82c3-9c3991dc1680",
+      "workout_id": "932c13bc-dbb2-463e-be94-42c3b030006e",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "7af8bd65-3971-4deb-8a00-6bb2fe5a49d3",
+      "workout_id": "67289709-174e-49b9-b832-039d8601576d",
+      "name": "Exercise Group 1",
+      "mhg": 55.83333333
+    },
+    {
+      "id": "90050820-cc61-44b3-8c42-5f273622e00e",
+      "workout_id": "67289709-174e-49b9-b832-039d8601576d",
+      "name": "Exercise Group 2",
+      "mhg": 47.5
+    },
+    {
+      "id": "df0772a0-0402-4b33-9c50-693a887b6176",
+      "workout_id": "67289709-174e-49b9-b832-039d8601576d",
+      "name": "Exercise Group 3",
+      "mhg": 56.66666667
+    },
+    {
+      "id": "27966401-9b30-4bda-8e5c-1de93ba4727e",
+      "workout_id": "40e0475b-65fd-450c-a58e-aff1f4ee8491",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "b37d25e9-7485-4fc8-abd7-f35ecde29311",
+      "workout_id": "40e0475b-65fd-450c-a58e-aff1f4ee8491",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "3ccc4d4e-486a-405d-9513-dc6bdc538dba",
+      "workout_id": "40e0475b-65fd-450c-a58e-aff1f4ee8491",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "05e563b4-7761-470c-8294-5b5468a76187",
+      "workout_id": "17532b0a-b279-4504-96bb-10a55f404d2a",
+      "name": "Exercise Group 1",
+      "mhg": 55.0
+    },
+    {
+      "id": "f42c1055-8dcc-475c-84f6-a2fb9b105ca6",
+      "workout_id": "17532b0a-b279-4504-96bb-10a55f404d2a",
+      "name": "Exercise Group 2",
+      "mhg": 55.0
+    },
+    {
+      "id": "c3924348-b0ae-4c03-a43f-afa6228f6faa",
+      "workout_id": "17532b0a-b279-4504-96bb-10a55f404d2a",
+      "name": "Exercise Group 3",
+      "mhg": 55.0
+    },
+    {
+      "id": "759579a8-7c5f-4cde-922a-823dd4bcc256",
+      "workout_id": "9f2730ea-2940-4e08-86f2-e39c698af0d9",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "0ecd6fe7-66a8-4d04-a37b-41d52cad764e",
+      "workout_id": "9f2730ea-2940-4e08-86f2-e39c698af0d9",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "09a7b9ee-b178-4c4a-80c7-006e03e6c2e2",
+      "workout_id": "9f2730ea-2940-4e08-86f2-e39c698af0d9",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "6454af9c-2af2-4d4c-8b52-1f86eec90b8c",
+      "workout_id": "46b34b07-cc1d-4ba6-a2bf-5fd8b910108a",
+      "name": "Exercise Group 1",
+      "mhg": 65.0
+    },
+    {
+      "id": "d4e2db94-13b8-4236-8b2c-e41ac2b8cb14",
+      "workout_id": "46b34b07-cc1d-4ba6-a2bf-5fd8b910108a",
+      "name": "Exercise Group 2",
+      "mhg": 92.5
+    },
+    {
+      "id": "5159e054-0b5f-4841-9664-28d988420259",
+      "workout_id": "46b34b07-cc1d-4ba6-a2bf-5fd8b910108a",
+      "name": "Exercise Group 3",
+      "mhg": 55.0
+    },
+    {
+      "id": "db0ded6d-d04b-45dc-839f-34bfdd99a9ad",
+      "workout_id": "83748be2-4a82-4158-8b91-676404d8abcf",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "5ea864b2-3878-42bc-9e31-7e45bdc2b1bc",
+      "workout_id": "83748be2-4a82-4158-8b91-676404d8abcf",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "a76220b8-2dbc-407e-9e87-aece63437c99",
+      "workout_id": "83748be2-4a82-4158-8b91-676404d8abcf",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "c7f9d778-0c80-4c94-a891-42e51f2b35b5",
+      "workout_id": "596e8edd-6398-453b-a97f-190fe3566910",
+      "name": "Exercise Group 1",
+      "mhg": 59.16666667
+    },
+    {
+      "id": "8688077d-3311-4889-abd4-0d9e5a18e283",
+      "workout_id": "596e8edd-6398-453b-a97f-190fe3566910",
+      "name": "Exercise Group 2",
+      "mhg": 77.5
+    },
+    {
+      "id": "ea2c802b-c301-432e-a68c-18672c39889a",
+      "workout_id": "596e8edd-6398-453b-a97f-190fe3566910",
+      "name": "Exercise Group 3",
+      "mhg": 56.66666667
+    },
+    {
+      "id": "b4eb69d7-6dd4-43df-a193-bc8d9d177dc4",
+      "workout_id": "9bdf5259-b536-40dd-8aff-42cd814333d1",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "65cddadc-556f-4e65-9f1b-e8b219c33f32",
+      "workout_id": "9bdf5259-b536-40dd-8aff-42cd814333d1",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "4a1a8bfb-c677-4251-a605-8a2f1e11b33a",
+      "workout_id": "9bdf5259-b536-40dd-8aff-42cd814333d1",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "8c6ea745-ce3f-4c0e-bc80-1006ebfd76c0",
+      "workout_id": "3e03cfbd-7505-498e-a5a6-04560b9b94ac",
+      "name": "Exercise Group 1",
+      "mhg": 69.16666667
+    },
+    {
+      "id": "28441ba6-655e-4146-b386-030002458d4e",
+      "workout_id": "3e03cfbd-7505-498e-a5a6-04560b9b94ac",
+      "name": "Exercise Group 2",
+      "mhg": 60.0
+    },
+    {
+      "id": "a54a3ce3-a7dc-4db6-b3ef-c20fde09db05",
+      "workout_id": "3e03cfbd-7505-498e-a5a6-04560b9b94ac",
+      "name": "Exercise Group 3",
+      "mhg": 55.0
+    },
+    {
+      "id": "68e4647b-6882-4b5e-8601-dd8ada37ef53",
+      "workout_id": "1d6cab67-7023-4dee-aec6-d81db300813d",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "e6fddf0d-db30-4aaf-bf76-5cd9320d2c5d",
+      "workout_id": "1d6cab67-7023-4dee-aec6-d81db300813d",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "b1693a8e-239f-448c-9bac-02e804f3f7f2",
+      "workout_id": "1d6cab67-7023-4dee-aec6-d81db300813d",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "147743d5-284d-4d27-ab41-b0fa89f5efb5",
+      "workout_id": "649ef209-4fb7-4b22-8418-c8046bc26a41",
+      "name": "Exercise Group 1",
+      "mhg": 75.0
+    },
+    {
+      "id": "1684df0d-ddab-43eb-99b6-a0def362b9f3",
+      "workout_id": "649ef209-4fb7-4b22-8418-c8046bc26a41",
+      "name": "Exercise Group 2",
+      "mhg": 97.5
+    },
+    {
+      "id": "849b7126-09ce-4d4e-a39f-d4148863814e",
+      "workout_id": "649ef209-4fb7-4b22-8418-c8046bc26a41",
+      "name": "Exercise Group 3",
+      "mhg": 60.0
+    },
+    {
+      "id": "1d86b7cc-86c6-4571-9570-0abb6b93f5ed",
+      "workout_id": "7b9027fb-4bdb-4acf-99ca-5f39fb5f2a3b",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "2f41022f-dc97-437d-8f20-89e2bb292a59",
+      "workout_id": "7b9027fb-4bdb-4acf-99ca-5f39fb5f2a3b",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "6e6e3c8a-1343-489e-808e-0c2de7f608c2",
+      "workout_id": "7b9027fb-4bdb-4acf-99ca-5f39fb5f2a3b",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "b4447f9d-90b7-4c75-beee-dffa9e9e15b2",
+      "workout_id": "0ef7fc97-99a7-41d1-aed3-d11e482a7f02",
+      "name": "Exercise Group 1",
+      "mhg": 64.16666667
+    },
+    {
+      "id": "a4bd862b-66c5-49c7-9fa8-196850680be1",
+      "workout_id": "0ef7fc97-99a7-41d1-aed3-d11e482a7f02",
+      "name": "Exercise Group 2",
+      "mhg": 82.5
+    },
+    {
+      "id": "b6054b61-4e95-43ad-84df-c5845818ccd1",
+      "workout_id": "0ef7fc97-99a7-41d1-aed3-d11e482a7f02",
+      "name": "Exercise Group 3",
+      "mhg": 60.83333333
+    },
+    {
+      "id": "bb71a28f-d323-41cd-963c-bb5978d4eab1",
+      "workout_id": "7261bbec-8b55-4d7c-8937-35ec151a71d3",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "4ca4947f-95b3-4a35-9382-84027c23e044",
+      "workout_id": "7261bbec-8b55-4d7c-8937-35ec151a71d3",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "26384074-8d98-4654-b81a-0643ec1ec85b",
+      "workout_id": "7261bbec-8b55-4d7c-8937-35ec151a71d3",
+      "name": "Exercise Group 3",
+      "mhg": null
+    },
+    {
+      "id": "ae096bce-c5ec-40ca-a16c-1498fe34fa94",
+      "workout_id": "8bbab997-c50b-4667-a868-cbead06300ab",
+      "name": "Exercise Group 1",
+      "mhg": 78.33333333
+    },
+    {
+      "id": "bcc71dc2-1bb4-49b7-984c-d170ffd9ab7d",
+      "workout_id": "8bbab997-c50b-4667-a868-cbead06300ab",
+      "name": "Exercise Group 2",
+      "mhg": 65.0
+    },
+    {
+      "id": "7df293d7-ee41-4c3f-b82e-c4cff3a07550",
+      "workout_id": "8bbab997-c50b-4667-a868-cbead06300ab",
+      "name": "Exercise Group 3",
+      "mhg": 63.33333333
+    },
+    {
+      "id": "a9105730-6d8d-45ed-8008-a8f2edcd6e71",
+      "workout_id": "5648717a-d94a-4830-91ab-893e61dab13e",
+      "name": "Exercise Group 1",
+      "mhg": null
+    },
+    {
+      "id": "e4af24c8-36b4-410a-a6a8-2567b7003360",
+      "workout_id": "5648717a-d94a-4830-91ab-893e61dab13e",
+      "name": "Exercise Group 2",
+      "mhg": null
+    },
+    {
+      "id": "c051d58b-2f02-47df-9dd0-562a8ffe744e",
+      "workout_id": "5648717a-d94a-4830-91ab-893e61dab13e",
+      "name": "Exercise Group 3",
+      "mhg": null
+    }
+  ],
+  "exercises": [
+    {
+      "id": "144ca84b-1a9d-4fc6-9d54-85a59f6ec8db",
+      "group_id": "da543daa-094d-42e7-b352-deb8c3eb7f66",
+      "name": "Bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ccf2fb55-742a-4e3d-9fdb-20583456bc8e",
+      "group_id": "da543daa-094d-42e7-b352-deb8c3eb7f66",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 85.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b313b16a-1b34-4958-b29c-0aa228f180de",
+      "group_id": "da543daa-094d-42e7-b352-deb8c3eb7f66",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 90.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "efa0ad2c-42a5-4e1f-afa4-b89fcfb4b1f4",
+      "group_id": "da543daa-094d-42e7-b352-deb8c3eb7f66",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 95.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "2621942a-ca66-409a-803e-d34ae967eca6",
+      "group_id": "da543daa-094d-42e7-b352-deb8c3eb7f66",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 97.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "3fe39085-8ea4-4c1e-b101-bf2754614e13",
+      "group_id": "798c8d62-4942-47d8-8ebe-26233d301778",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "21e21e3c-9fed-459b-932a-ae486c2c5b5f",
+      "group_id": "798c8d62-4942-47d8-8ebe-26233d301778",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e9472246-3a28-49df-b7b2-c030517fbf52",
+      "group_id": "798c8d62-4942-47d8-8ebe-26233d301778",
+      "name": "laying on ground",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "2ad72ab5-cd49-49ae-ae5e-02415181fddc",
+      "group_id": "798c8d62-4942-47d8-8ebe-26233d301778",
+      "name": "heel on bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fe359c77-7920-4cb3-a9bb-472634d77273",
+      "group_id": "849b7266-bcc1-43c8-9199-e962beb15719",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "87a95d1f-9f2b-4dd1-ae69-865aa28c42e4",
+      "group_id": "849b7266-bcc1-43c8-9199-e962beb15719",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "20110535-0152-426a-827a-f63d12afb7c4",
+      "group_id": "849b7266-bcc1-43c8-9199-e962beb15719",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "1d5d3a50-58f5-404a-b911-914746770c4e",
+      "group_id": "709462d8-0fe9-43fb-a4e5-76265edd285c",
+      "name": "2x5x100",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Rest"
+    },
+    {
+      "id": "cf0e64c0-7285-4dac-a1e4-23c08e9df2f1",
+      "group_id": "709462d8-0fe9-43fb-a4e5-76265edd285c",
+      "name": "100m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3 min"
+    },
+    {
+      "id": "dc6d3c5a-ae77-490d-92c3-c9ec63c08658",
+      "group_id": "709462d8-0fe9-43fb-a4e5-76265edd285c",
+      "name": "100m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "8a6bd0e3-c48f-4daa-ad74-895530f69683",
+      "group_id": "709462d8-0fe9-43fb-a4e5-76265edd285c",
+      "name": "100m \"fast\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "2cbbd669-7356-40a4-9b00-b278bca8a8e5",
+      "group_id": "709462d8-0fe9-43fb-a4e5-76265edd285c",
+      "name": "100m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "d600b655-ba51-4b40-b197-b7c4f91b5001",
+      "group_id": "709462d8-0fe9-43fb-a4e5-76265edd285c",
+      "name": "100m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "6min"
+    },
+    {
+      "id": "c32d9e32-1c92-4aee-8beb-1e3b57dec18f",
+      "group_id": "77be315d-d129-4ae7-aab3-95c2f4a16d3f",
+      "name": "100m Tempo is to be 14s",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c6ab1f3e-fcf0-4b19-9b88-4d56ec685196",
+      "group_id": "1545a15c-6a64-4786-b041-2de28da3d82c",
+      "name": "Bent Over Row",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "9796d60c-f4eb-44a2-86c9-37b5d8c7fa73",
+      "group_id": "1545a15c-6a64-4786-b041-2de28da3d82c",
+      "name": "Bent Over Row",
+      "sets": 1,
+      "reps": 10,
+      "weight": 50.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "60a1f6e8-cfb3-4384-98c1-d2d1c9e31b07",
+      "group_id": "1545a15c-6a64-4786-b041-2de28da3d82c",
+      "name": "Bent Over Row",
+      "sets": 1,
+      "reps": 10,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "bad63d0d-e2f7-4e1f-a67c-54fde18be404",
+      "group_id": "1545a15c-6a64-4786-b041-2de28da3d82c",
+      "name": "Bent Over Row",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "62beef48-ddd0-4d78-8fdc-f07302d77ca2",
+      "group_id": "1545a15c-6a64-4786-b041-2de28da3d82c",
+      "name": "Bent Over Row",
+      "sets": 1,
+      "reps": 10,
+      "weight": 67.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fb78535b-6022-4ce9-bf4a-ea7850975c62",
+      "group_id": "96ab84aa-5a6b-4e78-9078-0fbf0377dda2",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b5660e84-a3a4-41b6-ba8c-8c443b1c9cca",
+      "group_id": "96ab84aa-5a6b-4e78-9078-0fbf0377dda2",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "7bfe0b3e-4b74-4ca6-9dbe-5c6c2cd9ff16",
+      "group_id": "96ab84aa-5a6b-4e78-9078-0fbf0377dda2",
+      "name": "laying on ground",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ee73ebc6-e9d9-4fe1-bf7f-3453f41343cb",
+      "group_id": "96ab84aa-5a6b-4e78-9078-0fbf0377dda2",
+      "name": "heel on bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "45841b1b-e9f2-4390-b3f8-de1c1eba1e17",
+      "group_id": "4674bb54-9047-4a8d-b322-8d1ddf1037b0",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5c12a376-264e-4e6c-a685-f40e2914ba9b",
+      "group_id": "4674bb54-9047-4a8d-b322-8d1ddf1037b0",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "41853a14-d23c-49f1-99bd-d6a465278a48",
+      "group_id": "4674bb54-9047-4a8d-b322-8d1ddf1037b0",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "a7864042-15d7-4cf9-896e-b3f32d0fe691",
+      "group_id": "e69b1838-a95c-42c1-94d9-716c9d54c9a8",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "46db98e4-9f1a-4298-9873-c81d8a181145",
+      "group_id": "046eb8fe-0998-4a73-9b3b-3d7248ba65ea",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "f4219281-560f-42da-8940-6e57b680ab9a",
+      "group_id": "93169bf6-e49a-4bec-ae07-d5da05c73d84",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5995969c-e603-4f8c-86ac-d660c4bf6441",
+      "group_id": "93169bf6-e49a-4bec-ae07-d5da05c73d84",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "79de989f-ffc8-43d9-8924-01d40515482f",
+      "group_id": "93169bf6-e49a-4bec-ae07-d5da05c73d84",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 62.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ca012913-38ff-42f6-b035-c7306b83bb2d",
+      "group_id": "93169bf6-e49a-4bec-ae07-d5da05c73d84",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "29cfe3eb-8280-42db-9be0-8374fa9e8f29",
+      "group_id": "93169bf6-e49a-4bec-ae07-d5da05c73d84",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 67.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e76dc1f4-45be-4de7-8212-8c5ff6e3d86c",
+      "group_id": "c45e26ce-d75d-4e3e-bdc6-cb58566d891b",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "29142bdd-3501-4af1-b67d-9771c99686cf",
+      "group_id": "c45e26ce-d75d-4e3e-bdc6-cb58566d891b",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "d0ad9acb-01af-439a-b1ec-348ee3f26917",
+      "group_id": "c45e26ce-d75d-4e3e-bdc6-cb58566d891b",
+      "name": "laying on ground",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c0bc1c92-d6aa-4e2f-a9a9-9a64c62c3764",
+      "group_id": "c45e26ce-d75d-4e3e-bdc6-cb58566d891b",
+      "name": "heel on bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "7dcb0640-84c8-4e58-bb7c-2c58dfe7874e",
+      "group_id": "7b94a7f2-15e7-4aee-8110-7dcde093c071",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "732023e4-8de1-4264-8f41-683117eb6b07",
+      "group_id": "7b94a7f2-15e7-4aee-8110-7dcde093c071",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fed4cefc-601e-4ade-a55f-a31e9906cf72",
+      "group_id": "7b94a7f2-15e7-4aee-8110-7dcde093c071",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6bec8c24-4157-414c-869b-48f49de6ceac",
+      "group_id": "8b360b86-ad9c-48e8-a821-dce03010e4c8",
+      "name": "No spikes",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Time"
+    },
+    {
+      "id": "06da1401-f522-4785-8a8c-cd73f5fd9a88",
+      "group_id": "f43e3de1-217a-4f5d-a2b8-2cc7c13a36d4",
+      "name": "Bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4364c6c1-be48-488b-aed1-39f33cac1a7e",
+      "group_id": "f43e3de1-217a-4f5d-a2b8-2cc7c13a36d4",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 90.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "2f6dca83-a515-4b99-b05b-151f5872dded",
+      "group_id": "f43e3de1-217a-4f5d-a2b8-2cc7c13a36d4",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 92.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "856ac85f-100b-4188-9eba-aa0ad86fc4f7",
+      "group_id": "f43e3de1-217a-4f5d-a2b8-2cc7c13a36d4",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 97.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "db270950-99cb-481b-b7b5-684d9164b034",
+      "group_id": "f43e3de1-217a-4f5d-a2b8-2cc7c13a36d4",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "cb9b6b65-fc4f-4d71-82ce-024a42c45312",
+      "group_id": "2483cd95-8218-4f01-a5a8-861a663dc70c",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0b2373da-6b05-420b-8944-c1f15f75a933",
+      "group_id": "2483cd95-8218-4f01-a5a8-861a663dc70c",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ceed5d44-8781-4208-b47e-83ff9e6de8ea",
+      "group_id": "2483cd95-8218-4f01-a5a8-861a663dc70c",
+      "name": "laying on ground",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0ed17030-9e45-4ae9-8c44-59a5926e580e",
+      "group_id": "2483cd95-8218-4f01-a5a8-861a663dc70c",
+      "name": "heel on bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c6f6069a-fa9d-4713-8846-b44f4dbca6ea",
+      "group_id": "d300d1c7-df78-4fe8-8a4c-7a75c674c568",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8d1cd43f-21bf-429e-9b67-9b8cd7751cfb",
+      "group_id": "d300d1c7-df78-4fe8-8a4c-7a75c674c568",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c03f605c-a965-44dd-bbb9-601997073be0",
+      "group_id": "d300d1c7-df78-4fe8-8a4c-7a75c674c568",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4bc61068-5d27-4550-adef-624c7e61b130",
+      "group_id": "bb8218fc-f609-4925-aa63-3101b576c958",
+      "name": "2x5x100",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Rest"
+    },
+    {
+      "id": "6e8a7119-758d-4d9e-b361-9c96364f7866",
+      "group_id": "bb8218fc-f609-4925-aa63-3101b576c958",
+      "name": "100m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3 min"
+    },
+    {
+      "id": "45f4b2be-545a-49b0-8abe-e533bbda5a50",
+      "group_id": "bb8218fc-f609-4925-aa63-3101b576c958",
+      "name": "100m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "7e4fe910-a0bf-4c3e-bb6a-b49cc6b2360c",
+      "group_id": "bb8218fc-f609-4925-aa63-3101b576c958",
+      "name": "100m \"fast\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "8308fca0-9c21-440f-a849-9d3d4a4a54d5",
+      "group_id": "bb8218fc-f609-4925-aa63-3101b576c958",
+      "name": "100m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "45d645b4-9409-4b27-b7da-ec1b0cc206bb",
+      "group_id": "bb8218fc-f609-4925-aa63-3101b576c958",
+      "name": "100m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "6min"
+    },
+    {
+      "id": "ac0f6b85-15e2-4363-860b-8f41e782b6f9",
+      "group_id": "5340dd3d-3a55-4b87-a227-b1f32b4f58be",
+      "name": "100m Tempo is to be 14s",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fe7f947f-a54a-43cb-a123-a410e3351cb4",
+      "group_id": "89007c6e-b3f6-4214-8e26-76376ec3f985",
+      "name": "Bent Over Row",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8dd1e446-2afb-44d4-82a6-143e5291f040",
+      "group_id": "89007c6e-b3f6-4214-8e26-76376ec3f985",
+      "name": "Bent Over Row",
+      "sets": 1,
+      "reps": 10,
+      "weight": 50.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "84c3989b-a68b-4c86-b1f6-35b7042a6e98",
+      "group_id": "89007c6e-b3f6-4214-8e26-76376ec3f985",
+      "name": "Bent Over Row",
+      "sets": 1,
+      "reps": 10,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "3e3156d2-15ce-42e4-9b3a-a9e6f1d1bb25",
+      "group_id": "89007c6e-b3f6-4214-8e26-76376ec3f985",
+      "name": "Bent Over Row",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "15dc7786-d846-4f7d-9b61-dbce5c2a2e09",
+      "group_id": "89007c6e-b3f6-4214-8e26-76376ec3f985",
+      "name": "Bent Over Row",
+      "sets": 1,
+      "reps": 10,
+      "weight": 67.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "d0fcbb44-464a-4547-a773-82d8c759b656",
+      "group_id": "b49ea55a-4023-41f6-b137-a3315cfaa29f",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "025030f0-1c11-41f4-a79e-264841a16872",
+      "group_id": "b49ea55a-4023-41f6-b137-a3315cfaa29f",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "9bca5d9f-3d00-4059-b608-5b00c9e94809",
+      "group_id": "b49ea55a-4023-41f6-b137-a3315cfaa29f",
+      "name": "laying on ground",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "64282033-6545-492e-9b6d-663cb6ba4d52",
+      "group_id": "b49ea55a-4023-41f6-b137-a3315cfaa29f",
+      "name": "heel on bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "9198e46d-e4e9-400a-b16d-82e4dd3e3ecb",
+      "group_id": "51626dca-1184-45a4-bc17-bf4662da0d6c",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6c1e76fc-d7fa-4897-a1cb-6e58f0e4cc4e",
+      "group_id": "51626dca-1184-45a4-bc17-bf4662da0d6c",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "f502d05f-a5c6-4a70-a877-3849d86efb77",
+      "group_id": "51626dca-1184-45a4-bc17-bf4662da0d6c",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "90d9ce25-93e6-41f1-9dc9-cd6b21ba8f36",
+      "group_id": "a68d5156-d5ae-47d8-9f37-2286b55656a6",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "db02f8ba-294b-4d6d-8d47-7fdd15dbb78b",
+      "group_id": "d2b76993-4090-4a93-bb53-9c4ed0f47187",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "292ca7ca-7d9d-45d3-907e-11e90fa363ec",
+      "group_id": "96386d41-f06a-4a31-bec1-7573a0b3d102",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ac379bc2-e722-499a-9dcd-1c605c7cf93a",
+      "group_id": "96386d41-f06a-4a31-bec1-7573a0b3d102",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5d6e69af-b9bb-470e-b69e-9c19bae5f707",
+      "group_id": "96386d41-f06a-4a31-bec1-7573a0b3d102",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 62.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "2c4696b3-5be5-4be0-8b74-55c44ccff7d3",
+      "group_id": "96386d41-f06a-4a31-bec1-7573a0b3d102",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b83e3130-77a8-4cae-a99b-8f2c63ed2323",
+      "group_id": "96386d41-f06a-4a31-bec1-7573a0b3d102",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 67.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "70ac63f6-5a98-4a58-b349-d2e9499181a3",
+      "group_id": "18141cbd-cbbc-4900-bae9-369ffbe60f3c",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "a35614f7-cdb9-4fc6-8728-b321611a572d",
+      "group_id": "18141cbd-cbbc-4900-bae9-369ffbe60f3c",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "3bba3daa-b4d4-41d5-9221-ae718378782e",
+      "group_id": "18141cbd-cbbc-4900-bae9-369ffbe60f3c",
+      "name": "laying on ground",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c6c0ae93-40e9-4e67-af35-18b6113b52fc",
+      "group_id": "18141cbd-cbbc-4900-bae9-369ffbe60f3c",
+      "name": "heel on bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "49d6e75f-1b9c-4f69-971e-d9238297c3e7",
+      "group_id": "a6c89f00-0894-4a5e-85a9-91f1011d01d0",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6e4ff302-92c8-4776-b22c-ef7568831f0c",
+      "group_id": "a6c89f00-0894-4a5e-85a9-91f1011d01d0",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "77835925-f121-4151-b349-2d59d2435bb0",
+      "group_id": "a6c89f00-0894-4a5e-85a9-91f1011d01d0",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6d8d3631-6c42-4a99-bf69-84b5be5ef3da",
+      "group_id": "d72a34c6-0d04-4927-b146-cd892f52e0a4",
+      "name": "No spikes",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Time"
+    },
+    {
+      "id": "0e4e8f74-9af8-43f5-b595-385c869175b4",
+      "group_id": "f3945ff0-9e1d-41bb-9b7a-6a9ab8553c7e",
+      "name": "Bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b1bacf8f-5371-4160-a8f0-5be9e4bea944",
+      "group_id": "f3945ff0-9e1d-41bb-9b7a-6a9ab8553c7e",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 95.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "3b45e667-dd82-4dc1-8373-1935aa161d1a",
+      "group_id": "f3945ff0-9e1d-41bb-9b7a-6a9ab8553c7e",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fbf0d054-d554-4bf0-b6da-a982ca9a561e",
+      "group_id": "f3945ff0-9e1d-41bb-9b7a-6a9ab8553c7e",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 105.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "25445f3d-cf9d-4d19-81d1-befa3ea49bf0",
+      "group_id": "f3945ff0-9e1d-41bb-9b7a-6a9ab8553c7e",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 110.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "3ed37180-b3fd-4c37-b634-a56de00c568e",
+      "group_id": "5b3e4091-a78d-42d6-bd55-63e8d080d5b6",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "60f1489a-4d77-4627-8ed2-4ec2ea26b4ef",
+      "group_id": "5b3e4091-a78d-42d6-bd55-63e8d080d5b6",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "21925b9f-75a7-4616-9ed7-5cce6ab37649",
+      "group_id": "5b3e4091-a78d-42d6-bd55-63e8d080d5b6",
+      "name": "laying on ground",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "aa58e68a-339c-48bf-87ae-d881413ddd1f",
+      "group_id": "5b3e4091-a78d-42d6-bd55-63e8d080d5b6",
+      "name": "heel on bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "720497c8-a75d-43ba-8946-1092ba897c2b",
+      "group_id": "ffff64c0-ee6b-4a37-b7f6-3f7bfdef3856",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fc8873b6-2656-4538-9f67-605fa52b696b",
+      "group_id": "ffff64c0-ee6b-4a37-b7f6-3f7bfdef3856",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "df375fef-f8c6-4d9a-8856-33a6a98ad3e5",
+      "group_id": "ffff64c0-ee6b-4a37-b7f6-3f7bfdef3856",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "f3568ac0-5453-4069-a6a9-508ef97f4252",
+      "group_id": "3d448816-a8b6-4ed5-b7da-fba4f43cf35b",
+      "name": "2x5x100",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Rest"
+    },
+    {
+      "id": "8638ad90-2068-40c9-919d-0c6fc01b4e88",
+      "group_id": "3d448816-a8b6-4ed5-b7da-fba4f43cf35b",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3 min"
+    },
+    {
+      "id": "9d8864ee-0f2a-44f4-864d-41a545ed86ba",
+      "group_id": "3d448816-a8b6-4ed5-b7da-fba4f43cf35b",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "d4e452be-091f-41df-b68d-27a77d86ec25",
+      "group_id": "3d448816-a8b6-4ed5-b7da-fba4f43cf35b",
+      "name": "120m \"fast\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "29e9dd79-4fff-42af-be55-568ecc32542c",
+      "group_id": "3d448816-a8b6-4ed5-b7da-fba4f43cf35b",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "a44218b5-508f-4e6e-b13c-8c0b5c033fe0",
+      "group_id": "3d448816-a8b6-4ed5-b7da-fba4f43cf35b",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "6min"
+    },
+    {
+      "id": "94b14213-ce15-4631-83e1-90ca9fc2bfb0",
+      "group_id": "5ab8c657-0550-470b-ae7a-1d2573faf94b",
+      "name": "100m Tempo is to be 14s",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "49070c0d-f495-4271-aa02-0036393e8f00",
+      "group_id": "a277f88f-87bc-4860-bee7-cf1b4f6349fe",
+      "name": "Bent Over Row barbell",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "bf0f1ac2-0ef6-426f-b2c4-f946c1fd9ec2",
+      "group_id": "a277f88f-87bc-4860-bee7-cf1b4f6349fe",
+      "name": "Bent Over Row barbell",
+      "sets": 1,
+      "reps": 10,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0c6ac3b3-1adf-453d-af45-6d60ecfba2ab",
+      "group_id": "a277f88f-87bc-4860-bee7-cf1b4f6349fe",
+      "name": "Bent Over Row barbell",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "acd5e22f-f965-45e9-bd11-ebe12aab703d",
+      "group_id": "a277f88f-87bc-4860-bee7-cf1b4f6349fe",
+      "name": "Bent Over Row barbell",
+      "sets": 1,
+      "reps": 10,
+      "weight": 70.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "934f9f9a-f6e8-401b-b2ef-bc4acd26cd31",
+      "group_id": "a277f88f-87bc-4860-bee7-cf1b4f6349fe",
+      "name": "Bent Over Row barbell",
+      "sets": 1,
+      "reps": 10,
+      "weight": 72.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "dfe8a996-0703-4818-98ee-e3716b989de5",
+      "group_id": "06358f09-38ac-4c68-a802-73955e43579c",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c3be89d7-967c-42b2-aef2-fb8c231c40f5",
+      "group_id": "06358f09-38ac-4c68-a802-73955e43579c",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "11644696-dcba-4afc-a4d1-d4b3ef4b2875",
+      "group_id": "06358f09-38ac-4c68-a802-73955e43579c",
+      "name": "Nordic",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "36b00be0-2d53-4eed-af6c-6bbb5aa93cd2",
+      "group_id": "8093dd35-90d4-4387-baa3-4dc3c58ad915",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "edbe4604-67ab-45b1-8106-f9d202bd4fc2",
+      "group_id": "8093dd35-90d4-4387-baa3-4dc3c58ad915",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "9facc69c-0d92-4724-bbef-dbfd77821292",
+      "group_id": "8093dd35-90d4-4387-baa3-4dc3c58ad915",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "830f06f5-6e44-4add-b9e0-ccc8d6c639ab",
+      "group_id": "965183ec-1dc3-425a-adc2-c04ab5f04696",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ea510588-adcc-447b-b5b3-798295ca3d33",
+      "group_id": "d1c06851-77b0-41bf-851a-fc9281843566",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "cd746052-1eed-49c0-8ee5-f04b43c9922b",
+      "group_id": "e53ae93a-a91a-4a2a-8fb6-656d8edc0c1d",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8812828f-0fda-48a4-98df-a9e084749f23",
+      "group_id": "e53ae93a-a91a-4a2a-8fb6-656d8edc0c1d",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b27cb7e7-3161-4e4f-9847-067cef41cb3e",
+      "group_id": "e53ae93a-a91a-4a2a-8fb6-656d8edc0c1d",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 62.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "cef18b79-5717-405b-91c1-490677b241d1",
+      "group_id": "e53ae93a-a91a-4a2a-8fb6-656d8edc0c1d",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "71ddf615-84e8-4441-a40c-2d4e7ce4d398",
+      "group_id": "e53ae93a-a91a-4a2a-8fb6-656d8edc0c1d",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 67.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "161fe778-06fd-4a4d-9a78-d84ae663be05",
+      "group_id": "26f29700-a662-452e-8645-409af3c55130",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b6c93e71-ee33-40a4-ba6b-01b458e48a99",
+      "group_id": "26f29700-a662-452e-8645-409af3c55130",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "393b3c79-12ac-4996-96f4-9de6dcb41b68",
+      "group_id": "26f29700-a662-452e-8645-409af3c55130",
+      "name": "laying on ground",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b098be83-8c28-4e3b-9f67-b09a1c68862d",
+      "group_id": "26f29700-a662-452e-8645-409af3c55130",
+      "name": "heel on bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8bb1ee01-f889-4998-a22d-d290090ff9d3",
+      "group_id": "f1c4d791-e8dc-42c2-bfb6-b32de65f65e8",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c1c3fada-924d-4c7e-9b89-68d1aa9a16a0",
+      "group_id": "f1c4d791-e8dc-42c2-bfb6-b32de65f65e8",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b8eb50d9-1f1f-494b-b08b-3bb5573b4505",
+      "group_id": "f1c4d791-e8dc-42c2-bfb6-b32de65f65e8",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "baab6e2e-3213-43c6-afe5-f0a87e4c2658",
+      "group_id": "7d0cd7f8-0283-42d5-887a-65c196ac2e0a",
+      "name": "No spikes",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Time"
+    },
+    {
+      "id": "1676e1d7-751c-4b0d-9486-c6ab8458fc18",
+      "group_id": "27986058-3314-4be1-a55f-4d1f975a36b4",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "984268b2-8a65-4fce-81d9-b490435d5237",
+      "group_id": "27986058-3314-4be1-a55f-4d1f975a36b4",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6a111547-c11c-48d7-b2d5-c5b08c221544",
+      "group_id": "27986058-3314-4be1-a55f-4d1f975a36b4",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "03c24cfd-4448-4979-bc1d-556b226989d5",
+      "group_id": "27986058-3314-4be1-a55f-4d1f975a36b4",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "59bec55d-bc19-494f-800c-cd89df92f17a",
+      "group_id": "27986058-3314-4be1-a55f-4d1f975a36b4",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 67.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5a0661cb-2817-4285-ac74-c05e3f57bfd7",
+      "group_id": "3acc1c4a-4abb-457c-80c4-0c3b620117fa",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "cfdb31ae-efd5-461e-a8c5-58728650cb76",
+      "group_id": "3acc1c4a-4abb-457c-80c4-0c3b620117fa",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0b9310cd-a077-4e72-af0d-bac17adea210",
+      "group_id": "3acc1c4a-4abb-457c-80c4-0c3b620117fa",
+      "name": "laying on ground",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "7221a5db-9b3f-43f9-8ad7-c2a061da522e",
+      "group_id": "3acc1c4a-4abb-457c-80c4-0c3b620117fa",
+      "name": "heel on bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "57f9539c-6227-447f-a6fd-256211ddf40b",
+      "group_id": "281278db-8a0f-4bda-b494-1642a0f4de8f",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "edaf9c5c-f1c3-4fc0-9192-213367879ea6",
+      "group_id": "281278db-8a0f-4bda-b494-1642a0f4de8f",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "918ce0a6-9e9b-4c21-b403-316604c92c96",
+      "group_id": "281278db-8a0f-4bda-b494-1642a0f4de8f",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5774a7a0-7818-4926-8cce-33b9d6d27f64",
+      "group_id": "a51dd815-da67-4dd5-838e-6fcb46f08fc3",
+      "name": "2x5x100",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Rest"
+    },
+    {
+      "id": "c075c9a0-ffa1-4628-ab1c-25426514470e",
+      "group_id": "a51dd815-da67-4dd5-838e-6fcb46f08fc3",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3 min"
+    },
+    {
+      "id": "73233c66-95a7-4be1-9433-15735005ab36",
+      "group_id": "a51dd815-da67-4dd5-838e-6fcb46f08fc3",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "7fd19450-2793-4359-96a3-a5d4c4744550",
+      "group_id": "a51dd815-da67-4dd5-838e-6fcb46f08fc3",
+      "name": "120m \"fast\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "a5db2dbf-03ce-42db-93b1-c046cd945f6b",
+      "group_id": "a51dd815-da67-4dd5-838e-6fcb46f08fc3",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "50f5c3de-20d4-4078-a5f0-829f06e30b63",
+      "group_id": "a51dd815-da67-4dd5-838e-6fcb46f08fc3",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "6min"
+    },
+    {
+      "id": "44e5d530-337b-44d9-8771-94466f4432c7",
+      "group_id": "cc4d7e41-7bf6-4372-992f-641f544b9415",
+      "name": "100m Tempo is to be 14s",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "649e8274-3d91-4a7d-ac87-f08b025c2fcc",
+      "group_id": "bbce3878-cbcf-4d98-858f-83d44af1249f",
+      "name": "Bent Over Row barbell",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c67da190-4c06-4433-9a25-1b3fb44cc22c",
+      "group_id": "bbce3878-cbcf-4d98-858f-83d44af1249f",
+      "name": "Bent Over Row barbell",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "569e8e27-b45c-4d23-9999-57cf12d7b6a0",
+      "group_id": "bbce3878-cbcf-4d98-858f-83d44af1249f",
+      "name": "Bent Over Row barbell",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b3a91d4a-4417-4da2-a07d-7ab246183d40",
+      "group_id": "bbce3878-cbcf-4d98-858f-83d44af1249f",
+      "name": "Bent Over Row barbell",
+      "sets": 1,
+      "reps": 10,
+      "weight": 70.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4b5c4eb2-934e-4ae6-8892-025929fd229d",
+      "group_id": "bbce3878-cbcf-4d98-858f-83d44af1249f",
+      "name": "Bent Over Row barbell",
+      "sets": 1,
+      "reps": 10,
+      "weight": 75.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "30bb81b3-b157-47dc-a81c-13264cea2760",
+      "group_id": "523e2f71-eb53-488e-9ccc-ab1c7ca1a9f2",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ff66c17f-78ab-4501-a1f7-32c3e74985f7",
+      "group_id": "523e2f71-eb53-488e-9ccc-ab1c7ca1a9f2",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8030f8a0-813a-4e48-9a30-609eadced4f8",
+      "group_id": "523e2f71-eb53-488e-9ccc-ab1c7ca1a9f2",
+      "name": "Nordic",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5f16cce0-37c5-42d8-b529-d8c1f3fd6fec",
+      "group_id": "34a3ad6b-865a-4691-8d75-08e366d8446e",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "789fdd32-cb25-4b2c-b31b-700aff51fcdc",
+      "group_id": "34a3ad6b-865a-4691-8d75-08e366d8446e",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "1753ecd8-b0f0-41bc-b6c3-6a7c8f038d13",
+      "group_id": "34a3ad6b-865a-4691-8d75-08e366d8446e",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8565f731-e843-4e26-b979-865f1efd5a10",
+      "group_id": "972c15d9-343c-45d4-848c-e42b2c357608",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "df335780-0a3c-442c-9870-5c83e5701fab",
+      "group_id": "79662a4b-ccee-4f4a-8a6a-e934e8b73568",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "2b89f726-fb47-46e3-9245-5465baa5e61a",
+      "group_id": "05b0b034-0869-414f-bb95-90700af817d5",
+      "name": "Bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "597358f2-33a8-4f0f-9c79-5a25b757fd6f",
+      "group_id": "05b0b034-0869-414f-bb95-90700af817d5",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "887ccd6f-e110-427a-99c8-55dffe8ed83a",
+      "group_id": "05b0b034-0869-414f-bb95-90700af817d5",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 102.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fff8a94d-5669-4d97-9662-212adc59e6d5",
+      "group_id": "05b0b034-0869-414f-bb95-90700af817d5",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 105.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "26d1fb3c-c6d1-46d5-a96d-be5cdba50aa3",
+      "group_id": "05b0b034-0869-414f-bb95-90700af817d5",
+      "name": "Bench",
+      "sets": 1,
+      "reps": 10,
+      "weight": 110.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "cb51d706-49fc-4f7a-ac85-d9dd6fe55571",
+      "group_id": "9433755b-623e-473e-bf60-50369b2a6ad9",
+      "name": "Hamstrings",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "392addd1-e7b9-4b0d-9973-2f00619ae046",
+      "group_id": "9433755b-623e-473e-bf60-50369b2a6ad9",
+      "name": "3 x 15",
+      "sets": 3,
+      "reps": 15,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "3ba3de5e-ef77-4d5c-b835-0dde7572489d",
+      "group_id": "9433755b-623e-473e-bf60-50369b2a6ad9",
+      "name": "laying on ground",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "445bc79c-7fce-4ec0-9c37-bb79ab10a0c3",
+      "group_id": "9433755b-623e-473e-bf60-50369b2a6ad9",
+      "name": "heel on bench",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c64c9eee-f35a-433f-8055-f4d2b89aa458",
+      "group_id": "c75ff72f-601c-4195-a542-5060128ad110",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "7790a178-46a8-420e-94ac-527d5f5134dd",
+      "group_id": "c75ff72f-601c-4195-a542-5060128ad110",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4cd975fb-e88d-4e4b-a819-f44e1799428e",
+      "group_id": "c75ff72f-601c-4195-a542-5060128ad110",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0e9600d8-4030-4ba7-8043-bbdf670858f1",
+      "group_id": "12ec4688-046f-42df-bc24-d53e5255c3b3",
+      "name": "2x5x100",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Rest"
+    },
+    {
+      "id": "8bae5544-c040-4775-87f4-d2e121c886a1",
+      "group_id": "12ec4688-046f-42df-bc24-d53e5255c3b3",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3 min"
+    },
+    {
+      "id": "6abce66f-9873-4316-bbef-2e2fe35da990",
+      "group_id": "12ec4688-046f-42df-bc24-d53e5255c3b3",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "25a2cac3-9c51-4be0-b9df-6e73a157f9b2",
+      "group_id": "12ec4688-046f-42df-bc24-d53e5255c3b3",
+      "name": "120m \"fast\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "ff6cba7d-e22b-4007-9dca-7d6080b9ee2f",
+      "group_id": "12ec4688-046f-42df-bc24-d53e5255c3b3",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "e2b462b2-e79a-4dd1-8c07-ab488ee7b045",
+      "group_id": "12ec4688-046f-42df-bc24-d53e5255c3b3",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "6min"
+    },
+    {
+      "id": "413755ed-5724-41b5-baa5-b0b91b43af79",
+      "group_id": "72f11933-dd52-4ebe-9dfd-7a49a716995b",
+      "name": "No spikes",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Time"
+    },
+    {
+      "id": "44c0a5c4-b7d3-4c45-96e8-c81feeba1a46",
+      "group_id": "ffdb91d5-5ae8-4b37-9615-1caa8abca8e3",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e177f737-9eb9-4513-8123-e8c48736dd3d",
+      "group_id": "ffdb91d5-5ae8-4b37-9615-1caa8abca8e3",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8550fc9b-eff0-40bb-bcf0-1b7906df8d44",
+      "group_id": "ffdb91d5-5ae8-4b37-9615-1caa8abca8e3",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 67.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e35906ed-7228-4516-b3bf-77e45cdf5806",
+      "group_id": "ffdb91d5-5ae8-4b37-9615-1caa8abca8e3",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 70.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0705b02b-c26a-4f2c-88e6-6e9f44a62cb6",
+      "group_id": "ffdb91d5-5ae8-4b37-9615-1caa8abca8e3",
+      "name": "Over head press",
+      "sets": 1,
+      "reps": 10,
+      "weight": 67.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "aa2491ed-5aff-41df-b6b0-27f7fbd2d931",
+      "group_id": "31cd1b7a-45ea-4be4-b0b2-d69de555d093",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e6f4c6b0-0845-4d9a-8007-596065ee29d3",
+      "group_id": "31cd1b7a-45ea-4be4-b0b2-d69de555d093",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 50.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "be081b31-2a65-436f-aa22-940bd1fa212c",
+      "group_id": "31cd1b7a-45ea-4be4-b0b2-d69de555d093",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "d7babf63-63f9-4c28-a9c1-932360fc4e7f",
+      "group_id": "31cd1b7a-45ea-4be4-b0b2-d69de555d093",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "33a36d62-a01a-42ea-87ff-75e11f23269e",
+      "group_id": "cf53feca-a3a0-4402-8606-78a58639a4e5",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "46a16a89-17e4-4946-8c43-42f65c0b6581",
+      "group_id": "cf53feca-a3a0-4402-8606-78a58639a4e5",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "64064ff6-91c4-496c-b2dd-eab24803e6c4",
+      "group_id": "cf53feca-a3a0-4402-8606-78a58639a4e5",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5fa3c936-f080-4287-8d66-55de83ef27ca",
+      "group_id": "454f06f3-7cd4-4533-b78c-af4e6468048f",
+      "name": "2x5x100",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Rest"
+    },
+    {
+      "id": "28f43454-0ee3-47a1-b348-ddee03b4cf8a",
+      "group_id": "454f06f3-7cd4-4533-b78c-af4e6468048f",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3 min"
+    },
+    {
+      "id": "7e53e185-094d-44b9-b08d-b38157bbf9f1",
+      "group_id": "454f06f3-7cd4-4533-b78c-af4e6468048f",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "f396b9ce-60de-4712-a004-1792b77e7cd2",
+      "group_id": "454f06f3-7cd4-4533-b78c-af4e6468048f",
+      "name": "120m \"fast\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "e7796b57-0a00-47fa-a190-8f31f4790f05",
+      "group_id": "454f06f3-7cd4-4533-b78c-af4e6468048f",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "c3789fa9-adae-4e3b-b876-0d40f5bf4ac1",
+      "group_id": "454f06f3-7cd4-4533-b78c-af4e6468048f",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "6min"
+    },
+    {
+      "id": "62c90888-79c0-4c04-9886-dd71cbec5799",
+      "group_id": "414b6e7a-14c5-4f0c-bfdc-4e0e401b09c4",
+      "name": "100m Tempo is to be 14s",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "23552d77-6921-4389-a1f1-e20a11c644e8",
+      "group_id": "7cd3f136-95c1-478e-922d-b1348c2a49dd",
+      "name": "Pull ups",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "214c7fbd-a48a-49a1-8d00-d0d29ee112a1",
+      "group_id": "8ca7d861-6377-448f-9722-88926df3d3d4",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b9fe1e97-9651-4bc7-9566-facfd91d6030",
+      "group_id": "8ca7d861-6377-448f-9722-88926df3d3d4",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 52.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "cc903a51-fdda-4413-9def-c983664a94c1",
+      "group_id": "8ca7d861-6377-448f-9722-88926df3d3d4",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 57.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "eb0345e7-a576-467f-9638-c4bb20f8c2fc",
+      "group_id": "8ca7d861-6377-448f-9722-88926df3d3d4",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c072af32-ab67-4787-81b9-271e223793d3",
+      "group_id": "12a34d96-307d-43f5-8b04-57789a8b20e0",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "528887af-095f-4ca2-be86-03244de7ec5b",
+      "group_id": "12a34d96-307d-43f5-8b04-57789a8b20e0",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "42d58918-55c2-43aa-9c50-3e4550701a77",
+      "group_id": "12a34d96-307d-43f5-8b04-57789a8b20e0",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fa37f523-c08a-4a00-b2b8-f71bab022d68",
+      "group_id": "acadacb4-a848-4ce8-be17-3036dfa70ef0",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "f39b342a-5d1e-4b76-8cc2-bae74e905ce2",
+      "group_id": "5811af7b-73b7-4ff7-8108-ac1908b2fe89",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4c9e503d-a225-4f1b-80ee-d44a8e208423",
+      "group_id": "2d742ae8-9e8b-43cc-be23-760249e1fc53",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "025722fd-ee87-4fd6-ad91-3f1ce9b2ba20",
+      "group_id": "2d742ae8-9e8b-43cc-be23-760249e1fc53",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 50.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5e926622-4351-4c47-bb4d-fdcefc391e40",
+      "group_id": "2d742ae8-9e8b-43cc-be23-760249e1fc53",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "22de8f1f-da22-4b99-962d-a90f3c27fa1d",
+      "group_id": "2d742ae8-9e8b-43cc-be23-760249e1fc53",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "9183dbc0-93ed-408e-a0da-04b07c004aa2",
+      "group_id": "1d1d3ef5-1651-46ea-ba55-729931c3d49c",
+      "name": "Accesories",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6a82ceb6-b54e-4642-b486-8a29db72b839",
+      "group_id": "1d1d3ef5-1651-46ea-ba55-729931c3d49c",
+      "name": "2-4 excersizes, your choice",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "9ba89976-4a69-49a3-a952-dfa6243a74bf",
+      "group_id": "1d1d3ef5-1651-46ea-ba55-729931c3d49c",
+      "name": "3 sets each max",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "28792daf-7522-48ee-961d-4df73a127aea",
+      "group_id": "9303868a-e5f4-4af0-9b44-8bfe1148c10c",
+      "name": "8 x 60m strides",
+      "sets": 8,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "04089ce8-7f79-4293-8422-0eaffe4998d4",
+      "group_id": "9303868a-e5f4-4af0-9b44-8bfe1148c10c",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e114d022-d996-44e5-a9b8-aadcf7450c95",
+      "group_id": "9303868a-e5f4-4af0-9b44-8bfe1148c10c",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "a700fd00-2009-4ce4-b475-96c5597df431",
+      "group_id": "db9d8ebc-0788-41d0-a328-77b38de73ae0",
+      "name": "2x5x100",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Rest"
+    },
+    {
+      "id": "4f303620-ffcb-46ba-bfc0-968c08c76d03",
+      "group_id": "db9d8ebc-0788-41d0-a328-77b38de73ae0",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3 min"
+    },
+    {
+      "id": "9f631251-2e28-473f-badb-9f8f74ae3d71",
+      "group_id": "db9d8ebc-0788-41d0-a328-77b38de73ae0",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "ff2f401c-0e14-454d-a221-0cb34d4f5ce7",
+      "group_id": "db9d8ebc-0788-41d0-a328-77b38de73ae0",
+      "name": "120m \"fast\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "02e826ea-ee9f-4259-a2d2-6e0ccbc1c6f0",
+      "group_id": "db9d8ebc-0788-41d0-a328-77b38de73ae0",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "e270df2a-c4e8-4e31-90f4-8f99e51012c9",
+      "group_id": "db9d8ebc-0788-41d0-a328-77b38de73ae0",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "6min"
+    },
+    {
+      "id": "37dd0db7-339e-49d0-b438-313c2ddcea17",
+      "group_id": "1a451417-a1bd-4ace-b1b0-03f84cd48ae5",
+      "name": "No spikes",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Time"
+    },
+    {
+      "id": "9ba52f4d-fe9f-4a68-93b7-8aacea69563a",
+      "group_id": "159179b6-1057-4fc9-baa0-2e8a677f35f8",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0cd072ae-1843-43f7-83d0-9d07ab0bb2aa",
+      "group_id": "159179b6-1057-4fc9-baa0-2e8a677f35f8",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "a54e657d-65af-4e74-813c-215c9bdb63aa",
+      "group_id": "159179b6-1057-4fc9-baa0-2e8a677f35f8",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "d6a90c3d-a4d1-4a7f-a5d0-21637a1c6fe2",
+      "group_id": "159179b6-1057-4fc9-baa0-2e8a677f35f8",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 70.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "888c7c60-720f-4a99-bdb8-f67a31120777",
+      "group_id": "159179b6-1057-4fc9-baa0-2e8a677f35f8",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 75.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fb21821d-f2dd-42cc-bb2a-649445857eb9",
+      "group_id": "8e664faf-f10a-4665-bbb0-0c98e87baac3",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "902d39d3-5f35-4742-8c9d-b05ca6d7e59b",
+      "group_id": "8e664faf-f10a-4665-bbb0-0c98e87baac3",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 50.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4dad9b36-2333-40d4-944a-afb0697a3a6f",
+      "group_id": "8e664faf-f10a-4665-bbb0-0c98e87baac3",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6c0d7462-42f1-4135-a2f6-a2cab1b8e268",
+      "group_id": "8e664faf-f10a-4665-bbb0-0c98e87baac3",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "aba62799-6185-48da-a050-cf92fbfac805",
+      "group_id": "3fae6740-db86-4778-8953-5a7ce0448f7e",
+      "name": "2x 5 x 60m strides",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "177fcf10-016a-453e-8988-ebaa85128819",
+      "group_id": "3fae6740-db86-4778-8953-5a7ce0448f7e",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fd95f647-b546-442e-96a0-0d444b3ebd4c",
+      "group_id": "3fae6740-db86-4778-8953-5a7ce0448f7e",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "11d749fc-0f22-455f-a62d-d2185d5e7e7b",
+      "group_id": "4e1685be-f056-40f0-a70b-bc576632c24b",
+      "name": "Let feet heal",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Rest"
+    },
+    {
+      "id": "951589f5-e627-4828-91ed-7f379d0b24aa",
+      "group_id": "4e1685be-f056-40f0-a70b-bc576632c24b",
+      "name": "up to 10- X Wickets",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "daa19f0b-7c79-46c8-aa2d-ca4367ffc086",
+      "group_id": "0ea8fe1a-3aea-4647-bfc8-84ff025a1516",
+      "name": "Dance",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "d83cc867-8530-4cf4-a1f0-33cb0e881295",
+      "group_id": "7af8bd65-3971-4deb-8a00-6bb2fe5a49d3",
+      "name": "Bulgarian Split Squat",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4afcc78e-01c9-4632-af8d-e3425961d28a",
+      "group_id": "7af8bd65-3971-4deb-8a00-6bb2fe5a49d3",
+      "name": "Bulgarian Split Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 40.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "404009a6-e657-4264-a9cc-56c37d342b09",
+      "group_id": "7af8bd65-3971-4deb-8a00-6bb2fe5a49d3",
+      "name": "Bulgarian Split Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 45.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b2c47e84-2cfc-4e41-a726-97d4334ca7bc",
+      "group_id": "7af8bd65-3971-4deb-8a00-6bb2fe5a49d3",
+      "name": "Bulgarian Split Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 50.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "841e6c90-4002-4e04-b1d9-4a315a4af18a",
+      "group_id": "7af8bd65-3971-4deb-8a00-6bb2fe5a49d3",
+      "name": "Bulgarian Split Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c1ea768e-0c17-40fa-8c03-fecfe1649a76",
+      "group_id": "90050820-cc61-44b3-8c42-5f273622e00e",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4ebe4c96-8ab6-482b-be0c-b0871516f821",
+      "group_id": "90050820-cc61-44b3-8c42-5f273622e00e",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 52.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "98a8abbc-c2fb-4cef-bfb0-f441568cefb1",
+      "group_id": "90050820-cc61-44b3-8c42-5f273622e00e",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 57.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c05a524e-24ad-45b9-9a54-b2b0b7e7e340",
+      "group_id": "90050820-cc61-44b3-8c42-5f273622e00e",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "a584022d-f385-4668-9f3e-d1c914dc08fb",
+      "group_id": "df0772a0-0402-4b33-9c50-693a887b6176",
+      "name": "2x 5 x 60m strides",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "76e92ad4-327b-4527-ad73-32ac653d8904",
+      "group_id": "df0772a0-0402-4b33-9c50-693a887b6176",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8542dbb9-947e-4c22-aa8c-554dd83f06d2",
+      "group_id": "df0772a0-0402-4b33-9c50-693a887b6176",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ff73986e-33e7-4619-9860-cdb1577f8bbf",
+      "group_id": "27966401-9b30-4bda-8e5c-1de93ba4727e",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "a0095722-ee18-42f5-90cd-533bab5c6030",
+      "group_id": "27966401-9b30-4bda-8e5c-1de93ba4727e",
+      "name": "When you land",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b44a4f69-72f9-43ce-974b-1e8b6414110b",
+      "group_id": "3ccc4d4e-486a-405d-9513-dc6bdc538dba",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "7adccfa8-b6f8-435d-b3d6-d8441b4f7a8b",
+      "group_id": "05e563b4-7761-470c-8294-5b5468a76187",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ac6fd554-4e55-4534-9bef-d08d8f35c527",
+      "group_id": "05e563b4-7761-470c-8294-5b5468a76187",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": 8,
+      "weight": 50.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e8e34c1e-256c-409f-b796-8c0a006982f2",
+      "group_id": "05e563b4-7761-470c-8294-5b5468a76187",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "06512a1a-9077-4b8f-a2df-feef8615a3d2",
+      "group_id": "05e563b4-7761-470c-8294-5b5468a76187",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8c944ee2-8b88-4d9e-9ac2-ea2c0d31118b",
+      "group_id": "f42c1055-8dcc-475c-84f6-a2fb9b105ca6",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "67baefb5-8bff-4036-be34-29bfe214d1f8",
+      "group_id": "f42c1055-8dcc-475c-84f6-a2fb9b105ca6",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 50.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "17368751-4a5e-4769-b645-5fc324178036",
+      "group_id": "f42c1055-8dcc-475c-84f6-a2fb9b105ca6",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ce85d232-5704-4768-bbf2-5ef69d9dc5c2",
+      "group_id": "f42c1055-8dcc-475c-84f6-a2fb9b105ca6",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "a7530747-a646-4207-85df-e4c02b51bf66",
+      "group_id": "c3924348-b0ae-4c03-a43f-afa6228f6faa",
+      "name": "2x 5 x 60m strides",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "41d3c2b7-b73d-4636-ae15-279acf606ce6",
+      "group_id": "c3924348-b0ae-4c03-a43f-afa6228f6faa",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "41e7057a-ec14-4c67-9a36-774743dfe987",
+      "group_id": "c3924348-b0ae-4c03-a43f-afa6228f6faa",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "86da36a2-2306-4cd9-b674-79e8b71a30e1",
+      "group_id": "759579a8-7c5f-4cde-922a-823dd4bcc256",
+      "name": "2x5x100",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Rest"
+    },
+    {
+      "id": "de60bb7e-42a7-41d3-a506-2482679a54f5",
+      "group_id": "759579a8-7c5f-4cde-922a-823dd4bcc256",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3 min"
+    },
+    {
+      "id": "08b83816-aa99-439d-9098-dc32b1dec11c",
+      "group_id": "759579a8-7c5f-4cde-922a-823dd4bcc256",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "eee14506-e6c1-47da-b332-f10d3494cef6",
+      "group_id": "759579a8-7c5f-4cde-922a-823dd4bcc256",
+      "name": "120m \"fast\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "48c11516-6bb2-4e92-87cc-6fe88c8bd2be",
+      "group_id": "759579a8-7c5f-4cde-922a-823dd4bcc256",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "3min"
+    },
+    {
+      "id": "6e87aa25-89c9-48a1-b224-3aeae032b844",
+      "group_id": "759579a8-7c5f-4cde-922a-823dd4bcc256",
+      "name": "120m \"slow\"",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "6min"
+    },
+    {
+      "id": "54a6e5ca-6901-4759-a5bf-738425fa0ec0",
+      "group_id": "0ecd6fe7-66a8-4d04-a37b-41d52cad764e",
+      "name": "No spikes",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Time"
+    },
+    {
+      "id": "89c59e36-4800-446a-8a64-acfbc26b35f8",
+      "group_id": "6454af9c-2af2-4d4c-8b52-1f86eec90b8c",
+      "name": "Back Squat 1.5",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c7d99a79-e210-400c-8a11-b42b906a2224",
+      "group_id": "6454af9c-2af2-4d4c-8b52-1f86eec90b8c",
+      "name": "Back Squat 1.5",
+      "sets": 1,
+      "reps": 10,
+      "weight": 85.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "f156ea48-5485-46f6-87d3-8bf389e5500e",
+      "group_id": "6454af9c-2af2-4d4c-8b52-1f86eec90b8c",
+      "name": "Back Squat 1.5",
+      "sets": 1,
+      "reps": 10,
+      "weight": 90.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "770a390d-2871-4376-abbb-5a5e6a6d3f8a",
+      "group_id": "6454af9c-2af2-4d4c-8b52-1f86eec90b8c",
+      "name": "Back Squat 1.5",
+      "sets": 1,
+      "reps": 10,
+      "weight": 95.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c7d21bb5-1134-466c-96ec-aace2e358d64",
+      "group_id": "6454af9c-2af2-4d4c-8b52-1f86eec90b8c",
+      "name": "Back Squat 1.5",
+      "sets": 1,
+      "reps": 10,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6854fb03-a90b-4a24-b18b-ec257e8559cc",
+      "group_id": "d4e2db94-13b8-4236-8b2c-e41ac2b8cb14",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "831fdda9-12c0-46b4-8d6e-ab8ee7d74788",
+      "group_id": "d4e2db94-13b8-4236-8b2c-e41ac2b8cb14",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 50.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "d2658c17-3561-4fb1-a2f1-784ec8adeb33",
+      "group_id": "d4e2db94-13b8-4236-8b2c-e41ac2b8cb14",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "9c9d7b8a-9746-42c1-92e6-bc05e6596ae7",
+      "group_id": "d4e2db94-13b8-4236-8b2c-e41ac2b8cb14",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "2d2a73b4-0881-4cd2-a3d4-6c79382c9d17",
+      "group_id": "5159e054-0b5f-4841-9664-28d988420259",
+      "name": "2x 5 x 60m strides",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "1f8cc931-1e7a-42bc-8530-adfb4c300810",
+      "group_id": "5159e054-0b5f-4841-9664-28d988420259",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "d1b8b19b-4479-4140-ac20-2cf61fd41fce",
+      "group_id": "5159e054-0b5f-4841-9664-28d988420259",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6d9e94f7-09c1-44fb-95dc-502e0cfc5395",
+      "group_id": "db0ded6d-d04b-45dc-839f-34bfdd99a9ad",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "rest"
+    },
+    {
+      "id": "83f1b5d3-aead-46fa-96c2-658bdfc6c77a",
+      "group_id": "db0ded6d-d04b-45dc-839f-34bfdd99a9ad",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c0042829-a450-45cc-83cc-0dac22bc35b7",
+      "group_id": "db0ded6d-d04b-45dc-839f-34bfdd99a9ad",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "f62a2320-bb69-41fb-8e9e-6f8c88a245bc",
+      "group_id": "db0ded6d-d04b-45dc-839f-34bfdd99a9ad",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "7bb6ec86-bb86-4bc6-bda4-35e76e846f42",
+      "group_id": "db0ded6d-d04b-45dc-839f-34bfdd99a9ad",
+      "name": "Wait and see",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "5 min"
+    },
+    {
+      "id": "398b6cfd-dcb9-42b0-95e2-67f93ce6190e",
+      "group_id": "db0ded6d-d04b-45dc-839f-34bfdd99a9ad",
+      "name": "how legs feel",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4ece7187-7026-4c40-bc88-fb7fd69429f7",
+      "group_id": "db0ded6d-d04b-45dc-839f-34bfdd99a9ad",
+      "name": "if good, repeat",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "cd446fe3-a8f9-4060-b322-081ab663b583",
+      "group_id": "5ea864b2-3878-42bc-9e31-7e45bdc2b1bc",
+      "name": "Do in running shoes",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "da7aa264-8822-4e01-9878-fbb2548339f9",
+      "group_id": "c7f9d778-0c80-4c94-a891-42e51f2b35b5",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5fd2b206-e916-4ba2-bc34-6ea7972f4b83",
+      "group_id": "c7f9d778-0c80-4c94-a891-42e51f2b35b5",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 70.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0735f998-5959-4226-8c75-57e4876157c4",
+      "group_id": "c7f9d778-0c80-4c94-a891-42e51f2b35b5",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 75.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "2fe6cd8e-255d-4fa0-a406-453aa58e3751",
+      "group_id": "c7f9d778-0c80-4c94-a891-42e51f2b35b5",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 80.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "af189219-6aa6-4e46-a98a-d462dc2093ea",
+      "group_id": "c7f9d778-0c80-4c94-a891-42e51f2b35b5",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 85.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4ef7dd02-5b7b-4783-aeee-bb9f979b621d",
+      "group_id": "8688077d-3311-4889-abd4-0d9e5a18e283",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "cb22538e-ad2e-44a7-8555-13e8837cd995",
+      "group_id": "8688077d-3311-4889-abd4-0d9e5a18e283",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 52.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "28625a8d-357c-41fe-b7cb-a6ea2ff64df1",
+      "group_id": "8688077d-3311-4889-abd4-0d9e5a18e283",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 57.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "b397ce72-a6a0-487c-ada3-d2986b7937a7",
+      "group_id": "8688077d-3311-4889-abd4-0d9e5a18e283",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "3e8e2d0e-62f3-4af3-99d3-7a17e4c0ffab",
+      "group_id": "ea2c802b-c301-432e-a68c-18672c39889a",
+      "name": "2x 5 x 60m strides",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e97ce2a0-8a0a-402e-86b1-4cfd58cbbc13",
+      "group_id": "ea2c802b-c301-432e-a68c-18672c39889a",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e017f8e4-e380-46b5-8fac-3600554dae61",
+      "group_id": "ea2c802b-c301-432e-a68c-18672c39889a",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6b857641-e8c3-467e-beaf-829ac88a0446",
+      "group_id": "b4eb69d7-6dd4-43df-a193-bc8d9d177dc4",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "220a1302-fc61-47e6-a533-c2383db93f81",
+      "group_id": "4a1a8bfb-c677-4251-a605-8a2f1e11b33a",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "242c993e-9846-4664-8c83-2f2d37faf70d",
+      "group_id": "8c6ea745-ce3f-4c0e-bc80-1006ebfd76c0",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "12da0c22-b6ee-4461-9702-5a378128ee66",
+      "group_id": "8c6ea745-ce3f-4c0e-bc80-1006ebfd76c0",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "a1b3571f-0aa4-4091-b3ea-82851b6fa73d",
+      "group_id": "8c6ea745-ce3f-4c0e-bc80-1006ebfd76c0",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "efbb8bff-74e0-48f1-b03f-fd91835fbe1e",
+      "group_id": "8c6ea745-ce3f-4c0e-bc80-1006ebfd76c0",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": 8,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "d35f9be1-743c-49fa-b5b1-fa066ea11329",
+      "group_id": "28441ba6-655e-4146-b386-030002458d4e",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "7acdb3dd-2691-44ca-b1ea-d303f1abf19e",
+      "group_id": "28441ba6-655e-4146-b386-030002458d4e",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 50.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "f18d6c98-358a-4cca-b03c-941ed7311ecd",
+      "group_id": "28441ba6-655e-4146-b386-030002458d4e",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "17fc7146-dd85-4bf8-ab43-389107e98508",
+      "group_id": "28441ba6-655e-4146-b386-030002458d4e",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "1c29ad24-2798-4a93-9694-f3fcba3c60f3",
+      "group_id": "a54a3ce3-a7dc-4db6-b3ef-c20fde09db05",
+      "name": "2x 5 x 60m strides",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "164a2e94-0afb-4832-8301-4e9821322cfd",
+      "group_id": "a54a3ce3-a7dc-4db6-b3ef-c20fde09db05",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "29d405fc-2746-4c96-a5db-b8e5049c6ec2",
+      "group_id": "a54a3ce3-a7dc-4db6-b3ef-c20fde09db05",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "400b9823-2795-4047-82a0-fb7c37ca5bfd",
+      "group_id": "68e4647b-6882-4b5e-8601-dd8ada37ef53",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "rest"
+    },
+    {
+      "id": "caf99723-cb27-4b2f-b1a3-6b5f94e4e02d",
+      "group_id": "68e4647b-6882-4b5e-8601-dd8ada37ef53",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6a8ead4b-235a-4d1c-b506-64d937600405",
+      "group_id": "68e4647b-6882-4b5e-8601-dd8ada37ef53",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "693f90d9-f4d7-42d8-af20-e9be1312d590",
+      "group_id": "68e4647b-6882-4b5e-8601-dd8ada37ef53",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fb81dfd9-2067-4836-a133-456ae887faac",
+      "group_id": "68e4647b-6882-4b5e-8601-dd8ada37ef53",
+      "name": "Wait and see",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "5 min"
+    },
+    {
+      "id": "1301ee1b-1e8b-475d-b3fd-215b9fcc69f1",
+      "group_id": "68e4647b-6882-4b5e-8601-dd8ada37ef53",
+      "name": "how legs feel",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8251ab0a-4fec-4ea9-bf11-03c1c4b0cedf",
+      "group_id": "68e4647b-6882-4b5e-8601-dd8ada37ef53",
+      "name": "if good, repeat",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "f027bb18-6cd8-420f-8b6b-936413f71d08",
+      "group_id": "e6fddf0d-db30-4aaf-bf76-5cd9320d2c5d",
+      "name": "No spikes",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Time"
+    },
+    {
+      "id": "8b9a1bdc-ae05-4a85-87ba-c51c1b50f957",
+      "group_id": "147743d5-284d-4d27-ab41-b0fa89f5efb5",
+      "name": "Back Squat 1.5",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "a1b232f0-568d-497d-af8f-3d773713f49a",
+      "group_id": "147743d5-284d-4d27-ab41-b0fa89f5efb5",
+      "name": "Back Squat 1.5",
+      "sets": 1,
+      "reps": 8,
+      "weight": 90.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "22737716-cba0-4de3-a365-6fe886b87b07",
+      "group_id": "147743d5-284d-4d27-ab41-b0fa89f5efb5",
+      "name": "Back Squat 1.5",
+      "sets": 1,
+      "reps": 8,
+      "weight": 95.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "7d2de28d-bad0-4981-b140-c86d85e78a37",
+      "group_id": "147743d5-284d-4d27-ab41-b0fa89f5efb5",
+      "name": "Back Squat 1.5",
+      "sets": 1,
+      "reps": 8,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0ff455e1-55c1-4d0d-8f87-388d4831026f",
+      "group_id": "147743d5-284d-4d27-ab41-b0fa89f5efb5",
+      "name": "Back Squat 1.5",
+      "sets": 1,
+      "reps": 8,
+      "weight": 105.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "97722bde-cd72-4542-a153-d73229891a79",
+      "group_id": "1684df0d-ddab-43eb-99b6-a0def362b9f3",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "9d4f98eb-4c08-454c-be23-eb7dd75b6583",
+      "group_id": "1684df0d-ddab-43eb-99b6-a0def362b9f3",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6d3e6f59-df5c-4e08-86b9-2e56ef06f494",
+      "group_id": "1684df0d-ddab-43eb-99b6-a0def362b9f3",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "89cb39d3-7772-47e4-8885-eeaa54e469d1",
+      "group_id": "1684df0d-ddab-43eb-99b6-a0def362b9f3",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "149c5e6c-bece-4ddd-8369-09679e43313b",
+      "group_id": "849b7126-09ce-4d4e-a39f-d4148863814e",
+      "name": "2x 5 x 60m strides",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5698baeb-cd2c-4754-b343-968ce66f90a7",
+      "group_id": "849b7126-09ce-4d4e-a39f-d4148863814e",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "2864c95d-e459-4a01-985e-096963590eb2",
+      "group_id": "849b7126-09ce-4d4e-a39f-d4148863814e",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ac94d948-e13e-4804-8443-e05b97ad3c52",
+      "group_id": "1d86b7cc-86c6-4571-9570-0abb6b93f5ed",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "rest"
+    },
+    {
+      "id": "507df975-c4c5-430a-af41-1bbb95279046",
+      "group_id": "1d86b7cc-86c6-4571-9570-0abb6b93f5ed",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "73d3d925-b2be-4a43-9d86-8f7d94329519",
+      "group_id": "1d86b7cc-86c6-4571-9570-0abb6b93f5ed",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ab7aaa08-df8c-4a2b-8c28-cbaa48115ca4",
+      "group_id": "1d86b7cc-86c6-4571-9570-0abb6b93f5ed",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "fe7b657d-a469-4d0c-9bac-4fffe86149f5",
+      "group_id": "1d86b7cc-86c6-4571-9570-0abb6b93f5ed",
+      "name": "Wait and see",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "5 min"
+    },
+    {
+      "id": "0e3a4362-9030-4128-845d-7b13bb7895c8",
+      "group_id": "1d86b7cc-86c6-4571-9570-0abb6b93f5ed",
+      "name": "how legs feel",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ed15d499-7dac-4ff4-b838-95a62e2fd9c7",
+      "group_id": "1d86b7cc-86c6-4571-9570-0abb6b93f5ed",
+      "name": "if good, repeat",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "90b5b1df-687e-4517-a805-00aac07a55b3",
+      "group_id": "2f41022f-dc97-437d-8f20-89e2bb292a59",
+      "name": "Do in running shoes",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "7e4c1316-db53-4b21-8e6a-37dd9ce148e0",
+      "group_id": "b4447f9d-90b7-4c75-beee-dffa9e9e15b2",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "95469368-4119-450b-bbe5-46ca9aaae73d",
+      "group_id": "b4447f9d-90b7-4c75-beee-dffa9e9e15b2",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 75.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "1e9fc93e-e6f2-4c3b-ba9d-01a18c471a86",
+      "group_id": "b4447f9d-90b7-4c75-beee-dffa9e9e15b2",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 80.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "2159b0b0-0f3d-456f-b9aa-325073c9c016",
+      "group_id": "b4447f9d-90b7-4c75-beee-dffa9e9e15b2",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 85.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "80603e62-c051-4d2d-92a1-bcf3fced92c0",
+      "group_id": "b4447f9d-90b7-4c75-beee-dffa9e9e15b2",
+      "name": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight": 90.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "406d19f8-723a-43a5-b1e7-35ceaf857242",
+      "group_id": "a4bd862b-66c5-49c7-9fa8-196850680be1",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8859a5da-e57c-43bc-9c59-d0fc4f38fc2c",
+      "group_id": "a4bd862b-66c5-49c7-9fa8-196850680be1",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 55.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "657b3991-dece-40e5-86bc-6b1c5bc571ae",
+      "group_id": "a4bd862b-66c5-49c7-9fa8-196850680be1",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 62.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "6bc653c5-6f5b-489b-98e5-9c0ee7a80145",
+      "group_id": "a4bd862b-66c5-49c7-9fa8-196850680be1",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "db951f89-734e-4316-bc38-eb2523eb580c",
+      "group_id": "b6054b61-4e95-43ad-84df-c5845818ccd1",
+      "name": "2x 5 x 60m strides",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ed83ad89-8378-4a49-a8d0-578aa9cd715a",
+      "group_id": "b6054b61-4e95-43ad-84df-c5845818ccd1",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0fc7b4d2-b333-4c7c-97d4-dd93859f6720",
+      "group_id": "b6054b61-4e95-43ad-84df-c5845818ccd1",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "bdca0e43-3cda-43d9-adb5-6750b6e307a5",
+      "group_id": "bb71a28f-d323-41cd-963c-bb5978d4eab1",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "ef4c405d-e89d-464e-adf4-124397d286b7",
+      "group_id": "26384074-8d98-4654-b81a-0643ec1ec85b",
+      "name": "Travelling game",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "d1503215-6f8f-4630-b9dd-658b0c619be2",
+      "group_id": "ae096bce-c5ec-40ca-a16c-1498fe34fa94",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e692b48e-0e12-4034-beef-cbc20eacaebd",
+      "group_id": "ae096bce-c5ec-40ca-a16c-1498fe34fa94",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": 8,
+      "weight": 60.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "13621a79-9d94-40d5-8244-4e99580c4b61",
+      "group_id": "ae096bce-c5ec-40ca-a16c-1498fe34fa94",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": 8,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "5c38871b-f8cc-4e35-b33f-dddf8f0e79a9",
+      "group_id": "ae096bce-c5ec-40ca-a16c-1498fe34fa94",
+      "name": "Walking Lunges with barbell",
+      "sets": 1,
+      "reps": 8,
+      "weight": 70.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "05442ea0-0f4f-4ad5-ac8d-3025325e7354",
+      "group_id": "bcc71dc2-1bb4-49b7-984c-d170ffd9ab7d",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "bf11a047-4ada-41f5-b7c8-20c1769f8699",
+      "group_id": "bcc71dc2-1bb4-49b7-984c-d170ffd9ab7d",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 57.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e90e8fca-f9df-4c64-a315-d8429ebe07fa",
+      "group_id": "bcc71dc2-1bb4-49b7-984c-d170ffd9ab7d",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 65.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "bf1b12f1-198f-4cb5-9b47-50b6859c346c",
+      "group_id": "bcc71dc2-1bb4-49b7-984c-d170ffd9ab7d",
+      "name": "Romanian dead 1 Leg",
+      "sets": 1,
+      "reps": 8,
+      "weight": 67.5,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "0048a8b6-dda5-4137-b725-ff849ae07e99",
+      "group_id": "7df293d7-ee41-4c3f-b82e-c4cff3a07550",
+      "name": "2x 5 x 60m strides",
+      "sets": 2,
+      "reps": 5,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "e8465fe1-2c32-4537-8ce3-f8636464033d",
+      "group_id": "7df293d7-ee41-4c3f-b82e-c4cff3a07550",
+      "name": "recovery is walk ",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "4228263f-12d0-409d-a6c4-6c491bfd94a8",
+      "group_id": "7df293d7-ee41-4c3f-b82e-c4cff3a07550",
+      "name": "back time",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "d0a98662-da14-4304-82cb-c3e54a4c485a",
+      "group_id": "a9105730-6d8d-45ed-8008-a8f2edcd6e71",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "rest"
+    },
+    {
+      "id": "107b7fa5-903f-4e36-822d-6e4a13bedd2b",
+      "group_id": "a9105730-6d8d-45ed-8008-a8f2edcd6e71",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "c05656ad-8253-499c-989a-67532ed3785a",
+      "group_id": "a9105730-6d8d-45ed-8008-a8f2edcd6e71",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "9122fdf9-2abc-410e-9845-291cc77fa403",
+      "group_id": "a9105730-6d8d-45ed-8008-a8f2edcd6e71",
+      "name": "Long Strides",
+      "sets": 1,
+      "reps": null,
+      "weight": 100.0,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "8f93202e-548d-437c-ab47-a29b1ff3dfd7",
+      "group_id": "a9105730-6d8d-45ed-8008-a8f2edcd6e71",
+      "name": "Wait and see",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "5 min"
+    },
+    {
+      "id": "b0822d54-0b89-4a7f-9dcd-e609382ab735",
+      "group_id": "a9105730-6d8d-45ed-8008-a8f2edcd6e71",
+      "name": "how legs feel",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "cd3df628-6914-475a-a2a6-db45e74d2277",
+      "group_id": "a9105730-6d8d-45ed-8008-a8f2edcd6e71",
+      "name": "if good, repeat",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": null
+    },
+    {
+      "id": "be5db181-c6f2-4bcb-b912-5b318dbae679",
+      "group_id": "e4af24c8-36b4-410a-a6a8-2567b7003360",
+      "name": "No spikes",
+      "sets": 1,
+      "reps": null,
+      "weight": null,
+      "distance": null,
+      "duration": null,
+      "notes": "Time"
+    }
+  ]
+}

@@ -85,8 +85,8 @@ If you prefer to run components individually for development:
 
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 #### Backend
@@ -161,7 +161,8 @@ python -m pytest
 
 3. **Run Tests**:
    - Ensure all tests pass
-   - Check for linting errors with `npm run lint` in frontend
+   - Check for linting errors with `pnpm run lint` in frontend
+   - Format code with `pnpm run format` in frontend
 
 4. **Commit Your Changes**:
    ```bash

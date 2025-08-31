@@ -1,61 +1,72 @@
-import React from 'react';
-import { Container, Tabs, Box, Paper, Title, Text } from '@mantine/core';
-import { 
-  WellbeingAssessment, 
-  MoodTracking, 
-  PhysicalMetrics,
-  Reflection, 
-  RecoveryHealth 
-} from '../../components/wellbeing';
+// Path: c:\users\a_kop\bobsleigh-coach-ai\frontend\src\app\wellbeing\page.tsx
 
-/**
- * Wellbeing Dashboard Page
- * This page demonstrates how to use all wellbeing components together
- */
+'use client';
+
+import { useState } from 'react';
+import { AppShell } from '@/components/layout/AppShell';
+import { Tabs, Title, Stack, Group, Button } from '@mantine/core';
+import { IconChartLine, IconCalendarStats, IconClipboardHeart, IconNotebook, IconHeartbeat } from '@tabler/icons-react';
+import WellbeingAssessment from '@/components/wellbeing/WellbeingAssessment';
+import { WellbeingCalendar } from '@/components/wellbeing/WellbeingCalendar';
+import { WellbeingTrends } from '@/components/wellbeing/WellbeingTrends';
+import RecoveryHealth from '@/components/wellbeing/RecoveryHealth';
+import Reflection from '@/components/wellbeing/Reflection';
+import { useRouter } from 'next/navigation';
+
 export default function WellbeingPage() {
-  // In a real application, this would come from your auth context
-  const currentUserId = '123e4567-e89b-12d3-a456-426614174000';
-  
-  return (
-    <Container size="xl" py="xl">
-      <Paper p="md" radius="md" withBorder mb="xl">
-        <Title order={1} mb="sm">Athlete Wellbeing Dashboard</Title>
-        <Text color="dimmed" mb="xl">
-          Track and manage all aspects of your physical and mental wellbeing to optimize performance and recovery.
-        </Text>
-      </Paper>
-      
-      <Tabs defaultValue="assessment">
-        <Tabs.List>
-          <Tabs.Tab value="assessment">Daily Assessment</Tabs.Tab>
-          <Tabs.Tab value="mood">Mood Tracking</Tabs.Tab>
-          <Tabs.Tab value="metrics">Physical Metrics</Tabs.Tab>
-          <Tabs.Tab value="reflection">Reflections</Tabs.Tab>
-          <Tabs.Tab value="recovery">Recovery & Health</Tabs.Tab>
-        </Tabs.List>
+  const [activeTab, setActiveTab] = useState<string | null>('assessment');
+  const router = useRouter();
 
-        <Box mt="xl">
-          <Tabs.Panel value="assessment">
-            <WellbeingAssessment userId={currentUserId} date={new Date()} />
+  return (
+    <AppShell>
+      <Stack gap="xl">
+        <Group justify="space-between">
+          <Title>Wellbeing Tracker</Title>
+          <Button onClick={() => router.push('/wellbeing/history')}>
+            View History
+          </Button>
+        </Group>
+
+        <Tabs value={activeTab} onChange={setActiveTab}>
+          <Tabs.List>
+            <Tabs.Tab value="assessment" leftSection={<IconClipboardHeart size={16} />}>
+              Daily Assessment
+            </Tabs.Tab>
+            <Tabs.Tab value="calendar" leftSection={<IconCalendarStats size={16} />}>
+              Calendar View
+            </Tabs.Tab>
+            <Tabs.Tab value="trends" leftSection={<IconChartLine size={16} />}>
+              Trends
+            </Tabs.Tab>
+            <Tabs.Tab value="recovery" leftSection={<IconHeartbeat size={16} />}>
+              Recovery
+            </Tabs.Tab>
+            <Tabs.Tab value="reflections" leftSection={<IconNotebook size={16} />}>
+              Reflections
+            </Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="assessment" pt="md">
+            <WellbeingAssessment userId="mock-user-id" />
           </Tabs.Panel>
-          
-          <Tabs.Panel value="mood">
-            <MoodTracking userId={currentUserId} />
+
+          <Tabs.Panel value="calendar" pt="md">
+            <WellbeingCalendar />
           </Tabs.Panel>
-          
-          <Tabs.Panel value="metrics">
-            <PhysicalMetrics userId={currentUserId} />
+
+          <Tabs.Panel value="trends" pt="md">
+            <WellbeingTrends />
           </Tabs.Panel>
-          
-          <Tabs.Panel value="reflection">
-            <Reflection userId={currentUserId} />
+
+          <Tabs.Panel value="recovery" pt="md">
+            <RecoveryHealth userId="mock-user-id" />
           </Tabs.Panel>
-          
-          <Tabs.Panel value="recovery">
-            <RecoveryHealth userId={currentUserId} />
+
+          <Tabs.Panel value="reflections" pt="md">
+            <Reflection userId="mock-user-id" />
           </Tabs.Panel>
-        </Box>
-      </Tabs>
-    </Container>
+        </Tabs>
+      </Stack>
+    </AppShell>
   );
 }

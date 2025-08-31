@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+// Path: c:\users\a_kop\bobsleigh-coach-ai\frontend\src\components\wellbeing\WellbeingAssessment.tsx
+
+'use client';
+
+import type React from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Box, 
   Title, 
@@ -10,7 +15,9 @@ import {
   Button, 
   Textarea, 
   Stack,
-  useMantineTheme
+  useMantineTheme,
+  NumberInput,
+  Divider
 } from '@mantine/core';
 import { 
   IconHeartFilled, 
@@ -19,16 +26,9 @@ import {
   IconSalad, 
   IconMoodNervous // Using IconMoodNervous instead of the missing IconStress
 } from '@tabler/icons-react';
-import { showNotification } from '@mantine/notifications';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-
-/**
- * WellbeingAssessment props interface
- */
-interface WellbeingAssessmentProps {
-  userId: string;
-  date?: Date;
-}
+import { notifications } from '@mantine/notifications';
+import { supabase } from '@/lib/supabase';
+import { DateInput } from '@mantine/dates';
 
 /**
  * Assessment data interface
@@ -39,18 +39,10 @@ interface AssessmentData {
   nutrition_quality: number;
   physical_readiness: number;
   mental_clarity: number;
+  sleep_hours: number;
+  body_weight: string;
+  resting_hr: string;
   notes: string;
-}
-
-/**
- * Saved assessment data from DB
- */
-interface SavedAssessment extends AssessmentData {
-  id: number;
-  user_id: string;
-  date: string;
-  created_at: string;
-  updated_at: string;
 }
 
 /**
@@ -58,11 +50,9 @@ interface SavedAssessment extends AssessmentData {
  * including sleep quality, stress levels, nutrition quality, physical readiness,
  * and mental clarity.
  */
-const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date = new Date() }) => {
+const WellbeingAssessment = ({ userId }: { userId: string }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
   const [loading, setLoading] = useState<boolean>(false);
-  const [savedAssessment, setSavedAssessment] = useState<SavedAssessment | null>(null);
   
   // Assessment form state
   const [assessment, setAssessment] = useState<AssessmentData>({
@@ -71,111 +61,152 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
     nutrition_quality: 5,
     physical_readiness: 5,
     mental_clarity: 5,
+    sleep_hours: 7,
+    body_weight: '',
+    resting_hr: '',
     notes: '',
   });
 
-  const dateString = date.toISOString().split('T')[0];
+  // Get current date
+  const [date, setDate] = useState<Date>(new Date());
 
-  // Fetch existing assessment data for the given date
   useEffect(() => {
-    const fetchAssessment = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('wellbeing_assessments')
-          .select('*')
-          .eq('user_id', userId)
-          .eq('date', dateString)
-          .single();
+    fetchTodaysAssessment();
+  }, []);
 
-        if (error) {
-          console.error('Error fetching wellbeing assessment:', error);
-          return;
-        }
+  const fetchTodaysAssessment = async () => {
+    try {
+      if (!userId) return;
 
-        if (data) {
-          setSavedAssessment(data as SavedAssessment);
-          setAssessment({
-            sleep_quality: data.sleep_quality,
-            stress_level: data.stress_level,
-            nutrition_quality: data.nutrition_quality,
-            physical_readiness: data.physical_readiness,
-            mental_clarity: data.mental_clarity,
-            notes: data.notes || '',
-          });
-        }
-      } catch (error) {
-        console.error('Error in wellbeing assessment fetch:', error);
+      const dateString = date.toISOString().split('T')[0];
+
+      const { data: wellbeingData, error: wellbeingError } = await supabase
+        .from('wellbeing_assessments')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('date', dateString)
+        .single();
+
+      if (wellbeingError && wellbeingError.code !== 'PGRST116') {
+        // PGRST116 means no rows returned, which is fine
+        console.error('Error fetching wellbeing data:', wellbeingError);
+        return;
       }
-    };
 
-    if (userId) {
-      fetchAssessment();
+      const { data: metricsData, error: metricsError } = await supabase
+        .from('daily_metrics')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('date', dateString)
+        .single();
+
+      if (metricsError && metricsError.code !== 'PGRST116') {
+        console.error('Error fetching daily metrics:', metricsError);
+      }
+
+      // Update form if we found existing data
+      if (wellbeingData) {
+        setAssessment(prev => ({
+          ...prev,
+          sleep_quality: wellbeingData.sleep_quality,
+          stress_level: wellbeingData.stress_level,
+          nutrition_quality: wellbeingData.nutrition_quality,
+          physical_readiness: wellbeingData.physical_readiness,
+          mental_clarity: wellbeingData.mental_clarity,
+          notes: wellbeingData.notes || '',
+        }));
+      }
+
+      if (metricsData?.metrics) {
+        setAssessment(prev => ({
+          ...prev,
+          sleep_hours: metricsData.metrics.sleep_hours || 7,
+          body_weight: metricsData.metrics.body_weight?.toString() || '',
+          resting_hr: metricsData.metrics.resting_heart_rate?.toString() || '',
+        }));
+      }
+    } catch (error) {
+      console.error('Error in wellbeing assessment fetch:', error);
     }
-  }, [userId, dateString, supabase]);
+  };
 
   const handleSliderChange = (field: keyof AssessmentData) => (value: number) => {
     setAssessment((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSleepHoursChange = (value: string | number) => {
+    setAssessment(prev => ({ ...prev, sleep_hours: typeof value === 'string' ? Number.parseFloat(value) || 7 : value }));
+  };
+
+  const handleBodyWeightChange = (value: string | number) => {
+    setAssessment(prev => ({ ...prev, body_weight: value.toString() }));
+  };
+
+  const handleRestingHRChange = (value: string | number) => {
+    setAssessment(prev => ({ ...prev, resting_hr: value.toString() }));
   };
 
   const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setAssessment((prev) => ({ ...prev, notes: event.target.value }));
   };
 
+  const handleDateChange = (value: Date | null) => {
+    if (value) {
+      setDate(value);
+      // Fetch assessment for new date
+      fetchTodaysAssessment();
+    }
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
     
     try {
-      const wellbeingData = {
-        ...assessment,
+      if (!userId) throw new Error('User ID is required');
+
+      const dateString = date.toISOString().split('T')[0];
+
+      // Save wellbeing assessment
+      const { error: wellbeingError } = await supabase.from('wellbeing_assessments').upsert({
         user_id: userId,
         date: dateString,
-      };
-
-      let query;
-      
-      if (savedAssessment) {
-        // Update existing assessment
-        query = supabase
-          .from('wellbeing_assessments')
-          .update(wellbeingData)
-          .eq('id', savedAssessment.id);
-      } else {
-        // Insert new assessment
-        query = supabase
-          .from('wellbeing_assessments')
-          .insert(wellbeingData);
-      }
-
-      const { error } = await query;
-      
-      if (error) {
-        throw error;
-      }
-
-      showNotification({
-        title: 'Success',
-        message: 'Wellbeing assessment saved successfully',
-        color: 'green',
+        sleep_quality: assessment.sleep_quality,
+        stress_level: assessment.stress_level,
+        nutrition_quality: assessment.nutrition_quality,
+        physical_readiness: assessment.physical_readiness,
+        mental_clarity: assessment.mental_clarity,
+        notes: assessment.notes || null,
       });
 
-      // Refresh data to get the ID if it was a new record
-      if (!savedAssessment) {
-        const { data, error } = await supabase
-          .from('wellbeing_assessments')
-          .select('*')
-          .eq('user_id', userId)
-          .eq('date', dateString)
-          .single();
-          
-        if (!error && data) {
-          setSavedAssessment(data as SavedAssessment);
-        }
+      if (wellbeingError) throw wellbeingError;
+
+      // Save metrics in daily_metrics if provided
+      if (assessment.body_weight || assessment.resting_hr || assessment.sleep_hours) {
+        const metrics: Record<string, number> = {};
+        
+        if (assessment.body_weight) metrics.body_weight = Number.parseFloat(assessment.body_weight);
+        if (assessment.resting_hr) metrics.resting_heart_rate = Number.parseInt(assessment.resting_hr);
+        if (assessment.sleep_hours) metrics.sleep_hours = assessment.sleep_hours;
+
+        const { error: metricsError } = await supabase.from('daily_metrics').upsert({
+          user_id: userId,
+          date: dateString,
+          metrics,
+        });
+
+        if (metricsError) throw metricsError;
       }
-    } catch (error) {
-      console.error('Error saving wellbeing assessment:', error);
-      showNotification({
+
+      notifications.show({
+        title: 'Success',
+        message: 'Your wellbeing assessment has been saved',
+        color: 'green',
+      });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to save wellbeing assessment';
+      notifications.show({
         title: 'Error',
-        message: 'Failed to save wellbeing assessment',
+        message: errorMessage,
         color: 'red',
       });
     } finally {
@@ -212,6 +243,14 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
         Rate your wellbeing metrics to help optimize your training and recovery. These metrics
         help our AI provide personalized recommendations for your training program.
       </Text>
+
+      <DateInput
+        label="Date"
+        value={date}
+        onChange={handleDateChange}
+        maxDate={new Date()}
+        mb="xl"
+      />
 
       <Paper p="md" radius="md" withBorder mb="xl">
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
@@ -336,7 +375,6 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
           />
         </Paper>
 
-        {/* Remove colSpan as it's not supported in Paper component */}
         <Paper p="md" radius="md" withBorder style={{ gridColumn: 'span 2' }}>
           <Group mb="xs">
             <IconBrain size={24} color={theme.colors.violet[6]} />
@@ -362,6 +400,48 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
         </Paper>
       </SimpleGrid>
 
+      <Divider label="Objective Metrics" labelPosition="center" my="xl" />
+
+      <SimpleGrid cols={{ base: 1, md: 3 }} spacing="lg">
+        <Paper p="md" radius="md" withBorder>
+          <Text fw={600} mb="xs">Sleep Duration</Text>
+          <NumberInput
+            placeholder="Hours of sleep"
+            value={assessment.sleep_hours}
+            onChange={handleSleepHoursChange}
+            min={0}
+            max={24}
+            step={0.5}
+            
+          />
+        </Paper>
+
+        <Paper p="md" radius="md" withBorder>
+          <Text fw={600} mb="xs">Body Weight (kg)</Text>
+          <NumberInput
+            placeholder="Enter weight"
+            value={assessment.body_weight ? Number.parseFloat(assessment.body_weight) : undefined}
+            onChange={handleBodyWeightChange}
+            min={30}
+            max={150}
+            step={0.1}
+            
+          />
+        </Paper>
+
+        <Paper p="md" radius="md" withBorder>
+          <Text fw={600} mb="xs">Resting Heart Rate (bpm)</Text>
+          <NumberInput
+            placeholder="Enter HR"
+            value={assessment.resting_hr ? Number.parseInt(assessment.resting_hr) : undefined}
+            onChange={handleRestingHRChange}
+            min={30}
+            max={200}
+            step={1}
+          />
+        </Paper>
+      </SimpleGrid>
+
       <Paper p="md" radius="md" withBorder mt="xl">
         <Text fw={600} mb="sm">Additional Notes</Text>
         <Textarea
@@ -379,7 +459,7 @@ const WellbeingAssessment: React.FC<WellbeingAssessmentProps> = ({ userId, date 
             variant="filled"
             color="blue"
           >
-            {savedAssessment ? 'Update Assessment' : 'Save Assessment'}
+            Save Assessment
           </Button>
         </Group>
       </Paper>
