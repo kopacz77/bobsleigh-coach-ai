@@ -1,8 +1,9 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query
 
-from app.schemas.training import Workout, WorkoutCreate, WorkoutExercise
+from app.db.session import get_supabase
+from app.schemas.training import WorkoutCreate
 from app.services.training_service import TrainingService
 
 router = APIRouter()
@@ -10,48 +11,67 @@ router = APIRouter()
 
 @router.get("/workouts")
 async def get_workouts(athlete_id: str = Query(...), limit: int = Query(10)):
-    """Get workouts for an athlete"""
-    training_service = TrainingService()
-    return await training_service.get_recent_workouts(athlete_id, limit)
-
-
-@router.get("/workouts/{workout_id}", response_model=Workout)
-async def get_workout(workout_id: str):
-    """Get a specific workout by ID"""
-    # Placeholder logic
-    if workout_id == "w1b2c3d4-e5f6-7890-abcd-ef1234567890":
-        return Workout(
-            id="w1b2c3d4-e5f6-7890-abcd-ef1234567890",
-            athlete_id="a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-            name="Monday Strength",
-            date="2025-03-15",
-            duration=90,
-            workout_type="strength",
-            notes="Focus on explosiveness",
-            exercises=[
-                WorkoutExercise(
-                    id="e1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                    workout_id="w1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                    exercise_id="x1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                    sets=4,
-                    reps=6,
-                    weight=120,
-                    notes="Felt strong",
-                ),
-            ],
+    """Get workouts for an athlete from the database."""
+    try:
+        training_service = TrainingService()
+        return await training_service.get_recent_workouts(athlete_id, limit)
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to fetch workouts: {str(e)}"
         )
-    raise HTTPException(status_code=404, detail="Workout not found")
 
 
-@router.post("/workouts", response_model=Workout)
+@router.get("/workouts/{workout_id}")
+async def get_workout(workout_id: str):
+    """Get a specific workout by UUID from the database."""
+    try:
+        supabase = get_supabase()
+        result = (
+            supabase.table("workouts")
+            .select("*, workout_exercises(*, exercises(name))")
+            .eq("id", workout_id)
+            .execute()
+        )
+        if not result.data:
+            raise HTTPException(status_code=404, detail="Workout not found")
+        return result.data[0]
+    except HTTPException:
+        raise
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to fetch workout: {str(e)}"
+        )
+
+
+@router.post("/workouts")
 async def create_workout(workout: WorkoutCreate):
-    """Create a new workout"""
-    training_service = TrainingService()
-    return await training_service.create_workout(workout.dict())
+    """Create a new workout in the database."""
+    try:
+        training_service = TrainingService()
+        data = workout.model_dump(exclude_none=True)
+        return await training_service.create_workout(data)
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to create workout: {str(e)}"
+        )
 
 
 @router.get("/recommendations")
 async def get_training_recommendations(athlete_id: str = Query(...)):
-    """Get AI-generated training recommendations for an athlete"""
-    training_service = TrainingService()
-    return await training_service.get_training_recommendations(athlete_id)
+    """Get AI-generated training recommendations for an athlete."""
+    try:
+        training_service = TrainingService()
+        return await training_service.get_training_recommendations(athlete_id)
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch recommendations: {str(e)}",
+        )
