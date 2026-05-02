@@ -19,7 +19,7 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconActivity, // Replaced IconMuscle with IconActivity
   IconArrowDown,
@@ -133,7 +133,7 @@ interface TrainingAssessmentProps {
  */
 const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workoutId = null }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState<boolean>(false);
   const [workout, setWorkout] = useState<Workout | null>(null);
   const [previousAssessment, setPreviousAssessment] = useState<TrainingAssessmentData | null>(null);
@@ -195,7 +195,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
   // Fetch workout details if workoutId is provided
   useEffect(() => {
     const fetchWorkoutDetails = async () => {
-      if (!workoutId || !userId) return;
+      if (!workoutId || !userId || !supabase) return;
 
       try {
         // Fetch workout details
@@ -324,6 +324,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
 
   // Submit assessment
   const handleSubmit = async () => {
+    if (!supabase) return;
     if (!assessment.workout_type) {
       showNotification({
         title: "Missing Information",

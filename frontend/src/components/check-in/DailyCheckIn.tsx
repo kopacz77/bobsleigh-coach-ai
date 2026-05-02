@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconActivity, // Replaced IconMuscle with IconActivity based on previous fixes
   IconBrain,
@@ -78,7 +78,7 @@ interface DailyCheckInProps {
  */
 const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState<boolean>(false);
   const [savedCheckIn, setSavedCheckIn] = useState<CheckIn | null>(null);
 
@@ -101,6 +101,7 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
   // Fetch existing check-in data for the given date
   useEffect(() => {
     const fetchCheckIn = async () => {
+      if (!supabase) return;
       try {
         const { data, error } = await supabase
           .from("daily_checkins")
@@ -167,6 +168,7 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
 
   // Submit check-in data
   const handleSubmit = async () => {
+    if (!supabase) return;
     setLoading(true);
 
     try {

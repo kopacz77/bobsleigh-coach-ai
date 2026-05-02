@@ -132,7 +132,7 @@ export function TrainingApprovalPanel({
       onReject(selectedPlan.id, rejectionReason);
       setRejectModalOpen(false);
       setRejectionReason('');
-      
+
       // Select the next plan if available
       const currentIndex = pendingPlans.findIndex(plan => plan.id === selectedPlan.id);
       if (currentIndex >= 0 && currentIndex < pendingPlans.length - 1) {
@@ -146,45 +146,45 @@ export function TrainingApprovalPanel({
   };
 
   const getTrainingPhaseLabel = (phase: string) => {
-    const phaseLabels = {
+    const phaseLabels: Record<string, string> = {
       general_preparation: 'General Preparation',
       specific_preparation: 'Specific Preparation',
       pre_competition: 'Pre-Competition',
       competition: 'Competition',
       transition: 'Transition'
     };
-    
+
     return phaseLabels[phase] || phase;
   };
 
   const renderPlanMetadata = (plan: TrainingPlanData) => {
     const { metadata } = plan;
-    
+
     return (
       <Card withBorder shadow="sm" p="md" radius="md">
         <Stack>
-          <Group position="apart">
+          <Group justify="space-between">
             <Title order={4}>Training Context</Title>
-            
+
             {metadata.injuryAccommodation && (
               <Badge color="red">Injury Accommodations</Badge>
             )}
-            
+
             {metadata.recoveryFocus && (
               <Badge color="orange">Recovery Focus</Badge>
             )}
           </Group>
-          
+
           <Group grow>
-            <Stack spacing="xs">
+            <Stack gap="xs">
               <Text size="sm" fw={500}>Training Phase</Text>
               <Badge size="lg" fullWidth>
                 {getTrainingPhaseLabel(metadata.trainingPhase)}
               </Badge>
             </Stack>
-            
+
             {metadata.competitionProximity !== undefined && (
-              <Stack spacing="xs">
+              <Stack gap="xs">
                 <Text size="sm" fw={500}>Competition</Text>
                 <Badge size="lg" color="green" fullWidth>
                   In {metadata.competitionProximity} days
@@ -192,32 +192,32 @@ export function TrainingApprovalPanel({
               </Stack>
             )}
           </Group>
-          
+
           <Divider label="PMC Metrics" labelPosition="center" />
-          
+
           <Group grow>
-            <Stack spacing={0} align="center">
+            <Stack gap={0} align="center">
               <Text size="sm" fw={500}>CTL (Fitness)</Text>
               <Text size="xl">{metadata.pmcMetrics.ctl.toFixed(1)}</Text>
             </Stack>
-            
-            <Stack spacing={0} align="center">
+
+            <Stack gap={0} align="center">
               <Text size="sm" fw={500}>ATL (Fatigue)</Text>
               <Text size="xl">{metadata.pmcMetrics.atl.toFixed(1)}</Text>
             </Stack>
-            
-            <Stack spacing={0} align="center">
+
+            <Stack gap={0} align="center">
               <Text size="sm" fw={500}>TSB (Form)</Text>
-              <Text size="xl" color={metadata.pmcMetrics.tsb >= 0 ? 'green' : 'red'}>
+              <Text size="xl" c={metadata.pmcMetrics.tsb >= 0 ? 'green' : 'red'}>
                 {metadata.pmcMetrics.tsb.toFixed(1)}
               </Text>
             </Stack>
           </Group>
-          
+
           {metadata.injuryAccommodation && (
             <>
               <Divider label="Injury Accommodations" labelPosition="center" color="red" />
-              <Text color="red">{metadata.injuryAccommodation}</Text>
+              <Text c="red">{metadata.injuryAccommodation}</Text>
             </>
           )}
         </Stack>
@@ -228,12 +228,12 @@ export function TrainingApprovalPanel({
   if (pendingPlans.length === 0) {
     return (
       <Card withBorder p="xl" radius="md">
-        <Stack align="center" spacing="md">
+        <Stack align="center" gap="md">
           <ThemeIcon size={64} radius={100} color="blue">
             <IconCheck size={32} />
           </ThemeIcon>
-          <Title order={3} align="center">No Training Plans Need Approval</Title>
-          <Text align="center" color="dimmed">
+          <Title order={3} ta="center">No Training Plans Need Approval</Title>
+          <Text ta="center" c="dimmed">
             All athlete training plans have been reviewed. Check back later for new generated plans.
           </Text>
         </Stack>
@@ -244,22 +244,22 @@ export function TrainingApprovalPanel({
   return (
     <Stack>
       <Title order={3}>Training Plan Approval</Title>
-      <Text color="dimmed">
+      <Text c="dimmed">
         Review AI-generated training plans for your athletes before they become visible
       </Text>
-      
+
       <Tabs defaultValue="list">
         <Tabs.List>
-          <Tabs.Tab value="list" icon={<IconCalendar size={14} />}>
+          <Tabs.Tab value="list" leftSection={<IconCalendar size={14} />}>
             Pending Plans ({pendingPlans.length})
           </Tabs.Tab>
           {selectedPlan && (
-            <Tabs.Tab value="review" icon={<IconBarbell size={14} />}>
+            <Tabs.Tab value="review" leftSection={<IconBarbell size={14} />}>
               Review Plan
             </Tabs.Tab>
           )}
           {showComparison && (
-            <Tabs.Tab value="compare" icon={<IconGitCompare size={14} />}>
+            <Tabs.Tab value="compare" leftSection={<IconGitCompare size={14} />}>
               Compare Changes
             </Tabs.Tab>
           )}
@@ -268,38 +268,38 @@ export function TrainingApprovalPanel({
         <Tabs.Panel value="list" pt="md">
           <Stack>
             {pendingPlans.map(plan => (
-              <Card 
-                key={plan.id} 
-                withBorder 
-                p="md" 
+              <Card
+                key={plan.id}
+                withBorder
+                p="md"
                 radius="md"
                 onClick={() => handleSelectPlan(plan)}
-                style={{ 
+                style={{
                   cursor: 'pointer',
-                  backgroundColor: selectedPlan?.id === plan.id ? '#f8f9fa' : undefined 
+                  backgroundColor: selectedPlan?.id === plan.id ? '#f8f9fa' : undefined
                 }}
               >
-                <Group position="apart">
+                <Group justify="space-between">
                   <div>
                     <Text fw={500}>{plan.athleteName}</Text>
-                    <Text size="sm" color="dimmed">
+                    <Text size="sm" c="dimmed">
                       Week {plan.weekNumber} • {new Date(plan.startDate).toLocaleDateString()} to {new Date(plan.endDate).toLocaleDateString()}
                     </Text>
                   </div>
-                  
+
                   <Group>
                     {plan.metadata.injuryAccommodation && (
                       <ThemeIcon color="red" variant="light">
                         <IconUserExclamation size={16} />
                       </ThemeIcon>
                     )}
-                    
+
                     {plan.metadata.recoveryFocus && (
                       <ThemeIcon color="orange" variant="light">
                         <IconAlertTriangle size={16} />
                       </ThemeIcon>
                     )}
-                    
+
                     <Badge>
                       {getTrainingPhaseLabel(plan.metadata.trainingPhase)}
                     </Badge>
@@ -313,36 +313,36 @@ export function TrainingApprovalPanel({
         <Tabs.Panel value="review" pt="md">
           {selectedPlan && (
             <Stack>
-              <Group position="apart">
+              <Group justify="space-between">
                 <div>
                   <Text size="xl" fw={700}>{selectedPlan.athleteName} • Week {selectedPlan.weekNumber}</Text>
-                  <Text size="sm" color="dimmed">
+                  <Text size="sm" c="dimmed">
                     Generated on {new Date(selectedPlan.metadata.generatedOn).toLocaleString()}
                   </Text>
                 </div>
-                
+
                 <Group>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     color="green"
-                    leftIcon={<IconCheck size={16} />}
+                    leftSection={<IconCheck size={16} />}
                     onClick={() => onApprove(selectedPlan.id)}
                   >
                     Approve
                   </Button>
-                  
+
                   <Button
                     variant="outline"
                     color="red"
-                    leftIcon={<IconX size={16} />}
+                    leftSection={<IconX size={16} />}
                     onClick={() => setRejectModalOpen(true)}
                   >
                     Reject
                   </Button>
-                  
+
                   <Button
                     variant="outline"
-                    leftIcon={<IconEdit size={16} />}
+                    leftSection={<IconEdit size={16} />}
                     onClick={handleModifyStart}
                     disabled={isModifying}
                   >
@@ -350,10 +350,10 @@ export function TrainingApprovalPanel({
                   </Button>
                 </Group>
               </Group>
-              
+
               {/* Plan Metadata */}
               {renderPlanMetadata(selectedPlan)}
-              
+
               {/* Week Overview */}
               <Card withBorder p="md" radius="md">
                 <Accordion>
@@ -380,11 +380,11 @@ export function TrainingApprovalPanel({
                         ) : (
                           <Stack>
                             {day.notes && (
-                              <Text size="sm" italic>{day.notes}</Text>
+                              <Text size="sm" fs="italic">{day.notes}</Text>
                             )}
                             {day.exerciseGroups.map(group => (
                               <Card key={group.id} withBorder shadow="xs" p="md">
-                                <Group position="apart" mb="xs">
+                                <Group justify="space-between" mb="xs">
                                   <Text fw={500}>{group.name}</Text>
                                   {group.mhg && (
                                     <Badge>MHG: {group.mhg}kg</Badge>
@@ -402,7 +402,7 @@ export function TrainingApprovalPanel({
                                         {exercise.rest && ` (${exercise.rest}s rest)`}
                                       </Text>
                                       {exercise.notes && (
-                                        <Text size="xs" color="dimmed">{exercise.notes}</Text>
+                                        <Text size="xs" c="dimmed">{exercise.notes}</Text>
                                       )}
                                     </List.Item>
                                   ))}
@@ -429,11 +429,11 @@ export function TrainingApprovalPanel({
           )}
         </Tabs.Panel>
       </Tabs>
-      
+
       {isModifying && modifiedPlan && (
         <Card withBorder p="md" radius="md">
           <Stack>
-            <Group position="apart">
+            <Group justify="space-between">
               <Title order={4}>Modify Training Plan</Title>
               <Group>
                 <Button variant="outline" color="red" onClick={handleModifyCancel}>
@@ -444,7 +444,7 @@ export function TrainingApprovalPanel({
                 </Button>
               </Group>
             </Group>
-            
+
             {/* Modification interface would go here */}
             <Text>
               Training plan modification interface would be implemented here.
@@ -460,7 +460,7 @@ export function TrainingApprovalPanel({
           </Stack>
         </Card>
       )}
-      
+
       <Modal
         opened={rejectModalOpen}
         onClose={() => setRejectModalOpen(false)}
@@ -471,7 +471,7 @@ export function TrainingApprovalPanel({
             Please provide a reason for rejecting this training plan.
             This feedback will help improve future recommendations.
           </Text>
-          
+
           <Textarea
             placeholder="Explain why this plan is not suitable..."
             minRows={4}
@@ -479,13 +479,13 @@ export function TrainingApprovalPanel({
             onChange={(e) => setRejectionReason(e.target.value)}
             required
           />
-          
-          <Group position="right" mt="md">
+
+          <Group justify="flex-end" mt="md">
             <Button variant="outline" onClick={() => setRejectModalOpen(false)}>
               Cancel
             </Button>
-            <Button 
-              color="red" 
+            <Button
+              color="red"
               onClick={handleRejectSubmit}
               disabled={rejectionReason.trim().length === 0}
             >

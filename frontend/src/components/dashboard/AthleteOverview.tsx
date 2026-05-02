@@ -13,7 +13,7 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconArrowRight,
   IconAward,
@@ -46,7 +46,7 @@ interface AthleteOverviewProps {
 const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
   const theme = useMantineTheme();
   const router = useRouter();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [todayCheckIn, setTodayCheckIn] = useState<any>(null);
   const [upcomingWorkouts, setUpcomingWorkouts] = useState<any[]>([]);
   const [recentPerformance, setRecentPerformance] = useState<any>(null);
@@ -56,6 +56,7 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
   // Fetch data on component mount
   useEffect(() => {
     const fetchDashboardData = async () => {
+      if (!supabase) return;
       setLoading(true);
       try {
         const today = new Date().toISOString().split("T")[0];

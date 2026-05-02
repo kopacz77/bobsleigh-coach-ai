@@ -16,7 +16,7 @@ import {
 import { Calendar } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconMoodCry,
   IconMoodHappy,
@@ -76,7 +76,7 @@ interface MoodTrackingProps {
  */
 const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [moodData, setMoodData] = useState<MoodEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -115,6 +115,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
   useEffect(() => {
     const fetchMoodData = async () => {
       if (!userId) return;
+      if (!supabase) return;
 
       try {
         const startOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
@@ -206,6 +207,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
 
   // Submit mood data
   const handleSubmit = async () => {
+    if (!supabase) return;
     if (!currentMood.primary_emotion) {
       showNotification({
         title: "Missing Information",

@@ -1,11 +1,11 @@
 // frontend/src/components/settings/MFASetup.tsx
 
 import { Box, Button, Image, Paper, Text, TextInput, Title } from "@mantine/core";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import React, { useState } from "react";
 
 const MFASetup = () => {
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [step, setStep] = useState("start"); // 'start', 'qr', 'verify'
   const [qrCode, setQrCode] = useState("");
   const [factorId, setFactorId] = useState("");
@@ -14,6 +14,7 @@ const MFASetup = () => {
 
   // Start MFA enrollment
   const startEnrollment = async () => {
+    if (!supabase) return;
     try {
       setError("");
       const { data, error } = await supabase.auth.mfa.enroll({
@@ -38,6 +39,7 @@ const MFASetup = () => {
 
   // Verify and complete enrollment
   const verifyAndEnroll = async () => {
+    if (!supabase) return;
     try {
       setError("");
       // Use type assertion to work around the type definition issues

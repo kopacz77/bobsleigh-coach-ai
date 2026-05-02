@@ -127,7 +127,7 @@ export function ProfileCard() {
                 label="Weight (kg)"
                 placeholder="Weight"
                 min={0}
-                precision={1}
+                decimalScale={1}
                 {...form.getInputProps("weight")}
               />
             </Group>

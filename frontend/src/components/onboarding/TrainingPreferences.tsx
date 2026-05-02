@@ -11,12 +11,12 @@ import {
   Stack,
   Text,
   ThemeIcon,
-  TimeInput,
+  TextInput,
   Title,
   useMantineTheme,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconArrowRight,
   IconBarbell,
@@ -31,9 +31,9 @@ import React, { useState } from "react";
  * TrainingPreferences component allows athletes to set their availability
  * and training preferences specifically for bobsleigh training
  */
-const TrainingPreferences = ({ userId, onComplete }) => {
+const TrainingPreferences = ({ userId, onComplete }: { userId: string; onComplete?: (data: any) => void }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState(false);
 
   // Training preferences form state
@@ -89,7 +89,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
   ];
 
   // Handle checkbox changes for availability
-  const handleAvailabilityChange = (day) => (event) => {
+  const handleAvailabilityChange = (day: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setPreferences((prev) => ({
       ...prev,
       availability: {
@@ -100,27 +100,28 @@ const TrainingPreferences = ({ userId, onComplete }) => {
   };
 
   // Handle select changes
-  const handleSelectChange = (field) => (value) => {
+  const handleSelectChange = (field: string) => (value: string | null) => {
     setPreferences((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle multi-select changes
-  const handleMultiSelectChange = (field) => (value) => {
+  const handleMultiSelectChange = (field: string) => (value: string[]) => {
     setPreferences((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle time input changes
-  const handleTimeChange = (field) => (value) => {
-    setPreferences((prev) => ({ ...prev, [field]: value }));
+  const handleTimeChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPreferences((prev) => ({ ...prev, [field]: event.currentTarget.value }));
   };
 
   // Toggle boolean preferences
-  const handleToggle = (field) => (event) => {
+  const handleToggle = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setPreferences((prev) => ({ ...prev, [field]: event.currentTarget.checked }));
   };
 
   // Save training preferences
   const handleSavePreferences = async () => {
+    if (!supabase) return;
     setLoading(true);
 
     try {
@@ -212,7 +213,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
         <SimpleGrid cols={{ base: 2, md: 7 }} spacing="md" mb="xl">
           {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map(
             (day) => {
-              const dayKey = day.toLowerCase();
+              const dayKey = day.toLowerCase() as keyof typeof preferences.availability;
               return (
                 <Paper
                   key={day}
@@ -272,16 +273,16 @@ const TrainingPreferences = ({ userId, onComplete }) => {
         </SimpleGrid>
 
         <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mb="md">
-          <TimeInput
+          <TextInput
             label="Preferred Start Time"
-            format="24"
+            placeholder="e.g. 08:00"
             value={preferences.preferredStartTime}
             onChange={handleTimeChange("preferredStartTime")}
           />
 
-          <TimeInput
+          <TextInput
             label="Preferred End Time"
-            format="24"
+            placeholder="e.g. 10:00"
             value={preferences.preferredEndTime}
             onChange={handleTimeChange("preferredEndTime")}
           />

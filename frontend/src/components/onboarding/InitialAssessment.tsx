@@ -15,7 +15,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconArrowRight,
   IconBarbell,
@@ -32,9 +32,9 @@ import React, { useState } from "react";
  * InitialAssessment component collects baseline performance metrics
  * from athletes specific to bobsleigh requirements
  */
-const InitialAssessment = ({ userId, onComplete }) => {
+const InitialAssessment = ({ userId, onComplete }: { userId: string; onComplete?: (data: any) => void }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState(false);
 
   // Assessment form state
@@ -75,27 +75,27 @@ const InitialAssessment = ({ userId, onComplete }) => {
   });
 
   // Handle number input changes
-  const handleNumberChange = (field) => (value) => {
+  const handleNumberChange = (field: string) => (value: string | number) => {
     setAssessment((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle text input changes
-  const handleTextChange = (field) => (event) => {
+  const handleTextChange = (field: string) => (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setAssessment((prev) => ({ ...prev, [field]: event.target.value }));
   };
 
   // Handle select changes
-  const handleSelectChange = (field) => (value) => {
+  const handleSelectChange = (field: string) => (value: string | null) => {
     setAssessment((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle slider changes
-  const handleSliderChange = (field) => (value) => {
+  const handleSliderChange = (field: string) => (value: number) => {
     setAssessment((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle sprint metrics changes
-  const handleSprintChange = (field) => (value) => {
+  const handleSprintChange = (field: string) => (value: string | number) => {
     setAssessment((prev) => ({
       ...prev,
       sprintMetrics: {
@@ -106,7 +106,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
   };
 
   // Handle strength metrics changes
-  const handleStrengthChange = (field) => (value) => {
+  const handleStrengthChange = (field: string) => (value: string | number) => {
     setAssessment((prev) => ({
       ...prev,
       strengthMetrics: {
@@ -117,7 +117,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
   };
 
   // Handle power metrics changes
-  const handlePowerChange = (field) => (value) => {
+  const handlePowerChange = (field: string) => (value: string | number) => {
     setAssessment((prev) => ({
       ...prev,
       powerMetrics: {
@@ -128,7 +128,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
   };
 
   // Handle body composition changes
-  const handleBodyChange = (field) => (value) => {
+  const handleBodyChange = (field: string) => (value: string | number) => {
     setAssessment((prev) => ({
       ...prev,
       bodyComposition: {
@@ -140,6 +140,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
 
   // Save assessment data
   const handleSaveAssessment = async () => {
+    if (!supabase) return;
     setLoading(true);
 
     try {
@@ -264,7 +265,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
             onChange={handleNumberChange("weeklyTrainingHours")}
             min={0}
             max={50}
-            precision={1}
+            decimalScale={1}
           />
 
           <Textarea
@@ -293,7 +294,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
             placeholder="Enter time"
             value={assessment.sprintMetrics.sprint30m}
             onChange={handleSprintChange("sprint30m")}
-            precision={2}
+            decimalScale={2}
             min={3}
             max={10}
             step={0.01}
@@ -304,7 +305,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
             placeholder="Enter time"
             value={assessment.sprintMetrics.sprint60m}
             onChange={handleSprintChange("sprint60m")}
-            precision={2}
+            decimalScale={2}
             min={6}
             max={15}
             step={0.01}
@@ -315,7 +316,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
             placeholder="Enter time"
             value={assessment.sprintMetrics.flyingStart}
             onChange={handleSprintChange("flyingStart")}
-            precision={2}
+            decimalScale={2}
             min={2}
             max={8}
             step={0.01}
@@ -397,7 +398,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
             onChange={handleStrengthChange("pullUps")}
             min={0}
             max={50}
-            precision={0}
+            decimalScale={0}
           />
         </SimpleGrid>
 
@@ -437,7 +438,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
             onChange={handlePowerChange("verticalJump")}
             min={10}
             max={120}
-            precision={1}
+            decimalScale={1}
           />
 
           <NumberInput
@@ -447,7 +448,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
             onChange={handlePowerChange("broadJump")}
             min={100}
             max={400}
-            precision={1}
+            decimalScale={1}
           />
 
           <NumberInput
@@ -457,7 +458,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
             onChange={handlePowerChange("medicineBallThrow")}
             min={1}
             max={30}
-            precision={1}
+            decimalScale={1}
           />
         </SimpleGrid>
 
@@ -493,7 +494,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
             onChange={handleBodyChange("weight")}
             min={40}
             max={150}
-            precision={1}
+            decimalScale={1}
           />
 
           <NumberInput
@@ -503,7 +504,7 @@ const InitialAssessment = ({ userId, onComplete }) => {
             onChange={handleBodyChange("bodyFat")}
             min={3}
             max={30}
-            precision={1}
+            decimalScale={1}
           />
         </SimpleGrid>
 

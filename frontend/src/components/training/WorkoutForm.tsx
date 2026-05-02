@@ -227,7 +227,7 @@ export function WorkoutForm() {
                     label="Weight (kg)"
                     placeholder="0"
                     min={0}
-                    precision={1}
+                    decimalScale={1}
                     {...form.getInputProps(`exercises.${index}.weight`)}
                   />
                 </Group>
@@ -244,7 +244,7 @@ export function WorkoutForm() {
                     label="Time (seconds)"
                     placeholder="0"
                     min={0}
-                    precision={1}
+                    decimalScale={1}
                     {...form.getInputProps(`exercises.${index}.time`)}
                   />
                 </Group>

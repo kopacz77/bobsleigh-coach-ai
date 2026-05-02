@@ -17,7 +17,7 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconAlertTriangle,
   IconArrowRight,
@@ -55,7 +55,7 @@ interface CoachDashboardProps {
 const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
   const theme = useMantineTheme();
   const router = useRouter();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [athletes, setAthletes] = useState<any[]>([]);
   const [recentCheckIns, setRecentCheckIns] = useState<any[]>([]);
   const [upcomingWorkouts, setUpcomingWorkouts] = useState<any[]>([]);
@@ -66,6 +66,7 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
   // Fetch data on component mount
   useEffect(() => {
     const fetchDashboardData = async () => {
+      if (!supabase) return;
       setLoading(true);
       try {
         // Fetch all athletes coached by this user

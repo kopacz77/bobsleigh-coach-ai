@@ -1,6 +1,6 @@
 "use client";
 
-import { rem, Tabs, type TabsValue } from "@mantine/core";
+import { rem, Tabs } from "@mantine/core";
 import { IconCalendarStats, IconChartLine, IconListCheck, IconRobot } from "@tabler/icons-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ export function TrainingTabs() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<TabsValue>("calendar");
+  const [activeTab, setActiveTab] = useState<string | null>("calendar");
 
   // On component mount, check for tab in URL query params
   useEffect(() => {
@@ -24,10 +24,10 @@ export function TrainingTabs() {
   }, [searchParams]);
 
   // Update URL when tab changes
-  const handleTabChange = (value: TabsValue) => {
+  const handleTabChange = (value: string | null) => {
     setActiveTab(value);
     const params = new URLSearchParams(searchParams);
-    params.set("tab", value as string);
+    params.set("tab", value || "calendar");
     router.push(`${pathname}?${params.toString()}`);
   };
 

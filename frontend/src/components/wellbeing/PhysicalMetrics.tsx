@@ -20,7 +20,7 @@ import {
 import { DatePickerInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconEye,
   IconHeart,
@@ -113,7 +113,7 @@ interface PhysicalMetricsProps {
  */
 const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
@@ -162,6 +162,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   useEffect(() => {
     const fetchMetrics = async () => {
       if (!userId) return;
+      if (!supabase) return;
 
       try {
         let query = supabase
@@ -277,7 +278,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
 
   // Delete metric
   const handleDeleteMetric = async () => {
-    if (!selectedMetric) return;
+    if (!selectedMetric || !supabase) return;
 
     setDeleteLoading(true);
 
@@ -320,6 +321,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
 
   // Submit metric data
   const handleSubmit = async () => {
+    if (!supabase) return;
     if (!newMetric.type || !newMetric.value) {
       showNotification({
         title: "Missing Information",

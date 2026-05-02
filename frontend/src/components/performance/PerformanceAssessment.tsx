@@ -21,7 +21,7 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconArrowRight,
   IconBulb,
@@ -158,7 +158,7 @@ interface PerformanceAssessmentProps {
  */
 const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState<boolean>(false);
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [testCategories, setTestCategories] = useState<string[]>([]);
@@ -263,7 +263,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
   // Fetch assessments for the selected category
   useEffect(() => {
     const fetchAssessments = async () => {
-      if (!userId || !selectedCategory) return;
+      if (!userId || !selectedCategory || !supabase) return;
 
       try {
         const query = supabase
@@ -293,6 +293,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
   useEffect(() => {
     const fetchTestCategories = async () => {
       if (!userId) return;
+      if (!supabase) return;
 
       try {
         const { data, error } = await supabase
@@ -328,7 +329,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
   // Fetch target values for the selected category
   useEffect(() => {
     const fetchTargetValues = async () => {
-      if (!userId || !selectedCategory) return;
+      if (!userId || !selectedCategory || !supabase) return;
 
       try {
         const { data, error } = await supabase
@@ -465,6 +466,7 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
       return;
     }
 
+    if (!supabase) return;
     setLoading(true);
 
     try {
