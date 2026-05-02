@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from supabase import create_client, Client
 
 from app.core.config import settings
 
@@ -21,3 +22,13 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def get_supabase() -> Client:
+    """Get a Supabase client with service role key for backend operations."""
+    if not settings.SUPABASE_URL or not settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise RuntimeError(
+            "Supabase credentials not configured. "
+            "Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables."
+        )
+    return create_client(settings.SUPABASE_URL, settings.SUPABASE_SERVICE_ROLE_KEY)

@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class WorkoutExerciseBase(BaseModel):
     """Base schema for workout exercises"""
 
-    exercise_id: int
+    exercise_id: str
     sets: Optional[int] = None
     reps: Optional[int] = None
     weight: Optional[float] = None  # in kg
@@ -24,8 +24,8 @@ class WorkoutExerciseCreate(WorkoutExerciseBase):
 class WorkoutExercise(WorkoutExerciseBase):
     """Schema for a complete workout exercise"""
 
-    id: int
-    workout_id: int
+    id: str
+    workout_id: str
 
     class Config:
         from_attributes = True
@@ -34,24 +34,30 @@ class WorkoutExercise(WorkoutExerciseBase):
 class WorkoutBase(BaseModel):
     """Base schema for workouts"""
 
-    athlete_id: int
+    athlete_id: str
     name: str
     date: str  # YYYY-MM-DD
     duration: Optional[int] = None  # in minutes
-    type: str  # Strength, Speed, Endurance, etc.
+    workout_type: str  # 'strength', 'power', 'speed', 'endurance', 'recovery'
     notes: Optional[str] = None
 
 
 class WorkoutCreate(WorkoutBase):
     """Schema for creating a workout"""
 
+    rpe: Optional[int] = None
+    is_completed: Optional[bool] = False
+    training_phase: Optional[str] = None
     exercises: Optional[List[WorkoutExerciseCreate]] = None
 
 
 class Workout(WorkoutBase):
     """Schema for a complete workout"""
 
-    id: int
+    id: str
+    rpe: Optional[int] = None
+    is_completed: Optional[bool] = False
+    training_phase: Optional[str] = None
     exercises: List[WorkoutExercise] = []
 
     class Config:
