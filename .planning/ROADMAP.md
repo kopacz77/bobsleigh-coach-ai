@@ -6,7 +6,7 @@ Take the existing scaffolding — broken frontend, mock-data backend, standalone
 
 ## Phases
 
-- [ ] **Phase 1: Foundation** - Fix compilation, deploy schema, wire backend to real database
+- [x] **Phase 1: Foundation** - Fix compilation, deploy schema, wire backend to real database
 - [ ] **Phase 2: Authentication & Roles** - Unified Supabase auth with coach/athlete role routing
 - [ ] **Phase 3: Training Core** - Exercise library, workout logging, training history, plan view
 - [ ] **Phase 4: Wellness & Recovery** - Daily check-in, readiness scoring, injury flagging, trends
@@ -108,7 +108,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/4 | Planned | - |
+| 1. Foundation | 4/4 | Complete | 2026-05-02 |
 | 2. Authentication & Roles | 0/TBD | Not started | - |
 | 3. Training Core | 0/TBD | Not started | - |
 | 4. Wellness & Recovery | 0/TBD | Not started | - |
