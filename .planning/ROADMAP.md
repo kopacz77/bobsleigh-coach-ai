@@ -26,7 +26,12 @@ Take the existing scaffolding — broken frontend, mock-data backend, standalone
   2. Backend starts and connects to Supabase PostgreSQL database
   3. API endpoints return data from database (not mock/hardcoded data)
   4. `docker-compose up` starts all services successfully
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 01-01-PLAN.md — Fix frontend compilation errors (broken imports, remove chart.js, migrate Supabase auth hooks)
+- [ ] 01-02-PLAN.md — Clean backend deps, fix schemas for UUID, create Python Dockerfile, deploy DB schema
+- [ ] 01-03-PLAN.md — Wire all backend endpoints to Supabase (replace mock data with real queries)
+- [ ] 01-04-PLAN.md — Fix Docker Compose, verify full stack integration
 
 ### Phase 2: Authentication & Roles
 **Goal**: Users can securely log in and see role-appropriate views
@@ -103,7 +108,7 @@ Take the existing scaffolding — broken frontend, mock-data backend, standalone
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 0/4 | Planned | - |
 | 2. Authentication & Roles | 0/TBD | Not started | - |
 | 3. Training Core | 0/TBD | Not started | - |
 | 4. Wellness & Recovery | 0/TBD | Not started | - |
