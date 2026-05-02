@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-05-02)
 
 **Core value:** The AI generates genuinely useful, personalized weekly training plans that a bobsleigh coach would actually trust and use with their athletes.
-**Current focus:** Phase 1 -- Foundation
+**Current focus:** Phase 1 -- Foundation (complete)
 
 ## Current Position
 
 Phase: 1 of 7 (Foundation)
-Plan: 3 of 4
-Status: In progress
-Last activity: 2026-05-02 -- Completed 01-03-PLAN.md
+Plan: 4 of 4
+Status: Phase complete
+Last activity: 2026-05-02 -- Completed 01-04-PLAN.md
 
-Progress: ███░░░░░░░ 15%
+Progress: ████░░░░░░ 14% (4 plans complete, ~24 remaining across phases 2-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: ~13min
-- Total execution time: ~39min
+- Total plans completed: 4
+- Average duration: ~10min
+- Total execution time: ~40min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. Foundation | 3/4 | ~39min | ~13min |
+| 1. Foundation | 4/4 | ~40min | ~10min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~30min), 01-02 (5min), 01-03 (4min)
-- Trend: Accelerating as scope narrows (01-01 was 30+ files, 01-03 was 6 files)
+- Last 5 plans: 01-01 (~30min), 01-02 (5min), 01-03 (4min), 01-04 (1min)
+- Trend: Accelerating as scope narrows (01-01 was 30+ files, 01-04 was 4 files)
 
 ## Accumulated Context
 
@@ -51,22 +51,26 @@ Recent decisions affecting current work:
 - Return raw dicts from Supabase (no response_model) to avoid Pydantic validation mismatches
 - PMC returns empty defaults when no training data exists (not fake random data)
 - Soft-delete athletes (is_active=False) instead of hard delete
+- Remove deprecated docker-compose version key (v2+ default)
+- Remove frontend volume mount in Docker to preserve standalone build output
+- Use output: "standalone" in next.config.js for Docker deployment
+- Health check endpoint queries Supabase to verify database connectivity
 
 ### Pending Todos
 
 - Deploy database schema to Supabase (manual step from 01-02 Task 2)
 - Set up .env with Supabase credentials
+- Run docker-compose verification (manual step from 01-04 Task 2)
 
 ### Blockers/Concerns
 
 - ~150+ modified but uncommitted files from 6 months of work (non-planning files)
 - SQLAlchemy models use Integer PKs but Supabase uses UUIDs (kept as-is for now)
 - Supabase schema not yet deployed (manual step deferred)
-- Frontend compiles and builds successfully (resolved in 01-01)
-- All backend endpoints wired to Supabase but cannot verify against live database until schema deployed
+- Docker full-stack verification not yet run (requires Supabase credentials)
 
 ## Session Continuity
 
-Last session: 2026-05-02T17:42:09Z
-Stopped at: Completed 01-03-PLAN.md
+Last session: 2026-05-02T17:45:25Z
+Stopped at: Completed 01-04-PLAN.md (Phase 1 complete)
 Resume file: None
