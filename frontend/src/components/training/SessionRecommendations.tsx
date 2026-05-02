@@ -121,7 +121,7 @@ export function SessionRecommendations({
                 Duration
               </Text>
               <Text size="sm" fw={500}>
-                {formatDuration(session.plannedDuration)}
+                {formatDuration(session.plannedDuration || session.duration)}
               </Text>
             </Stack>
           </Group>
@@ -174,7 +174,7 @@ export function SessionRecommendations({
             <Stack gap={4}>
               <Title order={2}>Today's Training Recommendation</Title>
               <Text size="sm" c="dimmed">
-                Generated on {recommendation.createdAt.toLocaleString()}
+                Generated on {recommendation.createdAt ? new Date(recommendation.createdAt).toLocaleString() : 'N/A'}
               </Text>
             </Stack>
 
@@ -292,9 +292,8 @@ export function SessionRecommendations({
         onClose={() => setShowDetails(false)}
         title="Detailed Session Analysis"
         size="xl"
-        scrollAreaComponent="div"
       >
-        <Tabs value={activeTab} onChange={setActiveTab}>
+        <Tabs value={activeTab} onChange={(value) => setActiveTab(value || "overview")}>
           <Tabs.List>
             <Tabs.Tab value="overview">Overview</Tabs.Tab>
             <Tabs.Tab value="exercises">All Exercises</Tabs.Tab>

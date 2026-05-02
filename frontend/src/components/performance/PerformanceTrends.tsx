@@ -1,40 +1,36 @@
 "use client";
 
 import { Card, Group, SegmentedControl, Stack, Text, Title, useMantineTheme } from "@mantine/core";
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Title as ChartTitle,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Tooltip,
-} from "chart.js";
 import { useState } from "react";
-import { Line } from "react-chartjs-2";
-
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ChartTitle,
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
   Tooltip,
-  Legend
-);
+  XAxis,
+  YAxis,
+} from "recharts";
+
+interface MetricData {
+  dates: string[];
+  values: number[];
+  label: string;
+  color: string;
+}
+
+interface MetricDataMap {
+  [key: string]: MetricData;
+}
 
 export function PerformanceTrends() {
   const theme = useMantineTheme();
   const [metricType, setMetricType] = useState("strength");
   const [specificMetric, setSpecificMetric] = useState("squat_1rm");
 
-  // In a real app, this data would come from an API call
-  // based on the selected metric
-
   // Placeholder data for different metrics
-  const strengthData = {
+  const strengthData: MetricDataMap = {
     squat_1rm: {
       dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
       values: [140, 142.5, 145, 145, 150],
@@ -55,7 +51,7 @@ export function PerformanceTrends() {
     },
   };
 
-  const speedData = {
+  const speedData: MetricDataMap = {
     "30m_best": {
       dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
       values: [4.3, 4.25, 4.2, 4.15, 4.1],
@@ -70,7 +66,7 @@ export function PerformanceTrends() {
     },
   };
 
-  const powerData = {
+  const powerData: MetricDataMap = {
     vertical_jump: {
       dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
       values: [60, 61, 63, 64, 65],
@@ -92,7 +88,7 @@ export function PerformanceTrends() {
   };
 
   // Map of metric types to their specific metrics
-  const metricOptions = {
+  const metricOptions: Record<string, { value: string; label: string }[]> = {
     strength: [
       { value: "squat_1rm", label: "Squat 1RM" },
       { value: "bench_1rm", label: "Bench 1RM" },
@@ -110,54 +106,28 @@ export function PerformanceTrends() {
   };
 
   // Get the data for the currently selected metric
-  const getSelectedData = () => {
-    switch (metricType) {
-      case "strength":
-        return strengthData[specificMetric];
-      case "speed":
-        return speedData[specificMetric];
-      case "power":
-        return powerData[specificMetric];
-      default:
-        return strengthData.squat_1rm;
-    }
+  const getSelectedData = (): MetricData => {
+    const dataMap: Record<string, MetricDataMap> = {
+      strength: strengthData,
+      speed: speedData,
+      power: powerData,
+    };
+    return dataMap[metricType]?.[specificMetric] || strengthData.squat_1rm;
   };
 
   // When the metric type changes, update the specific metric to the first option
-  const handleMetricTypeChange = (value) => {
+  const handleMetricTypeChange = (value: string) => {
     setMetricType(value);
     setSpecificMetric(metricOptions[value][0].value);
   };
 
   const selectedData = getSelectedData();
 
-  const chartData = {
-    labels: selectedData.dates,
-    datasets: [
-      {
-        label: selectedData.label,
-        data: selectedData.values,
-        borderColor: selectedData.color,
-        backgroundColor: "rgba(0, 0, 0, 0)",
-        borderWidth: 2,
-        tension: 0.3,
-      },
-    ],
-  };
-
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        title: {
-          display: true,
-          text: selectedData.label,
-        },
-        beginAtZero: false,
-      },
-    },
-  };
+  // Transform data for recharts
+  const chartData = selectedData.dates.map((date, i) => ({
+    date,
+    value: selectedData.values[i],
+  }));
 
   return (
     <Card withBorder p="md" radius="md">
@@ -190,7 +160,22 @@ export function PerformanceTrends() {
         </Text>
 
         <div style={{ height: 300 }}>
-          <Line data={chartData} options={chartOptions} />
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis label={{ value: selectedData.label, angle: -90, position: "insideLeft" }} />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke={selectedData.color}
+                name={selectedData.label}
+                strokeWidth={2}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </Stack>
     </Card>

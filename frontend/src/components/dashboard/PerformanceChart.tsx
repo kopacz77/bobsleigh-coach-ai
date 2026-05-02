@@ -1,44 +1,37 @@
 "use client";
 
 import { Card, Group, Stack, Text, Title, useMantineTheme } from "@mantine/core";
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  type ChartOptions,
-  Title as ChartTitle,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Tooltip,
-} from "chart.js";
 import { useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
-
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ChartTitle,
+import {
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Legend,
+  Line,
+  ResponsiveContainer,
   Tooltip,
-  Legend
-);
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface PerformanceChartProps {
   athleteId?: number;
   days?: number;
 }
 
+interface ChartDataPoint {
+  date: string;
+  ctl: number;
+  atl: number;
+  tsb: number;
+  dailyLoad: number;
+}
+
 export function PerformanceChart({ athleteId = 1, days = 14 }: PerformanceChartProps) {
   const theme = useMantineTheme();
-  const [chartData, setChartData] = useState<any>(null);
+  const [chartData, setChartData] = useState<ChartDataPoint[] | null>(null);
 
   useEffect(() => {
-    // In a real application, this data would come from an API call
-    // api.get(`/api/performance/load/${athleteId}?days=${days}`)
-
     // Generate dates for the x-axis
     const dates = Array.from({ length: days }, (_, i) => {
       const date = new Date();
@@ -47,7 +40,6 @@ export function PerformanceChart({ athleteId = 1, days = 14 }: PerformanceChartP
     });
 
     // Sample data for PMC metrics
-    // In a real app, this would come from the backend API
     const ctlValues = [
       78.2, 79.5, 80.0, 80.5, 81.2, 82.0, 82.3, 82.5, 83.0, 83.7, 84.5, 85.0, 85.7, 86.1,
     ];
@@ -59,78 +51,16 @@ export function PerformanceChart({ athleteId = 1, days = 14 }: PerformanceChartP
     ];
     const dailyLoadValues = [60, 70, 85, 55, 95, 85, 110, 40, 90, 100, 95, 120, 105, 90];
 
-    // Create chart data object
-    const data = {
-      labels: dates,
-      datasets: [
-        {
-          label: "CTL (Fitness)",
-          data: ctlValues,
-          borderColor: theme.colors.blue[6],
-          backgroundColor: "rgba(0, 0, 0, 0)",
-          borderWidth: 2,
-        },
-        {
-          label: "ATL (Fatigue)",
-          data: atlValues,
-          borderColor: theme.colors.red[6],
-          backgroundColor: "rgba(0, 0, 0, 0)",
-          borderWidth: 2,
-        },
-        {
-          label: "TSB (Form)",
-          data: tsbValues,
-          borderColor: theme.colors.green[6],
-          backgroundColor: "rgba(0, 0, 0, 0)",
-          borderWidth: 2,
-          yAxisID: "y1",
-        },
-        {
-          label: "Daily Load",
-          data: dailyLoadValues,
-          borderColor: theme.colors.gray[6],
-          backgroundColor: theme.colors.gray[3],
-          borderWidth: 1,
-          type: "bar",
-        },
-      ],
-    };
+    const data: ChartDataPoint[] = dates.map((date, i) => ({
+      date,
+      ctl: ctlValues[i],
+      atl: atlValues[i],
+      tsb: tsbValues[i],
+      dailyLoad: dailyLoadValues[i],
+    }));
 
     setChartData(data);
-  }, [athleteId, days, theme.colors]);
-
-  const options: ChartOptions<"line"> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        title: {
-          display: true,
-          text: "Training Load",
-        },
-        min: 0,
-      },
-      y1: {
-        position: "right",
-        title: {
-          display: true,
-          text: "TSB (Form)",
-        },
-        grid: {
-          drawOnChartArea: false,
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      tooltip: {
-        mode: "index",
-        intersect: false,
-      },
-    },
-  };
+  }, [athleteId, days]);
 
   return (
     <Card withBorder p="md" radius="md">
@@ -146,7 +76,20 @@ export function PerformanceChart({ athleteId = 1, days = 14 }: PerformanceChartP
 
         <div style={{ height: 400 }}>
           {chartData ? (
-            <Line data={chartData} options={options} />
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis yAxisId="left" label={{ value: "Training Load", angle: -90, position: "insideLeft" }} />
+                <YAxis yAxisId="right" orientation="right" label={{ value: "TSB (Form)", angle: 90, position: "insideRight" }} />
+                <Tooltip />
+                <Legend />
+                <Bar yAxisId="left" dataKey="dailyLoad" fill={theme.colors.gray[3]} name="Daily Load" />
+                <Line yAxisId="left" type="monotone" dataKey="ctl" stroke={theme.colors.blue[6]} name="CTL (Fitness)" dot={false} />
+                <Line yAxisId="left" type="monotone" dataKey="atl" stroke={theme.colors.red[6]} name="ATL (Fatigue)" dot={false} />
+                <Line yAxisId="right" type="monotone" dataKey="tsb" stroke={theme.colors.green[6]} name="TSB (Form)" dot={false} />
+              </ComposedChart>
+            </ResponsiveContainer>
           ) : (
             <Text>Loading chart data...</Text>
           )}

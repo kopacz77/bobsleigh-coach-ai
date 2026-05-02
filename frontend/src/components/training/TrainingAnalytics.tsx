@@ -18,33 +18,19 @@ import {
   Title,
 } from "@mantine/core";
 import { IconActivity, IconBarbell, IconChartBar, IconRun, IconWeight } from "@tabler/icons-react";
-import {
-  BarElement,
-  CategoryScale,
-  Chart as ChartJS,
-  Title as ChartTitle,
-  Filler,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Tooltip,
-} from "chart.js";
 import { useState } from "react";
-import { Bar, Line } from "react-chartjs-2";
-
-// Register ChartJS components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ChartTitle,
-  Tooltip,
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
   Legend,
-  Filler
-);
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 export function TrainingAnalytics() {
   const [timeRange, setTimeRange] = useState("4w");
@@ -58,120 +44,24 @@ export function TrainingAnalytics() {
     recovery: 10,
   };
 
-  // Training load chart data
-  const loadChartData = {
-    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-    datasets: [
-      {
-        label: "Training Load",
-        data: [520, 580, 620, 540],
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-        borderColor: "rgba(53, 162, 235, 1)",
-        borderWidth: 2,
-      },
-    ],
-  };
+  // Training load data for recharts
+  const loadData = [
+    { week: "Week 1", load: 520 },
+    { week: "Week 2", load: 580 },
+    { week: "Week 3", load: 620 },
+    { week: "Week 4", load: 540 },
+  ];
 
-  // Training distribution chart data
-  const distributionChartData = {
-    labels: ["Strength", "Speed", "Technical", "Recovery"],
-    datasets: [
-      {
-        label: "Hours",
-        data: [12, 9, 6, 3],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.6)",
-          "rgba(54, 162, 235, 0.6)",
-          "rgba(255, 206, 86, 0.6)",
-          "rgba(75, 192, 192, 0.6)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  // Intensity distribution chart data
-  const intensityChartData = {
-    labels: ["Low", "Medium", "High"],
-    datasets: [
-      {
-        label: "Hours",
-        data: [6, 15, 9],
-        backgroundColor: [
-          "rgba(75, 192, 192, 0.6)",
-          "rgba(255, 206, 86, 0.6)",
-          "rgba(255, 99, 132, 0.6)",
-        ],
-        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 206, 86, 1)", "rgba(255, 99, 132, 1)"],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  // Performance metrics chart data
-  const performanceChartData = {
-    labels: ["Jan", "Feb", "Mar"],
-    datasets: [
-      {
-        label: "Squat 1RM (kg)",
-        data: [140, 145, 155],
-        borderColor: "rgba(255, 99, 132, 1)",
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        tension: 0.4,
-        yAxisID: "y",
-      },
-      {
-        label: "Sprint 30m (s)",
-        data: [4.3, 4.2, 4.1],
-        borderColor: "rgba(54, 162, 235, 1)",
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        tension: 0.4,
-        yAxisID: "y1",
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    interaction: {
-      mode: "index" as const,
-      intersect: false,
-    },
-    scales: {
-      y: {
-        type: "linear" as const,
-        display: true,
-        position: "left" as const,
-        title: {
-          display: true,
-          text: "Weight (kg)",
-        },
-      },
-      y1: {
-        type: "linear" as const,
-        display: true,
-        position: "right" as const,
-        title: {
-          display: true,
-          text: "Time (s)",
-        },
-        grid: {
-          drawOnChartArea: false,
-        },
-        reverse: true, // Lower times are better for sprint
-      },
-    },
-  };
+  // Performance metrics data for recharts
+  const performanceData = [
+    { month: "Jan", squat: 140, sprint: 4.3 },
+    { month: "Feb", squat: 145, sprint: 4.2 },
+    { month: "Mar", squat: 155, sprint: 4.1 },
+  ];
 
   return (
     <Stack gap="xl">
-      <Tabs value={activeTab} onChange={setActiveTab}>
+      <Tabs value={activeTab} onChange={(value) => setActiveTab(value || "overview")}>
         <Tabs.List>
           <Tabs.Tab
             value="overview"
@@ -220,20 +110,15 @@ export function TrainingAnalytics() {
               <Card withBorder shadow="sm" p="md">
                 <Stack gap="md">
                   <Title order={4}>Weekly Training Load</Title>
-                  <Bar
-                    data={loadChartData}
-                    options={{
-                      scales: {
-                        y: {
-                          beginAtZero: true,
-                          title: {
-                            display: true,
-                            text: "Training Load Units",
-                          },
-                        },
-                      },
-                    }}
-                  />
+                  <ResponsiveContainer width="100%" height={250}>
+                    <BarChart data={loadData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="week" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="load" fill="rgba(53, 162, 235, 0.7)" name="Training Load" />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </Stack>
               </Card>
 
@@ -289,7 +174,18 @@ export function TrainingAnalytics() {
                 <Card withBorder shadow="sm" p="md">
                   <Stack gap="md">
                     <Title order={4}>Key Performance Indicators</Title>
-                    <Line data={performanceChartData} options={options} />
+                    <ResponsiveContainer width="100%" height={300}>
+                      <LineChart data={performanceData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis yAxisId="left" label={{ value: "Weight (kg)", angle: -90, position: "insideLeft" }} />
+                        <YAxis yAxisId="right" orientation="right" reversed label={{ value: "Time (s)", angle: 90, position: "insideRight" }} />
+                        <Tooltip />
+                        <Legend />
+                        <Line yAxisId="left" type="monotone" dataKey="squat" stroke="#ff6384" name="Squat 1RM (kg)" />
+                        <Line yAxisId="right" type="monotone" dataKey="sprint" stroke="#36a2eb" name="Sprint 30m (s)" />
+                      </LineChart>
+                    </ResponsiveContainer>
                   </Stack>
                 </Card>
               </Grid.Col>

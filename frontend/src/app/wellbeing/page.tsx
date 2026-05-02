@@ -76,7 +76,6 @@ export default function WellbeingPage() {
           <Tabs.Panel value="metrics" pt="md">
             <PhysicalMetrics userId={currentUserId} />
           </Tabs.Panel>
-          </Tabs.Panel>
         </Tabs>
       </Stack>
     </AppShell>

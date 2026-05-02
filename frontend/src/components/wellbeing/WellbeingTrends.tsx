@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { 
-  Card, 
-  Text, 
-  Group, 
-  Stack, 
+import {
+  Card,
+  Text,
+  Group,
+  Stack,
   Title,
   SegmentedControl,
   Center,
@@ -13,32 +13,19 @@ import {
   useMantineTheme,
   Select
 } from '@mantine/core';
-import { Line } from 'react-chartjs-2';
-import { 
-  Chart as ChartJS, 
-  CategoryScale, 
-  LinearScale, 
-  PointElement, 
-  LineElement, 
-  Title as ChartTitle, 
-  Tooltip, 
+import {
+  CartesianGrid,
   Legend,
-} from 'chart.js';
-import type { ChartOptions } from 'chart.js';
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { notifications } from '@mantine/notifications';
 import { supabase } from '@/lib/supabase';
 import dayjs from 'dayjs';
-
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ChartTitle,
-  Tooltip,
-  Legend
-);
 
 type WellbeingData = {
   id: string;
@@ -60,19 +47,9 @@ type MetricsData = {
   };
 };
 
-// Define proper types for chart data
-interface Dataset {
-  label: string;
-  data: (number | null)[];
-  borderColor: string;
-  backgroundColor: string;
-  tension: number;
-  yAxisID?: string;
-}
-
-interface ChartData {
-  labels: string[];
-  datasets: Dataset[];
+interface RechartsDataPoint {
+  date: string;
+  [key: string]: string | number | null;
 }
 
 export function WellbeingTrends() {
@@ -80,7 +57,7 @@ export function WellbeingTrends() {
   const [metrics, setMetrics] = useState<MetricsData[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState('30');
-  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [chartData, setChartData] = useState<RechartsDataPoint[] | null>(null);
   const [chartType, setChartType] = useState('subjective');
   const theme = useMantineTheme();
 
@@ -133,170 +110,92 @@ export function WellbeingTrends() {
   };
 
   const prepareChartData = () => {
-    // Filter based on selected time range
     const cutoffDate = dayjs().subtract(Number.parseInt(timeRange), 'days').format('YYYY-MM-DD');
-    
-    let filteredData: WellbeingData[] | MetricsData[] = [];
-    let dates: string[] = [];
-    let datasets: Dataset[] = [];
 
     if (chartType === 'subjective') {
-      filteredData = assessments.filter(a => a.date >= cutoffDate);
-      
+      const filteredData = assessments.filter(a => a.date >= cutoffDate);
+
       if (filteredData.length === 0) {
         setChartData(null);
         return;
       }
 
-      dates = filteredData.map(d => dayjs(d.date).format('MMM D'));
-      
-      datasets = [
-        {
-          label: 'Sleep Quality',
-          data: (filteredData as WellbeingData[]).map(d => d.sleep_quality),
-          borderColor: theme.colors.blue[6],
-          backgroundColor: 'rgba(0,0,0,0)',
-          tension: 0.3,
-        },
-        {
-          label: 'Stress Level',
-          data: (filteredData as WellbeingData[]).map(d => d.stress_level),
-          borderColor: theme.colors.red[6],
-          backgroundColor: 'rgba(0,0,0,0)',
-          tension: 0.3,
-        },
-        {
-          label: 'Nutrition Quality',
-          data: (filteredData as WellbeingData[]).map(d => d.nutrition_quality),
-          borderColor: theme.colors.green[6],
-          backgroundColor: 'rgba(0,0,0,0)',
-          tension: 0.3,
-        },
-        {
-          label: 'Physical Readiness',
-          data: (filteredData as WellbeingData[]).map(d => d.physical_readiness),
-          borderColor: theme.colors.orange[6],
-          backgroundColor: 'rgba(0,0,0,0)',
-          tension: 0.3,
-        },
-        {
-          label: 'Mental Clarity',
-          data: (filteredData as WellbeingData[]).map(d => d.mental_clarity),
-          borderColor: theme.colors.violet[6],
-          backgroundColor: 'rgba(0,0,0,0)',
-          tension: 0.3,
-        },
-      ];
+      const data: RechartsDataPoint[] = filteredData.map(d => ({
+        date: dayjs(d.date).format('MMM D'),
+        sleepQuality: d.sleep_quality,
+        stressLevel: d.stress_level,
+        nutritionQuality: d.nutrition_quality,
+        physicalReadiness: d.physical_readiness,
+        mentalClarity: d.mental_clarity,
+      }));
+
+      setChartData(data);
     } else {
-      filteredData = metrics.filter(m => m.date >= cutoffDate);
-      
+      const filteredData = metrics.filter(m => m.date >= cutoffDate);
+
       if (filteredData.length === 0) {
         setChartData(null);
         return;
       }
 
-      dates = filteredData.map(d => dayjs(d.date).format('MMM D'));
-      
-      const bodyWeights = (filteredData as MetricsData[]).map(d => d.metrics.body_weight || null);
-      const hasBodyWeight = bodyWeights.some(w => w !== null);
-      
-      const heartRates = (filteredData as MetricsData[]).map(d => d.metrics.resting_heart_rate || null);
-      const hasHeartRate = heartRates.some(hr => hr !== null);
-      
-      const sleepHours = (filteredData as MetricsData[]).map(d => d.metrics.sleep_hours || null);
-      const hasSleepHours = sleepHours.some(s => s !== null);
-      
-      if (hasBodyWeight) {
-        datasets.push({
-          label: 'Body Weight (kg)',
-          data: bodyWeights,
-          borderColor: theme.colors.blue[6],
-          backgroundColor: 'rgba(0,0,0,0)',
-          tension: 0.3,
-          yAxisID: 'y',
-        });
-      }
-      
-      if (hasHeartRate) {
-        datasets.push({
-          label: 'Resting HR (bpm)',
-          data: heartRates,
-          borderColor: theme.colors.red[6],
-          backgroundColor: 'rgba(0,0,0,0)',
-          tension: 0.3,
-          yAxisID: 'y1',
-        });
-      }
-      
-      if (hasSleepHours) {
-        datasets.push({
-          label: 'Sleep Hours',
-          data: sleepHours,
-          borderColor: theme.colors.green[6],
-          backgroundColor: 'rgba(0,0,0,0)',
-          tension: 0.3,
-          yAxisID: 'y2',
-        });
-      }
-      
-      if (datasets.length === 0) {
+      const data: RechartsDataPoint[] = filteredData.map(d => ({
+        date: dayjs(d.date).format('MMM D'),
+        bodyWeight: d.metrics.body_weight ?? null,
+        restingHR: d.metrics.resting_heart_rate ?? null,
+        sleepHours: d.metrics.sleep_hours ?? null,
+      }));
+
+      // Check if any objective metrics have data
+      const hasAnyData = data.some(d =>
+        d.bodyWeight !== null || d.restingHR !== null || d.sleepHours !== null
+      );
+
+      if (!hasAnyData) {
         setChartData(null);
         return;
       }
-    }
 
-    setChartData({
-      labels: dates,
-      datasets,
-    });
+      setChartData(data);
+    }
   };
 
-  const options: ChartOptions<'line'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: chartType === 'subjective' ? 10 : undefined,
-        title: {
-          display: true,
-          text: chartType === 'subjective' ? 'Score (0-10)' : 'Weight (kg)',
-        },
-      },
-      ...(chartType === 'objective' ? {
-        y1: {
-          position: 'right',
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'HR (bpm)',
-          },
-          grid: {
-            drawOnChartArea: false,
-          },
-        },
-        y2: {
-          position: 'right',
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Sleep (hrs)',
-          },
-          grid: {
-            drawOnChartArea: false,
-          },
-        },
-      } : {}),
-    },
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      tooltip: {
-        mode: 'index',
-        intersect: false,
-      },
-    },
+  const renderSubjectiveChart = () => {
+    if (!chartData) return null;
+    return (
+      <ResponsiveContainer width="100%" height={400}>
+        <LineChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis domain={[0, 10]} label={{ value: 'Score (0-10)', angle: -90, position: 'insideLeft' }} />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="sleepQuality" stroke={theme.colors.blue[6]} name="Sleep Quality" dot={false} />
+          <Line type="monotone" dataKey="stressLevel" stroke={theme.colors.red[6]} name="Stress Level" dot={false} />
+          <Line type="monotone" dataKey="nutritionQuality" stroke={theme.colors.green[6]} name="Nutrition Quality" dot={false} />
+          <Line type="monotone" dataKey="physicalReadiness" stroke={theme.colors.orange[6]} name="Physical Readiness" dot={false} />
+          <Line type="monotone" dataKey="mentalClarity" stroke={theme.colors.violet[6]} name="Mental Clarity" dot={false} />
+        </LineChart>
+      </ResponsiveContainer>
+    );
+  };
+
+  const renderObjectiveChart = () => {
+    if (!chartData) return null;
+    return (
+      <ResponsiveContainer width="100%" height={400}>
+        <LineChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis yAxisId="left" label={{ value: 'Weight (kg)', angle: -90, position: 'insideLeft' }} />
+          <YAxis yAxisId="right" orientation="right" label={{ value: 'HR (bpm) / Sleep (hrs)', angle: 90, position: 'insideRight' }} />
+          <Tooltip />
+          <Legend />
+          <Line yAxisId="left" type="monotone" dataKey="bodyWeight" stroke={theme.colors.blue[6]} name="Body Weight (kg)" dot={false} connectNulls />
+          <Line yAxisId="right" type="monotone" dataKey="restingHR" stroke={theme.colors.red[6]} name="Resting HR (bpm)" dot={false} connectNulls />
+          <Line yAxisId="right" type="monotone" dataKey="sleepHours" stroke={theme.colors.green[6]} name="Sleep Hours" dot={false} connectNulls />
+        </LineChart>
+      </ResponsiveContainer>
+    );
   };
 
   return (
@@ -304,7 +203,7 @@ export function WellbeingTrends() {
       <Stack>
         <Group justify="apart">
           <Title order={3}>Wellbeing Trends</Title>
-          
+
           <Group>
             <SegmentedControl
               value={chartType}
@@ -314,7 +213,7 @@ export function WellbeingTrends() {
                 { label: 'Objective', value: 'objective' },
               ]}
             />
-            
+
             <Select
               value={timeRange}
               onChange={(value) => setTimeRange(value || '30')}
@@ -329,20 +228,20 @@ export function WellbeingTrends() {
             />
           </Group>
         </Group>
-        
+
         <Text c="dimmed" size="sm">
-          {chartType === 'subjective' 
-            ? 'Track your subjective wellbeing metrics over time to identify trends and patterns.' 
+          {chartType === 'subjective'
+            ? 'Track your subjective wellbeing metrics over time to identify trends and patterns.'
             : 'Monitor your objective health metrics to understand your physical wellbeing trends.'}
         </Text>
-        
+
         {loading ? (
           <Center h={400}>
             <Loader />
           </Center>
         ) : chartData ? (
           <div style={{ height: 400 }}>
-            <Line data={chartData} options={options} />
+            {chartType === 'subjective' ? renderSubjectiveChart() : renderObjectiveChart()}
           </div>
         ) : (
           <Center h={400}>

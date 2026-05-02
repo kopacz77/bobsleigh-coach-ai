@@ -1,54 +1,32 @@
-
-// Path: c:\users\a_kop\bobsleigh-coach-ai\frontend\src\components\wellbeing\WellbeingAssessment.tsx
-
 'use client';
 
 import type React from 'react';
 import { useState, useEffect } from 'react';
-
-'use client';
-
-
-import { 
-  Box, 
-  Button, 
-  Group, 
-  Paper, 
-  SimpleGrid, 
-  Slider, 
-  Stack,
-
-  useMantineTheme,
+import {
+  Box,
+  Button,
+  Divider,
+  Group,
   NumberInput,
-  Divider
+  Paper,
+  SimpleGrid,
+  Slider,
+  Stack,
+  Text,
+  Textarea,
+  Title,
+  useMantineTheme,
 } from '@mantine/core';
-import { 
-  IconHeartFilled, 
-  IconBrain, 
-  IconZzz, 
-  IconSalad, 
-  IconMoodNervous // Using IconMoodNervous instead of the missing IconStress
-} from '@tabler/icons-react';
+import { DateInput } from '@mantine/dates';
 import { notifications } from '@mantine/notifications';
 import { supabase } from '@/lib/supabase';
-import { DateInput } from '@mantine/dates';
-
-  Text, 
-  Textarea, 
-  Title, 
-  useMantineTheme
-} from '@mantine/core';
-import { showNotification } from '@mantine/notifications';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { 
-  IconBrain, 
-  IconHeartFilled, 
-  IconMoodNervous, // Using IconMoodNervous instead of the missing IconStress, 
-  IconSalad, 
-  IconZzz 
+import {
+  IconBrain,
+  IconHeartFilled,
+  IconMoodNervous,
+  IconSalad,
+  IconZzz,
 } from '@tabler/icons-react';
-import type React from 'react';
-import { useEffect, useState } from 'react';
 
 /**
  * WellbeingAssessment props interface
@@ -82,7 +60,7 @@ interface AssessmentData {
 const WellbeingAssessment = ({ userId }: { userId: string }) => {
   const theme = useMantineTheme();
   const [loading, setLoading] = useState<boolean>(false);
-  
+
   // Assessment form state
   const [assessment, setAssessment] = useState<AssessmentData>({
     sleep_quality: 5,
@@ -189,7 +167,7 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    
+
     try {
       if (!userId) throw new Error('User ID is required');
 
@@ -212,7 +190,7 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
       // Save metrics in daily_metrics if provided
       if (assessment.body_weight || assessment.resting_hr || assessment.sleep_hours) {
         const metrics: Record<string, number> = {};
-        
+
         if (assessment.body_weight) metrics.body_weight = Number.parseFloat(assessment.body_weight);
         if (assessment.resting_hr) metrics.resting_heart_rate = Number.parseInt(assessment.resting_hr);
         if (assessment.sleep_hours) metrics.sleep_hours = assessment.sleep_hours;
@@ -258,7 +236,7 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
       physical_readiness,
       mental_clarity
     } = assessment;
-    
+
     // Calculate average of all metrics (invert stress level since lower is better)
     return Math.round(
       (sleep_quality + (10 - stress_level) + nutrition_quality + physical_readiness + mental_clarity) / 5
@@ -441,7 +419,7 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
             min={0}
             max={24}
             step={0.5}
-            
+
           />
         </Paper>
 
@@ -454,7 +432,7 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
             min={30}
             max={150}
             step={0.1}
-            
+
           />
         </Paper>
 

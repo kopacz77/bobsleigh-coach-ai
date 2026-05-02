@@ -76,7 +76,7 @@ export function ExerciseCard({
   };
 
   const renderSetsTable = () => (
-    <Table size="sm" striped highlightOnHover>
+    <Table striped highlightOnHover>
       <Table.Thead>
         <Table.Tr>
           <Table.Th>Set</Table.Th>
