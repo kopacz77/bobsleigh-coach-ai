@@ -1,105 +1,89 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 
-from app.schemas.athlete import Athlete, AthleteCreate, AthleteUpdate
+from app.db.session import get_supabase
+from app.schemas.athlete import AthleteCreate, AthleteUpdate
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[Athlete])
+@router.get("/")
 async def get_athletes():
-    """Get all athletes"""
-    # Placeholder data
-    athletes = [
-        Athlete(
-            id="a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-            user_id="u1b2c3d4-e5f6-7890-abcd-ef1234567890",
-            first_name="John",
-            last_name="Doe",
-            email="john@example.com",
-            sport="Bobsleigh",
-            height=185,
-            weight=85,
-            birth_date="1995-05-15",
-        ),
-        Athlete(
-            id="b2c3d4e5-f6a7-8901-bcde-f12345678901",
-            user_id="u2c3d4e5-f6a7-8901-bcde-f12345678901",
-            first_name="Jane",
-            last_name="Smith",
-            email="jane@example.com",
-            sport="Bobsleigh",
-            height=170,
-            weight=65,
-            birth_date="1997-08-22",
-        ),
-    ]
-    return athletes
+    """Get all active athletes from the database."""
+    try:
+        supabase = get_supabase()
+        result = supabase.table("athletes").select("*").eq("is_active", True).execute()
+        return result.data
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch athletes: {str(e)}")
 
 
-@router.get("/{athlete_id}", response_model=Athlete)
+@router.get("/{athlete_id}")
 async def get_athlete(athlete_id: str):
-    """Get a specific athlete by ID"""
-    # Placeholder data
-    if athlete_id == "a1b2c3d4-e5f6-7890-abcd-ef1234567890":
-        return Athlete(
-            id="a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-            user_id="u1b2c3d4-e5f6-7890-abcd-ef1234567890",
-            first_name="John",
-            last_name="Doe",
-            email="john@example.com",
-            sport="Bobsleigh",
-            height=185,
-            weight=85,
-            birth_date="1995-05-15",
-        )
-    raise HTTPException(status_code=404, detail="Athlete not found")
+    """Get a specific athlete by UUID."""
+    try:
+        supabase = get_supabase()
+        result = supabase.table("athletes").select("*").eq("id", athlete_id).execute()
+        if not result.data:
+            raise HTTPException(status_code=404, detail="Athlete not found")
+        return result.data[0]
+    except HTTPException:
+        raise
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch athlete: {str(e)}")
 
 
-@router.post("/", response_model=Athlete)
+@router.post("/")
 async def create_athlete(athlete: AthleteCreate):
-    """Create a new athlete"""
-    # This would save the athlete to the database
-    return Athlete(
-        id="c3d4e5f6-a7b8-9012-cdef-123456789012",
-        first_name=athlete.first_name,
-        last_name=athlete.last_name,
-        email=athlete.email,
-        sport=athlete.sport,
-        height=athlete.height,
-        weight=athlete.weight,
-        birth_date=athlete.birth_date,
-        training_level=athlete.training_level,
-        is_active=athlete.is_active,
-    )
+    """Create a new athlete in the database."""
+    try:
+        supabase = get_supabase()
+        data = athlete.model_dump(exclude_none=True)
+        result = supabase.table("athletes").insert(data).execute()
+        return result.data[0]
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to create athlete: {str(e)}")
 
 
-@router.put("/{athlete_id}", response_model=Athlete)
+@router.put("/{athlete_id}")
 async def update_athlete(athlete_id: str, athlete: AthleteUpdate):
-    """Update an existing athlete"""
-    # This would update the athlete in the database
-    if athlete_id != "a1b2c3d4-e5f6-7890-abcd-ef1234567890":
-        raise HTTPException(status_code=404, detail="Athlete not found")
-
-    return Athlete(
-        id=athlete_id,
-        user_id="u1b2c3d4-e5f6-7890-abcd-ef1234567890",
-        first_name=athlete.first_name or "John",
-        last_name=athlete.last_name or "Doe",
-        email="john@example.com",
-        sport=athlete.sport or "Bobsleigh",
-        height=athlete.height or 185,
-        weight=athlete.weight or 85,
-        birth_date=athlete.birth_date or "1995-05-15",
-    )
+    """Update an existing athlete in the database."""
+    try:
+        supabase = get_supabase()
+        data = athlete.model_dump(exclude_none=True)
+        if not data:
+            raise HTTPException(status_code=400, detail="No fields to update")
+        result = supabase.table("athletes").update(data).eq("id", athlete_id).execute()
+        if not result.data:
+            raise HTTPException(status_code=404, detail="Athlete not found")
+        return result.data[0]
+    except HTTPException:
+        raise
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update athlete: {str(e)}")
 
 
 @router.delete("/{athlete_id}")
 async def delete_athlete(athlete_id: str):
-    """Delete an athlete"""
-    # This would delete the athlete from the database
-    if athlete_id != "a1b2c3d4-e5f6-7890-abcd-ef1234567890":
-        raise HTTPException(status_code=404, detail="Athlete not found")
-
-    return {"message": "Athlete deleted successfully"}
+    """Soft-delete an athlete by setting is_active to False."""
+    try:
+        supabase = get_supabase()
+        result = supabase.table("athletes").update({"is_active": False}).eq("id", athlete_id).execute()
+        if not result.data:
+            raise HTTPException(status_code=404, detail="Athlete not found")
+        return {"message": "Athlete deleted successfully"}
+    except HTTPException:
+        raise
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete athlete: {str(e)}")
