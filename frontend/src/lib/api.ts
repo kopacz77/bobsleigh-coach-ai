@@ -127,4 +127,13 @@ export const performanceAPI = {
   getComparison: (athleteId: string) => api.get(`/api/performance/comparison/${athleteId}`),
 };
 
+export const coachAPI = {
+  getRoster: () => api.get("/api/coach/roster"),
+  getPMCSummary: () => api.get("/api/coach/athletes/pmc-summary"),
+  getAlerts: () => api.get("/api/coach/alerts"),
+  addAthlete: (athleteId: string, relationshipType = "primary") =>
+    api.post(`/api/coach/athletes/${athleteId}?relationship_type=${relationshipType}`),
+  removeAthlete: (athleteId: string) => api.delete(`/api/coach/athletes/${athleteId}`),
+};
+
 export default api;
