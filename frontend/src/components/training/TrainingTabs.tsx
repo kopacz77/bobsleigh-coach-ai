@@ -1,13 +1,9 @@
 "use client";
 
 import {
-  Badge,
-  Card,
-  Group,
   rem,
   Select,
   Stack,
-  Table,
   Tabs,
   Text,
 } from "@mantine/core";
@@ -22,6 +18,7 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ExerciseLibrary } from "./ExerciseLibrary";
+import { PlannedVsActual } from "./PlannedVsActual";
 import { TrainingAnalytics } from "./TrainingAnalytics";
 import { TrainingRecommendations } from "./TrainingRecommendations";
 import { WeeklyPlanView } from "./WeeklyPlanView";
@@ -30,10 +27,8 @@ import { useWorkouts } from "@/hooks/useTraining";
 
 const VALID_TABS = ["weekly", "history", "exercises", "comparison", "recommendations", "analytics"];
 
-/** Inline placeholder for Planned vs Actual comparison.
- *  Plan 03-04 will create the full PlannedVsActual component.
- */
-function PlannedVsActualPlaceholder() {
+/** Workout selector with PlannedVsActual comparison view. */
+function ComparisonTab() {
   const [selectedWorkoutId, setSelectedWorkoutId] = useState<string | null>(null);
   const { data: workouts, isLoading } = useWorkouts({ limit: 20 });
 
@@ -41,26 +36,6 @@ function PlannedVsActualPlaceholder() {
     value: w.id as string,
     label: `${w.date as string} - ${w.name as string}`,
   }));
-
-  const selectedWorkout = selectedWorkoutId
-    ? (workouts ?? []).find((w: Record<string, unknown>) => w.id === selectedWorkoutId)
-    : null;
-
-  const exercises = (selectedWorkout?.workout_exercises ?? []) as Array<{
-    id: string;
-    exercise_order: number;
-    planned_sets: number | null;
-    actual_sets: number | null;
-    planned_reps: number | null;
-    actual_reps: number | null;
-    planned_weight: number | null;
-    actual_weight: number | null;
-    planned_distance: number | null;
-    actual_distance: number | null;
-    planned_time_seconds: number | null;
-    actual_time_seconds: number | null;
-    exercises: { name: string } | null;
-  }>;
 
   return (
     <Stack gap="md">
@@ -75,107 +50,14 @@ function PlannedVsActualPlaceholder() {
         disabled={isLoading}
       />
 
-      {selectedWorkout && exercises.length > 0 && (
-        <Card withBorder p={0} radius="md">
-          <Table striped highlightOnHover>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Exercise</Table.Th>
-                <Table.Th>Planned Sets</Table.Th>
-                <Table.Th>Actual Sets</Table.Th>
-                <Table.Th>Planned Reps</Table.Th>
-                <Table.Th>Actual Reps</Table.Th>
-                <Table.Th>Planned Weight</Table.Th>
-                <Table.Th>Actual Weight</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {exercises
-                .sort((a, b) => a.exercise_order - b.exercise_order)
-                .map((we) => {
-                  const matchSets =
-                    we.planned_sets != null &&
-                    we.actual_sets != null &&
-                    we.actual_sets >= we.planned_sets;
-                  const matchReps =
-                    we.planned_reps != null &&
-                    we.actual_reps != null &&
-                    we.actual_reps >= we.planned_reps;
-                  const matchWeight =
-                    we.planned_weight != null &&
-                    we.actual_weight != null &&
-                    we.actual_weight >= we.planned_weight;
-
-                  return (
-                    <Table.Tr key={we.id}>
-                      <Table.Td>
-                        <Text fw={500} size="sm">
-                          {we.exercises?.name ?? "Unknown"}
-                        </Text>
-                      </Table.Td>
-                      <Table.Td>{we.planned_sets ?? "--"}</Table.Td>
-                      <Table.Td>
-                        <Group gap={4}>
-                          {we.actual_sets ?? "--"}
-                          {we.planned_sets != null && we.actual_sets != null && (
-                            <Badge
-                              size="xs"
-                              variant="light"
-                              color={matchSets ? "green" : "red"}
-                            >
-                              {matchSets ? "Met" : "Under"}
-                            </Badge>
-                          )}
-                        </Group>
-                      </Table.Td>
-                      <Table.Td>{we.planned_reps ?? "--"}</Table.Td>
-                      <Table.Td>
-                        <Group gap={4}>
-                          {we.actual_reps ?? "--"}
-                          {we.planned_reps != null && we.actual_reps != null && (
-                            <Badge
-                              size="xs"
-                              variant="light"
-                              color={matchReps ? "green" : "red"}
-                            >
-                              {matchReps ? "Met" : "Under"}
-                            </Badge>
-                          )}
-                        </Group>
-                      </Table.Td>
-                      <Table.Td>{we.planned_weight != null ? `${we.planned_weight}kg` : "--"}</Table.Td>
-                      <Table.Td>
-                        <Group gap={4}>
-                          {we.actual_weight != null ? `${we.actual_weight}kg` : "--"}
-                          {we.planned_weight != null && we.actual_weight != null && (
-                            <Badge
-                              size="xs"
-                              variant="light"
-                              color={matchWeight ? "green" : "red"}
-                            >
-                              {matchWeight ? "Met" : "Under"}
-                            </Badge>
-                          )}
-                        </Group>
-                      </Table.Td>
-                    </Table.Tr>
-                  );
-                })}
-            </Table.Tbody>
-          </Table>
-        </Card>
-      )}
-
-      {selectedWorkout && exercises.length === 0 && (
-        <Text c="dimmed" ta="center" fs="italic">
-          No exercises recorded for this workout.
-        </Text>
-      )}
-
-      {!selectedWorkout && !isLoading && (
-        <Text c="dimmed" ta="center" fs="italic">
-          Select a workout above to compare planned vs actual performance.
-        </Text>
+      {selectedWorkoutId ? (
+        <PlannedVsActual workoutId={selectedWorkoutId} />
+      ) : (
+        !isLoading && (
+          <Text c="dimmed" ta="center" fs="italic">
+            Select a workout above to compare planned vs actual performance.
+          </Text>
+        )
       )}
     </Stack>
   );
@@ -241,7 +123,7 @@ export function TrainingTabs() {
       </Tabs.Panel>
 
       <Tabs.Panel value="comparison" pt="xl">
-        <PlannedVsActualPlaceholder />
+        <ComparisonTab />
       </Tabs.Panel>
 
       <Tabs.Panel value="recommendations" pt="xl">

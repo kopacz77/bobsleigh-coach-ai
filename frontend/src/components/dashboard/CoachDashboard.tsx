@@ -12,6 +12,7 @@ import {
   Paper,
   Select,
   SimpleGrid,
+  Stack,
   Table,
   Tabs,
   Text,
@@ -44,6 +45,7 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { CoachWorkoutView } from "@/components/training";
 
 /**
  * CoachDashboard component provides coaches with a comprehensive view of all athletes,
@@ -916,6 +918,21 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
           </Paper>
         </Tabs.Panel>
       </Tabs>
+
+      {/* Workout Compliance Section */}
+      <Paper p="md" radius="md" withBorder mt="lg">
+        <Group justify="space-between" mb="md">
+          <Group>
+            <ThemeIcon size={36} radius="md" color="teal">
+              <IconCheckbox size={20} />
+            </ThemeIcon>
+            <Text fw={600} size="lg">
+              Athlete Workout Compliance (Last 7 Days)
+            </Text>
+          </Group>
+        </Group>
+        <CoachWorkoutView />
+      </Paper>
     </Box>
   );
 };
