@@ -2,8 +2,10 @@
 
 Defense-in-depth: all endpoints verify that the requested data belongs
 to the authenticated user's athlete profile before returning results.
+Coach-specific endpoints check for coach role in app_metadata/user_metadata.
 """
 
+from datetime import date, timedelta
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -222,6 +224,111 @@ async def update_workout(workout_id: str, updates: dict, user=Depends(get_curren
         raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to update workout: {str(e)}")
+
+
+def _get_user_role(user) -> str:
+    """Extract role from user metadata (app_metadata preferred, user_metadata fallback)."""
+    role = "athlete"
+    if hasattr(user, "app_metadata") and user.app_metadata:
+        role = user.app_metadata.get("role", "athlete")
+    if role == "athlete" and hasattr(user, "user_metadata") and user.user_metadata:
+        role = user.user_metadata.get("role", "athlete")
+    return role
+
+
+@router.get("/coach/athletes/workout-status")
+async def get_athletes_workout_status(
+    days: int = Query(7),
+    user=Depends(get_current_user),
+):
+    """Get workout completion status for all athletes (coach only).
+
+    Returns each athlete's name, total workouts, completed count for the period.
+    """
+    try:
+        role = _get_user_role(user)
+        if role != "coach":
+            raise HTTPException(status_code=403, detail="Coach role required")
+
+        supabase = get_supabase()
+        date_from = (date.today() - timedelta(days=days)).isoformat()
+
+        # Get all active athletes
+        athletes_result = (
+            supabase.table("athletes")
+            .select("id, first_name, last_name")
+            .eq("is_active", True)
+            .execute()
+        )
+
+        statuses = []
+        for athlete in athletes_result.data:
+            workouts_result = (
+                supabase.table("workouts")
+                .select("id, is_completed, date, name")
+                .eq("athlete_id", athlete["id"])
+                .gte("date", date_from)
+                .execute()
+            )
+            workouts = workouts_result.data
+            statuses.append(
+                {
+                    "athlete_id": athlete["id"],
+                    "athlete_name": f"{athlete['first_name']} {athlete['last_name']}",
+                    "total_workouts": len(workouts),
+                    "completed": sum(1 for w in workouts if w.get("is_completed")),
+                    "recent_workouts": workouts[:5],
+                }
+            )
+
+        return statuses
+    except HTTPException:
+        raise
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to fetch workout status: {str(e)}"
+        )
+
+
+@router.get("/coach/athletes/{athlete_id}/workouts")
+async def get_athlete_workouts_for_coach(
+    athlete_id: str,
+    limit: int = Query(20),
+    date_from: Optional[str] = Query(None),
+    date_to: Optional[str] = Query(None),
+    user=Depends(get_current_user),
+):
+    """Get an athlete's workouts for coach review. Requires coach role."""
+    try:
+        role = _get_user_role(user)
+        if role != "coach":
+            raise HTTPException(status_code=403, detail="Coach role required")
+
+        supabase = get_supabase()
+        query = (
+            supabase.table("workouts")
+            .select("*, workout_exercises(*, exercises(name, category))")
+            .eq("athlete_id", athlete_id)
+            .order("date", desc=True)
+            .limit(limit)
+        )
+        if date_from:
+            query = query.gte("date", date_from)
+        if date_to:
+            query = query.lte("date", date_to)
+
+        result = query.execute()
+        return result.data
+    except HTTPException:
+        raise
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to fetch athlete workouts: {str(e)}"
+        )
 
 
 @router.get("/recommendations")

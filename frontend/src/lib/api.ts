@@ -64,6 +64,23 @@ export const trainingAPI = {
     api.patch(`/api/training/workouts/${workoutId}`, data),
   getRecommendations: (athleteId: string) =>
     api.get(`/api/training/recommendations?athlete_id=${athleteId}`),
+  getAthleteWorkoutsForCoach: (
+    athleteId: string,
+    params?: { limit?: number; date_from?: string; date_to?: string },
+  ) => {
+    const queryString = params
+      ? new URLSearchParams(
+          Object.entries(params)
+            .filter(([, v]) => v !== undefined)
+            .map(([k, v]) => [k, String(v)]),
+        ).toString()
+      : "";
+    return api.get(
+      `/api/training/coach/athletes/${athleteId}/workouts${queryString ? "?" + queryString : ""}`,
+    );
+  },
+  getAthletesWorkoutStatus: (days = 7) =>
+    api.get(`/api/training/coach/athletes/workout-status?days=${days}`),
 };
 
 export const exerciseAPI = {

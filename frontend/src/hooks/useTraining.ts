@@ -73,3 +73,23 @@ export function useTrainingRecommendations(athleteId: string) {
     staleTime: 60 * 60 * 1000,
   });
 }
+
+export function useAthleteWorkoutsForCoach(
+  athleteId: string,
+  params?: { limit?: number; date_from?: string; date_to?: string },
+) {
+  return useQuery({
+    queryKey: ["coach", "athlete-workouts", athleteId, params],
+    queryFn: () => trainingAPI.getAthleteWorkoutsForCoach(athleteId, params).then((res) => res.data),
+    staleTime: 2 * 60 * 1000,
+    enabled: !!athleteId,
+  });
+}
+
+export function useAthletesWorkoutStatus(days = 7) {
+  return useQuery({
+    queryKey: ["coach", "workout-status", days],
+    queryFn: () => trainingAPI.getAthletesWorkoutStatus(days).then((res) => res.data),
+    staleTime: 2 * 60 * 1000,
+  });
+}
