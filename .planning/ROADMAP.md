@@ -77,7 +77,11 @@ Plans:
   2. Coach sees readiness traffic light (green/yellow/red) for each athlete
   3. Athlete can flag an injury or concern that surfaces to coach
   4. Athlete can view their wellbeing trends over time
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 04-01-PLAN.md — Backend wellbeing API endpoints (check-in CRUD, readiness scoring, coach readiness overview)
+- [ ] 04-02-PLAN.md — Consolidate daily check-in form and wire to backend API (WELL-01, WELL-03)
+- [ ] 04-03-PLAN.md — Coach readiness traffic lights + athlete wellbeing trends (WELL-02, WELL-04)
 
 ### Phase 5: Performance & Coach Dashboard
 **Goal**: Coach has a real-data command center; PMC and performance trends work
@@ -121,7 +125,7 @@ Plans:
 | 1. Foundation | 4/4 | Complete | 2026-05-02 |
 | 2. Authentication & Roles | 4/4 | Complete | 2026-05-02 |
 | 3. Training Core | 4/4 | Complete | 2026-05-03 |
-| 4. Wellness & Recovery | 0/TBD | Not started | - |
+| 4. Wellness & Recovery | 0/3 | Planning complete | - |
 | 5. Performance & Coach Dashboard | 0/TBD | Not started | - |
 | 6. AI Training Engine | 0/TBD | Not started | - |
 | 7. Polish & Deploy | 0/TBD | Not started | - |
