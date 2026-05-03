@@ -1,27 +1,62 @@
-import { Container, Paper, Text, Title } from "@mantine/core";
-import React from "react";
-import { PerformanceAssessment } from "../../components/performance";
+"use client";
+
+import { Container, Paper, Skeleton, Stack, Tabs, Text, Title } from "@mantine/core";
+import { IconChartLine, IconClipboardCheck, IconTrendingUp } from "@tabler/icons-react";
+import { useAuth } from "@/hooks/useAuth";
+import { PerformanceChart } from "@/components/dashboard/PerformanceChart";
+import { PerformanceMetrics, PerformanceTrends } from "@/components/performance";
 
 /**
- * Performance Assessment Page
- * This page demonstrates how to use the performance assessment component
+ * Performance page with PMC chart, metrics, and trends tabs.
  */
 export default function PerformancePage() {
-  // In a real application, this would come from your auth context
-  const currentUserId = "123e4567-e89b-12d3-a456-426614174000";
+  const { user, loading } = useAuth();
+  const athleteId = user?.id ?? "";
+
+  if (loading) {
+    return (
+      <Container size="xl" py="xl">
+        <Skeleton height={400} />
+      </Container>
+    );
+  }
 
   return (
     <Container size="xl" py="xl">
       <Paper p="md" radius="md" withBorder mb="xl">
         <Title order={1} mb="sm">
-          Performance Metrics & Assessments
+          Performance
         </Title>
-        <Text c="dimmed" mb="xl">
-          Track your performance metrics, set targets, and analyze progress over time.
+        <Text c="dimmed">
+          Track your training load, fitness metrics, and progress over time.
         </Text>
       </Paper>
 
-      <PerformanceAssessment userId={currentUserId} />
+      <Tabs defaultValue="pmc">
+        <Tabs.List mb="md">
+          <Tabs.Tab value="pmc" leftSection={<IconChartLine size={14} />}>
+            PMC Chart
+          </Tabs.Tab>
+          <Tabs.Tab value="metrics" leftSection={<IconClipboardCheck size={14} />}>
+            Metrics
+          </Tabs.Tab>
+          <Tabs.Tab value="trends" leftSection={<IconTrendingUp size={14} />}>
+            Trends
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="pmc">
+          <PerformanceChart athleteId={athleteId} />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="metrics">
+          <PerformanceMetrics athleteId={athleteId} />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="trends">
+          <PerformanceTrends athleteId={athleteId} />
+        </Tabs.Panel>
+      </Tabs>
     </Container>
   );
 }

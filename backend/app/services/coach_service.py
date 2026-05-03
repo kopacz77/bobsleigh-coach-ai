@@ -118,10 +118,26 @@ class CoachService:
             coach_id: Coach UUID.
 
         Returns:
-            List of dicts with athlete_id, current_ctl, current_atl,
-            current_tsb, and last_load_date for each athlete.
+            List of dicts with athlete_id, athlete_name, ctl, atl, tsb,
+            last_load, and last_load_date for each athlete.
         """
         athlete_ids = await self.get_athlete_ids(coach_id)
+        if not athlete_ids:
+            return []
+
+        # Batch-fetch athlete names
+        sb = get_supabase()
+        athletes_result = (
+            sb.table("athletes")
+            .select("id, first_name, last_name")
+            .in_("id", athlete_ids)
+            .execute()
+        )
+        name_map = {
+            a["id"]: f"{a['first_name']} {a['last_name']}"
+            for a in athletes_result.data
+        }
+
         summaries = []
 
         for athlete_id in athlete_ids:
@@ -130,22 +146,26 @@ class CoachService:
             )
 
             if pmc_data["dates"]:
-                current_ctl = round(pmc_data["ctl"][-1], 1)
-                current_atl = round(pmc_data["atl"][-1], 1)
-                current_tsb = round(pmc_data["tsb"][-1], 1)
+                ctl = round(pmc_data["ctl"][-1], 1)
+                atl = round(pmc_data["atl"][-1], 1)
+                tsb = round(pmc_data["tsb"][-1], 1)
+                last_load = round(pmc_data["loads"][-1], 0) if pmc_data["loads"] else None
                 last_load_date = pmc_data["dates"][-1]
             else:
-                current_ctl = 0.0
-                current_atl = 0.0
-                current_tsb = 0.0
+                ctl = 0.0
+                atl = 0.0
+                tsb = 0.0
+                last_load = None
                 last_load_date = None
 
             summaries.append(
                 {
                     "athlete_id": athlete_id,
-                    "current_ctl": current_ctl,
-                    "current_atl": current_atl,
-                    "current_tsb": current_tsb,
+                    "athlete_name": name_map.get(athlete_id, "Unknown"),
+                    "ctl": ctl,
+                    "atl": atl,
+                    "tsb": tsb,
+                    "last_load": last_load,
                     "last_load_date": last_load_date,
                 }
             )
