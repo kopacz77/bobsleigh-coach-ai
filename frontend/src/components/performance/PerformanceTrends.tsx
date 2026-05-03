@@ -1,7 +1,16 @@
 "use client";
 
-import { Card, Group, SegmentedControl, Stack, Text, Title, useMantineTheme } from "@mantine/core";
-import { useState } from "react";
+import {
+  Card,
+  Group,
+  SegmentedControl,
+  Skeleton,
+  Stack,
+  Text,
+  Title,
+  useMantineTheme,
+} from "@mantine/core";
+import { useMemo, useState } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -12,122 +21,68 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { usePerformanceTrends } from "@/hooks/usePerformance";
 
-interface MetricData {
-  dates: string[];
-  values: number[];
-  label: string;
-  color: string;
+interface PerformanceTrendsProps {
+  athleteId: string;
 }
 
-interface MetricDataMap {
-  [key: string]: MetricData;
+// Metric options grouped by category
+const metricOptions: Record<string, { value: string; label: string }[]> = {
+  strength: [
+    { value: "back_squat_1rm", label: "Back Squat 1RM" },
+    { value: "bench_press_1rm", label: "Bench Press 1RM" },
+    { value: "deadlift_1rm", label: "Deadlift 1RM" },
+    { value: "power_clean_1rm", label: "Power Clean 1RM" },
+  ],
+  speed: [
+    { value: "30m_sprint", label: "30m Sprint" },
+    { value: "60m_sprint", label: "60m Sprint" },
+  ],
+  power: [
+    { value: "vertical_jump", label: "Vertical Jump" },
+    { value: "broad_jump", label: "Broad Jump" },
+    { value: "med_ball_throw", label: "Med Ball Throw" },
+  ],
+};
+
+interface TrendRow {
+  test_date?: string;
+  date?: string;
+  metric_name: string;
+  value: number;
+  unit?: string;
 }
 
-export function PerformanceTrends() {
+export function PerformanceTrends({ athleteId }: PerformanceTrendsProps) {
   const theme = useMantineTheme();
   const [metricType, setMetricType] = useState("strength");
-  const [specificMetric, setSpecificMetric] = useState("squat_1rm");
+  const [specificMetric, setSpecificMetric] = useState("back_squat_1rm");
 
-  // Placeholder data for different metrics
-  const strengthData: MetricDataMap = {
-    squat_1rm: {
-      dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
-      values: [140, 142.5, 145, 145, 150],
-      label: "Squat 1RM (kg)",
-      color: theme.colors.blue[6],
-    },
-    bench_1rm: {
-      dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
-      values: [90, 92.5, 95, 97.5, 100],
-      label: "Bench Press 1RM (kg)",
-      color: theme.colors.red[6],
-    },
-    deadlift_1rm: {
-      dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
-      values: [160, 165, 170, 175, 180],
-      label: "Deadlift 1RM (kg)",
-      color: theme.colors.green[6],
-    },
-  };
+  const { data: trendData, isLoading } = usePerformanceTrends(athleteId, specificMetric, 180);
 
-  const speedData: MetricDataMap = {
-    "30m_best": {
-      dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
-      values: [4.3, 4.25, 4.2, 4.15, 4.1],
-      label: "30m Sprint (seconds)",
-      color: theme.colors.blue[6],
-    },
-    "60m_best": {
-      dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
-      values: [7.5, 7.45, 7.4, 7.35, 7.3],
-      label: "60m Sprint (seconds)",
-      color: theme.colors.red[6],
-    },
-  };
+  const chartData = useMemo(() => {
+    if (!trendData || !Array.isArray(trendData) || trendData.length === 0) return [];
+    return (trendData as TrendRow[]).map((item) => ({
+      date: new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(
+        new Date(item.test_date || item.date || ""),
+      ),
+      value: item.value,
+    }));
+  }, [trendData]);
 
-  const powerData: MetricDataMap = {
-    vertical_jump: {
-      dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
-      values: [60, 61, 63, 64, 65],
-      label: "Vertical Jump (cm)",
-      color: theme.colors.blue[6],
-    },
-    broad_jump: {
-      dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
-      values: [260, 265, 270, 275, 280],
-      label: "Broad Jump (cm)",
-      color: theme.colors.red[6],
-    },
-    med_ball_throw: {
-      dates: ["Jan 15", "Jan 29", "Feb 12", "Feb 26", "Mar 12"],
-      values: [800, 815, 830, 840, 850],
-      label: "Med Ball Throw (cm)",
-      color: theme.colors.green[6],
-    },
-  };
+  const selectedLabel =
+    metricOptions[metricType]?.find((m) => m.value === specificMetric)?.label || specificMetric;
 
-  // Map of metric types to their specific metrics
-  const metricOptions: Record<string, { value: string; label: string }[]> = {
-    strength: [
-      { value: "squat_1rm", label: "Squat 1RM" },
-      { value: "bench_1rm", label: "Bench 1RM" },
-      { value: "deadlift_1rm", label: "Deadlift 1RM" },
-    ],
-    speed: [
-      { value: "30m_best", label: "30m Sprint" },
-      { value: "60m_best", label: "60m Sprint" },
-    ],
-    power: [
-      { value: "vertical_jump", label: "Vertical Jump" },
-      { value: "broad_jump", label: "Broad Jump" },
-      { value: "med_ball_throw", label: "Med Ball Throw" },
-    ],
-  };
+  const unit = useMemo(() => {
+    if (!trendData || !Array.isArray(trendData) || trendData.length === 0) return "";
+    return (trendData as TrendRow[])[0]?.unit || "";
+  }, [trendData]);
 
-  // Get the data for the currently selected metric
-  const getSelectedData = (): MetricData => {
-    const dataMap: Record<string, MetricDataMap> = {
-      strength: strengthData,
-      speed: speedData,
-      power: powerData,
-    };
-    return dataMap[metricType]?.[specificMetric] || strengthData.squat_1rm;
-  };
-
-  // When the metric type changes, update the specific metric to the first option
   const handleMetricTypeChange = (value: string) => {
     setMetricType(value);
     setSpecificMetric(metricOptions[value][0].value);
   };
-
-  const selectedData = getSelectedData();
-
-  // Transform data for recharts
-  const chartData = selectedData.dates.map((date, i) => ({
-    date,
-    value: selectedData.values[i],
-  }));
 
   return (
     <Card withBorder p="md" radius="md">
@@ -155,27 +110,46 @@ export function PerformanceTrends() {
         </Group>
 
         <Text size="sm" c="dimmed">
-          Track your progress over time. This chart shows how your {selectedData.label} has changed
-          over the last three months.
+          Track your progress over time. This chart shows how your {selectedLabel}
+          {unit ? ` (${unit})` : ""} has changed over the last six months.
         </Text>
 
         <div style={{ height: 300 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis label={{ value: selectedData.label, angle: -90, position: "insideLeft" }} />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="value"
-                stroke={selectedData.color}
-                name={selectedData.label}
-                strokeWidth={2}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          {isLoading ? (
+            <Skeleton height={300} radius="md" />
+          ) : chartData.length === 0 ? (
+            <Stack ta="center" justify="center" h="100%" gap="xs">
+              <Text size="lg" fw={500} c="dimmed">
+                No data for this metric
+              </Text>
+              <Text size="sm" c="dimmed">
+                Record performance assessments for {selectedLabel} to see trends.
+              </Text>
+            </Stack>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis
+                  label={{
+                    value: `${selectedLabel}${unit ? ` (${unit})` : ""}`,
+                    angle: -90,
+                    position: "insideLeft",
+                  }}
+                />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke={theme.colors.blue[6]}
+                  name={selectedLabel}
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </Stack>
     </Card>
