@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 4 of 7 (Wellness & Recovery)
-Plan: 2 of 4 complete
+Plan: 3 of 4 complete
 Status: In progress
-Last activity: 2026-05-03 — Completed 04-02-PLAN.md
+Last activity: 2026-05-03 — Completed 04-03-PLAN.md
 
-Progress: ███████░░░ 50% (14 plans complete, ~14 remaining across phases 4-7)
+Progress: ████████░░ 54% (15 plans complete, ~13 remaining across phases 4-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
+- Total plans completed: 15
 - Average duration: ~5min
-- Total execution time: ~76min
+- Total execution time: ~80min
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: ███████░░░ 50% (14 plans complete, ~14 remaining a
 | 1. Foundation | 4/4 | ~40min | ~10min |
 | 2. Auth & Roles | 4/4 | ~19min | ~5min |
 | 3. Training Core | 4/4 | ~16min | ~4min |
-| 4. Wellness & Recovery | 2/4 | ~5min | ~3min |
+| 4. Wellness & Recovery | 3/4 | ~9min | ~3min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (3min), 03-03 (5min), 03-04 (4min), 04-01 (3min), 04-02 (2min)
+- Last 5 plans: 03-03 (5min), 03-04 (4min), 04-01 (3min), 04-02 (2min), 04-03 (4min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -90,6 +90,9 @@ Recent decisions affecting current work:
 - Upsert wellbeing check-in via check-then-update/insert (Supabase PostgREST constraint)
 - DailyCheckIn takes no props (backend identifies user via auth token)
 - RecoveryHealth/Reflection userId made optional for forward compatibility
+- Coach dashboard readiness via API-backed React Query hook, not direct Supabase
+- Removed daily_checkins direct query (table did not exist) and dependent alert generation
+- Removed objective metrics chart from WellbeingTrends (daily_metrics table not in schema)
 
 ### Pending Todos
 
@@ -109,5 +112,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 04-02-PLAN.md (Daily check-in frontend)
+Stopped at: Completed 04-03-PLAN.md (Coach readiness & wellbeing trends)
 Resume file: None
