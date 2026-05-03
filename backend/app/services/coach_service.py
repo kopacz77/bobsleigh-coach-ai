@@ -312,9 +312,9 @@ class CoachService:
             if not info:
                 continue
             athlete_name = info["name"]
-            current_tsb = summary["current_tsb"]
-            current_atl = summary["current_atl"]
-            current_ctl = summary["current_ctl"]
+            current_tsb = summary["tsb"]
+            current_atl = summary["atl"]
+            current_ctl = summary["ctl"]
 
             # Alert 3: fatigue_spike - TSB < -20 or ATL/CTL > 1.5
             is_fatigue_spike = False
