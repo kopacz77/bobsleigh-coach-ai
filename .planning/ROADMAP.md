@@ -28,10 +28,10 @@ Take the existing scaffolding — broken frontend, mock-data backend, standalone
   4. `docker-compose up` starts all services successfully
 **Plans**: 4 plans
 Plans:
-- [ ] 01-01-PLAN.md — Fix frontend compilation errors (broken imports, remove chart.js, migrate Supabase auth hooks)
-- [ ] 01-02-PLAN.md — Clean backend deps, fix schemas for UUID, create Python Dockerfile, deploy DB schema
-- [ ] 01-03-PLAN.md — Wire all backend endpoints to Supabase (replace mock data with real queries)
-- [ ] 01-04-PLAN.md — Fix Docker Compose, verify full stack integration
+- [x] 01-01-PLAN.md — Fix frontend compilation errors (broken imports, remove chart.js, migrate Supabase auth hooks)
+- [x] 01-02-PLAN.md — Clean backend deps, fix schemas for UUID, create Python Dockerfile, deploy DB schema
+- [x] 01-03-PLAN.md — Wire all backend endpoints to Supabase (replace mock data with real queries)
+- [x] 01-04-PLAN.md — Fix Docker Compose, verify full stack integration
 
 ### Phase 2: Authentication & Roles
 **Goal**: Users can securely log in and see role-appropriate views
@@ -43,7 +43,12 @@ Plans:
   2. Coach sees coach dashboard, athlete sees athlete dashboard (role routing works)
   3. Athlete can only access their own data (RLS enforced)
   4. Auth session persists across browser refresh
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 02-01-PLAN.md — Wire frontend auth to real Supabase Auth (login, signup, session persistence)
+- [ ] 02-02-PLAN.md — Replace backend JWT with Supabase token validation, add auth guards to all endpoints
+- [ ] 02-03-PLAN.md — Role-based dashboard routing and navigation (coach vs athlete views)
+- [ ] 02-04-PLAN.md — Row-level security policies and user-based data filtering
 
 ### Phase 3: Training Core
 **Goal**: Athletes can log workouts and view training plans; coaches can see training history
@@ -109,7 +114,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete | 2026-05-02 |
-| 2. Authentication & Roles | 0/TBD | Not started | - |
+| 2. Authentication & Roles | 0/4 | Planning complete | - |
 | 3. Training Core | 0/TBD | Not started | - |
 | 4. Wellness & Recovery | 0/TBD | Not started | - |
 | 5. Performance & Coach Dashboard | 0/TBD | Not started | - |
