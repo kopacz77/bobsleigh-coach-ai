@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { supabase } from "@/lib/supabase";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 const api = axios.create({
@@ -9,26 +11,37 @@ const api = axios.create({
   },
 });
 
-// Add a request interceptor to include auth token
+// Request interceptor: attach Supabase access token as Bearer header
 api.interceptors.request.use(
   async (config) => {
-    // Get token from localStorage or elsewhere
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (session?.access_token) {
+      config.headers.Authorization = `Bearer ${session.access_token}`;
     }
     return config;
   },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor: redirect to login on 401
+api.interceptors.response.use(
+  (response) => response,
   (error) => {
+    if (error.response?.status === 401) {
+      // Token expired or invalid -- redirect to login
+      if (typeof window !== "undefined") {
+        window.location.href = "/auth/login";
+      }
+    }
     return Promise.reject(error);
   }
 );
 
 // API endpoints
 export const authAPI = {
-  login: (credentials: { email: string; password: string }) =>
-    api.post("/api/auth/token", credentials),
-  googleLogin: () => api.post("/api/auth/google"),
+  me: () => api.get("/api/auth/me"),
 };
 
 export const athleteAPI = {
