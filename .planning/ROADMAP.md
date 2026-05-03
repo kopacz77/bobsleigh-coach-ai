@@ -10,7 +10,7 @@ Take the existing scaffolding — broken frontend, mock-data backend, standalone
 - [x] **Phase 2: Authentication & Roles** - Unified Supabase auth with coach/athlete role routing
 - [x] **Phase 3: Training Core** - Exercise library, workout logging, training history, plan view
 - [x] **Phase 4: Wellness & Recovery** - Daily check-in, readiness scoring, injury flagging, trends
-- [ ] **Phase 5: Performance & Coach Dashboard** - PMC tracking, real-data coach dashboard, alerts
+- [x] **Phase 5: Performance & Coach Dashboard** - PMC tracking, real-data coach dashboard, alerts
 - [ ] **Phase 6: AI Training Engine** - Plan generation, coach approval, adaptive load, injury risk
 - [ ] **Phase 7: Polish & Deploy** - Mobile UX optimization, design polish, production deployment
 
@@ -95,10 +95,10 @@ Plans:
   4. Coach receives alerts for concerning athlete trends (fatigue spikes, missed check-ins)
 **Plans**: 4 plans
 Plans:
-- [ ] 05-01-PLAN.md — Training load pipeline (sRPE auto-upsert on workout completion) + PMC full time series fix
-- [ ] 05-02-PLAN.md — Rewire performance frontend components from mock data to real API (PerformanceChart, Metrics, Trends)
-- [ ] 05-03-PLAN.md — Coach backend endpoints (roster, PMC summary, alerts, relationship CRUD)
-- [ ] 05-04-PLAN.md — Wire CoachDashboard to real API data (replace direct Supabase, add alerts, PMC overview)
+- [x] 05-01-PLAN.md — Training load pipeline (sRPE auto-upsert on workout completion) + PMC full time series fix
+- [x] 05-02-PLAN.md — Rewire performance frontend components from mock data to real API (PerformanceChart, Metrics, Trends)
+- [x] 05-03-PLAN.md — Coach backend endpoints (roster, PMC summary, alerts, relationship CRUD)
+- [x] 05-04-PLAN.md — Wire CoachDashboard to real API data (replace direct Supabase, add alerts, PMC overview)
 
 ### Phase 6: AI Training Engine
 **Goal**: System generates personalized weekly training plans that coach reviews and approves
@@ -131,6 +131,6 @@ Plans:
 | 2. Authentication & Roles | 4/4 | Complete | 2026-05-02 |
 | 3. Training Core | 4/4 | Complete | 2026-05-03 |
 | 4. Wellness & Recovery | 3/3 | Complete | 2026-05-03 |
-| 5. Performance & Coach Dashboard | 0/4 | In progress | - |
+| 5. Performance & Coach Dashboard | 4/4 | Complete | 2026-05-03 |
 | 6. AI Training Engine | 0/TBD | Not started | - |
 | 7. Polish & Deploy | 0/TBD | Not started | - |
