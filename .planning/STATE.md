@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-05-02)
 
 **Core value:** The AI generates genuinely useful, personalized weekly training plans that a bobsleigh coach would actually trust and use with their athletes.
-**Current focus:** Phase 2 -- Authentication & Roles
+**Current focus:** Phase 2 -- Authentication & Roles (COMPLETE)
 
 ## Current Position
 
 Phase: 2 of 7 (Authentication & Roles)
-Plan: 3 of 4 in phase (02-01, 02-02, 02-04 complete; 02-03 pending)
-Status: In progress
-Last activity: 2026-05-03 -- Completed 02-04-PLAN.md (RLS policies & data filtering)
+Plan: 4 of 4 in phase (all complete)
+Status: Phase complete
+Last activity: 2026-05-03 -- Completed 02-03-PLAN.md (role-based dashboard routing)
 
-Progress: █████░░░░░ 25% (7 plans complete, ~21 remaining across phases 2-7)
+Progress: ████████░░ 29% (8 plans complete, ~20 remaining across phases 3-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: ~7min
-- Total execution time: ~53min
+- Total execution time: ~59min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 4/4 | ~40min | ~10min |
-| 2. Auth & Roles | 3/4 | ~13min | ~4min |
+| 2. Auth & Roles | 4/4 | ~19min | ~5min |
 
 **Recent Trend:**
-- Last 5 plans: 01-04 (1min), 02-02 (4min), 02-01 (6min), 02-04 (3min)
+- Last 5 plans: 01-04 (1min), 02-02 (4min), 02-01 (6min), 02-04 (3min), 02-03 (6min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -65,14 +65,17 @@ Recent decisions affecting current work:
 - Backend uses service role key (bypasses RLS); RLS protects frontend direct access; Python code is defense-in-depth
 - Auto-set user_id/athlete_id on create endpoints (never trust client input for ownership fields)
 - Training endpoint athlete_id query param made optional (defaults to authenticated user's own athlete)
+- Use app_metadata (not user_metadata) for role storage -- app_metadata is not client-writable
+- Default role is 'athlete' set by database trigger on auth.users insert
+- Coach promotion is manual via SQL or Supabase dashboard (no self-service)
 
 ### Pending Todos
 
 - Deploy database schema to Supabase (manual step from 01-02 Task 2)
 - Deploy RLS policies migration to Supabase (manual step from 02-04 Task 1)
+- Deploy auth_roles_migration.sql to Supabase (manual step from 02-03 Task 1)
 - Set up .env with Supabase credentials
 - Run docker-compose verification (manual step from 01-04 Task 2)
-- Execute Plan 02-03 (role-based dashboard routing and navigation)
 
 ### Blockers/Concerns
 
@@ -80,10 +83,9 @@ Recent decisions affecting current work:
 - SQLAlchemy models use Integer PKs but Supabase uses UUIDs (kept as-is for now)
 - Supabase schema not yet deployed (manual step deferred)
 - Docker full-stack verification not yet run (requires Supabase credentials)
-- Plan 02-03 not yet executed (role-based UI routing) -- does not block Phase 3
 
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 02-04-PLAN.md (RLS policies & data filtering). Next: 02-03 (role-based dashboard).
+Stopped at: Completed 02-03-PLAN.md (role-based dashboard routing). Phase 2 complete. Next: Phase 3.
 Resume file: None
