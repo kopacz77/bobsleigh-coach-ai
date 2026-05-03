@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 3 of 7 (Training Core)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-05-03 — Phase 2 complete, verified, approved
+Plan: 2 of 4 complete
+Status: In progress
+Last activity: 2026-05-03 — Completed 03-02-PLAN.md
 
-Progress: ██░░░░░░░░ 29% (8 plans complete, ~20 remaining across phases 3-7)
+Progress: ███░░░░░░░ 36% (10 plans complete, ~18 remaining across phases 3-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: ~7min
-- Total execution time: ~59min
+- Total plans completed: 10
+- Average duration: ~6min
+- Total execution time: ~62min
 
 **By Phase:**
 
@@ -29,9 +29,10 @@ Progress: ██░░░░░░░░ 29% (8 plans complete, ~20 remaining ac
 |-------|-------|-------|----------|
 | 1. Foundation | 4/4 | ~40min | ~10min |
 | 2. Auth & Roles | 4/4 | ~19min | ~5min |
+| 3. Training Core | 2/4 | ~3min | ~2min |
 
 **Recent Trend:**
-- Last 5 plans: 01-04 (1min), 02-02 (4min), 02-01 (6min), 02-04 (3min), 02-03 (6min)
+- Last 5 plans: 02-01 (6min), 02-04 (3min), 02-03 (6min), 03-01 (?min), 03-02 (3min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -68,6 +69,10 @@ Recent decisions affecting current work:
 - Use app_metadata (not user_metadata) for role storage -- app_metadata is not client-writable
 - Default role is 'athlete' set by database trigger on auth.users insert
 - Coach promotion is manual via SQL or Supabase dashboard (no self-service)
+- WorkoutCreate schema decoupled from WorkoutBase (athlete_id set server-side only)
+- PATCH endpoint uses allowed-fields whitelist for safe updates
+- Use Mantine notifications.show() for form feedback (not browser alerts)
+- Training hook/API ID types changed from number to string (UUIDs)
 
 ### Pending Todos
 
@@ -87,5 +92,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Phase 2 complete, verified, approved. Ready for Phase 3.
+Stopped at: Completed 03-02-PLAN.md (workout logging wired to API)
 Resume file: None
