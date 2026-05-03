@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 5 of 7 (Performance & Coach Dashboard)
-Plan: 2 of 4 complete
+Plan: 3 of 4 complete
 Status: In progress
-Last activity: 2026-05-03 — Completed 05-02-PLAN.md
+Last activity: 2026-05-03 — Completed 05-03-PLAN.md
 
-Progress: █████████░ 61% (17 plans complete, ~11 remaining across phases 5-7)
+Progress: █████████░ 64% (18 plans complete, ~10 remaining across phases 5-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17
+- Total plans completed: 18
 - Average duration: ~5min
-- Total execution time: ~84min
+- Total execution time: ~87min
 
 **By Phase:**
 
@@ -33,7 +33,7 @@ Progress: █████████░ 61% (17 plans complete, ~11 remaining a
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (3min), 04-02 (2min), 04-03 (4min), 05-01 (2min), 05-02 (2min)
+- Last 5 plans: 04-02 (2min), 04-03 (4min), 05-01 (2min), 05-02 (2min), 05-03 (3min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -100,6 +100,11 @@ Recent decisions affecting current work:
 - Use Intl.DateTimeFormat for chart date labels (no dayjs dependency)
 - Dynamic metric grouping from API metric_type field (not hardcoded categories)
 - Default PMC chart to 42 days (6 weeks) for better training load visibility
+- Coach alerts computed on read (not stored in notifications table)
+- Batch wellbeing queries using .in_() to avoid N+1 problem
+- Wellbeing alerts map through athlete.user_id (assessments use user_id not athlete_id)
+- Coach-athlete soft-remove via ended_at (preserves relationship history)
+- Fatigue spike at TSB < -20, overtraining risk at TSB < -30 (separate alert types)
 
 ### Pending Todos
 
@@ -119,5 +124,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 05-02-PLAN.md
+Stopped at: Completed 05-03-PLAN.md
 Resume file: None
