@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 5 of 7 (Performance & Coach Dashboard)
-Plan: 1 of 4 complete
+Plan: 2 of 4 complete
 Status: In progress
-Last activity: 2026-05-03 — Completed 05-01-PLAN.md
+Last activity: 2026-05-03 — Completed 05-02-PLAN.md
 
-Progress: ████████░░ 57% (16 plans complete, ~12 remaining across phases 5-7)
+Progress: █████████░ 61% (17 plans complete, ~11 remaining across phases 5-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
+- Total plans completed: 17
 - Average duration: ~5min
-- Total execution time: ~82min
+- Total execution time: ~84min
 
 **By Phase:**
 
@@ -33,7 +33,7 @@ Progress: ████████░░ 57% (16 plans complete, ~12 remaining a
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 
 **Recent Trend:**
-- Last 5 plans: 03-04 (4min), 04-01 (3min), 04-02 (2min), 04-03 (4min), 05-01 (2min)
+- Last 5 plans: 04-01 (3min), 04-02 (2min), 04-03 (4min), 05-01 (2min), 05-02 (2min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -96,6 +96,10 @@ Recent decisions affecting current work:
 - sRPE upsert wrapped in try/except so failure does not break workout update response
 - Multiple workouts on same day sum their training loads (additive upsert)
 - Return full PMC time series (removed [-8:] truncation from performance service)
+- Performance hook/API ID types changed from number to string (UUIDs)
+- Use Intl.DateTimeFormat for chart date labels (no dayjs dependency)
+- Dynamic metric grouping from API metric_type field (not hardcoded categories)
+- Default PMC chart to 42 days (6 weeks) for better training load visibility
 
 ### Pending Todos
 
@@ -115,5 +119,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 05-01-PLAN.md
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
