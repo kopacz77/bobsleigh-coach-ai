@@ -32,7 +32,7 @@ class PerformanceService:
             supabase.table("performance_metrics")
             .select("*")
             .eq("athlete_id", athlete_id)
-            .order("test_date", desc=True)
+            .order("date", desc=True)
             .execute()
         )
         return result.data
@@ -57,8 +57,8 @@ class PerformanceService:
             .select("*")
             .eq("athlete_id", athlete_id)
             .eq("metric_name", metric)
-            .gte("test_date", from_date)
-            .order("test_date")
+            .gte("date", from_date)
+            .order("date")
             .execute()
         )
         return result.data
@@ -114,11 +114,11 @@ class PerformanceService:
                     "tsb": tsb,
                 }
                 for d, load, ctl, atl, tsb in zip(
-                    pmc_data["dates"][-8:],
-                    pmc_data["loads"][-8:],
-                    pmc_data["ctl"][-8:],
-                    pmc_data["atl"][-8:],
-                    pmc_data["tsb"][-8:],
+                    pmc_data["dates"],
+                    pmc_data["loads"],
+                    pmc_data["ctl"],
+                    pmc_data["atl"],
+                    pmc_data["tsb"],
                 )
             ],
             "recommendations": recommendations,
