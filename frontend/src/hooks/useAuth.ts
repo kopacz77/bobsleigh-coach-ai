@@ -3,6 +3,8 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useSupabase } from "@/providers/SupabaseProvider";
 
+export type UserRole = "coach" | "athlete" | "admin";
+
 export function useAuth() {
   const { supabase, loading: providerLoading } = useSupabase();
   const [user, setUser] = useState<User | null>(null);
@@ -31,6 +33,12 @@ export function useAuth() {
 
     return () => subscription.unsubscribe();
   }, [supabase]);
+
+  // Derive role from app_metadata (secure, not user-writable)
+  const role: UserRole = (session?.user?.app_metadata?.role as UserRole) || "athlete";
+  const isCoach = role === "coach";
+  const isAthlete = role === "athlete" || !session?.user?.app_metadata?.role;
+  const isAdmin = role === "admin";
 
   const login = useCallback(
     async (email: string, password: string) => {
@@ -68,6 +76,10 @@ export function useAuth() {
       session: null,
       loading: true,
       isAuthenticated: false,
+      role: "athlete" as UserRole,
+      isCoach: false,
+      isAthlete: true,
+      isAdmin: false,
       login,
       loginWithGoogle,
       signup,
@@ -80,6 +92,10 @@ export function useAuth() {
     session,
     loading,
     isAuthenticated: !!user,
+    role,
+    isCoach,
+    isAthlete,
+    isAdmin,
     login,
     loginWithGoogle,
     signup,
