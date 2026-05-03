@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 2 of 7 (Authentication & Roles)
-Plan: 2 of 4 in phase
+Plan: 2 of 4 in phase (02-01 and 02-02 complete)
 Status: In progress
-Last activity: 2026-05-03 — Completed 02-02-PLAN.md (unified auth flow)
+Last activity: 2026-05-03 — Completed 02-01-PLAN.md (Supabase Auth wiring)
 
-Progress: █████░░░░░ 18% (5 plans complete, ~23 remaining across phases 2-7)
+Progress: █████░░░░░ 21% (6 plans complete, ~22 remaining across phases 2-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: ~9min
-- Total execution time: ~44min
+- Total plans completed: 6
+- Average duration: ~8min
+- Total execution time: ~50min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 4/4 | ~40min | ~10min |
-| 2. Auth & Roles | 1/4 | ~4min | ~4min |
+| 2. Auth & Roles | 2/4 | ~10min | ~5min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (5min), 01-03 (4min), 01-04 (1min), 02-02 (4min)
+- Last 5 plans: 01-03 (4min), 01-04 (1min), 02-02 (4min), 02-01 (6min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -59,6 +59,9 @@ Recent decisions affecting current work:
 - Use supabase.auth.get_user(token) instead of manual JWT decode with jose
 - Use HTTPBearer scheme since no /token endpoint exists
 - Auth guard as Depends(get_current_user) per endpoint, not router middleware
+- useAuth hook wraps all Supabase Auth methods so pages never import supabase directly
+- getSession() for initial session hydration (local storage, no network call) over getUser()
+- Auth pages use useAuth() exclusively, never import from @/lib/supabase
 
 ### Pending Todos
 
@@ -76,5 +79,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 02-02-PLAN.md (unified auth flow). Next: 02-03.
+Stopped at: Completed 02-01-PLAN.md (Supabase Auth wiring). Next: 02-03.
 Resume file: None
