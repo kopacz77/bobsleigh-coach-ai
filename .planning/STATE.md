@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-05-02)
 
 **Core value:** The AI generates genuinely useful, personalized weekly training plans that a bobsleigh coach would actually trust and use with their athletes.
-**Current focus:** Phase 2 — Authentication & Roles
+**Current focus:** Phase 2 -- Authentication & Roles
 
 ## Current Position
 
 Phase: 2 of 7 (Authentication & Roles)
-Plan: 2 of 4 in phase (02-01 and 02-02 complete)
+Plan: 3 of 4 in phase (02-01, 02-02, 02-04 complete; 02-03 pending)
 Status: In progress
-Last activity: 2026-05-03 — Completed 02-01-PLAN.md (Supabase Auth wiring)
+Last activity: 2026-05-03 -- Completed 02-04-PLAN.md (RLS policies & data filtering)
 
-Progress: █████░░░░░ 21% (6 plans complete, ~22 remaining across phases 2-7)
+Progress: █████░░░░░ 25% (7 plans complete, ~21 remaining across phases 2-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: ~8min
-- Total execution time: ~50min
+- Total plans completed: 7
+- Average duration: ~7min
+- Total execution time: ~53min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 4/4 | ~40min | ~10min |
-| 2. Auth & Roles | 2/4 | ~10min | ~5min |
+| 2. Auth & Roles | 3/4 | ~13min | ~4min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (4min), 01-04 (1min), 02-02 (4min), 02-01 (6min)
+- Last 5 plans: 01-04 (1min), 02-02 (4min), 02-01 (6min), 02-04 (3min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -62,12 +62,17 @@ Recent decisions affecting current work:
 - useAuth hook wraps all Supabase Auth methods so pages never import supabase directly
 - getSession() for initial session hydration (local storage, no network call) over getUser()
 - Auth pages use useAuth() exclusively, never import from @/lib/supabase
+- Backend uses service role key (bypasses RLS); RLS protects frontend direct access; Python code is defense-in-depth
+- Auto-set user_id/athlete_id on create endpoints (never trust client input for ownership fields)
+- Training endpoint athlete_id query param made optional (defaults to authenticated user's own athlete)
 
 ### Pending Todos
 
 - Deploy database schema to Supabase (manual step from 01-02 Task 2)
+- Deploy RLS policies migration to Supabase (manual step from 02-04 Task 1)
 - Set up .env with Supabase credentials
 - Run docker-compose verification (manual step from 01-04 Task 2)
+- Execute Plan 02-03 (role-based dashboard routing and navigation)
 
 ### Blockers/Concerns
 
@@ -75,9 +80,10 @@ Recent decisions affecting current work:
 - SQLAlchemy models use Integer PKs but Supabase uses UUIDs (kept as-is for now)
 - Supabase schema not yet deployed (manual step deferred)
 - Docker full-stack verification not yet run (requires Supabase credentials)
+- Plan 02-03 not yet executed (role-based UI routing) -- does not block Phase 3
 
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 02-01-PLAN.md (Supabase Auth wiring). Next: 02-03.
+Stopped at: Completed 02-04-PLAN.md (RLS policies & data filtering). Next: 02-03 (role-based dashboard).
 Resume file: None
