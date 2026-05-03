@@ -32,7 +32,7 @@ Progress: ███░░░░░░░ 36% (10 plans complete, ~18 remaining a
 | 3. Training Core | 2/4 | ~3min | ~2min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (6min), 02-04 (3min), 02-03 (6min), 03-01 (?min), 03-02 (3min)
+- Last 5 plans: 02-01 (6min), 02-04 (3min), 02-03 (6min), 03-01 (4min), 03-02 (3min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -69,6 +69,9 @@ Recent decisions affecting current work:
 - Use app_metadata (not user_metadata) for role storage -- app_metadata is not client-writable
 - Default role is 'athlete' set by database trigger on auth.users insert
 - Coach promotion is manual via SQL or Supabase dashboard (no self-service)
+- Exercises table uses measurement_type (not movement_type) and equipment_needed text[] (not scalar equipment)
+- Exercises are public reference data -- any authenticated user can browse (no ownership check)
+- Supabase .ilike() uses asterisk wildcards for text search, .contains() for array filtering
 - WorkoutCreate schema decoupled from WorkoutBase (athlete_id set server-side only)
 - PATCH endpoint uses allowed-fields whitelist for safe updates
 - Use Mantine notifications.show() for form feedback (not browser alerts)
