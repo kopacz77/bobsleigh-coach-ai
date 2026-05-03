@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-05-02)
 
 **Core value:** The AI generates genuinely useful, personalized weekly training plans that a bobsleigh coach would actually trust and use with their athletes.
-**Current focus:** Phase 4 — Wellness & Recovery
+**Current focus:** Phase 5 — Performance & Coach Dashboard
 
 ## Current Position
 
-Phase: 4 of 7 (Wellness & Recovery)
-Plan: 3 of 4 complete
-Status: In progress
-Last activity: 2026-05-03 — Completed 04-03-PLAN.md
+Phase: 5 of 7 (Performance & Coach Dashboard)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-05-03 — Phase 4 complete, verified, approved
 
-Progress: ████████░░ 54% (15 plans complete, ~13 remaining across phases 4-7)
+Progress: ████████░░ 54% (15 plans complete, ~13 remaining across phases 5-7)
 
 ## Performance Metrics
 
@@ -30,7 +30,7 @@ Progress: ████████░░ 54% (15 plans complete, ~13 remaining a
 | 1. Foundation | 4/4 | ~40min | ~10min |
 | 2. Auth & Roles | 4/4 | ~19min | ~5min |
 | 3. Training Core | 4/4 | ~16min | ~4min |
-| 4. Wellness & Recovery | 3/4 | ~9min | ~3min |
+| 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 
 **Recent Trend:**
 - Last 5 plans: 03-03 (5min), 03-04 (4min), 04-01 (3min), 04-02 (2min), 04-03 (4min)
@@ -112,5 +112,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 04-03-PLAN.md (Coach readiness & wellbeing trends)
+Stopped at: Phase 4 complete, verified, approved. Ready for Phase 5.
 Resume file: None

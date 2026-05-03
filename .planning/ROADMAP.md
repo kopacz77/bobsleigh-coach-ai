@@ -9,7 +9,7 @@ Take the existing scaffolding — broken frontend, mock-data backend, standalone
 - [x] **Phase 1: Foundation** - Fix compilation, deploy schema, wire backend to real database
 - [x] **Phase 2: Authentication & Roles** - Unified Supabase auth with coach/athlete role routing
 - [x] **Phase 3: Training Core** - Exercise library, workout logging, training history, plan view
-- [ ] **Phase 4: Wellness & Recovery** - Daily check-in, readiness scoring, injury flagging, trends
+- [x] **Phase 4: Wellness & Recovery** - Daily check-in, readiness scoring, injury flagging, trends
 - [ ] **Phase 5: Performance & Coach Dashboard** - PMC tracking, real-data coach dashboard, alerts
 - [ ] **Phase 6: AI Training Engine** - Plan generation, coach approval, adaptive load, injury risk
 - [ ] **Phase 7: Polish & Deploy** - Mobile UX optimization, design polish, production deployment
@@ -79,9 +79,9 @@ Plans:
   4. Athlete can view their wellbeing trends over time
 **Plans**: 3 plans
 Plans:
-- [ ] 04-01-PLAN.md — Backend wellbeing API endpoints (check-in CRUD, readiness scoring, coach readiness overview)
-- [ ] 04-02-PLAN.md — Consolidate daily check-in form and wire to backend API (WELL-01, WELL-03)
-- [ ] 04-03-PLAN.md — Coach readiness traffic lights + athlete wellbeing trends (WELL-02, WELL-04)
+- [x] 04-01-PLAN.md — Backend wellbeing API endpoints (check-in CRUD, readiness scoring, coach readiness overview)
+- [x] 04-02-PLAN.md — Consolidate daily check-in form and wire to backend API (WELL-01, WELL-03)
+- [x] 04-03-PLAN.md — Coach readiness traffic lights + athlete wellbeing trends (WELL-02, WELL-04)
 
 ### Phase 5: Performance & Coach Dashboard
 **Goal**: Coach has a real-data command center; PMC and performance trends work
@@ -125,7 +125,7 @@ Plans:
 | 1. Foundation | 4/4 | Complete | 2026-05-02 |
 | 2. Authentication & Roles | 4/4 | Complete | 2026-05-02 |
 | 3. Training Core | 4/4 | Complete | 2026-05-03 |
-| 4. Wellness & Recovery | 0/3 | Planning complete | - |
+| 4. Wellness & Recovery | 3/3 | Complete | 2026-05-03 |
 | 5. Performance & Coach Dashboard | 0/TBD | Not started | - |
 | 6. AI Training Engine | 0/TBD | Not started | - |
 | 7. Polish & Deploy | 0/TBD | Not started | - |
