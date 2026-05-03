@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 4 of 7 (Wellness & Recovery)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-05-03 — Phase 3 complete, verified, approved
+Plan: 1 of 4 complete
+Status: In progress
+Last activity: 2026-05-03 — Completed 04-01-PLAN.md
 
-Progress: ██████░░░░ 43% (12 plans complete, ~16 remaining across phases 4-7)
+Progress: ██████░░░░ 46% (13 plans complete, ~15 remaining across phases 4-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 13
 - Average duration: ~6min
-- Total execution time: ~71min
+- Total execution time: ~74min
 
 **By Phase:**
 
@@ -30,9 +30,10 @@ Progress: ██████░░░░ 43% (12 plans complete, ~16 remaining a
 | 1. Foundation | 4/4 | ~40min | ~10min |
 | 2. Auth & Roles | 4/4 | ~19min | ~5min |
 | 3. Training Core | 4/4 | ~16min | ~4min |
+| 4. Wellness & Recovery | 1/4 | ~3min | ~3min |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (6min), 03-01 (4min), 03-02 (3min), 03-03 (5min), 03-04 (4min)
+- Last 5 plans: 03-01 (4min), 03-02 (3min), 03-03 (5min), 03-04 (4min), 04-01 (3min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -83,6 +84,10 @@ Recent decisions affecting current work:
 - Coach role extracted via _get_user_role helper (app_metadata first, user_metadata fallback)
 - PlannedVsActual uses per-exercise Card layout for readability across different metric types
 - Diff badge colors: green=met/exceeded, red=fell short, gray=not logged
+- Readiness score calculated on read, not stored in DB (no schema migration needed)
+- Concern flag encoded as [CONCERN] prefix in notes column (no new DB column)
+- Coach readiness returns "gray" for athletes without today's check-in
+- Upsert wellbeing check-in via check-then-update/insert (Supabase PostgREST constraint)
 
 ### Pending Todos
 
@@ -102,5 +107,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Phase 3 complete, verified, approved. Ready for Phase 4.
+Stopped at: Completed 04-01-PLAN.md (Wellbeing API endpoints)
 Resume file: None
