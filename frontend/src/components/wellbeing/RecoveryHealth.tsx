@@ -132,7 +132,7 @@ interface InjuryForm {
  * Component props
  */
 interface RecoveryHealthProps {
-  userId: string;
+  userId?: string;
 }
 
 /**

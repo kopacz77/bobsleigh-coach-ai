@@ -92,7 +92,7 @@ interface NewReflection {
  * ReflectionComponent props
  */
 interface ReflectionComponentProps {
-  userId: string;
+  userId?: string;
 }
 
 /**

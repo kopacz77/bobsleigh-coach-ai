@@ -243,7 +243,7 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
 
             {showCheckIn && !todayCheckIn && (
               <Box mb="md">
-                <DailyCheckIn userId={userId} />
+                <DailyCheckIn />
               </Box>
             )}
 

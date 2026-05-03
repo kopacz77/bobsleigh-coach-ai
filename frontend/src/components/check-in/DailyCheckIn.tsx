@@ -1,298 +1,118 @@
+'use client';
+
 import {
-  Badge,
   Box,
   Button,
+  Checkbox,
   Group,
   Paper,
-  Select,
   SimpleGrid,
   Slider,
   Text,
   Textarea,
   Title,
-  useMantineTheme,
 } from "@mantine/core";
-import { DatePickerInput } from "@mantine/dates";
-import { showNotification } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
-import {
-  IconActivity, // Replaced IconMuscle with IconActivity based on previous fixes
-  IconBrain,
-  IconFlame,
-  IconHeartFilled,
-  IconMoodNervous, // Replaced IconStress with IconMoodNervous based on previous fixes
-  IconSalad,
-  IconZzz,
-} from "@tabler/icons-react";
-import type React from "react";
+import { IconFlame } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { useCheckInToday, useSubmitCheckIn } from "@/hooks/useWellbeing";
 
-/**
- * Daily Check-In data from database
- */
-interface CheckIn {
-  id: number;
-  user_id: string;
-  date: string;
+interface CheckInFormState {
   sleep_quality: number;
-  sleep_hours: number;
-  fatigue_level: number;
-  muscle_soreness: number;
-  mental_readiness: number;
+  stress_level: number;
   nutrition_quality: number;
-  hydration_level: number;
-  injury_concerns: string | null;
-  notes: string | null;
-  training_readiness: string;
-  created_at: string;
-  updated_at: string;
-}
-
-/**
- * Check-in form state
- */
-interface CheckInForm {
-  sleep_quality: number;
-  sleep_hours: number;
-  fatigue_level: number;
-  muscle_soreness: number;
-  mental_readiness: number;
-  nutrition_quality: number;
-  hydration_level: number;
-  injury_concerns: string;
+  physical_readiness: number;
+  mental_clarity: number;
   notes: string;
-  training_readiness: string;
+  flag_concern: boolean;
+}
+
+const defaultValues: CheckInFormState = {
+  sleep_quality: 5,
+  stress_level: 5,
+  nutrition_quality: 5,
+  physical_readiness: 5,
+  mental_clarity: 5,
+  notes: "",
+  flag_concern: false,
+};
+
+/**
+ * Calculate readiness score matching backend formula:
+ * round((sleep + (10 - stress) + nutrition + physical + mental) / 5)
+ */
+function calculateReadiness(form: CheckInFormState): number {
+  return Math.round(
+    (form.sleep_quality +
+      (10 - form.stress_level) +
+      form.nutrition_quality +
+      form.physical_readiness +
+      form.mental_clarity) /
+      5,
+  );
+}
+
+/** Traffic light color for readiness score */
+function readinessColor(score: number): string {
+  if (score >= 8) return "#40c057"; // green
+  if (score >= 5) return "#fab005"; // yellow
+  return "#fa5252"; // red
 }
 
 /**
- * DailyCheckIn component props
+ * DailyCheckIn -- fast daily wellness form (under 60 seconds).
+ *
+ * 5 sliders + 1 concern checkbox + 1 notes field + 1 submit button.
+ * Wired to backend API via useSubmitCheckIn / useCheckInToday hooks.
  */
-interface DailyCheckInProps {
-  userId: string;
-  date?: Date;
-}
+const DailyCheckIn = () => {
+  const { data: todayData, isLoading: loadingToday } = useCheckInToday();
+  const submitMutation = useSubmitCheckIn();
 
-/**
- * DailyCheckIn component for athletes to quickly log their daily wellbeing metrics
- * Focus is on bobsleigh-specific factors that impact training and performance
- */
-const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }) => {
-  const theme = useMantineTheme();
-  const { supabase, loading: supabaseLoading } = useSupabase();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [savedCheckIn, setSavedCheckIn] = useState<CheckIn | null>(null);
+  const [form, setForm] = useState<CheckInFormState>(defaultValues);
+  const [prefilled, setPrefilled] = useState(false);
 
-  // Check-in form state
-  const [checkIn, setCheckIn] = useState<CheckInForm>({
-    sleep_quality: 5,
-    sleep_hours: 7,
-    fatigue_level: 5,
-    muscle_soreness: 5,
-    mental_readiness: 5,
-    nutrition_quality: 5,
-    hydration_level: 5,
-    injury_concerns: "",
-    notes: "",
-    training_readiness: "ready",
-  });
-
-  const dateString = date.toISOString().split("T")[0];
-
-  // Fetch existing check-in data for the given date
+  // Pre-fill from today's existing check-in
   useEffect(() => {
-    const fetchCheckIn = async () => {
-      if (!supabase) return;
-      try {
-        const { data, error } = await supabase
-          .from("daily_checkins")
-          .select("*")
-          .eq("user_id", userId)
-          .eq("date", dateString)
-          .single();
+    if (todayData && !prefilled) {
+      let notes = todayData.notes || "";
+      const hasConcern = todayData.has_concern === true;
 
-        if (error && error.code !== "PGRST116") {
-          // Code for no rows returned
-          console.error("Error fetching daily check-in:", error);
-          return;
-        }
-
-        if (data) {
-          setSavedCheckIn(data as CheckIn);
-          setCheckIn({
-            sleep_quality: data.sleep_quality,
-            sleep_hours: data.sleep_hours,
-            fatigue_level: data.fatigue_level,
-            muscle_soreness: data.muscle_soreness,
-            mental_readiness: data.mental_readiness,
-            nutrition_quality: data.nutrition_quality,
-            hydration_level: data.hydration_level,
-            injury_concerns: data.injury_concerns || "",
-            notes: data.notes || "",
-            training_readiness: data.training_readiness,
-          });
-        }
-      } catch (error) {
-        console.error("Error in daily check-in fetch:", error);
-      }
-    };
-
-    if (userId) {
-      fetchCheckIn();
-    }
-  }, [userId, dateString, supabase]);
-
-  // Handle slider changes
-  const handleSliderChange = (field: keyof CheckInForm) => (value: number) => {
-    setCheckIn((prev) => ({ ...prev, [field]: value }));
-  };
-
-  // Handle sleep hours change
-  const handleSleepHoursChange = (value: string | null) => {
-    if (value) {
-      setCheckIn((prev) => ({ ...prev, sleep_hours: Number.parseInt(value, 10) }));
-    }
-  };
-
-  // Handle text input changes
-  const handleTextChange =
-    (field: keyof CheckInForm) => (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setCheckIn((prev) => ({ ...prev, [field]: event.target.value }));
-    };
-
-  // Handle training readiness selection
-  const handleReadinessChange = (value: string | null) => {
-    if (value) {
-      setCheckIn((prev) => ({ ...prev, training_readiness: value }));
-    }
-  };
-
-  // Submit check-in data
-  const handleSubmit = async () => {
-    if (!supabase) return;
-    setLoading(true);
-
-    try {
-      const checkInData = {
-        user_id: userId,
-        date: dateString,
-        ...checkIn,
-      };
-
-      let query;
-
-      if (savedCheckIn) {
-        // Update existing check-in
-        query = supabase.from("daily_checkins").update(checkInData).eq("id", savedCheckIn.id);
-      } else {
-        // Insert new check-in
-        query = supabase.from("daily_checkins").insert(checkInData);
+      // Strip [CONCERN] prefix from displayed notes if present
+      if (hasConcern && notes.startsWith("[CONCERN] ")) {
+        notes = notes.slice("[CONCERN] ".length);
       }
 
-      const { error } = await query;
-
-      if (error) {
-        throw error;
-      }
-
-      showNotification({
-        title: "Success",
-        message: "Daily check-in saved successfully",
-        color: "green",
+      setForm({
+        sleep_quality: todayData.sleep_quality ?? 5,
+        stress_level: todayData.stress_level ?? 5,
+        nutrition_quality: todayData.nutrition_quality ?? 5,
+        physical_readiness: todayData.physical_readiness ?? 5,
+        mental_clarity: todayData.mental_clarity ?? 5,
+        notes,
+        flag_concern: hasConcern,
       });
-
-      // Refresh data to get the ID if it was a new record
-      if (!savedCheckIn) {
-        const { data, error } = await supabase
-          .from("daily_checkins")
-          .select("*")
-          .eq("user_id", userId)
-          .eq("date", dateString)
-          .single();
-
-        if (!error && data) {
-          setSavedCheckIn(data as CheckIn);
-        }
-      }
-    } catch (error) {
-      console.error("Error saving daily check-in:", error);
-      showNotification({
-        title: "Error",
-        message: "Failed to save daily check-in",
-        color: "red",
-      });
-    } finally {
-      setLoading(false);
+      setPrefilled(true);
     }
+  }, [todayData, prefilled]);
+
+  const handleSlider = (field: keyof CheckInFormState) => (value: number) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Helper function to determine slider color based on value
-  const getSliderColor = (value: number, inverse = false): string => {
-    if (inverse) {
-      // For metrics where lower is better (like fatigue)
-      if (value >= 7) return theme.colors.red[6];
-      if (value >= 4) return theme.colors.yellow[6];
-      return theme.colors.green[6];
-    }
-    // For metrics where higher is better (like sleep quality)
-    if (value <= 3) return theme.colors.red[6];
-    if (value <= 6) return theme.colors.yellow[6];
-    return theme.colors.green[6];
+  const handleSubmit = () => {
+    submitMutation.mutate({
+      sleep_quality: form.sleep_quality,
+      stress_level: form.stress_level,
+      nutrition_quality: form.nutrition_quality,
+      physical_readiness: form.physical_readiness,
+      mental_clarity: form.mental_clarity,
+      notes: form.notes || undefined,
+      flag_concern: form.flag_concern || undefined,
+    });
   };
 
-  // Calculate overall readiness score
-  const calculateReadinessScore = (): number => {
-    const {
-      sleep_quality,
-      fatigue_level,
-      muscle_soreness,
-      mental_readiness,
-      nutrition_quality,
-      hydration_level,
-    } = checkIn;
-
-    // Calculate weighted average (invert fatigue and soreness since lower is better)
-    return Math.round(
-      (sleep_quality * 1.2 +
-        (11 - fatigue_level) * 1.2 +
-        (11 - muscle_soreness) * 1.0 +
-        mental_readiness * 1.5 +
-        nutrition_quality * 0.7 +
-        hydration_level * 0.7) /
-        6.3
-    );
-  };
-
-  // Get color for readiness badge
-  const getReadinessColor = (status: string): string => {
-    switch (status) {
-      case "ready":
-        return "green";
-      case "limited":
-        return "yellow";
-      case "recovery":
-        return "orange";
-      case "not_ready":
-        return "red";
-      default:
-        return "blue";
-    }
-  };
-
-  // Get label for readiness badge
-  const getReadinessLabel = (status: string): string => {
-    switch (status) {
-      case "ready":
-        return "Ready to Train";
-      case "limited":
-        return "Limited Training";
-      case "recovery":
-        return "Recovery Needed";
-      case "not_ready":
-        return "Not Ready to Train";
-      default:
-        return "Unspecified";
-    }
-  };
+  const readiness = calculateReadiness(form);
+  const isUpdate = !!todayData;
 
   return (
     <Box>
@@ -300,277 +120,170 @@ const DailyCheckIn: React.FC<DailyCheckInProps> = ({ userId, date = new Date() }
         Daily Check-In
       </Title>
       <Text c="dimmed" mb="xl">
-        Complete your daily wellness check to help optimize your training and ensure safe and
-        effective sessions. This takes less than 2 minutes and provides valuable data for your
-        coaches.
+        Quick wellness check -- takes under 60 seconds.
       </Text>
 
+      {/* Readiness circle */}
       <Paper p="md" radius="md" withBorder mb="xl">
-        <Group justify="apart">
+        <Group justify="space-between">
           <Box>
             <Text size="xl" fw={700}>
-              Today's Readiness
+              Today&apos;s Readiness
             </Text>
-            <Text size="sm" c="dimmed" mb="md">
-              Based on your metrics
+            <Text size="sm" c="dimmed">
+              Based on your current ratings
             </Text>
           </Box>
-
-          <Box style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <Box
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: "50%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: getSliderColor(calculateReadinessScore()),
-                color: "#fff",
-              }}
-            >
-              <Text size="xl" fw={700}>
-                {calculateReadinessScore()}
-              </Text>
-            </Box>
-
-            <Badge size="lg" color={getReadinessColor(checkIn.training_readiness)} variant="filled">
-              {getReadinessLabel(checkIn.training_readiness)}
-            </Badge>
+          <Box
+            style={{
+              width: 80,
+              height: 80,
+              borderRadius: "50%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: readinessColor(readiness),
+              color: "#fff",
+            }}
+          >
+            <Text size="xl" fw={700}>
+              {readiness}
+            </Text>
           </Box>
         </Group>
       </Paper>
 
-      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
+      {/* 5 sliders in compact 2-column layout */}
+      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg" mb="xl">
         <Box>
-          <Paper p="md" radius="md" withBorder>
-            <Group mb="xs">
-              <IconZzz size={24} color={theme.colors.blue[6]} />
-              <Text fw={600}>Sleep Metrics</Text>
-            </Group>
-
-            <Box mb="lg">
-              <Text fw={500} size="sm">
-                Sleep Quality
-              </Text>
-              <Slider
-                value={checkIn.sleep_quality}
-                onChange={handleSliderChange("sleep_quality")}
-                min={1}
-                max={10}
-                step={1}
-                marks={[
-                  { value: 1, label: "Poor" },
-                  { value: 5, label: "Average" },
-                  { value: 10, label: "Excellent" },
-                ]}
-                color={getSliderColor(checkIn.sleep_quality)}
-                mb="sm"
-              />
-            </Box>
-
-            <Box mb="lg">
-              <Text fw={500} size="sm">
-                Hours of Sleep
-              </Text>
-              <Select
-                value={checkIn.sleep_hours.toString()}
-                onChange={handleSleepHoursChange}
-                data={[
-                  { value: "4", label: "Less than 5 hours" },
-                  { value: "5", label: "5 hours" },
-                  { value: "6", label: "6 hours" },
-                  { value: "7", label: "7 hours" },
-                  { value: "8", label: "8 hours" },
-                  { value: "9", label: "9 hours" },
-                  { value: "10", label: "10+ hours" },
-                ]}
-                mb="sm"
-              />
-            </Box>
-          </Paper>
+          <Text fw={500} size="sm" mb={4}>
+            Sleep Quality
+          </Text>
+          <Slider
+            value={form.sleep_quality}
+            onChange={handleSlider("sleep_quality")}
+            min={1}
+            max={10}
+            step={1}
+            marks={[
+              { value: 1, label: "Poor" },
+              { value: 5, label: "OK" },
+              { value: 10, label: "Great" },
+            ]}
+            mb="lg"
+          />
         </Box>
 
         <Box>
-          <Paper p="md" radius="md" withBorder>
-            <Group mb="xs">
-              <IconHeartFilled size={24} color={theme.colors.red[6]} />
-              <Text fw={600}>Recovery Status</Text>
-            </Group>
-
-            <Box mb="lg">
-              <Text fw={500} size="sm">
-                Fatigue Level
-              </Text>
-              <Slider
-                value={checkIn.fatigue_level}
-                onChange={handleSliderChange("fatigue_level")}
-                min={1}
-                max={10}
-                step={1}
-                marks={[
-                  { value: 1, label: "Fresh" },
-                  { value: 5, label: "Moderate" },
-                  { value: 10, label: "Exhausted" },
-                ]}
-                color={getSliderColor(checkIn.fatigue_level, true)}
-                mb="sm"
-              />
-            </Box>
-
-            <Box mb="lg">
-              <Text fw={500} size="sm">
-                Muscle Soreness
-              </Text>
-              <Slider
-                value={checkIn.muscle_soreness}
-                onChange={handleSliderChange("muscle_soreness")}
-                min={1}
-                max={10}
-                step={1}
-                marks={[
-                  { value: 1, label: "None" },
-                  { value: 5, label: "Moderate" },
-                  { value: 10, label: "Severe" },
-                ]}
-                color={getSliderColor(checkIn.muscle_soreness, true)}
-                mb="sm"
-              />
-            </Box>
-          </Paper>
+          <Text fw={500} size="sm" mb={4}>
+            Stress Level
+          </Text>
+          <Slider
+            value={form.stress_level}
+            onChange={handleSlider("stress_level")}
+            min={1}
+            max={10}
+            step={1}
+            marks={[
+              { value: 1, label: "Low" },
+              { value: 5, label: "Mid" },
+              { value: 10, label: "High" },
+            ]}
+            color="orange"
+            mb="lg"
+          />
         </Box>
 
         <Box>
-          <Paper p="md" radius="md" withBorder>
-            <Group mb="xs">
-              <IconBrain size={24} color={theme.colors.violet[6]} />
-              <Text fw={600}>Mental Readiness</Text>
-            </Group>
-
-            <Box mb="lg">
-              <Text fw={500} size="sm">
-                Mental Focus & Readiness
-              </Text>
-              <Slider
-                value={checkIn.mental_readiness}
-                onChange={handleSliderChange("mental_readiness")}
-                min={1}
-                max={10}
-                step={1}
-                marks={[
-                  { value: 1, label: "Distracted" },
-                  { value: 5, label: "Average" },
-                  { value: 10, label: "Fully Focused" },
-                ]}
-                color={getSliderColor(checkIn.mental_readiness)}
-                mb="sm"
-              />
-            </Box>
-          </Paper>
+          <Text fw={500} size="sm" mb={4}>
+            Nutrition Quality
+          </Text>
+          <Slider
+            value={form.nutrition_quality}
+            onChange={handleSlider("nutrition_quality")}
+            min={1}
+            max={10}
+            step={1}
+            marks={[
+              { value: 1, label: "Poor" },
+              { value: 5, label: "OK" },
+              { value: 10, label: "Great" },
+            ]}
+            mb="lg"
+          />
         </Box>
 
         <Box>
-          <Paper p="md" radius="md" withBorder>
-            <Group mb="xs">
-              <IconSalad size={24} color={theme.colors.green[6]} />
-              <Text fw={600}>Nutrition & Hydration</Text>
-            </Group>
+          <Text fw={500} size="sm" mb={4}>
+            Physical Readiness
+          </Text>
+          <Slider
+            value={form.physical_readiness}
+            onChange={handleSlider("physical_readiness")}
+            min={1}
+            max={10}
+            step={1}
+            marks={[
+              { value: 1, label: "Low" },
+              { value: 5, label: "OK" },
+              { value: 10, label: "High" },
+            ]}
+            mb="lg"
+          />
+        </Box>
 
-            <Box mb="lg">
-              <Text fw={500} size="sm">
-                Nutrition Quality
-              </Text>
-              <Slider
-                value={checkIn.nutrition_quality}
-                onChange={handleSliderChange("nutrition_quality")}
-                min={1}
-                max={10}
-                step={1}
-                marks={[
-                  { value: 1, label: "Poor" },
-                  { value: 5, label: "Average" },
-                  { value: 10, label: "Excellent" },
-                ]}
-                color={getSliderColor(checkIn.nutrition_quality)}
-                mb="sm"
-              />
-            </Box>
-
-            <Box mb="lg">
-              <Text fw={500} size="sm">
-                Hydration Level
-              </Text>
-              <Slider
-                value={checkIn.hydration_level}
-                onChange={handleSliderChange("hydration_level")}
-                min={1}
-                max={10}
-                step={1}
-                marks={[
-                  { value: 1, label: "Dehydrated" },
-                  { value: 5, label: "Adequate" },
-                  { value: 10, label: "Optimal" },
-                ]}
-                color={getSliderColor(checkIn.hydration_level)}
-                mb="sm"
-              />
-            </Box>
-          </Paper>
+        <Box style={{ gridColumn: "1 / -1" }}>
+          <Text fw={500} size="sm" mb={4}>
+            Mental Clarity
+          </Text>
+          <Slider
+            value={form.mental_clarity}
+            onChange={handleSlider("mental_clarity")}
+            min={1}
+            max={10}
+            step={1}
+            marks={[
+              { value: 1, label: "Foggy" },
+              { value: 5, label: "OK" },
+              { value: 10, label: "Sharp" },
+            ]}
+            mb="lg"
+          />
         </Box>
       </SimpleGrid>
 
-      <Paper p="md" radius="md" withBorder mt="xl">
-        <Group mb="xs">
-          <IconActivity size={24} color={theme.colors.orange[6]} />
-          <Text fw={600}>Injury & Concerns</Text>
-        </Group>
+      {/* Concern checkbox + notes */}
+      <Checkbox
+        label="Flag injury or concern for coach"
+        checked={form.flag_concern}
+        onChange={(e) =>
+          setForm((prev) => ({ ...prev, flag_concern: e.currentTarget.checked }))
+        }
+        mb="md"
+      />
 
-        <Textarea
-          placeholder="Note any injury concerns, pain points, or physical limitations that may affect today's training"
-          value={checkIn.injury_concerns}
-          onChange={handleTextChange("injury_concerns")}
-          minRows={2}
-          mb="lg"
-        />
+      <Textarea
+        placeholder="Additional notes (optional)"
+        value={form.notes}
+        onChange={(e) =>
+          setForm((prev) => ({ ...prev, notes: e.currentTarget.value }))
+        }
+        minRows={2}
+        mb="xl"
+      />
 
-        <Text fw={500} size="sm" mb="xs">
-          Today's Training Readiness
-        </Text>
-        <Select
-          value={checkIn.training_readiness}
-          onChange={handleReadinessChange}
-          data={[
-            { value: "ready", label: "Ready to Train (Full Intensity)" },
-            { value: "limited", label: "Limited Training (Moderate Intensity)" },
-            { value: "recovery", label: "Recovery Needed (Light Activity Only)" },
-            { value: "not_ready", label: "Not Ready to Train (Rest Day)" },
-          ]}
-          mb="lg"
-        />
-
-        <Text fw={500} size="sm" mb="xs">
-          Additional Notes
-        </Text>
-        <Textarea
-          placeholder="Any other relevant information about your current status"
-          value={checkIn.notes}
-          onChange={handleTextChange("notes")}
-          minRows={3}
-          mb="md"
-        />
-
-        <Group justify="right">
-          <Button
-            onClick={handleSubmit}
-            loading={loading}
-            variant="filled"
-            color="blue"
-            leftSection={<IconFlame size={20} />}
-          >
-            {savedCheckIn ? "Update Check-In" : "Submit Check-In"}
-          </Button>
-        </Group>
-      </Paper>
+      {/* Submit */}
+      <Group justify="right">
+        <Button
+          onClick={handleSubmit}
+          loading={submitMutation.isPending || loadingToday}
+          variant="filled"
+          color="blue"
+          leftSection={<IconFlame size={20} />}
+        >
+          {isUpdate ? "Update Check-In" : "Submit Check-In"}
+        </Button>
+      </Group>
     </Box>
   );
 };
