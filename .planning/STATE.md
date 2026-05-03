@@ -10,28 +10,29 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 2 of 7 (Authentication & Roles)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-05-02 — Phase 1 complete, verified, approved
+Plan: 2 of 4 in phase
+Status: In progress
+Last activity: 2026-05-03 — Completed 02-02-PLAN.md (unified auth flow)
 
-Progress: █░░░░░░░░░ 14% (4 plans complete, ~24 remaining across phases 2-7)
+Progress: █████░░░░░ 18% (5 plans complete, ~23 remaining across phases 2-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: ~10min
-- Total execution time: ~40min
+- Total plans completed: 5
+- Average duration: ~9min
+- Total execution time: ~44min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 4/4 | ~40min | ~10min |
+| 2. Auth & Roles | 1/4 | ~4min | ~4min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~30min), 01-02 (5min), 01-03 (4min), 01-04 (1min)
-- Trend: Accelerating as scope narrows (01-01 was 30+ files, 01-04 was 4 files)
+- Last 5 plans: 01-02 (5min), 01-03 (4min), 01-04 (1min), 02-02 (4min)
+- Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
 
@@ -55,6 +56,9 @@ Recent decisions affecting current work:
 - Remove frontend volume mount in Docker to preserve standalone build output
 - Use output: "standalone" in next.config.js for Docker deployment
 - Health check endpoint queries Supabase to verify database connectivity
+- Use supabase.auth.get_user(token) instead of manual JWT decode with jose
+- Use HTTPBearer scheme since no /token endpoint exists
+- Auth guard as Depends(get_current_user) per endpoint, not router middleware
 
 ### Pending Todos
 
@@ -71,6 +75,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-05-02
-Stopped at: Phase 1 complete, verified, approved. Ready for Phase 2.
+Last session: 2026-05-03
+Stopped at: Completed 02-02-PLAN.md (unified auth flow). Next: 02-03.
 Resume file: None
