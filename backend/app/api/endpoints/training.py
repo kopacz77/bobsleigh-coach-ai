@@ -5,6 +5,7 @@ to the authenticated user's athlete profile before returning results.
 Coach-specific endpoints check for coach role in app_metadata/user_metadata.
 """
 
+import logging
 from datetime import date, timedelta
 from typing import List, Optional
 
@@ -14,6 +15,8 @@ from app.core.security import get_current_user
 from app.db.session import get_supabase
 from app.schemas.training import WorkoutCreate
 from app.services.training_service import TrainingService
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -199,6 +202,68 @@ async def create_workout(workout: WorkoutCreate, user=Depends(get_current_user))
         )
 
 
+def _upsert_training_load(workout: dict) -> None:
+    """Calculate sRPE and upsert a training_loads row for the workout.
+
+    sRPE = RPE x duration (minutes). If multiple workouts exist on the same day
+    for the same athlete, their training loads are summed.
+
+    Args:
+        workout: Dict with athlete_id, date, rpe, and duration keys.
+    """
+    athlete_id = workout.get("athlete_id")
+    workout_date = workout.get("date")
+    rpe = workout.get("rpe")
+    duration = workout.get("duration")
+
+    if not all([athlete_id, workout_date, rpe, duration]):
+        logger.warning(
+            "Cannot calculate training load: missing required fields "
+            "(athlete_id=%s, date=%s, rpe=%s, duration=%s)",
+            athlete_id, workout_date, rpe, duration,
+        )
+        return
+
+    srpe = float(rpe) * float(duration)
+
+    sb = get_supabase()
+
+    # Check for existing training_loads row for this athlete + date
+    existing = (
+        sb.table("training_loads")
+        .select("id, training_load")
+        .eq("athlete_id", athlete_id)
+        .eq("date", workout_date)
+        .execute()
+    )
+
+    if existing.data:
+        # Sum: replace with existing load + new sRPE
+        existing_load = float(existing.data[0]["training_load"])
+        new_total = existing_load + srpe
+        sb.table("training_loads").update(
+            {"training_load": new_total, "rpe": rpe}
+        ).eq("id", existing.data[0]["id"]).execute()
+        logger.info(
+            "Updated training_loads for athlete %s on %s: %.1f -> %.1f",
+            athlete_id, workout_date, existing_load, new_total,
+        )
+    else:
+        # Insert new row
+        sb.table("training_loads").insert(
+            {
+                "athlete_id": athlete_id,
+                "date": workout_date,
+                "training_load": srpe,
+                "rpe": rpe,
+            }
+        ).execute()
+        logger.info(
+            "Inserted training_loads for athlete %s on %s: %.1f",
+            athlete_id, workout_date, srpe,
+        )
+
+
 @router.patch("/workouts/{workout_id}")
 async def update_workout(workout_id: str, updates: dict, user=Depends(get_current_user)):
     """Update a workout (completion status, RPE, notes). Verifies ownership."""
@@ -217,7 +282,35 @@ async def update_workout(workout_id: str, updates: dict, user=Depends(get_curren
             raise HTTPException(status_code=400, detail="No valid fields to update")
 
         result = supabase.table("workouts").update(safe_updates).eq("id", workout_id).execute()
-        return result.data[0] if result.data else {}
+        updated_workout = result.data[0] if result.data else {}
+
+        # After successful update, upsert training load if workout is completed
+        # with both RPE and duration values
+        try:
+            if updated_workout:
+                # Re-fetch the full workout row to get all fields needed for sRPE
+                full_result = (
+                    supabase.table("workouts")
+                    .select("athlete_id, date, rpe, duration, is_completed")
+                    .eq("id", workout_id)
+                    .execute()
+                )
+                if full_result.data:
+                    full_workout = full_result.data[0]
+                    if (
+                        full_workout.get("is_completed")
+                        and full_workout.get("rpe")
+                        and full_workout.get("duration")
+                    ):
+                        _upsert_training_load(full_workout)
+        except Exception as e:
+            # Training load upsert failure should not break the workout update
+            logger.error(
+                "Failed to upsert training load for workout %s: %s",
+                workout_id, str(e),
+            )
+
+        return updated_workout
     except HTTPException:
         raise
     except RuntimeError as e:
