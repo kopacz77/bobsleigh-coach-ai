@@ -20,8 +20,8 @@ interface ReadinessAthlete {
   athlete_id: string;
   athlete_name: string;
   readiness_score: number | null;
-  readiness_status: "green" | "yellow" | "red" | "gray";
-  has_injury_flag: boolean;
+  recovery_status: "green" | "yellow" | "red" | "gray";
+  has_concern: boolean;
   last_checkin_date: string | null;
 }
 
@@ -64,7 +64,7 @@ export default function CoachReadiness() {
 
   // Sort: red first, then yellow, then gray, then green
   const sorted = [...athletes].sort(
-    (a, b) => (STATUS_ORDER[a.readiness_status] ?? 4) - (STATUS_ORDER[b.readiness_status] ?? 4),
+    (a, b) => (STATUS_ORDER[a.recovery_status] ?? 4) - (STATUS_ORDER[b.recovery_status] ?? 4),
   );
 
   const dotColor = (status: string) => {
@@ -118,22 +118,22 @@ export default function CoachReadiness() {
                       width: 16,
                       height: 16,
                       borderRadius: "50%",
-                      backgroundColor: dotColor(athlete.readiness_status),
+                      backgroundColor: dotColor(athlete.recovery_status),
                     }}
                   />
                 </Table.Td>
                 <Table.Td>
                   <Text size="sm">
-                    {athlete.readiness_status === "gray" ? "-" : athlete.readiness_score}
+                    {athlete.recovery_status === "gray" ? "-" : athlete.readiness_score}
                   </Text>
                 </Table.Td>
                 <Table.Td>
-                  <Badge color={STATUS_BADGE_COLOR[athlete.readiness_status] ?? "gray"} variant="light">
-                    {STATUS_LABEL[athlete.readiness_status] ?? "Unknown"}
+                  <Badge color={STATUS_BADGE_COLOR[athlete.recovery_status] ?? "gray"} variant="light">
+                    {STATUS_LABEL[athlete.recovery_status] ?? "Unknown"}
                   </Badge>
                 </Table.Td>
                 <Table.Td>
-                  {athlete.has_injury_flag ? (
+                  {athlete.has_concern ? (
                     <Tooltip label="Injury/concern flagged">
                       <Group gap={4}>
                         <IconAlertTriangle size={16} color={theme.colors.red[6]} />
