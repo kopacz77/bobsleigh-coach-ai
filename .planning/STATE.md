@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 5 of 7 (Performance & Coach Dashboard)
-Plan: 3 of 4 complete
-Status: In progress
-Last activity: 2026-05-03 — Completed 05-03-PLAN.md
+Plan: 4 of 4 complete
+Status: Phase complete
+Last activity: 2026-05-03 — Completed 05-04-PLAN.md
 
-Progress: █████████░ 64% (18 plans complete, ~10 remaining across phases 5-7)
+Progress: ██████████ 68% (19 plans complete, ~9 remaining across phases 6-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 18
+- Total plans completed: 19
 - Average duration: ~5min
-- Total execution time: ~87min
+- Total execution time: ~89min
 
 **By Phase:**
 
@@ -32,8 +32,10 @@ Progress: █████████░ 64% (18 plans complete, ~10 remaining a
 | 3. Training Core | 4/4 | ~16min | ~4min |
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 
+| 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
+
 **Recent Trend:**
-- Last 5 plans: 04-02 (2min), 04-03 (4min), 05-01 (2min), 05-02 (2min), 05-03 (3min)
+- Last 5 plans: 04-03 (4min), 05-01 (2min), 05-02 (2min), 05-03 (3min), 05-04 (2min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -105,6 +107,9 @@ Recent decisions affecting current work:
 - Wellbeing alerts map through athlete.user_id (assessments use user_id not athlete_id)
 - Coach-athlete soft-remove via ended_at (preserves relationship history)
 - Fatigue spike at TSB < -20, overtraining risk at TSB < -30 (separate alert types)
+- CoachDashboard has zero direct Supabase imports (all data via React Query -> coachAPI -> /api/coach/*)
+- TSB color thresholds in PMC Summary: >0 green, -10..0 yellow, <-10 red
+- Alert filter values match real API alert types (fatigue_spike, overtraining_risk, low_readiness, missed_checkin)
 
 ### Pending Todos
 
@@ -124,5 +129,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 05-03-PLAN.md
+Stopped at: Completed 05-04-PLAN.md (Phase 5 complete)
 Resume file: None
