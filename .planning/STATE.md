@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 4 of 7 (Wellness & Recovery)
-Plan: 1 of 4 complete
+Plan: 2 of 4 complete
 Status: In progress
-Last activity: 2026-05-03 — Completed 04-01-PLAN.md
+Last activity: 2026-05-03 — Completed 04-02-PLAN.md
 
-Progress: ██████░░░░ 46% (13 plans complete, ~15 remaining across phases 4-7)
+Progress: ███████░░░ 50% (14 plans complete, ~14 remaining across phases 4-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
-- Average duration: ~6min
-- Total execution time: ~74min
+- Total plans completed: 14
+- Average duration: ~5min
+- Total execution time: ~76min
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: ██████░░░░ 46% (13 plans complete, ~15 remaining a
 | 1. Foundation | 4/4 | ~40min | ~10min |
 | 2. Auth & Roles | 4/4 | ~19min | ~5min |
 | 3. Training Core | 4/4 | ~16min | ~4min |
-| 4. Wellness & Recovery | 1/4 | ~3min | ~3min |
+| 4. Wellness & Recovery | 2/4 | ~5min | ~3min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (4min), 03-02 (3min), 03-03 (5min), 03-04 (4min), 04-01 (3min)
+- Last 5 plans: 03-02 (3min), 03-03 (5min), 03-04 (4min), 04-01 (3min), 04-02 (2min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -88,6 +88,8 @@ Recent decisions affecting current work:
 - Concern flag encoded as [CONCERN] prefix in notes column (no new DB column)
 - Coach readiness returns "gray" for athletes without today's check-in
 - Upsert wellbeing check-in via check-then-update/insert (Supabase PostgREST constraint)
+- DailyCheckIn takes no props (backend identifies user via auth token)
+- RecoveryHealth/Reflection userId made optional for forward compatibility
 
 ### Pending Todos
 
@@ -107,5 +109,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 04-01-PLAN.md (Wellbeing API endpoints)
+Stopped at: Completed 04-02-PLAN.md (Daily check-in frontend)
 Resume file: None
