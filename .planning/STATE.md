@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-05-02)
 
 **Core value:** The AI generates genuinely useful, personalized weekly training plans that a bobsleigh coach would actually trust and use with their athletes.
-**Current focus:** Phase 2 -- Authentication & Roles (COMPLETE)
+**Current focus:** Phase 3 — Training Core
 
 ## Current Position
 
-Phase: 2 of 7 (Authentication & Roles)
-Plan: 4 of 4 in phase (all complete)
-Status: Phase complete
-Last activity: 2026-05-03 -- Completed 02-03-PLAN.md (role-based dashboard routing)
+Phase: 3 of 7 (Training Core)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-05-03 — Phase 2 complete, verified, approved
 
-Progress: ████████░░ 29% (8 plans complete, ~20 remaining across phases 3-7)
+Progress: ██░░░░░░░░ 29% (8 plans complete, ~20 remaining across phases 3-7)
 
 ## Performance Metrics
 
@@ -87,5 +87,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 02-03-PLAN.md (role-based dashboard routing). Phase 2 complete. Next: Phase 3.
+Stopped at: Phase 2 complete, verified, approved. Ready for Phase 3.
 Resume file: None
