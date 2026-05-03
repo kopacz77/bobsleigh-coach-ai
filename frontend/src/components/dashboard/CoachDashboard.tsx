@@ -46,6 +46,7 @@ import {
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CoachWorkoutView } from "@/components/training";
+import CoachReadiness from "@/components/dashboard/CoachReadiness";
 
 /**
  * CoachDashboard component provides coaches with a comprehensive view of all athletes,
@@ -61,7 +62,6 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
   const router = useRouter();
   const { supabase, loading: supabaseLoading } = useSupabase();
   const [athletes, setAthletes] = useState<any[]>([]);
-  const [recentCheckIns, setRecentCheckIns] = useState<any[]>([]);
   const [upcomingWorkouts, setUpcomingWorkouts] = useState<any[]>([]);
   const [alerts, setAlerts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -114,37 +114,10 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
               break;
           }
 
-          const startDateStr = startDate.toISOString().split("T")[0];
           const todayStr = today.toISOString().split("T")[0];
 
-          // Fetch recent check-ins for all athletes
-          const { data: checkInsData, error: checkInsError } = await supabase
-            .from("daily_checkins")
-            .select(`
-              id, date, overall_score, sleep_quality, fatigue_level, muscle_soreness, 
-              mental_readiness, training_readiness, injury_concerns, user_id
-            `)
-            .in("user_id", athleteIds)
-            .gte("date", startDateStr)
-            .order("date", { ascending: false });
-
-          if (checkInsError) {
-            console.error("Error fetching check-ins:", checkInsError);
-          } else {
-            // Enrich check-ins with athlete data
-            const enrichedCheckIns = checkInsData.map((checkIn) => {
-              const athlete = athleteList.find((a) => a.id === checkIn.user_id);
-              return {
-                ...checkIn,
-                athlete_name: athlete
-                  ? `${athlete.first_name} ${athlete.last_name}`
-                  : "Unknown Athlete",
-                avatar_url: athlete?.avatar_url || null,
-              };
-            });
-
-            setRecentCheckIns(enrichedCheckIns);
-          }
+          // Readiness check-ins now handled by CoachReadiness component
+          // via useCoachReadiness hook (React Query, not direct Supabase)
 
           // Fetch upcoming workouts
           const { data: workoutsData, error: workoutsError } = await supabase
@@ -176,74 +149,6 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
             setUpcomingWorkouts(enrichedWorkouts);
           }
 
-          // Generate alerts from check-ins and other data
-          const newAlerts: any[] = [];
-
-          // Check for injury concerns
-          (checkInsData || [])
-            .filter((checkIn) => checkIn.injury_concerns && checkIn.injury_concerns.trim() !== "")
-            .forEach((checkIn) => {
-              const athlete = athleteList.find((a) => a.id === checkIn.user_id);
-              if (athlete) {
-                newAlerts.push({
-                  id: `injury-${checkIn.id}`,
-                  type: "injury",
-                  level: "high",
-                  message: `${athlete.first_name} ${athlete.last_name} reported injury concerns`,
-                  date: checkIn.date,
-                  details: checkIn.injury_concerns,
-                  athlete_id: athlete.id,
-                });
-              }
-            });
-
-          // Check for low readiness scores
-          (checkInsData || [])
-            .filter((checkIn) => {
-              // Calculate readiness score
-              const readinessScore = Math.round(
-                (checkIn.sleep_quality * 1.2 +
-                  (11 - checkIn.fatigue_level) * 1.2 +
-                  (11 - checkIn.muscle_soreness) * 1.0 +
-                  checkIn.mental_readiness * 1.5) /
-                  5
-              );
-              return readinessScore < 4; // Low readiness threshold
-            })
-            .forEach((checkIn) => {
-              const athlete = athleteList.find((a) => a.id === checkIn.user_id);
-              if (athlete) {
-                newAlerts.push({
-                  id: `readiness-${checkIn.id}`,
-                  type: "readiness",
-                  level: "medium",
-                  message: `${athlete.first_name} ${athlete.last_name} has low readiness score`,
-                  date: checkIn.date,
-                  details: "Training may need to be modified",
-                  athlete_id: athlete.id,
-                });
-              }
-            });
-
-          // Check for missed check-ins (only for today)
-          const todayCheckIns = (checkInsData || []).filter((checkIn) => checkIn.date === todayStr);
-          const athletesWithCheckIns = todayCheckIns.map((checkIn) => checkIn.user_id);
-
-          athleteList.forEach((athlete) => {
-            if (!athletesWithCheckIns.includes(athlete.id)) {
-              newAlerts.push({
-                id: `missed-${athlete.id}-${todayStr}`,
-                type: "missed",
-                level: "low",
-                message: `${athlete.first_name} ${athlete.last_name} missed today's check-in`,
-                date: todayStr,
-                details: "Athlete has not completed their daily check-in",
-                athlete_id: athlete.id,
-              });
-            }
-          });
-
-          setAlerts(newAlerts);
         }
       } catch (error) {
         console.error("Error in dashboard data fetch:", error);
@@ -284,22 +189,6 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
     return workoutTypes[type as keyof typeof workoutTypes] || type;
   };
 
-  // Get readiness badge color
-  const getReadinessColor = (status: string) => {
-    switch (status) {
-      case "ready":
-        return "green";
-      case "limited":
-        return "yellow";
-      case "recovery":
-        return "orange";
-      case "not_ready":
-        return "red";
-      default:
-        return "blue";
-    }
-  };
-
   // Get alert icon based on type
   const getAlertIcon = (type: string) => {
     switch (type) {
@@ -317,17 +206,6 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
   // Handle athlete click
   const handleAthleteClick = (athleteId: string) => {
     router.push(`/athletes/${athleteId}`);
-  };
-
-  // Calculate readiness score for display
-  const calculateReadinessScore = (checkIn: any) => {
-    return Math.round(
-      (checkIn.sleep_quality * 1.2 +
-        (11 - checkIn.fatigue_level) * 1.2 +
-        (11 - checkIn.muscle_soreness) * 1.0 +
-        checkIn.mental_readiness * 1.5) /
-        5
-    );
   };
 
   return (
@@ -378,108 +256,10 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
         </Tabs.List>
 
         <Tabs.Panel value="athletes">
-          <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
-            <Paper p="md" radius="md" withBorder>
-              <Group justify="space-between" mb="md">
-                <Group>
-                  <ThemeIcon size={36} radius="md" color="blue">
-                    <IconUsers size={20} />
-                  </ThemeIcon>
-                  <Text fw={600} size="lg">
-                    Team Athletes
-                  </Text>
-                </Group>
+          <Stack gap="lg">
+            <CoachReadiness />
 
-                <Text c="dimmed">{athletes.length} Athletes</Text>
-              </Group>
-
-              <Table>
-                <thead>
-                  <tr>
-                    <th>Athlete</th>
-                    <th>Check-In Status</th>
-                    <th>Readiness</th>
-                    <th />
-                  </tr>
-                </thead>
-                <tbody>
-                  {athletes.map((athlete) => {
-                    const todayStr = new Date().toISOString().split("T")[0];
-                    const checkIn = recentCheckIns.find(
-                      (c) => c.user_id === athlete.id && c.date === todayStr
-                    );
-
-                    return (
-                      <tr key={athlete.id}>
-                        <td>
-                          <Group gap="sm">
-                            <Avatar src={athlete.avatar_url} radius="xl" size="sm" color="blue">
-                              {athlete.first_name?.charAt(0)}
-                              {athlete.last_name?.charAt(0)}
-                            </Avatar>
-                            <Text fw={500}>
-                              {athlete.first_name} {athlete.last_name}
-                            </Text>
-                          </Group>
-                        </td>
-                        <td>
-                          {checkIn ? (
-                            <Badge color="green">Completed</Badge>
-                          ) : (
-                            <Badge color="gray">Not Completed</Badge>
-                          )}
-                        </td>
-                        <td>
-                          {checkIn ? (
-                            <Badge
-                              color={getReadinessColor(checkIn.training_readiness)}
-                              variant="filled"
-                            >
-                              {calculateReadinessScore(checkIn)}/10
-                            </Badge>
-                          ) : (
-                            <Text c="dimmed" size="sm">
-                              No data
-                            </Text>
-                          )}
-                        </td>
-                        <td>
-                          <Menu position="bottom-end">
-                            <Menu.Target>
-                              <ActionIcon>
-                                <IconDots size={16} />
-                              </ActionIcon>
-                            </Menu.Target>
-                            <Menu.Dropdown>
-                              <Menu.Item
-                                leftSection={<IconFileAnalytics size={14} />}
-                                onClick={() => handleAthleteClick(athlete.id)}
-                              >
-                                View Profile
-                              </Menu.Item>
-                              <Menu.Item leftSection={<IconMessageCircle size={14} />}>
-                                Message Athlete
-                              </Menu.Item>
-                              <Menu.Item leftSection={<IconBarbell size={14} />}>Assign Workout</Menu.Item>
-                            </Menu.Dropdown>
-                          </Menu>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
-
-              <Button
-                variant="subtle"
-                rightSection={<IconArrowRight size={16} />}
-                mt="md"
-                onClick={() => router.push("/athletes")}
-              >
-                View All Athletes
-              </Button>
-            </Paper>
-
+            <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
             <Box>
               <Paper p="md" radius="md" withBorder mb="lg">
                 <Group justify="space-between" mb="md">
@@ -574,149 +354,11 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
               </Paper>
             </Box>
           </SimpleGrid>
+          </Stack>
         </Tabs.Panel>
 
         <Tabs.Panel value="check-ins">
-          <Paper p="md" radius="md" withBorder>
-            <Group justify="space-between" mb="md">
-              <Group>
-                <ThemeIcon size={36} radius="md" color="green">
-                  <IconClipboardCheck size={20} />
-                </ThemeIcon>
-                <Text fw={600} size="lg">
-                  Recent Check-Ins
-                </Text>
-              </Group>
-
-              <Text c="dimmed">
-                {timeFilter === "today"
-                  ? "Today's check-ins"
-                  : timeFilter === "week"
-                    ? "Last 7 days"
-                    : "Last 30 days"}
-              </Text>
-            </Group>
-
-            <Table>
-              <thead>
-                <tr>
-                  <th>Athlete</th>
-                  <th>Date</th>
-                  <th>Readiness</th>
-                  <th>Sleep</th>
-                  <th>Fatigue</th>
-                  <th>Soreness</th>
-                  <th>Mental</th>
-                  <th>Concerns</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentCheckIns.map((checkIn) => {
-                  const readinessScore = calculateReadinessScore(checkIn);
-
-                  return (
-                    <tr key={checkIn.id}>
-                      <td>
-                        <Group gap="sm">
-                          <Avatar src={checkIn.avatar_url} radius="xl" size="xs" color="blue">
-                            {checkIn.athlete_name
-                              ?.split(" ")
-                              .map((n: string) => n[0])
-                              .join("")}
-                          </Avatar>
-                          <Text size="sm">{checkIn.athlete_name}</Text>
-                        </Group>
-                      </td>
-                      <td>
-                        <Text size="sm">{formatDate(checkIn.date)}</Text>
-                      </td>
-                      <td>
-                        <Badge
-                          color={
-                            readinessScore <= 3 ? "red" : readinessScore <= 6 ? "yellow" : "green"
-                          }
-                          variant="filled"
-                        >
-                          {readinessScore}/10
-                        </Badge>
-                      </td>
-                      <td>
-                        <Badge
-                          color={
-                            checkIn.sleep_quality <= 3
-                              ? "red"
-                              : checkIn.sleep_quality <= 6
-                                ? "yellow"
-                                : "green"
-                          }
-                          variant="dot"
-                        >
-                          {checkIn.sleep_quality}/10
-                        </Badge>
-                      </td>
-                      <td>
-                        <Badge
-                          color={
-                            checkIn.fatigue_level >= 7
-                              ? "red"
-                              : checkIn.fatigue_level >= 4
-                                ? "yellow"
-                                : "green"
-                          }
-                          variant="dot"
-                        >
-                          {checkIn.fatigue_level}/10
-                        </Badge>
-                      </td>
-                      <td>
-                        <Badge
-                          color={
-                            checkIn.muscle_soreness >= 7
-                              ? "red"
-                              : checkIn.muscle_soreness >= 4
-                                ? "yellow"
-                                : "green"
-                          }
-                          variant="dot"
-                        >
-                          {checkIn.muscle_soreness}/10
-                        </Badge>
-                      </td>
-                      <td>
-                        <Badge
-                          color={
-                            checkIn.mental_readiness <= 3
-                              ? "red"
-                              : checkIn.mental_readiness <= 6
-                                ? "yellow"
-                                : "green"
-                          }
-                          variant="dot"
-                        >
-                          {checkIn.mental_readiness}/10
-                        </Badge>
-                      </td>
-                      <td>
-                        {checkIn.injury_concerns ? (
-                          <Badge color="red">Yes</Badge>
-                        ) : (
-                          <Badge color="gray" variant="outline">
-                            No
-                          </Badge>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-
-            {recentCheckIns.length === 0 && (
-              <Text c="dimmed" ta="center" py="xl">
-                No check-in data available for the selected period
-              </Text>
-            )}
-          </Paper>
+          <CoachReadiness />
         </Tabs.Panel>
 
         <Tabs.Panel value="workouts">
