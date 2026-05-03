@@ -41,7 +41,11 @@ interface WorkoutFormValues {
   }[];
 }
 
-export function WorkoutForm() {
+interface WorkoutFormProps {
+  onSuccess?: () => void;
+}
+
+export function WorkoutForm({ onSuccess }: WorkoutFormProps = {}) {
   const createWorkout = useCreateWorkout();
 
   // Exercise options (in a real app, these would come from the backend)
@@ -133,6 +137,8 @@ export function WorkoutForm() {
         message: "Workout saved successfully!",
         color: "green",
       });
+
+      onSuccess?.();
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : "Error saving workout. Please try again.";

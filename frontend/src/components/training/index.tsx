@@ -6,6 +6,7 @@ export { default as TrainingAssessment } from "./TrainingAssessment";
 export { TrainingHeader } from "./TrainingHeader";
 export { TrainingRecommendations } from "./TrainingRecommendations";
 export { TrainingTabs } from "./TrainingTabs";
+export { WeeklyPlanView } from "./WeeklyPlanView";
 export { WorkoutCalendar } from "./WorkoutCalendar";
 export { WorkoutForm } from "./WorkoutForm";
 export { WorkoutList } from "./WorkoutList";
