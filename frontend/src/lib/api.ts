@@ -103,6 +103,20 @@ export const exerciseAPI = {
   getCategories: () => api.get("/api/exercises/categories"),
 };
 
+export const wellbeingAPI = {
+  submitCheckIn: (data: {
+    sleep_quality: number;
+    stress_level: number;
+    nutrition_quality: number;
+    physical_readiness: number;
+    mental_clarity: number;
+    notes?: string;
+    flag_concern?: boolean;
+  }) => api.post("/api/wellbeing/checkin", data),
+  getCheckInToday: () => api.get("/api/wellbeing/checkin/today"),
+  getHistory: (days = 30) => api.get(`/api/wellbeing/history?days=${days}`),
+};
+
 export const performanceAPI = {
   getMetrics: (athleteId: number) => api.get(`/api/performance/metrics/${athleteId}`),
   getTrends: (athleteId: number, metric: string, days = 90) =>
