@@ -19,6 +19,10 @@ import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { useDebouncedValue } from "@mantine/hooks";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { exerciseAPI } from "@/lib/api";
 import { useCreateWorkout } from "@/hooks/useTraining";
 
 interface WorkoutFormValues {
@@ -47,16 +51,21 @@ interface WorkoutFormProps {
 
 export function WorkoutForm({ onSuccess }: WorkoutFormProps = {}) {
   const createWorkout = useCreateWorkout();
+  const [exerciseSearch, setExerciseSearch] = useState("");
+  const [debouncedSearch] = useDebouncedValue(exerciseSearch, 300);
 
-  // Exercise options (in a real app, these would come from the backend)
-  const exerciseOptions = [
-    { value: "1", label: "Squat" },
-    { value: "2", label: "Bench Press" },
-    { value: "3", label: "Deadlift" },
-    { value: "4", label: "Power Clean" },
-    { value: "5", label: "30m Sprint" },
-    { value: "6", label: "Box Jump" },
-  ];
+  // Fetch exercises from the API with search
+  const { data: exerciseResults } = useQuery({
+    queryKey: ["exercises", "search", debouncedSearch],
+    queryFn: () => exerciseAPI.search({ search: debouncedSearch || undefined, limit: 50 }),
+  });
+
+  const exerciseOptions = (exerciseResults?.data || []).map(
+    (ex: { id: string; name: string }) => ({
+      value: ex.id,
+      label: ex.name,
+    })
+  );
 
   const workoutTypes = [
     { value: "strength", label: "Strength" },
@@ -170,7 +179,7 @@ export function WorkoutForm({ onSuccess }: WorkoutFormProps = {}) {
   // Auto-fill exercise name when exercise_id changes
   const handleExerciseChange = (value: string, index: number) => {
     form.setFieldValue(`exercises.${index}.exercise_id`, value);
-    const exercise = exerciseOptions.find((ex) => ex.value === value);
+    const exercise = exerciseOptions.find((ex: { value: string; label: string }) => ex.value === value);
     if (exercise) {
       form.setFieldValue(`exercises.${index}.name`, exercise.label);
     }
@@ -239,8 +248,11 @@ export function WorkoutForm({ onSuccess }: WorkoutFormProps = {}) {
                 <Group grow>
                   <Select
                     label="Exercise"
-                    placeholder="Select exercise"
+                    placeholder="Search exercises..."
                     data={exerciseOptions}
+                    searchable
+                    onSearchChange={setExerciseSearch}
+                    nothingFoundMessage="No exercises found"
                     required
                     {...form.getInputProps(`exercises.${index}.exercise_id`)}
                     onChange={(value) => handleExerciseChange(value || "", index)}
