@@ -18,23 +18,80 @@ class TrainingService:
         """Initialize the training service."""
         self.pmc_service = PMCService()
 
-    async def get_recent_workouts(self, athlete_id: str, limit: int = 5) -> List[Dict]:
-        """Get recent workouts for an athlete from the database.
+    async def get_recent_workouts(
+        self,
+        athlete_id: str,
+        limit: int = 10,
+        offset: int = 0,
+        workout_type: Optional[str] = None,
+        date_from: Optional[str] = None,
+        date_to: Optional[str] = None,
+        search: Optional[str] = None,
+    ) -> List[Dict]:
+        """Get workouts for an athlete from the database with optional filters.
 
         Args:
             athlete_id: UUID of the athlete
             limit: Maximum number of workouts to return
+            offset: Number of workouts to skip (for pagination)
+            workout_type: Filter by workout type (strength, power, speed, etc.)
+            date_from: Filter workouts on or after this date (YYYY-MM-DD)
+            date_to: Filter workouts on or before this date (YYYY-MM-DD)
+            search: Search workout name (case-insensitive)
 
         Returns:
-            List of recent workouts with their exercises
+            List of workouts with their exercises
         """
         supabase = get_supabase()
+        query = (
+            supabase.table("workouts")
+            .select("*, workout_exercises(*, exercises(name))")
+            .eq("athlete_id", athlete_id)
+        )
+
+        if workout_type:
+            query = query.eq("workout_type", workout_type)
+        if date_from:
+            query = query.gte("date", date_from)
+        if date_to:
+            query = query.lte("date", date_to)
+        if search:
+            query = query.ilike("name", f"*{search}*")
+
+        result = (
+            query
+            .order("date", desc=True)
+            .range(offset, offset + limit - 1)
+            .execute()
+        )
+        return result.data
+
+    async def get_weekly_workouts(
+        self,
+        athlete_id: str,
+        week_start: str,
+    ) -> List[Dict]:
+        """Get workouts for a specific week.
+
+        Args:
+            athlete_id: UUID of the athlete
+            week_start: Monday date (YYYY-MM-DD)
+
+        Returns:
+            List of workouts for the week, ordered by date ascending
+        """
+        supabase = get_supabase()
+        # Calculate week end (Sunday = week_start + 6 days)
+        start_date = datetime.strptime(week_start, "%Y-%m-%d").date()
+        end_date = start_date + timedelta(days=6)
+
         result = (
             supabase.table("workouts")
             .select("*, workout_exercises(*, exercises(name))")
             .eq("athlete_id", athlete_id)
-            .order("date", desc=True)
-            .limit(limit)
+            .gte("date", week_start)
+            .lte("date", end_date.isoformat())
+            .order("date", desc=False)
             .execute()
         )
         return result.data

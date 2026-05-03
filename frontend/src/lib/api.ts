@@ -50,8 +50,14 @@ export const athleteAPI = {
 };
 
 export const trainingAPI = {
-  getWorkouts: (athleteId: string, limit = 10) =>
-    api.get(`/api/training/workouts?athlete_id=${athleteId}&limit=${limit}`),
+  getWorkouts: (params: Record<string, string | number | undefined> = {}) => {
+    const queryString = new URLSearchParams(
+      Object.entries(params)
+        .filter(([, v]) => v !== undefined && v !== "")
+        .map(([k, v]) => [k, String(v)]),
+    ).toString();
+    return api.get(`/api/training/workouts?${queryString}`);
+  },
   getWorkout: (workoutId: string) => api.get(`/api/training/workouts/${workoutId}`),
   createWorkout: (data: Record<string, unknown>) => api.post("/api/training/workouts", data),
   updateWorkout: (workoutId: string, data: Record<string, unknown>) =>

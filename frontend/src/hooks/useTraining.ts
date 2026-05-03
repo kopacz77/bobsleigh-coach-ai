@@ -1,11 +1,36 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api, { trainingAPI } from "@/lib/api";
 
-export function useWorkouts(athleteId: string, limit = 10) {
+export interface WorkoutFilters {
+  workout_type?: string;
+  date_from?: string;
+  date_to?: string;
+  search?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export function useWorkouts(filters: WorkoutFilters = {}) {
   return useQuery({
-    queryKey: ["workouts", athleteId, limit],
-    queryFn: () => trainingAPI.getWorkouts(athleteId, limit).then((res) => res.data),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    queryKey: ["workouts", filters],
+    queryFn: () => {
+      const params = new URLSearchParams();
+      for (const [k, v] of Object.entries(filters)) {
+        if (v !== undefined && v !== "") params.set(k, String(v));
+      }
+      return api.get(`/api/training/workouts?${params.toString()}`).then((res) => res.data);
+    },
+    staleTime: 2 * 60 * 1000,
+  });
+}
+
+export function useWeeklyWorkouts(weekStart: string) {
+  return useQuery({
+    queryKey: ["workouts", "week", weekStart],
+    queryFn: () =>
+      api.get(`/api/training/workouts/week?week_start=${weekStart}`).then((res) => res.data),
+    staleTime: 2 * 60 * 1000,
+    enabled: !!weekStart,
   });
 }
 
@@ -13,8 +38,8 @@ export function useWorkout(workoutId: string) {
   return useQuery({
     queryKey: ["workout", workoutId],
     queryFn: () => trainingAPI.getWorkout(workoutId).then((res) => res.data),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: !!workoutId, // Only run if workoutId is provided
+    staleTime: 5 * 60 * 1000,
+    enabled: !!workoutId,
   });
 }
 
@@ -25,7 +50,6 @@ export function useCreateWorkout() {
     mutationFn: (workoutData: Record<string, unknown>) =>
       trainingAPI.createWorkout(workoutData).then((res) => res.data),
     onSuccess: () => {
-      // Invalidate all workouts queries since we don't know the athlete_id ahead of time
       queryClient.invalidateQueries({ queryKey: ["workouts"] });
     },
   });
@@ -46,6 +70,6 @@ export function useTrainingRecommendations(athleteId: string) {
   return useQuery({
     queryKey: ["recommendations", athleteId],
     queryFn: () => trainingAPI.getRecommendations(athleteId).then((res) => res.data),
-    staleTime: 60 * 60 * 1000, // 1 hour
+    staleTime: 60 * 60 * 1000,
   });
 }

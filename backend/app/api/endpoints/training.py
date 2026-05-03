@@ -72,12 +72,24 @@ async def _verify_athlete_ownership(athlete_id: str, user) -> None:
 async def get_workouts(
     athlete_id: Optional[str] = Query(None),
     limit: int = Query(10),
+    offset: int = Query(0),
+    workout_type: Optional[str] = Query(None),
+    date_from: Optional[str] = Query(None),
+    date_to: Optional[str] = Query(None),
+    search: Optional[str] = Query(None),
     user=Depends(get_current_user),
 ):
     """Get workouts for the authenticated user's athlete profile.
 
     If athlete_id is provided, verifies it belongs to the authenticated user.
     If not provided, uses the authenticated user's own athlete_id.
+
+    Supports optional filters:
+    - workout_type: filter by workout type (strength, power, speed, etc.)
+    - date_from: filter workouts on or after this date (YYYY-MM-DD)
+    - date_to: filter workouts on or before this date (YYYY-MM-DD)
+    - search: search workout name (case-insensitive)
+    - offset: pagination offset
     """
     try:
         if athlete_id:
@@ -86,7 +98,15 @@ async def get_workouts(
             athlete_id = await _get_athlete_id_for_user(user)
 
         training_service = TrainingService()
-        return await training_service.get_recent_workouts(athlete_id, limit)
+        return await training_service.get_recent_workouts(
+            athlete_id,
+            limit=limit,
+            offset=offset,
+            workout_type=workout_type,
+            date_from=date_from,
+            date_to=date_to,
+            search=search,
+        )
     except HTTPException:
         raise
     except RuntimeError as e:
@@ -94,6 +114,35 @@ async def get_workouts(
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to fetch workouts: {str(e)}"
+        )
+
+
+@router.get("/workouts/week")
+async def get_weekly_workouts(
+    week_start: str = Query(..., description="Monday date (YYYY-MM-DD)"),
+    athlete_id: Optional[str] = Query(None),
+    user=Depends(get_current_user),
+):
+    """Get workouts for a specific week.
+
+    Returns workouts where date is between week_start and week_start + 6 days,
+    ordered by date ascending, with workout_exercises joined.
+    """
+    try:
+        if athlete_id:
+            await _verify_athlete_ownership(athlete_id, user)
+        else:
+            athlete_id = await _get_athlete_id_for_user(user)
+
+        training_service = TrainingService()
+        return await training_service.get_weekly_workouts(athlete_id, week_start)
+    except HTTPException:
+        raise
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to fetch weekly workouts: {str(e)}"
         )
 
 
