@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-05-02)
 
 **Core value:** The AI generates genuinely useful, personalized weekly training plans that a bobsleigh coach would actually trust and use with their athletes.
-**Current focus:** Phase 3 — Training Core
+**Current focus:** Phase 3 complete -- ready for Phase 4 (Analytics)
 
 ## Current Position
 
-Phase: 3 of 7 (Training Core)
-Plan: 3 of 4 complete
-Status: In progress
-Last activity: 2026-05-03 — Completed 03-03-PLAN.md
+Phase: 3 of 7 (Training Core) -- COMPLETE
+Plan: 4 of 4 complete
+Status: Phase complete
+Last activity: 2026-05-03 -- Completed 03-04-PLAN.md
 
-Progress: ████░░░░░░ 39% (11 plans complete, ~17 remaining across phases 3-7)
+Progress: ████████░░░░░░░░░░░░ 43% (12 plans complete, ~16 remaining across phases 4-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: ~6min
-- Total execution time: ~67min
+- Total execution time: ~71min
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: ████░░░░░░ 39% (11 plans complete, ~17 remaining a
 |-------|-------|-------|----------|
 | 1. Foundation | 4/4 | ~40min | ~10min |
 | 2. Auth & Roles | 4/4 | ~19min | ~5min |
-| 3. Training Core | 3/4 | ~8min | ~3min |
+| 3. Training Core | 4/4 | ~12min | ~3min |
 
 **Recent Trend:**
-- Last 5 plans: 02-04 (3min), 02-03 (6min), 03-01 (4min), 03-02 (3min), 03-03 (5min)
+- Last 5 plans: 02-03 (6min), 03-01 (4min), 03-02 (3min), 03-03 (5min), 03-04 (4min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -79,8 +79,10 @@ Recent decisions affecting current work:
 - Pagination via offset/limit with forward-estimation (full page implies more pages)
 - RPE-to-intensity mapping: 1-3=Low, 4-6=Medium, 7-10=High
 - Weekly plan default tab replaces old Calendar tab
-- PlannedVsActual inline placeholder until 03-04 builds full component
 - WorkoutForm accepts optional onSuccess prop for modal close callback
+- Coach role extracted via _get_user_role helper (app_metadata first, user_metadata fallback)
+- PlannedVsActual uses per-exercise Card layout for readability across different metric types
+- Diff badge colors: green=met/exceeded, red=fell short, gray=not logged
 
 ### Pending Todos
 
@@ -100,5 +102,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Completed 03-03-PLAN.md (training views, filters, weekly plan, tab integration)
+Stopped at: Completed 03-04-PLAN.md (planned vs actual comparison, coach workout visibility)
 Resume file: None
