@@ -1,14 +1,15 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 
+from app.core.security import get_current_user
 from app.services.performance_service import PerformanceService
 
 router = APIRouter()
 
 
 @router.get("/metrics/{athlete_id}")
-async def get_performance_metrics(athlete_id: str):
+async def get_performance_metrics(athlete_id: str, user=Depends(get_current_user)):
     """Get performance metrics for an athlete from the database."""
     try:
         performance_service = PerformanceService()
@@ -23,7 +24,7 @@ async def get_performance_metrics(athlete_id: str):
 
 @router.get("/trends/{athlete_id}")
 async def get_performance_trends(
-    athlete_id: str, metric: str = Query(...), days: int = Query(90)
+    athlete_id: str, metric: str = Query(...), days: int = Query(90), user=Depends(get_current_user)
 ):
     """Get performance trends over time for a specific metric."""
     try:
@@ -40,7 +41,7 @@ async def get_performance_trends(
 
 
 @router.get("/load/{athlete_id}")
-async def get_training_load(athlete_id: str, days: int = Query(90)):
+async def get_training_load(athlete_id: str, days: int = Query(90), user=Depends(get_current_user)):
     """Get training load metrics for an athlete using the PMC model."""
     try:
         performance_service = PerformanceService()
@@ -54,7 +55,7 @@ async def get_training_load(athlete_id: str, days: int = Query(90)):
 
 
 @router.get("/comparison/{athlete_id}")
-async def get_peer_comparison(athlete_id: str):
+async def get_peer_comparison(athlete_id: str, user=Depends(get_current_user)):
     """Get performance comparison against peers."""
     try:
         performance_service = PerformanceService()

@@ -1,7 +1,8 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
+from app.core.security import get_current_user
 from app.db.session import get_supabase
 from app.schemas.athlete import AthleteCreate, AthleteUpdate
 
@@ -9,7 +10,7 @@ router = APIRouter()
 
 
 @router.get("/")
-async def get_athletes():
+async def get_athletes(user=Depends(get_current_user)):
     """Get all active athletes from the database."""
     try:
         supabase = get_supabase()
@@ -22,7 +23,7 @@ async def get_athletes():
 
 
 @router.get("/{athlete_id}")
-async def get_athlete(athlete_id: str):
+async def get_athlete(athlete_id: str, user=Depends(get_current_user)):
     """Get a specific athlete by UUID."""
     try:
         supabase = get_supabase()
@@ -39,7 +40,7 @@ async def get_athlete(athlete_id: str):
 
 
 @router.post("/")
-async def create_athlete(athlete: AthleteCreate):
+async def create_athlete(athlete: AthleteCreate, user=Depends(get_current_user)):
     """Create a new athlete in the database."""
     try:
         supabase = get_supabase()
@@ -53,7 +54,7 @@ async def create_athlete(athlete: AthleteCreate):
 
 
 @router.put("/{athlete_id}")
-async def update_athlete(athlete_id: str, athlete: AthleteUpdate):
+async def update_athlete(athlete_id: str, athlete: AthleteUpdate, user=Depends(get_current_user)):
     """Update an existing athlete in the database."""
     try:
         supabase = get_supabase()
@@ -73,7 +74,7 @@ async def update_athlete(athlete_id: str, athlete: AthleteUpdate):
 
 
 @router.delete("/{athlete_id}")
-async def delete_athlete(athlete_id: str):
+async def delete_athlete(athlete_id: str, user=Depends(get_current_user)):
     """Soft-delete an athlete by setting is_active to False."""
     try:
         supabase = get_supabase()

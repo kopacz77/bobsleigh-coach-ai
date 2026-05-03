@@ -1,7 +1,8 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 
+from app.core.security import get_current_user
 from app.db.session import get_supabase
 from app.schemas.training import WorkoutCreate
 from app.services.training_service import TrainingService
@@ -10,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/workouts")
-async def get_workouts(athlete_id: str = Query(...), limit: int = Query(10)):
+async def get_workouts(athlete_id: str = Query(...), limit: int = Query(10), user=Depends(get_current_user)):
     """Get workouts for an athlete from the database."""
     try:
         training_service = TrainingService()
@@ -24,7 +25,7 @@ async def get_workouts(athlete_id: str = Query(...), limit: int = Query(10)):
 
 
 @router.get("/workouts/{workout_id}")
-async def get_workout(workout_id: str):
+async def get_workout(workout_id: str, user=Depends(get_current_user)):
     """Get a specific workout by UUID from the database."""
     try:
         supabase = get_supabase()
@@ -48,7 +49,7 @@ async def get_workout(workout_id: str):
 
 
 @router.post("/workouts")
-async def create_workout(workout: WorkoutCreate):
+async def create_workout(workout: WorkoutCreate, user=Depends(get_current_user)):
     """Create a new workout in the database."""
     try:
         training_service = TrainingService()
@@ -63,7 +64,7 @@ async def create_workout(workout: WorkoutCreate):
 
 
 @router.get("/recommendations")
-async def get_training_recommendations(athlete_id: str = Query(...)):
+async def get_training_recommendations(athlete_id: str = Query(...), user=Depends(get_current_user)):
     """Get AI-generated training recommendations for an athlete."""
     try:
         training_service = TrainingService()
