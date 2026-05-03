@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 5 of 7 (Performance & Coach Dashboard)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-05-03 — Phase 4 complete, verified, approved
+Plan: 1 of 4 complete
+Status: In progress
+Last activity: 2026-05-03 — Completed 05-01-PLAN.md
 
-Progress: ████████░░ 54% (15 plans complete, ~13 remaining across phases 5-7)
+Progress: ████████░░ 57% (16 plans complete, ~12 remaining across phases 5-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15
+- Total plans completed: 16
 - Average duration: ~5min
-- Total execution time: ~80min
+- Total execution time: ~82min
 
 **By Phase:**
 
@@ -33,7 +33,7 @@ Progress: ████████░░ 54% (15 plans complete, ~13 remaining a
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 
 **Recent Trend:**
-- Last 5 plans: 03-03 (5min), 03-04 (4min), 04-01 (3min), 04-02 (2min), 04-03 (4min)
+- Last 5 plans: 03-04 (4min), 04-01 (3min), 04-02 (2min), 04-03 (4min), 05-01 (2min)
 - Trend: Consistently fast execution on focused plans
 
 ## Accumulated Context
@@ -93,6 +93,9 @@ Recent decisions affecting current work:
 - Coach dashboard readiness via API-backed React Query hook, not direct Supabase
 - Removed daily_checkins direct query (table did not exist) and dependent alert generation
 - Removed objective metrics chart from WellbeingTrends (daily_metrics table not in schema)
+- sRPE upsert wrapped in try/except so failure does not break workout update response
+- Multiple workouts on same day sum their training loads (additive upsert)
+- Return full PMC time series (removed [-8:] truncation from performance service)
 
 ### Pending Todos
 
@@ -112,5 +115,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Phase 4 complete, verified, approved. Ready for Phase 5.
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None
