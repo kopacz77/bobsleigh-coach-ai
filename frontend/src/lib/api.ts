@@ -119,12 +119,12 @@ export const wellbeingAPI = {
 };
 
 export const performanceAPI = {
-  getMetrics: (athleteId: number) => api.get(`/api/performance/metrics/${athleteId}`),
-  getTrends: (athleteId: number, metric: string, days = 90) =>
+  getMetrics: (athleteId: string) => api.get(`/api/performance/metrics/${athleteId}`),
+  getTrends: (athleteId: string, metric: string, days = 90) =>
     api.get(`/api/performance/trends/${athleteId}?metric=${metric}&days=${days}`),
-  getTrainingLoad: (athleteId: number, days = 90) =>
+  getTrainingLoad: (athleteId: string, days = 90) =>
     api.get(`/api/performance/load/${athleteId}?days=${days}`),
-  getComparison: (athleteId: number) => api.get(`/api/performance/comparison/${athleteId}`),
+  getComparison: (athleteId: string) => api.get(`/api/performance/comparison/${athleteId}`),
 };
 
 export default api;
