@@ -50,12 +50,34 @@ export const athleteAPI = {
 };
 
 export const trainingAPI = {
-  getWorkouts: (athleteId: number, limit = 10) =>
+  getWorkouts: (athleteId: string, limit = 10) =>
     api.get(`/api/training/workouts?athlete_id=${athleteId}&limit=${limit}`),
-  getWorkout: (workoutId: number) => api.get(`/api/training/workouts/${workoutId}`),
-  createWorkout: (data: any) => api.post("/api/training/workouts", data),
-  getRecommendations: (athleteId: number) =>
+  getWorkout: (workoutId: string) => api.get(`/api/training/workouts/${workoutId}`),
+  createWorkout: (data: Record<string, unknown>) => api.post("/api/training/workouts", data),
+  updateWorkout: (workoutId: string, data: Record<string, unknown>) =>
+    api.patch(`/api/training/workouts/${workoutId}`, data),
+  getRecommendations: (athleteId: string) =>
     api.get(`/api/training/recommendations?athlete_id=${athleteId}`),
+};
+
+export const exerciseAPI = {
+  search: (params: {
+    search?: string;
+    category?: string;
+    muscle_group?: string;
+    equipment?: string;
+    measurement_type?: string;
+    limit?: number;
+    offset?: number;
+  }) => {
+    const queryString = new URLSearchParams(
+      Object.entries(params)
+        .filter(([, v]) => v !== undefined && v !== "")
+        .map(([k, v]) => [k, String(v)]),
+    ).toString();
+    return api.get(`/api/exercises?${queryString}`);
+  },
+  getCategories: () => api.get("/api/exercises/categories"),
 };
 
 export const performanceAPI = {

@@ -1,5 +1,6 @@
 // Export all training-related components
 
+export { ExerciseLibrary } from "./ExerciseLibrary";
 export { TrainingAnalytics } from "./TrainingAnalytics";
 export { default as TrainingAssessment } from "./TrainingAssessment";
 export { TrainingHeader } from "./TrainingHeader";

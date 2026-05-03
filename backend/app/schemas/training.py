@@ -42,9 +42,18 @@ class WorkoutBase(BaseModel):
     notes: Optional[str] = None
 
 
-class WorkoutCreate(WorkoutBase):
-    """Schema for creating a workout"""
+class WorkoutCreate(BaseModel):
+    """Schema for creating a workout.
 
+    Note: Does NOT extend WorkoutBase because athlete_id is set server-side
+    from the authenticated user, never from the client payload.
+    """
+
+    name: str
+    date: str  # YYYY-MM-DD
+    duration: Optional[int] = None  # in minutes
+    workout_type: str  # 'strength', 'power', 'speed', 'endurance', 'recovery'
+    notes: Optional[str] = None
     rpe: Optional[int] = None
     is_completed: Optional[bool] = False
     training_phase: Optional[str] = None

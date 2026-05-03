@@ -148,6 +148,33 @@ async def create_workout(workout: WorkoutCreate, user=Depends(get_current_user))
         )
 
 
+@router.patch("/workouts/{workout_id}")
+async def update_workout(workout_id: str, updates: dict, user=Depends(get_current_user)):
+    """Update a workout (completion status, RPE, notes). Verifies ownership."""
+    try:
+        supabase = get_supabase()
+        # Fetch workout to verify ownership
+        result = supabase.table("workouts").select("athlete_id").eq("id", workout_id).execute()
+        if not result.data:
+            raise HTTPException(status_code=404, detail="Workout not found")
+        await _verify_athlete_ownership(result.data[0]["athlete_id"], user)
+
+        # Only allow updating safe fields
+        allowed_fields = {"is_completed", "rpe", "notes", "actual_load"}
+        safe_updates = {k: v for k, v in updates.items() if k in allowed_fields}
+        if not safe_updates:
+            raise HTTPException(status_code=400, detail="No valid fields to update")
+
+        result = supabase.table("workouts").update(safe_updates).eq("id", workout_id).execute()
+        return result.data[0] if result.data else {}
+    except HTTPException:
+        raise
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update workout: {str(e)}")
+
+
 @router.get("/recommendations")
 async def get_training_recommendations(
     athlete_id: Optional[str] = Query(None),
