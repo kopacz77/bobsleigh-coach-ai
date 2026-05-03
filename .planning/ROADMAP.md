@@ -60,7 +60,12 @@ Plans:
   2. Athlete can log a workout with exercises, sets, reps, and weight that persists to database
   3. Athlete can view their training history and filter by date/exercise
   4. Athlete can see their weekly training plan with daily workouts on mobile
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 03-01-PLAN.md — Exercise library backend API + searchable frontend UI (TRAIN-01)
+- [ ] 03-02-PLAN.md — Wire WorkoutForm to persist workouts to database with RPE + completion (TRAIN-02, TRAIN-06 partial)
+- [ ] 03-03-PLAN.md — Training history with filtering + mobile-friendly weekly plan view (TRAIN-03, TRAIN-04)
+- [ ] 03-04-PLAN.md — Planned vs actual comparison + coach workout visibility (TRAIN-05, TRAIN-06)
 
 ### Phase 4: Wellness & Recovery
 **Goal**: Athletes report daily wellness; coaches see readiness status at a glance
@@ -115,7 +120,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete | 2026-05-02 |
 | 2. Authentication & Roles | 4/4 | Complete | 2026-05-02 |
-| 3. Training Core | 0/TBD | Not started | - |
+| 3. Training Core | 0/4 | Not started | - |
 | 4. Wellness & Recovery | 0/TBD | Not started | - |
 | 5. Performance & Coach Dashboard | 0/TBD | Not started | - |
 | 6. AI Training Engine | 0/TBD | Not started | - |
