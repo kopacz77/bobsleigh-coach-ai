@@ -3,42 +3,67 @@
 import { Center, Loader } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getCurrentUser } from "@/lib/supabase";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 interface AuthGuardProps {
   children: React.ReactNode;
 }
 
 export function AuthGuard({ children }: AuthGuardProps) {
+  const { supabase, loading: providerLoading } = useSupabase();
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    async function checkAuth() {
-      try {
-        const user = await getCurrentUser();
+    if (!supabase) return;
 
-        if (!user && !pathname.startsWith("/auth/")) {
-          // If no user and not on an auth page, redirect to login
-          router.push("/auth/login");
-        } else if (user && pathname.startsWith("/auth/")) {
-          // If user is logged in and on an auth page, redirect to dashboard
-          router.push("/dashboard");
-        } else {
-          // Otherwise, show the page
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error("Auth check failed:", error);
-        setIsLoading(false);
-      }
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+      handleRedirect(!!session);
+      setIsLoading(false);
+    });
+
+    // Listen for auth state changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      const authed = !!session;
+      setIsAuthenticated(authed);
+      handleRedirect(authed);
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [supabase, pathname]);
+
+  function handleRedirect(authed: boolean) {
+    const isAuthPage = pathname.startsWith("/auth/");
+
+    if (!authed && !isAuthPage) {
+      // Not logged in and not on an auth page -> redirect to login
+      router.push("/auth/login");
+    } else if (authed && isAuthPage) {
+      // Logged in but on an auth page -> redirect to dashboard
+      router.push("/dashboard");
     }
+  }
 
-    checkAuth();
-  }, [pathname, router]);
+  if (providerLoading || isLoading) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Loader size="xl" />
+      </Center>
+    );
+  }
 
-  if (isLoading) {
+  // Allow rendering auth pages for unauthenticated users
+  const isAuthPage = pathname.startsWith("/auth/");
+  if (!isAuthenticated && !isAuthPage) {
+    // Still redirecting, show loader
     return (
       <Center style={{ height: "100vh" }}>
         <Loader size="xl" />
