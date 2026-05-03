@@ -87,13 +87,18 @@ Plans:
 **Goal**: Coach has a real-data command center; PMC and performance trends work
 **Depends on**: Phase 3, Phase 4
 **Requirements**: PERF-01, PERF-02, PERF-03, COACH-01, COACH-02, COACH-03, COACH-04
-**Research**: Likely — PMC time constants and load calculation need adaptation for power sports (bobsleigh) vs the endurance model (TrainingPeaks)
+**Research**: Complete (05-RESEARCH.md)
 **Success Criteria** (what must be TRUE):
   1. Coach dashboard shows real athlete data (check-ins, workouts, readiness)
   2. PMC chart displays real CTL/ATL/TSB calculated from logged workouts
   3. Coach can view and manage their athlete roster with status indicators
   4. Coach receives alerts for concerning athlete trends (fatigue spikes, missed check-ins)
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 05-01-PLAN.md — Training load pipeline (sRPE auto-upsert on workout completion) + PMC full time series fix
+- [ ] 05-02-PLAN.md — Rewire performance frontend components from mock data to real API (PerformanceChart, Metrics, Trends)
+- [ ] 05-03-PLAN.md — Coach backend endpoints (roster, PMC summary, alerts, relationship CRUD)
+- [ ] 05-04-PLAN.md — Wire CoachDashboard to real API data (replace direct Supabase, add alerts, PMC overview)
 
 ### Phase 6: AI Training Engine
 **Goal**: System generates personalized weekly training plans that coach reviews and approves
@@ -126,6 +131,6 @@ Plans:
 | 2. Authentication & Roles | 4/4 | Complete | 2026-05-02 |
 | 3. Training Core | 4/4 | Complete | 2026-05-03 |
 | 4. Wellness & Recovery | 3/3 | Complete | 2026-05-03 |
-| 5. Performance & Coach Dashboard | 0/TBD | Not started | - |
+| 5. Performance & Coach Dashboard | 0/4 | In progress | - |
 | 6. AI Training Engine | 0/TBD | Not started | - |
 | 7. Polish & Deploy | 0/TBD | Not started | - |
