@@ -14,17 +14,24 @@ import {
   IconBarbell,
   IconChartBar,
   IconDashboard,
+  IconHeart,
+  IconLogout,
   IconSettings,
   IconUser,
+  IconUsers,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
-interface NavLinkProps {
+interface NavLinkItem {
   icon: ReactNode;
   label: string;
   href: string;
+}
+
+interface NavLinkProps extends NavLinkItem {
   active?: boolean;
 }
 
@@ -56,13 +63,38 @@ interface AppShellProps {
 export function AppShell({ children }: AppShellProps) {
   const [opened, { toggle }] = useDisclosure(false);
   const pathname = usePathname();
+  const { isCoach, user, logout } = useAuth();
 
   const iconSize = rem(20);
-  const navLinks = [
+
+  const coachLinks: NavLinkItem[] = [
     {
       icon: <IconDashboard size={iconSize} stroke={1.5} />,
       label: "Dashboard",
-      href: "/",
+      href: "/dashboard",
+    },
+    {
+      icon: <IconUsers size={iconSize} stroke={1.5} />,
+      label: "Athletes",
+      href: "/athletes",
+    },
+    {
+      icon: <IconChartBar size={iconSize} stroke={1.5} />,
+      label: "Performance",
+      href: "/performance",
+    },
+    {
+      icon: <IconSettings size={iconSize} stroke={1.5} />,
+      label: "Settings",
+      href: "/settings",
+    },
+  ];
+
+  const athleteLinks: NavLinkItem[] = [
+    {
+      icon: <IconDashboard size={iconSize} stroke={1.5} />,
+      label: "Dashboard",
+      href: "/dashboard",
     },
     {
       icon: <IconBarbell size={iconSize} stroke={1.5} />,
@@ -73,6 +105,11 @@ export function AppShell({ children }: AppShellProps) {
       icon: <IconChartBar size={iconSize} stroke={1.5} />,
       label: "Performance",
       href: "/performance",
+    },
+    {
+      icon: <IconHeart size={iconSize} stroke={1.5} />,
+      label: "Wellbeing",
+      href: "/wellbeing",
     },
     {
       icon: <IconUser size={iconSize} stroke={1.5} />,
@@ -86,6 +123,8 @@ export function AppShell({ children }: AppShellProps) {
     },
   ];
 
+  const navLinks = isCoach ? coachLinks : athleteLinks;
+
   return (
     <MantineAppShell
       header={{ height: 60 }}
@@ -97,11 +136,18 @@ export function AppShell({ children }: AppShellProps) {
       padding="md"
     >
       <MantineAppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Text fw={700} size="lg">
-            Bobsleigh Coach AI
-          </Text>
+        <Group h="100%" px="md" justify="space-between">
+          <Group>
+            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Text fw={700} size="lg">
+              Bobsleigh Coach AI
+            </Text>
+          </Group>
+          {user?.email && (
+            <Text size="sm" c="dimmed">
+              {user.email}
+            </Text>
+          )}
         </Group>
       </MantineAppShell.Header>
 
@@ -112,7 +158,21 @@ export function AppShell({ children }: AppShellProps) {
           ))}
         </MantineAppShell.Section>
 
-        <MantineAppShell.Section>{/* Footer content if needed */}</MantineAppShell.Section>
+        <MantineAppShell.Section>
+          <UnstyledButton
+            w="100%"
+            p="md"
+            onClick={logout}
+            style={{
+              borderRadius: "6px",
+            }}
+          >
+            <Group>
+              <IconLogout size={iconSize} stroke={1.5} />
+              <Text size="sm">Logout</Text>
+            </Group>
+          </UnstyledButton>
+        </MantineAppShell.Section>
       </MantineAppShell.Navbar>
 
       <MantineAppShell.Main>{children}</MantineAppShell.Main>

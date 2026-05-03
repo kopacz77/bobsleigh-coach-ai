@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ActionIcon,
   Avatar,
@@ -21,7 +23,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { Calendar, DatePicker, DateValue } from "@mantine/dates";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconActivity,
   IconArrowDown,
@@ -192,7 +194,7 @@ interface PerformanceItem {
  */
 const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState<boolean>(false);
   const [todayDate] = useState<Date>(new Date());
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);

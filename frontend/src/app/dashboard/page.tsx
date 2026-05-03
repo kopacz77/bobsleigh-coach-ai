@@ -1,27 +1,31 @@
-import { Grid, Stack, Title } from "@mantine/core";
-import { AthleteStats } from "@/components/dashboard/AthleteStats";
-import { PerformanceChart } from "@/components/dashboard/PerformanceChart";
+"use client";
+
+import { Center, Loader } from "@mantine/core";
+import { useAuth } from "@/hooks/useAuth";
+import CoachDashboard from "@/components/dashboard/CoachDashboard";
+import AthleteDashboard from "@/components/dashboard/AthleteDashboard";
 import { AppShell } from "@/components/layout/AppShell";
-import { TrainingRecommendations } from "@/components/training/TrainingRecommendations";
 
 export default function DashboardPage() {
+  const { user, isCoach, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <AppShell>
+        <Center style={{ height: "60vh" }}>
+          <Loader size="xl" />
+        </Center>
+      </AppShell>
+    );
+  }
+
   return (
     <AppShell>
-      <Stack gap="xl">
-        <Title>Dashboard</Title>
-
-        <AthleteStats />
-
-        <Grid>
-          <Grid.Col span={{ base: 12, md: 8 }}>
-            <PerformanceChart />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 12, md: 4 }}>
-            <TrainingRecommendations />
-          </Grid.Col>
-        </Grid>
-      </Stack>
+      {isCoach ? (
+        <CoachDashboard userId={user?.id ?? ""} userProfile={null} />
+      ) : (
+        <AthleteDashboard userId={user?.id ?? ""} />
+      )}
     </AppShell>
   );
 }
