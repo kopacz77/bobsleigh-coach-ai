@@ -53,3 +53,11 @@ export function useWellbeingHistory(days = 30) {
     staleTime: 5 * 60 * 1000,
   });
 }
+
+export function useCoachReadiness() {
+  return useQuery({
+    queryKey: ["wellbeing", "coach", "readiness"],
+    queryFn: () => wellbeingAPI.getCoachReadiness().then((res) => res.data),
+    staleTime: 2 * 60 * 1000, // 2 min -- coaches want fresh data
+  });
+}

@@ -115,6 +115,7 @@ export const wellbeingAPI = {
   }) => api.post("/api/wellbeing/checkin", data),
   getCheckInToday: () => api.get("/api/wellbeing/checkin/today"),
   getHistory: (days = 30) => api.get(`/api/wellbeing/history?days=${days}`),
+  getCoachReadiness: () => api.get("/api/wellbeing/coach/readiness"),
 };
 
 export const performanceAPI = {
