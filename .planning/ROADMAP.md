@@ -104,13 +104,19 @@ Plans:
 **Goal**: System generates personalized weekly training plans that coach reviews and approves
 **Depends on**: Phase 5
 **Requirements**: AI-01, AI-02, AI-03, AI-04, AI-05
-**Research**: Likely — rule-based plan generation logic, periodization model for bobsleigh, ML integration patterns, injury risk thresholds
+**Research**: Complete (06-RESEARCH.md)
 **Success Criteria** (what must be TRUE):
   1. System generates a personalized weekly training plan based on athlete data and training phase
   2. Coach can review, modify, and approve AI-generated plans before athlete sees them
   3. Today's workout adjusts based on athlete's morning wellness check-in
   4. Injury risk warnings surface when training load patterns are concerning
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 06-01-PLAN.md — Database schema (weekly_plans table) + rule-based plan generation engine + exercise selection service
+- [ ] 06-02-PLAN.md — Injury risk service + plan API endpoints with coach approval workflow (generate, approve, reject, batch)
+- [ ] 06-03-PLAN.md — Morning adaptation service + athlete /plans/today endpoint
+- [ ] 06-04-PLAN.md — Coach plan review UI (queue, review card, approve/reject modal, batch generate button)
+- [ ] 06-05-PLAN.md — Athlete adapted workout view + weekly plan overview + training page integration
 
 ### Phase 7: Polish & Deploy
 **Goal**: Production-ready application with professional UX
@@ -132,5 +138,5 @@ Plans:
 | 3. Training Core | 4/4 | Complete | 2026-05-03 |
 | 4. Wellness & Recovery | 3/3 | Complete | 2026-05-03 |
 | 5. Performance & Coach Dashboard | 4/4 | Complete | 2026-05-03 |
-| 6. AI Training Engine | 0/TBD | Not started | - |
+| 6. AI Training Engine | 0/5 | In Progress | - |
 | 7. Polish & Deploy | 0/TBD | Not started | - |
