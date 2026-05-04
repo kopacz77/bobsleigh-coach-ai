@@ -19,6 +19,7 @@ from app.core.security import get_current_user
 from app.db.session import get_supabase
 from app.services.coach_service import CoachService
 from app.services.injury_risk_service import InjuryRiskService
+from app.services.morning_adaptation_service import MorningAdaptationService
 from app.services.plan_generation_service import PlanGenerationService
 
 logger = logging.getLogger(__name__)
@@ -473,7 +474,96 @@ async def get_current_plan(user=Depends(get_current_user)):
         )
 
 
-# ---- Coach single-plan endpoint (must be after /current) ----
+@router.get("/today")
+async def get_today_workout(user=Depends(get_current_user)):
+    """Get today's workout from the approved plan with morning adaptation.
+
+    Fetches the current week's approved plan, extracts today's day entry,
+    and applies readiness-based load adaptation from the morning check-in.
+    Returns 204 No Content if no approved plan exists for this week.
+    This is an athlete endpoint (no coach role required).
+
+    NOTE: /today must be registered BEFORE /{plan_id} to prevent
+    FastAPI from matching "today" as a plan_id path parameter.
+    """
+    try:
+        athlete_id = await _get_athlete_id_for_user(user)
+
+        # Calculate current week's Monday
+        today = date.today()
+        days_since_monday = today.weekday()  # 0=Mon, 6=Sun
+        current_monday = (today - timedelta(days=days_since_monday)).isoformat()
+
+        sb = get_supabase()
+        result = (
+            sb.table("weekly_plans")
+            .select("*")
+            .eq("athlete_id", athlete_id)
+            .eq("status", "approved")
+            .eq("week_start", current_monday)
+            .execute()
+        )
+
+        if not result.data:
+            from fastapi.responses import Response
+
+            return Response(status_code=204)
+
+        plan = result.data[0]
+        plan_data = plan.get("plan_data", {})
+        days = plan_data.get("days", [])
+
+        # Find today's entry by matching day_number (Monday=1, Sunday=7)
+        today_day_number = today.weekday() + 1  # weekday() is 0=Mon; we want 1=Mon
+        today_date_str = today.isoformat()
+
+        today_plan_day = None
+        for day in days:
+            # Match by date first (most precise), then by day_number
+            if day.get("date") == today_date_str:
+                today_plan_day = day
+                break
+            if day.get("day_number") == today_day_number:
+                today_plan_day = day
+                break
+
+        if today_plan_day is None:
+            from fastapi.responses import Response
+
+            return Response(status_code=204)
+
+        # If today is a rest day, return with a message (no adaptation needed)
+        if today_plan_day.get("is_rest_day"):
+            return {
+                **today_plan_day,
+                "adaptation": {
+                    "applied": False,
+                    "readiness_score": None,
+                    "multiplier": 1.0,
+                    "message": "Rest day - recovery is training too",
+                    "coach_alert": False,
+                },
+            }
+
+        # Apply morning adaptation based on wellness check-in
+        adaptation_service = MorningAdaptationService()
+        adapted_day = await adaptation_service.adapt_workout(
+            today_plan_day, user.id
+        )
+
+        return adapted_day
+    except HTTPException:
+        raise
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch today's workout: {str(e)}",
+        )
+
+
+# ---- Coach single-plan endpoint (must be after /current and /today) ----
 
 
 @router.get("/{plan_id}")
