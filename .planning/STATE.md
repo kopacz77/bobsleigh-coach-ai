@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 6 of 7 (AI Training Engine)
-Plan: 2 of ~4 in phase 6
+Plan: 3 of ~4 in phase 6
 Status: In progress
-Last activity: 2026-05-04 — Completed 06-02-PLAN.md
+Last activity: 2026-05-04 — Completed 06-03-PLAN.md
 
-Progress: ████████████░░░░ 75% (21 plans complete, ~7 remaining across phases 6-7)
+Progress: █████████████░░░ 79% (22 plans complete, ~6 remaining across phases 6-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 21
+- Total plans completed: 22
 - Average duration: ~5min
-- Total execution time: ~98min
+- Total execution time: ~100min
 
 **By Phase:**
 
@@ -32,11 +32,11 @@ Progress: ████████████░░░░ 75% (21 plans complet
 | 3. Training Core | 4/4 | ~16min | ~4min |
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
-| 6. AI Training Engine | 2/? | ~9min | ~5min |
+| 6. AI Training Engine | 3/? | ~11min | ~4min |
 
 **Recent Trend:**
-- Last 5 plans: 05-02 (2min), 05-03 (3min), 05-04 (2min), 06-01 (6min), 06-02 (3min)
-- Trend: Steady pace, 06-02 faster than 06-01 (API wiring vs engine creation)
+- Last 5 plans: 05-03 (3min), 05-04 (2min), 06-01 (6min), 06-02 (3min), 06-03 (2min)
+- Trend: Steady pace, 06-03 fast (thin service + single endpoint addition)
 
 ## Accumulated Context
 
@@ -123,6 +123,10 @@ Recent decisions affecting current work:
 - Rejection auto-triggers background plan regeneration (new version with parent_plan_id)
 - Batch generation uses BackgroundTasks to avoid HTTP timeout on large rosters
 - Pydantic request models (GeneratePlanRequest, RejectPlanRequest) for type-safe body validation
+- Morning adaptation computed on read, never stored (weekly_plans immutable after approval)
+- adapted_weight_kg and adapted_reps are additional fields (planned values preserved)
+- Wellbeing query failure returns plan unmodified (graceful degradation, not 500)
+- Route /today before /{plan_id} in plans.py (same pattern as /current)
 
 ### Pending Todos
 
@@ -143,5 +147,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-04
-Stopped at: Completed 06-02-PLAN.md (plan API & injury risk). Ready for 06-03.
+Stopped at: Completed 06-03-PLAN.md (morning adaptation & today's workout). Ready for 06-04.
 Resume file: None
