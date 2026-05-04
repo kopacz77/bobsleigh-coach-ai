@@ -2,10 +2,12 @@
 
 import {
   rem,
+  SegmentedControl,
   Select,
   Stack,
   Tabs,
   Text,
+  Title,
 } from "@mantine/core";
 import {
   IconBarbell,
@@ -24,8 +26,29 @@ import { TrainingRecommendations } from "./TrainingRecommendations";
 import { WeeklyPlanView } from "./WeeklyPlanView";
 import { WorkoutList } from "./WorkoutList";
 import { useWorkouts } from "@/hooks/useTraining";
+import { AdaptedWorkoutView } from "@/components/plans/AdaptedWorkoutView";
+import { WeeklyPlanOverview } from "@/components/plans/WeeklyPlanOverview";
 
 const VALID_TABS = ["weekly", "history", "exercises", "comparison", "recommendations", "analytics"];
+
+/** Weekly plan tab: toggle between AI-generated plan overview and logged workout history. */
+function WeeklyPlanTab() {
+  const [view, setView] = useState("ai-plan");
+
+  return (
+    <Stack gap="md">
+      <SegmentedControl
+        value={view}
+        onChange={setView}
+        data={[
+          { label: "AI Plan", value: "ai-plan" },
+          { label: "Logged Workouts", value: "logged" },
+        ]}
+      />
+      {view === "ai-plan" ? <WeeklyPlanOverview /> : <WeeklyPlanView />}
+    </Stack>
+  );
+}
 
 /** Workout selector with PlannedVsActual comparison view. */
 function ComparisonTab() {
@@ -88,51 +111,60 @@ export function TrainingTabs() {
   const iconStyle = { width: rem(16), height: rem(16) };
 
   return (
-    <Tabs value={activeTab} onChange={handleTabChange}>
-      <Tabs.List>
-        <Tabs.Tab value="weekly" leftSection={<IconCalendarStats style={iconStyle} />}>
-          Weekly Plan
-        </Tabs.Tab>
-        <Tabs.Tab value="history" leftSection={<IconListCheck style={iconStyle} />}>
-          Workout History
-        </Tabs.Tab>
-        <Tabs.Tab value="exercises" leftSection={<IconBarbell style={iconStyle} />}>
-          Exercise Library
-        </Tabs.Tab>
-        <Tabs.Tab value="comparison" leftSection={<IconGitCompare style={iconStyle} />}>
-          Planned vs Actual
-        </Tabs.Tab>
-        <Tabs.Tab value="recommendations" leftSection={<IconRobot style={iconStyle} />}>
-          Recommendations
-        </Tabs.Tab>
-        <Tabs.Tab value="analytics" leftSection={<IconChartLine style={iconStyle} />}>
-          Analytics
-        </Tabs.Tab>
-      </Tabs.List>
+    <Stack gap="lg">
+      {/* Today's Workout -- prominent card above tabs */}
+      <Stack gap="xs">
+        <Title order={3}>Today's Workout</Title>
+        <AdaptedWorkoutView />
+      </Stack>
 
-      <Tabs.Panel value="weekly" pt="xl">
-        <WeeklyPlanView />
-      </Tabs.Panel>
+      {/* Tabbed training views */}
+      <Tabs value={activeTab} onChange={handleTabChange}>
+        <Tabs.List>
+          <Tabs.Tab value="weekly" leftSection={<IconCalendarStats style={iconStyle} />}>
+            Weekly Plan
+          </Tabs.Tab>
+          <Tabs.Tab value="history" leftSection={<IconListCheck style={iconStyle} />}>
+            Workout History
+          </Tabs.Tab>
+          <Tabs.Tab value="exercises" leftSection={<IconBarbell style={iconStyle} />}>
+            Exercise Library
+          </Tabs.Tab>
+          <Tabs.Tab value="comparison" leftSection={<IconGitCompare style={iconStyle} />}>
+            Planned vs Actual
+          </Tabs.Tab>
+          <Tabs.Tab value="recommendations" leftSection={<IconRobot style={iconStyle} />}>
+            Recommendations
+          </Tabs.Tab>
+          <Tabs.Tab value="analytics" leftSection={<IconChartLine style={iconStyle} />}>
+            Analytics
+          </Tabs.Tab>
+        </Tabs.List>
 
-      <Tabs.Panel value="history" pt="xl">
-        <WorkoutList />
-      </Tabs.Panel>
+        <Tabs.Panel value="weekly" pt="xl">
+          <WeeklyPlanTab />
+        </Tabs.Panel>
 
-      <Tabs.Panel value="exercises" pt="xl">
-        <ExerciseLibrary />
-      </Tabs.Panel>
+        <Tabs.Panel value="history" pt="xl">
+          <WorkoutList />
+        </Tabs.Panel>
 
-      <Tabs.Panel value="comparison" pt="xl">
-        <ComparisonTab />
-      </Tabs.Panel>
+        <Tabs.Panel value="exercises" pt="xl">
+          <ExerciseLibrary />
+        </Tabs.Panel>
 
-      <Tabs.Panel value="recommendations" pt="xl">
-        <TrainingRecommendations />
-      </Tabs.Panel>
+        <Tabs.Panel value="comparison" pt="xl">
+          <ComparisonTab />
+        </Tabs.Panel>
 
-      <Tabs.Panel value="analytics" pt="xl">
-        <TrainingAnalytics />
-      </Tabs.Panel>
-    </Tabs>
+        <Tabs.Panel value="recommendations" pt="xl">
+          <TrainingRecommendations />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="analytics" pt="xl">
+          <TrainingAnalytics />
+        </Tabs.Panel>
+      </Tabs>
+    </Stack>
   );
 }
