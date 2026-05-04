@@ -136,4 +136,18 @@ export const coachAPI = {
   removeAthlete: (athleteId: string) => api.delete(`/api/coach/athletes/${athleteId}`),
 };
 
+export const plansAPI = {
+  getPending: () => api.get("/api/plans/pending"),
+  getPlan: (planId: string) => api.get(`/api/plans/${planId}`),
+  getCurrent: () => api.get("/api/plans/current"),
+  getToday: () => api.get("/api/plans/today"),
+  generate: (athleteId: string, weekStart: string) =>
+    api.post("/api/plans/generate", { athlete_id: athleteId, week_start: weekStart }),
+  generateBatch: (weekStart: string) =>
+    api.post("/api/plans/generate-batch", { week_start: weekStart }),
+  approve: (planId: string) => api.post(`/api/plans/${planId}/approve`),
+  reject: (planId: string, rejectionNotes: string) =>
+    api.post(`/api/plans/${planId}/reject`, { rejection_notes: rejectionNotes }),
+};
+
 export default api;
