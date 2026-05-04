@@ -115,8 +115,9 @@ Plans:
 - [ ] 06-01-PLAN.md — Database schema (weekly_plans table) + rule-based plan generation engine + exercise selection service
 - [ ] 06-02-PLAN.md — Injury risk service + plan API endpoints with coach approval workflow (generate, approve, reject, batch)
 - [ ] 06-03-PLAN.md — Morning adaptation service + athlete /plans/today endpoint
-- [ ] 06-04-PLAN.md — Coach plan review UI (queue, review card, approve/reject modal, batch generate button)
+- [ ] 06-04-PLAN.md — Coach plan review UI (queue, review card, approve/reject modal, batch generate button, Plans tab in CoachDashboard)
 - [ ] 06-05-PLAN.md — Athlete adapted workout view + weekly plan overview + training page integration
+**Deferred to Phase 7**: Automated Saturday night plan generation (APScheduler/cron). Phase 6 provides manual batch generation via API; automated scheduling is production infrastructure.
 
 ### Phase 7: Polish & Deploy
 **Goal**: Production-ready application with professional UX
@@ -127,7 +128,9 @@ Plans:
   1. All primary screens are usable on a mobile phone at the gym/track
   2. UI has consistent professional design (not developer prototype aesthetic)
   3. Application is deployed and accessible on the public internet
+  4. Automated weekly plan generation runs on schedule (Saturday night) without manual trigger
 **Plans**: TBD
+**Includes deferred from Phase 6**: APScheduler or cron-based auto-generation of weekly plans (Saturday night), coach notification if plans not reviewed by Monday morning.
 
 ## Progress
 
