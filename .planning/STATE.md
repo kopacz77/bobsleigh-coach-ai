@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 6 of 7 (AI Training Engine)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-05-03 — Phase 5 complete, verified, approved
+Plan: 1 of ~4 in phase 6
+Status: In progress
+Last activity: 2026-05-04 — Completed 06-01-PLAN.md
 
-Progress: ██████████ 68% (19 plans complete, ~9 remaining across phases 6-7)
+Progress: ███████████░░░░░ 71% (20 plans complete, ~8 remaining across phases 6-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
+- Total plans completed: 20
 - Average duration: ~5min
-- Total execution time: ~89min
+- Total execution time: ~95min
 
 **By Phase:**
 
@@ -31,12 +31,12 @@ Progress: ██████████ 68% (19 plans complete, ~9 remaining ac
 | 2. Auth & Roles | 4/4 | ~19min | ~5min |
 | 3. Training Core | 4/4 | ~16min | ~4min |
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
-
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
+| 6. AI Training Engine | 1/? | ~6min | ~6min |
 
 **Recent Trend:**
-- Last 5 plans: 04-03 (4min), 05-01 (2min), 05-02 (2min), 05-03 (3min), 05-04 (2min)
-- Trend: Consistently fast execution on focused plans
+- Last 5 plans: 05-01 (2min), 05-02 (2min), 05-03 (3min), 05-04 (2min), 06-01 (6min)
+- Trend: 06-01 slightly longer due to large plan generation service (1200 lines)
 
 ## Accumulated Context
 
@@ -110,12 +110,21 @@ Recent decisions affecting current work:
 - CoachDashboard has zero direct Supabase imports (all data via React Query -> coachAPI -> /api/coach/*)
 - TSB color thresholds in PMC Summary: >0 green, -10..0 yellow, <-10 red
 - Alert filter values match real API alert types (fatigue_spike, overtraining_risk, low_readiness, missed_checkin)
+- Rule-based plan generation in backend/app/services/ (not ml/ module) -- deterministic, debuggable, works with limited data
+- 5 periodization phases: general_prep, specific_prep, pre_competition, competition, transition
+- Injury risk at plan generation time uses TSB + ACWR + wellbeing signals (no separate ML model for v1)
+- Coach feedback learning via simple keyword matching on rejection notes (volume_high -> reduce sets)
+- Exercise selection queries DB first, falls back to hardcoded bobsleigh defaults
+- Weight assignment uses _round_to_plate(2.5kg) for all planned weights
+- Plan versioning via parent_plan_id for rejection-regeneration lineage
+- week_start constrained to Monday via CHECK(DOW = 1)
 
 ### Pending Todos
 
 - Deploy database schema to Supabase (manual step from 01-02 Task 2)
 - Deploy RLS policies migration to Supabase (manual step from 02-04 Task 1)
 - Deploy auth_roles_migration.sql to Supabase (manual step from 02-03 Task 1)
+- Deploy weekly_plans_migration.sql to Supabase (manual step from 06-01 Task 1)
 - Set up .env with Supabase credentials
 - Run docker-compose verification (manual step from 01-04 Task 2)
 
@@ -128,6 +137,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-05-03
-Stopped at: Phase 5 complete, verified, approved. Ready for Phase 6.
+Last session: 2026-05-04
+Stopped at: Completed 06-01-PLAN.md (plan generation engine). Ready for 06-02.
 Resume file: None
