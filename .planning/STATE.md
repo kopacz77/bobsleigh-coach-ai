@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 6 of 7 (AI Training Engine)
-Plan: 1 of ~4 in phase 6
+Plan: 2 of ~4 in phase 6
 Status: In progress
-Last activity: 2026-05-04 — Completed 06-01-PLAN.md
+Last activity: 2026-05-04 — Completed 06-02-PLAN.md
 
-Progress: ███████████░░░░░ 71% (20 plans complete, ~8 remaining across phases 6-7)
+Progress: ████████████░░░░ 75% (21 plans complete, ~7 remaining across phases 6-7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
+- Total plans completed: 21
 - Average duration: ~5min
-- Total execution time: ~95min
+- Total execution time: ~98min
 
 **By Phase:**
 
@@ -32,11 +32,11 @@ Progress: ███████████░░░░░ 71% (20 plans complet
 | 3. Training Core | 4/4 | ~16min | ~4min |
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
-| 6. AI Training Engine | 1/? | ~6min | ~6min |
+| 6. AI Training Engine | 2/? | ~9min | ~5min |
 
 **Recent Trend:**
-- Last 5 plans: 05-01 (2min), 05-02 (2min), 05-03 (3min), 05-04 (2min), 06-01 (6min)
-- Trend: 06-01 slightly longer due to large plan generation service (1200 lines)
+- Last 5 plans: 05-02 (2min), 05-03 (3min), 05-04 (2min), 06-01 (6min), 06-02 (3min)
+- Trend: Steady pace, 06-02 faster than 06-01 (API wiring vs engine creation)
 
 ## Accumulated Context
 
@@ -118,6 +118,11 @@ Recent decisions affecting current work:
 - Weight assignment uses _round_to_plate(2.5kg) for all planned weights
 - Plan versioning via parent_plan_id for rejection-regeneration lineage
 - week_start constrained to Monday via CHECK(DOW = 1)
+- InjuryRiskService as standalone service (reusable by API endpoints and plan generation independently)
+- Route /current before /{plan_id} in plans.py to prevent FastAPI path parameter capture
+- Rejection auto-triggers background plan regeneration (new version with parent_plan_id)
+- Batch generation uses BackgroundTasks to avoid HTTP timeout on large rosters
+- Pydantic request models (GeneratePlanRequest, RejectPlanRequest) for type-safe body validation
 
 ### Pending Todos
 
@@ -138,5 +143,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-04
-Stopped at: Completed 06-01-PLAN.md (plan generation engine). Ready for 06-02.
+Stopped at: Completed 06-02-PLAN.md (plan API & injury risk). Ready for 06-03.
 Resume file: None
