@@ -22,6 +22,7 @@ import {
   IconBarbell,
   IconBell,
   IconCheckbox,
+  IconClipboard,
   IconClipboardCheck,
   IconFilter,
   IconTrendingUp,
@@ -32,12 +33,14 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 import CoachReadiness from "@/components/dashboard/CoachReadiness";
+import CoachPlanQueue from "@/components/plans/CoachPlanQueue";
 import { CoachWorkoutView } from "@/components/training";
 import {
   useCoachAlerts,
   useCoachPMCSummary,
   useCoachRoster,
 } from "@/hooks/useCoachDashboard";
+import { usePendingPlans } from "@/hooks/usePlans";
 
 /**
  * CoachDashboard component provides coaches with a comprehensive view of all athletes,
@@ -140,6 +143,9 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
     isLoading: alertsLoading,
   } = useCoachAlerts();
 
+  const { data: pendingPlans } = usePendingPlans();
+  const pendingCount = pendingPlans?.length ?? 0;
+
   const alertList: any[] = alerts || [];
   const filteredAlerts =
     alertFilter === "all"
@@ -166,6 +172,19 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
         <Tabs.List mb="md">
           <Tabs.Tab value="athletes" leftSection={<IconUsers size={14} />}>
             Athletes
+          </Tabs.Tab>
+          <Tabs.Tab
+            value="plans"
+            leftSection={<IconClipboard size={14} />}
+            rightSection={
+              pendingCount > 0 ? (
+                <Badge size="xs" p={3} color="blue">
+                  {pendingCount}
+                </Badge>
+              ) : null
+            }
+          >
+            Plans
           </Tabs.Tab>
           <Tabs.Tab
             value="check-ins"
@@ -342,6 +361,11 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
               </Box>
             </Paper>
           </Stack>
+        </Tabs.Panel>
+
+        {/* Plans Tab */}
+        <Tabs.Panel value="plans">
+          <CoachPlanQueue />
         </Tabs.Panel>
 
         {/* Check-Ins Tab */}
