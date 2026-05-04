@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 6 of 7 (AI Training Engine)
-Plan: 3 of ~4 in phase 6
-Status: In progress
-Last activity: 2026-05-04 — Completed 06-03-PLAN.md
+Plan: 4 of 4 in phase 6
+Status: Phase complete
+Last activity: 2026-05-04 — Completed 06-04-PLAN.md
 
-Progress: █████████████░░░ 79% (22 plans complete, ~6 remaining across phases 6-7)
+Progress: ██████████████░░ 82% (23 plans complete, ~5 remaining in phase 7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 22
+- Total plans completed: 23
 - Average duration: ~5min
-- Total execution time: ~100min
+- Total execution time: ~103min
 
 **By Phase:**
 
@@ -32,11 +32,11 @@ Progress: █████████████░░░ 79% (22 plans complet
 | 3. Training Core | 4/4 | ~16min | ~4min |
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
-| 6. AI Training Engine | 3/? | ~11min | ~4min |
+| 6. AI Training Engine | 4/4 | ~14min | ~4min |
 
 **Recent Trend:**
-- Last 5 plans: 05-03 (3min), 05-04 (2min), 06-01 (6min), 06-02 (3min), 06-03 (2min)
-- Trend: Steady pace, 06-03 fast (thin service + single endpoint addition)
+- Last 5 plans: 05-04 (2min), 06-01 (6min), 06-02 (3min), 06-03 (2min), 06-04 (3min)
+- Trend: Steady pace, phase 6 complete at 14min total
 
 ## Accumulated Context
 
@@ -127,6 +127,12 @@ Recent decisions affecting current work:
 - adapted_weight_kg and adapted_reps are additional fields (planned values preserved)
 - Wellbeing query failure returns plan unmodified (graceful degradation, not 500)
 - Route /today before /{plan_id} in plans.py (same pattern as /current)
+- Plans tab placed 2nd in CoachDashboard (after Athletes, before Check-Ins) -- plan review is primary coach activity
+- Pending count badge on Plans tab for at-a-glance visibility
+- Rejection modal enforces min 10-char feedback for meaningful AI feedback
+- GenerateAllButton calculates next Monday automatically (no manual date picker)
+- PlanReviewCard uses Collapse for expandable detail (not separate route/page)
+- Injury risk display thresholds: <0.3 low/green, 0.3-0.6 moderate/yellow, >=0.6 high/red
 
 ### Pending Todos
 
@@ -147,5 +153,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-04
-Stopped at: Completed 06-03-PLAN.md (morning adaptation & today's workout). Ready for 06-04.
+Stopped at: Completed 06-04-PLAN.md (coach plan review UI). Phase 6 complete. Ready for phase 7.
 Resume file: None
