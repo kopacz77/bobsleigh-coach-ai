@@ -11,7 +11,7 @@ Take the existing scaffolding — broken frontend, mock-data backend, standalone
 - [x] **Phase 3: Training Core** - Exercise library, workout logging, training history, plan view
 - [x] **Phase 4: Wellness & Recovery** - Daily check-in, readiness scoring, injury flagging, trends
 - [x] **Phase 5: Performance & Coach Dashboard** - PMC tracking, real-data coach dashboard, alerts
-- [ ] **Phase 6: AI Training Engine** - Plan generation, coach approval, adaptive load, injury risk
+- [x] **Phase 6: AI Training Engine** - Plan generation, coach approval, adaptive load, injury risk
 - [ ] **Phase 7: Polish & Deploy** - Mobile UX optimization, design polish, production deployment
 
 ## Phase Details
@@ -112,11 +112,11 @@ Plans:
   4. Injury risk warnings surface when training load patterns are concerning
 **Plans**: 5 plans
 Plans:
-- [ ] 06-01-PLAN.md — Database schema (weekly_plans table) + rule-based plan generation engine + exercise selection service
-- [ ] 06-02-PLAN.md — Injury risk service + plan API endpoints with coach approval workflow (generate, approve, reject, batch)
-- [ ] 06-03-PLAN.md — Morning adaptation service + athlete /plans/today endpoint
-- [ ] 06-04-PLAN.md — Coach plan review UI (queue, review card, approve/reject modal, batch generate button, Plans tab in CoachDashboard)
-- [ ] 06-05-PLAN.md — Athlete adapted workout view + weekly plan overview + training page integration
+- [x] 06-01-PLAN.md — Database schema (weekly_plans table) + rule-based plan generation engine + exercise selection service
+- [x] 06-02-PLAN.md — Injury risk service + plan API endpoints with coach approval workflow (generate, approve, reject, batch)
+- [x] 06-03-PLAN.md — Morning adaptation service + athlete /plans/today endpoint
+- [x] 06-04-PLAN.md — Coach plan review UI (queue, review card, approve/reject modal, batch generate button, Plans tab in CoachDashboard)
+- [x] 06-05-PLAN.md — Athlete adapted workout view + weekly plan overview + training page integration
 **Deferred to Phase 7**: Automated Saturday night plan generation (APScheduler/cron). Phase 6 provides manual batch generation via API; automated scheduling is production infrastructure.
 
 ### Phase 7: Polish & Deploy
@@ -141,5 +141,5 @@ Plans:
 | 3. Training Core | 4/4 | Complete | 2026-05-03 |
 | 4. Wellness & Recovery | 3/3 | Complete | 2026-05-03 |
 | 5. Performance & Coach Dashboard | 4/4 | Complete | 2026-05-03 |
-| 6. AI Training Engine | 0/5 | In Progress | - |
+| 6. AI Training Engine | 5/5 | Complete | 2026-05-04 |
 | 7. Polish & Deploy | 0/TBD | Not started | - |
