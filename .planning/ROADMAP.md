@@ -12,7 +12,7 @@ Take the existing scaffolding — broken frontend, mock-data backend, standalone
 - [x] **Phase 4: Wellness & Recovery** - Daily check-in, readiness scoring, injury flagging, trends
 - [x] **Phase 5: Performance & Coach Dashboard** - PMC tracking, real-data coach dashboard, alerts
 - [x] **Phase 6: AI Training Engine** - Plan generation, coach approval, adaptive load, injury risk
-- [ ] **Phase 7: Polish & Deploy** - Mobile UX optimization, design polish, production deployment
+- [ ] **Phase 7: Polish & Deploy** - Database abstraction, Docker dev environment, mobile UX, design polish, scheduled tasks
 
 ## Phase Details
 
@@ -120,16 +120,24 @@ Plans:
 **Deferred to Phase 7**: Automated Saturday night plan generation (APScheduler/cron). Phase 6 provides manual batch generation via API; automated scheduling is production infrastructure.
 
 ### Phase 7: Polish & Deploy
-**Goal**: Production-ready application with professional UX
+**Goal**: Production-ready application with database-agnostic backend, local dev environment, professional UX, and mobile gym experience
 **Depends on**: Phase 6
 **Requirements**: UX-01, UX-02, DEPLOY-01
-**Research**: Unlikely
+**Research**: Complete (07-RESEARCH.md)
 **Success Criteria** (what must be TRUE):
   1. All primary screens are usable on a mobile phone at the gym/track
   2. UI has consistent professional design (not developer prototype aesthetic)
-  3. Application is deployed and accessible on the public internet
+  3. `docker-compose up` starts full stack with seeded data and zero external dependencies
   4. Automated weekly plan generation runs on schedule (Saturday night) without manual trigger
-**Plans**: TBD
+**Plans**: 7 plans
+Plans:
+- [ ] 07-01-PLAN.md — Swappable auth provider abstraction (backend + frontend dev auth bypass)
+- [ ] 07-02-PLAN.md — Repository layer base + athlete/exercise/workout/wellbeing repo migration
+- [ ] 07-03-PLAN.md — Complete Supabase decoupling (plan/coach/performance repos + all services)
+- [ ] 07-04-PLAN.md — Docker Compose environment with PostgreSQL, consolidated schema, seed data
+- [ ] 07-05-PLAN.md — Design system (DESIGN.md) + Mantine theme + dark mode + layout polish
+- [ ] 07-06-PLAN.md — Mobile active workout flow (wake lock, rest timer, set logging, dashboard integration)
+- [ ] 07-07-PLAN.md — APScheduler for automated Saturday night plan generation
 **Includes deferred from Phase 6**: APScheduler or cron-based auto-generation of weekly plans (Saturday night), coach notification if plans not reviewed by Monday morning.
 
 ## Progress
@@ -142,4 +150,4 @@ Plans:
 | 4. Wellness & Recovery | 3/3 | Complete | 2026-05-03 |
 | 5. Performance & Coach Dashboard | 4/4 | Complete | 2026-05-03 |
 | 6. AI Training Engine | 5/5 | Complete | 2026-05-04 |
-| 7. Polish & Deploy | 0/TBD | Not started | - |
+| 7. Polish & Deploy | 0/7 | Not started | - |
