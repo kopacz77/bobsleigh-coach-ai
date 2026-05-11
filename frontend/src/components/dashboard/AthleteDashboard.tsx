@@ -50,6 +50,7 @@ import {
 } from "@tabler/icons-react";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { StartWorkoutBanner } from "./StartWorkoutBanner";
 import {
   Bar,
   BarChart,
@@ -1151,6 +1152,11 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
         </Group>
 
         {renderWellbeingMetrics()}
+
+        {/* Start Workout banner -- prominent one-tap access for gym use */}
+        <Box mt="lg">
+          <StartWorkoutBanner />
+        </Box>
 
         <Box mt="xl">
           <Tabs defaultValue="dashboard">
