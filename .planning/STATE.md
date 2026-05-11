@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 7 of 7 (Polish & Deploy)
-Plan: 2 of 4 in phase 7
+Plan: 2 of 4 in phase 7 (07-01 + 07-02 complete)
 Status: In progress
-Last activity: 2026-05-11 -- Completed 07-02-PLAN.md
+Last activity: 2026-05-11 -- Completed 07-01-PLAN.md
 
-Progress: ██████████████████░░ 93% (26 plans complete, ~2 remaining in phase 7)
+Progress: ███████████████████░ 96% (27 plans complete, ~1 remaining in phase 7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 26
+- Total plans completed: 27
 - Average duration: ~4min
-- Total execution time: ~113min
+- Total execution time: ~121min
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ██████████████████░░ 93% (26 p
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
 | 6. AI Training Engine | 5/5 | ~18min | ~4min |
-| 7. Polish & Deploy | 2/4 | ~6min | ~3min |
+| 7. Polish & Deploy | 3/4 | ~14min | ~5min |
 
 **Recent Trend:**
-- Last 5 plans: 06-03 (2min), 06-04 (3min), 06-05 (4min), 07-01 (n/a), 07-02 (6min)
-- Trend: Steady pace, phase 7 repository migration complete
+- Last 5 plans: 06-04 (3min), 06-05 (4min), 07-02 (6min), 07-05 (n/a), 07-01 (8min)
+- Trend: Steady pace, dev auth bypass operational
 
 ## Accumulated Context
 
@@ -140,6 +140,12 @@ Recent decisions affecting current work:
 - Coach readiness uses DISTINCT ON + batch fetch instead of N+1 per-athlete queries
 - get_supabase() deprecated but kept until all files migrated
 - Repository instantiation as module-level singletons (e.g., athlete_repo = AthleteRepository())
+- Auth provider abstraction: Protocol + factory pattern with dev/supabase implementations (backend)
+- Dev mode: AUTH_PROVIDER=dev (backend) + NEXT_PUBLIC_AUTH_MODE=dev (frontend) for credential-free development
+- DevAuthProvider returns static configured user for any token (no validation)
+- SupabaseProvider still rendered in dev mode as inner wrapper so useSupabase() calls get safe defaults
+- AuthGuard checks AuthModeContext and passes through immediately in dev mode
+- Auth provider singleton cached at module level (get_auth_provider factory)
 
 ### Pending Todos
 
@@ -164,5 +170,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-11
-Stopped at: Completed 07-02-PLAN.md (repository layer + endpoint migration). 4 endpoint files fully migrated off Supabase PostgREST.
+Stopped at: Completed 07-01-PLAN.md (dev auth provider abstraction). Backend + frontend auth bypass fully operational.
 Resume file: None
