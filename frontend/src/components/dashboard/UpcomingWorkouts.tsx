@@ -35,38 +35,32 @@ function WorkoutItem({ date, day, title, type, duration, intensity, isAI = false
   }[intensity];
 
   return (
-    <Group justify="space-between" p="sm" style={{ borderBottom: `1px solid ${theme.colors.gray[1]}` }}>
-      <Group>
-        <ThemeIcon size="xl" radius="md" color="gray.2">
+    <Group justify="space-between" p="sm" wrap="nowrap" style={{ borderBottom: `1px solid ${theme.colors.gray[1]}` }}>
+      <Group wrap="nowrap" style={{ flex: 1, minWidth: 0 }}>
+        <ThemeIcon size="xl" radius="md" color="gray.2" style={{ flexShrink: 0 }}>
           <Text fw={700} c="dark">
             {day}
           </Text>
         </ThemeIcon>
 
-        <Stack gap={0}>
-          <Group gap="xs">
-            <Text fw={500}>{title}</Text>
+        <Stack gap={0} style={{ minWidth: 0 }}>
+          <Group gap="xs" wrap="wrap">
+            <Text fw={500} size="sm" style={{ whiteSpace: "nowrap" }}>{title}</Text>
             {isAI && (
               <Badge size="xs" color="blue">
                 AI
               </Badge>
             )}
           </Group>
-          <Group gap="xs">
-            <Group gap={4}>
-              <IconBarbell style={{ width: rem(14), height: rem(14) }} />
+          <Group gap="xs" wrap="wrap">
+            <Group gap={4} wrap="nowrap">
+              <IconBarbell style={{ width: rem(14), height: rem(14), flexShrink: 0 }} />
               <Text size="xs">{type}</Text>
             </Group>
-            <Text size="xs" c="dimmed">
-              •
-            </Text>
-            <Group gap={4}>
-              <IconCalendarEvent style={{ width: rem(14), height: rem(14) }} />
+            <Group gap={4} wrap="nowrap">
+              <IconCalendarEvent style={{ width: rem(14), height: rem(14), flexShrink: 0 }} />
               <Text size="xs">{duration}</Text>
             </Group>
-            <Text size="xs" c="dimmed">
-              •
-            </Text>
             <Badge size="xs" color={intensityColor} variant="light">
               {intensity}
             </Badge>
@@ -74,7 +68,7 @@ function WorkoutItem({ date, day, title, type, duration, intensity, isAI = false
         </Stack>
       </Group>
 
-      <ActionIcon variant="subtle">
+      <ActionIcon variant="subtle" size={36} style={{ flexShrink: 0 }}>
         <IconDotsVertical style={{ width: rem(16), height: rem(16) }} />
       </ActionIcon>
     </Group>

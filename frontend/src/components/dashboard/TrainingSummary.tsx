@@ -78,10 +78,10 @@ export function TrainingSummary() {
   ];
 
   return (
-    <Card withBorder shadow="sm" p="md">
+    <Card withBorder shadow="sm" p={{ base: "sm", md: "md" }}>
       <Stack gap="md">
-        <Group justify="space-between">
-          <Title order={3}>Weekly Training Summary</Title>
+        <Group justify="space-between" wrap="wrap">
+          <Title order={3} fz={{ base: "md", md: "lg" }}>Weekly Training Summary</Title>
           <Text c="dimmed" fz="sm">
             Mar 9 - Mar 15, 2025
           </Text>
@@ -93,7 +93,7 @@ export function TrainingSummary() {
           ))}
         </SimpleGrid>
 
-        <Group justify="space-between" pt="sm">
+        <Group justify="space-between" pt="sm" wrap="wrap">
           <Stack gap={0}>
             <Text fw={500}>Weekly Goal Progress</Text>
             <Text size="xs" c="dimmed">

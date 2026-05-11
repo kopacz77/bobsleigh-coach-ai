@@ -8,6 +8,7 @@ import {
   Paper,
   Progress,
   SimpleGrid,
+  Stack,
   Text,
   ThemeIcon,
   Title,
@@ -205,41 +206,44 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
     <Box>
       <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="lg">
         <Box>
-          <Paper p="md" radius="md" withBorder mb="lg">
-            <Group justify="space-between" mb="md">
-              <Group>
-                <ThemeIcon size={40} radius="md" color="blue">
-                  <IconUser size={24} />
-                </ThemeIcon>
-                <Box>
-                  <Text size="xl" fw={700}>
-                    {userProfile?.firstName} {userProfile?.lastName}
-                  </Text>
-                  <Text c="dimmed" size="sm">
-                    Bobsleigh Athlete{" "}
-                    {userProfile?.role === "athlete" ? "" : `• ${userProfile?.role}`}
-                  </Text>
-                </Box>
-              </Group>
+          <Paper p={{ base: "sm", md: "md" }} radius="md" withBorder mb="lg">
+            <Stack gap="sm" mb="md">
+              <Group justify="space-between" wrap="wrap">
+                <Group>
+                  <ThemeIcon size={40} radius="md" color="blue">
+                    <IconUser size={24} />
+                  </ThemeIcon>
+                  <Box>
+                    <Text size="lg" fw={700}>
+                      {userProfile?.firstName} {userProfile?.lastName}
+                    </Text>
+                    <Text c="dimmed" size="sm">
+                      Bobsleigh Athlete{" "}
+                      {userProfile?.role === "athlete" ? "" : `- ${userProfile?.role}`}
+                    </Text>
+                  </Box>
+                </Group>
 
-              {todayCheckIn ? (
-                <Badge
-                  size="lg"
-                  color={getReadinessColor(todayCheckIn.training_readiness)}
-                  variant="filled"
-                >
-                  {getReadinessLabel(todayCheckIn.training_readiness)}
-                </Badge>
-              ) : (
-                <Button
-                  onClick={toggleCheckIn}
-                  leftSection={<IconClipboardText size={20} />}
-                  variant="light"
-                >
-                  {showCheckIn ? "Hide Check-In" : "Quick Check-In"}
-                </Button>
-              )}
-            </Group>
+                {todayCheckIn ? (
+                  <Badge
+                    size="lg"
+                    color={getReadinessColor(todayCheckIn.training_readiness)}
+                    variant="filled"
+                  >
+                    {getReadinessLabel(todayCheckIn.training_readiness)}
+                  </Badge>
+                ) : (
+                  <Button
+                    onClick={toggleCheckIn}
+                    leftSection={<IconClipboardText size={20} />}
+                    variant="light"
+                    fullWidth={false}
+                  >
+                    {showCheckIn ? "Hide Check-In" : "Quick Check-In"}
+                  </Button>
+                )}
+              </Group>
+            </Stack>
 
             {showCheckIn && !todayCheckIn && (
               <Box mb="md">
@@ -288,7 +292,7 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
                 <Text fw={500} mb="xs">
                   Weekly Goals Progress
                 </Text>
-                <SimpleGrid cols={3} mb="md">
+                <SimpleGrid cols={{ base: 1, xs: 3 }} mb="md">
                   <Box>
                     <Group justify="space-between" mb={5}>
                       <Group gap={6}>

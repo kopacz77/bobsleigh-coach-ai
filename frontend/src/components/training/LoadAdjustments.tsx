@@ -89,35 +89,37 @@ export function LoadAdjustments({
   const primaryAdjustment = getPrimaryAdjustment();
 
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <Card shadow="sm" p={{ base: "sm", md: "lg" }} radius="md" withBorder>
       <Stack gap="md">
         {/* Header */}
-        <Group justify="space-between" ta="center">
-          <Group ta="center" gap="sm">
-            <ThemeIcon color="blue" variant="light" size="lg">
-              <IconBrain size={20} />
-            </ThemeIcon>
-            <Stack gap={2}>
-              <Text fw={600} size="lg">
-                AI Training Adaptations
-              </Text>
-              <Text size="xs" c="dimmed">
-                {modelVersion}
-              </Text>
-            </Stack>
-          </Group>
+        <Stack gap="xs">
+          <Group justify="space-between" wrap="wrap">
+            <Group ta="center" gap="sm">
+              <ThemeIcon color="blue" variant="light" size="lg">
+                <IconBrain size={20} />
+              </ThemeIcon>
+              <Stack gap={2}>
+                <Text fw={600} size="lg">
+                  AI Training Adaptations
+                </Text>
+                <Text size="xs" c="dimmed">
+                  {modelVersion}
+                </Text>
+              </Stack>
+            </Group>
 
-          <Group ta="center" gap="xs">
-            <Tooltip label={`Model confidence: ${Math.round(confidence * 100)}%`}>
-              <ActionIcon variant="subtle" size="sm">
-                <IconInfoCircle size={16} />
-              </ActionIcon>
-            </Tooltip>
-            <Badge color={getConfidenceColor(confidence)} variant="light" size="sm">
-              {getConfidenceLabel(confidence)}
-            </Badge>
+            <Group ta="center" gap="xs">
+              <Tooltip label={`Model confidence: ${Math.round(confidence * 100)}%`}>
+                <ActionIcon variant="subtle" size={36}>
+                  <IconInfoCircle size={16} />
+                </ActionIcon>
+              </Tooltip>
+              <Badge color={getConfidenceColor(confidence)} variant="light" size="sm">
+                {getConfidenceLabel(confidence)}
+              </Badge>
+            </Group>
           </Group>
-        </Group>
+        </Stack>
 
         {/* Confidence Meter */}
         <Stack gap={4}>
@@ -173,37 +175,37 @@ export function LoadAdjustments({
 
               {adjustments.map((adjustment, index) => (
                 <Card key={index} padding="sm" radius="sm" withBorder>
-                  <Group justify="space-between" ta="center">
-                    <Group ta="center" gap="sm">
-                      <ThemeIcon
-                        color={getAdjustmentColor(adjustment.type)}
-                        variant="light"
-                        size="sm"
-                      >
-                        {getAdjustmentIcon(adjustment.type)}
-                      </ThemeIcon>
-                      <Stack gap={2}>
+                  <Stack gap="xs">
+                    <Group justify="space-between" wrap="wrap">
+                      <Group ta="center" gap="sm">
+                        <ThemeIcon
+                          color={getAdjustmentColor(adjustment.type)}
+                          variant="light"
+                          size="sm"
+                        >
+                          {getAdjustmentIcon(adjustment.type)}
+                        </ThemeIcon>
                         <Text size="sm" fw={500} tt="capitalize">
                           {adjustment.type} Load
                         </Text>
-                        <Text size="xs" c="dimmed">
-                          {adjustment.reason}
-                        </Text>
-                      </Stack>
-                    </Group>
+                      </Group>
 
-                    <Stack gap={2} align="flex-end">
-                      <Badge color={getAdjustmentColor(adjustment.type)} variant="light" size="sm">
-                        {formatPercentage(adjustment.percentage)}
-                      </Badge>
-                      <Progress
-                        value={adjustment.confidence * 100}
-                        size="xs"
-                        w={60}
-                        color={getConfidenceColor(adjustment.confidence)}
-                      />
-                    </Stack>
-                  </Group>
+                      <Group gap="xs">
+                        <Badge color={getAdjustmentColor(adjustment.type)} variant="light" size="sm">
+                          {formatPercentage(adjustment.percentage)}
+                        </Badge>
+                        <Progress
+                          value={adjustment.confidence * 100}
+                          size="xs"
+                          w={60}
+                          color={getConfidenceColor(adjustment.confidence)}
+                        />
+                      </Group>
+                    </Group>
+                    <Text size="xs" c="dimmed">
+                      {adjustment.reason}
+                    </Text>
+                  </Stack>
                 </Card>
               ))}
             </Stack>

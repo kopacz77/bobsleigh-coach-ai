@@ -14,6 +14,7 @@ import {
   Skeleton,
   Stack,
   Text,
+  Title,
   Tooltip,
   useMantineTheme,
 } from "@mantine/core";
@@ -146,109 +147,157 @@ export function WorkoutCalendar() {
 
   const todayEvents = getEventsForDay(selectedDate);
 
-  return (
-    <Grid gutter="md">
-      <Grid.Col span={{ base: 12, md: 8 }}>
-        <Card withBorder shadow="sm" p="md">
-          <DatePicker
-            size="xl"
-            value={selectedDate}
-            onChange={setSelectedDate}
-            defaultLevel="month"
-            firstDayOfWeek={0}
-            styles={(theme) => ({
-              monthCell: {
-                position: "relative",
-                padding: "5px 0",
-              },
-            })}
-            renderDay={(date) => {
-              const day = date.getDate();
-              return (
-                <div style={{ position: "relative", padding: "5px 0" }}>
-                  {day}
-                  {renderDayContent(date)}
-                </div>
-              );
-            }}
-          />
-        </Card>
-      </Grid.Col>
+  // Render event card (shared between calendar sidebar and mobile list)
+  const renderEventCard = (event: EventData) => (
+    <Paper key={event.id} withBorder p="sm" radius="md">
+      <Stack gap="xs">
+        <Group justify="space-between" wrap="wrap">
+          <Group gap="xs" wrap="wrap">
+            <Text fw={500} size="sm">{event.name}</Text>
+            {event.isAI && (
+              <Badge size="xs" color="blue">AI</Badge>
+            )}
+            {event.isCompleted && (
+              <Badge size="xs" color="green">Done</Badge>
+            )}
+          </Group>
+          <Badge color={getIntensityColor(event.intensity)} size="sm">{event.intensity}</Badge>
+        </Group>
 
-      <Grid.Col span={{ base: 12, md: 4 }}>
-        <Card withBorder shadow="sm" h="100%">
+        <Group gap="sm">
+          <Text size="sm">{event.type}</Text>
+          <Text size="sm" c="dimmed">-</Text>
+          <Text size="sm">{event.duration} min</Text>
+        </Group>
+
+        <Group justify="space-between" mt="xs">
+          <Button variant="light" size="xs">
+            {event.isCompleted ? "View Details" : "Start Workout"}
+          </Button>
+          <ActionIcon variant="subtle" size={36}>
+            <IconInfoCircle style={{ width: rem(16), height: rem(16) }} />
+          </ActionIcon>
+        </Group>
+      </Stack>
+    </Paper>
+  );
+
+  // Mobile: list all events grouped by date
+  const renderMobileEventsList = () => {
+    if (events.length === 0) {
+      return (
+        <Stack gap="md" ta="center" py="xl">
+          <Text c="dimmed">No workouts scheduled</Text>
+          <Button variant="light" leftSection={<IconPlus size={16} />}>
+            Add Workout
+          </Button>
+        </Stack>
+      );
+    }
+
+    return (
+      <Stack gap="sm">
+        {events.map((event) => (
+          <Box key={event.id}>
+            <Text size="xs" c="dimmed" fw={500} mb={4}>
+              {event.date.toLocaleDateString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+              })}
+            </Text>
+            {renderEventCard(event)}
+          </Box>
+        ))}
+      </Stack>
+    );
+  };
+
+  return (
+    <Box>
+      {/* Desktop: calendar + sidebar */}
+      <Box visibleFrom="md">
+        <Grid gutter="md">
+          <Grid.Col span={8}>
+            <Card withBorder shadow="sm" p="md">
+              <DatePicker
+                size="xl"
+                value={selectedDate}
+                onChange={setSelectedDate}
+                defaultLevel="month"
+                firstDayOfWeek={0}
+                styles={() => ({
+                  monthCell: {
+                    position: "relative",
+                    padding: "5px 0",
+                  },
+                })}
+                renderDay={(date) => {
+                  const day = date.getDate();
+                  return (
+                    <div style={{ position: "relative", padding: "5px 0" }}>
+                      {day}
+                      {renderDayContent(date)}
+                    </div>
+                  );
+                }}
+              />
+            </Card>
+          </Grid.Col>
+
+          <Grid.Col span={4}>
+            <Card withBorder shadow="sm" h="100%">
+              <Stack gap="md">
+                <Group justify="space-between">
+                  <Text fw={500}>
+                    {selectedDate?.toLocaleDateString("en-US", {
+                      weekday: "long",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </Text>
+                  <Button variant="light" leftSection={<IconPlus size={16} />} size="xs">
+                    Add Workout
+                  </Button>
+                </Group>
+
+                {isLoading ? (
+                  <Stack gap="md">
+                    <Skeleton height={100} radius="md" />
+                    <Skeleton height={100} radius="md" />
+                  </Stack>
+                ) : todayEvents.length > 0 ? (
+                  <Stack gap="md">
+                    {todayEvents.map((event) => renderEventCard(event))}
+                  </Stack>
+                ) : (
+                  <Stack gap="md" justify="center" ta="center" style={{ height: "200px" }}>
+                    <Text c="dimmed">No workouts scheduled for this day</Text>
+                    <Button variant="light" leftSection={<IconPlus size={16} />} size="xs">
+                      Add Workout
+                    </Button>
+                  </Stack>
+                )}
+              </Stack>
+            </Card>
+          </Grid.Col>
+        </Grid>
+      </Box>
+
+      {/* Mobile: list view */}
+      <Box hiddenFrom="md">
+        <Card withBorder shadow="sm" p="sm">
           <Stack gap="md">
             <Group justify="space-between">
-              <Text fw={500}>
-                {selectedDate?.toLocaleDateString("en-US", {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </Text>
+              <Title order={4}>Upcoming Workouts</Title>
               <Button variant="light" leftSection={<IconPlus size={16} />} size="xs">
-                Add Workout
+                Add
               </Button>
             </Group>
-
-            {isLoading ? (
-              <Stack gap="md">
-                <Skeleton height={100} radius="md" />
-                <Skeleton height={100} radius="md" />
-              </Stack>
-            ) : todayEvents.length > 0 ? (
-              <Stack gap="md">
-                {todayEvents.map((event) => (
-                  <Paper key={event.id} withBorder p="md" radius="md">
-                    <Stack gap="xs">
-                      <Group justify="space-between">
-                        <Group>
-                          <Text fw={500}>{event.name}</Text>
-                          {event.isAI && (
-                            <Tooltip label="AI Recommended Workout">
-                              <Badge size="xs" color="blue">
-                                AI
-                              </Badge>
-                            </Tooltip>
-                          )}
-                          {event.isCompleted && (
-                            <Badge size="xs" color="green">
-                              Completed
-                            </Badge>
-                          )}
-                        </Group>
-                        <Badge color={getIntensityColor(event.intensity)}>{event.intensity}</Badge>
-                      </Group>
-
-                      <Group gap="lg">
-                        <Text size="sm">{event.type}</Text>
-                        <Text size="sm">•</Text>
-                        <Text size="sm">{event.duration} min</Text>
-                      </Group>
-
-                      <Group justify="space-between" mt="xs">
-                        <Button variant="light" size="xs">
-                          {event.isCompleted ? "View Details" : "Start Workout"}
-                        </Button>
-                        <ActionIcon variant="subtle">
-                          <IconInfoCircle style={{ width: rem(16), height: rem(16) }} />
-                        </ActionIcon>
-                      </Group>
-                    </Stack>
-                  </Paper>
-                ))}
-              </Stack>
-            ) : (
-              <Stack gap="md" justify="center" ta="center" style={{ height: "200px" }}>
-                <Text c="dimmed">No workouts scheduled for this day</Text>
-                <Button variant="light" leftSection={<IconPlus size={16} />} size="xs">
-                  Add Workout
-                </Button>
-              </Stack>
-            )}
+            {renderMobileEventsList()}
           </Stack>
         </Card>
-      </Grid.Col>
-    </Grid>
+      </Box>
+    </Box>
   );
 }
