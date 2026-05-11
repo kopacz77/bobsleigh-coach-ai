@@ -2,6 +2,8 @@
 
 Defense-in-depth: all endpoints verify that the requested athlete_id
 belongs to the authenticated user before returning results.
+
+All data access goes through the repository layer (no direct Supabase calls).
 """
 
 from typing import List, Optional
@@ -9,10 +11,13 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.core.security import get_current_user
-from app.db.session import get_supabase
+from app.db.repositories.athlete_repo import AthleteRepository
 from app.services.performance_service import PerformanceService
 
 router = APIRouter()
+
+# Module-level repository singleton
+athlete_repo = AthleteRepository()
 
 
 async def _verify_athlete_ownership(athlete_id: str, user) -> None:
@@ -20,20 +25,12 @@ async def _verify_athlete_ownership(athlete_id: str, user) -> None:
 
     Args:
         athlete_id: UUID of the athlete to check.
-        user: Supabase User object with .id attribute.
+        user: Auth user object with .id attribute.
 
     Raises:
         HTTPException 403 if the athlete does not belong to this user.
     """
-    sb = get_supabase()
-    result = (
-        sb.table("athletes")
-        .select("id")
-        .eq("id", athlete_id)
-        .eq("user_id", user.id)
-        .execute()
-    )
-    if not result.data:
+    if not athlete_repo.verify_ownership(athlete_id, user.id):
         raise HTTPException(
             status_code=403,
             detail="Not authorized to access this athlete's data",
@@ -121,5 +118,5 @@ async def get_peer_comparison(
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to fetch comparison: {str(e)}",
+            detail=f"Failed to fetch comparison: {str(e)}"
         )

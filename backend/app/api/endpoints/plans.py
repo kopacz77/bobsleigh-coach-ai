@@ -4,20 +4,20 @@ Provides endpoints for plan generation, review queue, approval, rejection,
 and athlete current-plan retrieval. Coach endpoints require coach role;
 athlete endpoints use the authenticated user's athlete profile.
 
-Follows patterns from coach.py and training.py: raw dicts from Supabase,
-no response_model, _get_user_role helper, try/except blocks,
-Depends(get_current_user).
+All data access goes through the repository layer (no direct Supabase calls).
 """
 
 import logging
 from datetime import date, datetime, timedelta
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from fastapi.responses import Response
 from pydantic import BaseModel, Field
 
 from app.core.security import get_current_user
-from app.db.session import get_supabase
-from app.services.coach_service import CoachService
+from app.db.repositories.athlete_repo import AthleteRepository
+from app.db.repositories.coach_repo import CoachRepository
+from app.db.repositories.plan_repo import PlanRepository
 from app.services.injury_risk_service import InjuryRiskService
 from app.services.morning_adaptation_service import MorningAdaptationService
 from app.services.plan_generation_service import PlanGenerationService
@@ -25,6 +25,11 @@ from app.services.plan_generation_service import PlanGenerationService
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+# Module-level repository singletons
+plan_repo = PlanRepository()
+athlete_repo = AthleteRepository()
+coach_repo = CoachRepository()
 
 
 # ---- Request body schemas ----
@@ -72,11 +77,11 @@ def _get_user_role(user) -> str:
     return role
 
 
-async def _get_athlete_id_for_user(user) -> str:
+def _get_athlete_id_for_user(user) -> str:
     """Look up the athlete_id for the authenticated user.
 
     Args:
-        user: Supabase User object with .id attribute (UUID string).
+        user: Auth user object with .id attribute (UUID string).
 
     Returns:
         The athlete UUID string.
@@ -84,19 +89,31 @@ async def _get_athlete_id_for_user(user) -> str:
     Raises:
         HTTPException 404 if no athlete profile exists for this user.
     """
-    sb = get_supabase()
-    result = (
-        sb.table("athletes")
-        .select("id")
-        .eq("user_id", user.id)
-        .execute()
-    )
-    if not result.data:
+    athlete_id = athlete_repo.get_id_by_user_id(user.id)
+    if not athlete_id:
         raise HTTPException(
             status_code=404,
             detail="No athlete profile found for this user",
         )
-    return result.data[0]["id"]
+    return athlete_id
+
+
+def _get_coach_id_for_user(user) -> str:
+    """Look up the coach_id for the authenticated user.
+
+    Args:
+        user: Auth user object with .id attribute (UUID string).
+
+    Returns:
+        The coach UUID string.
+
+    Raises:
+        ValueError: If no coach record exists for this user.
+    """
+    coach_id = coach_repo.get_coach_id_by_user_id(user.id)
+    if not coach_id:
+        raise ValueError(f"No coach record found for user {user.id}")
+    return coach_id
 
 
 # ---- Coach-only endpoints ----
@@ -114,45 +131,19 @@ async def get_pending_plans(user=Depends(get_current_user)):
         if role != "coach":
             raise HTTPException(status_code=403, detail="Coach role required")
 
-        coach_service = CoachService()
-        coach_id = await coach_service.get_coach_id(user.id)
-        athlete_ids = await coach_service.get_athlete_ids(coach_id)
+        coach_id = _get_coach_id_for_user(user)
+        athlete_ids = coach_repo.get_athlete_ids(coach_id)
 
         if not athlete_ids:
             return []
 
-        sb = get_supabase()
-
         # Query pending plans for all coached athletes
-        result = (
-            sb.table("weekly_plans")
-            .select(
-                "id, athlete_id, week_start, week_end, training_phase, "
-                "status, version, injury_risk_score, injury_risk_factors, "
-                "generation_metadata, created_at"
-            )
-            .in_("athlete_id", athlete_ids)
-            .eq("status", "pending_review")
-            .order("week_start")
-            .order("created_at")
-            .execute()
-        )
-
-        plans = result.data
+        plans = plan_repo.get_pending_for_coach(athlete_ids)
 
         # Batch-fetch athlete names for the response
         if plans:
             unique_athlete_ids = list({p["athlete_id"] for p in plans})
-            athletes_result = (
-                sb.table("athletes")
-                .select("id, first_name, last_name")
-                .in_("id", unique_athlete_ids)
-                .execute()
-            )
-            name_map = {
-                a["id"]: f"{a['first_name']} {a['last_name']}"
-                for a in athletes_result.data
-            }
+            name_map = plan_repo.get_athlete_names(unique_athlete_ids)
             for plan in plans:
                 plan["athlete_name"] = name_map.get(
                     plan["athlete_id"], "Unknown"
@@ -253,9 +244,8 @@ async def generate_batch(
                 detail=f"week_start must be a Monday, got {start_date.strftime('%A')}",
             )
 
-        coach_service = CoachService()
-        coach_id = await coach_service.get_coach_id(user.id)
-        athlete_ids = await coach_service.get_athlete_ids(coach_id)
+        coach_id = _get_coach_id_for_user(user)
+        athlete_ids = coach_repo.get_athlete_ids(coach_id)
 
         if not athlete_ids:
             return {
@@ -300,19 +290,11 @@ async def approve_plan(plan_id: str, user=Depends(get_current_user)):
         if role != "coach":
             raise HTTPException(status_code=403, detail="Coach role required")
 
-        sb = get_supabase()
-
         # Fetch the plan and verify status
-        plan_result = (
-            sb.table("weekly_plans")
-            .select("id, status, athlete_id")
-            .eq("id", plan_id)
-            .execute()
-        )
-        if not plan_result.data:
+        plan = plan_repo.get_by_id(plan_id)
+        if not plan:
             raise HTTPException(status_code=404, detail="Plan not found")
 
-        plan = plan_result.data[0]
         if plan["status"] != "pending_review":
             raise HTTPException(
                 status_code=400,
@@ -320,24 +302,11 @@ async def approve_plan(plan_id: str, user=Depends(get_current_user)):
             )
 
         # Get coach_id for approved_by field
-        coach_service = CoachService()
-        coach_id = await coach_service.get_coach_id(user.id)
+        coach_id = _get_coach_id_for_user(user)
 
         # Update plan status
-        update_result = (
-            sb.table("weekly_plans")
-            .update(
-                {
-                    "status": "approved",
-                    "approved_at": datetime.utcnow().isoformat(),
-                    "approved_by": coach_id,
-                }
-            )
-            .eq("id", plan_id)
-            .execute()
-        )
-
-        return update_result.data[0] if update_result.data else {}
+        result = plan_repo.update_status(plan_id, "approved", coach_id)
+        return result if result else {}
     except HTTPException:
         raise
     except ValueError as e:
@@ -368,19 +337,11 @@ async def reject_plan(
         if role != "coach":
             raise HTTPException(status_code=403, detail="Coach role required")
 
-        sb = get_supabase()
-
         # Fetch the plan and verify status
-        plan_result = (
-            sb.table("weekly_plans")
-            .select("id, status, athlete_id, week_start")
-            .eq("id", plan_id)
-            .execute()
-        )
-        if not plan_result.data:
+        plan = plan_repo.get_by_id(plan_id)
+        if not plan:
             raise HTTPException(status_code=404, detail="Plan not found")
 
-        plan = plan_result.data[0]
         if plan["status"] != "pending_review":
             raise HTTPException(
                 status_code=400,
@@ -388,22 +349,11 @@ async def reject_plan(
             )
 
         # Get coach_id for rejected_by field
-        coach_service = CoachService()
-        coach_id = await coach_service.get_coach_id(user.id)
+        coach_id = _get_coach_id_for_user(user)
 
         # Update plan status to rejected
-        update_result = (
-            sb.table("weekly_plans")
-            .update(
-                {
-                    "status": "rejected",
-                    "rejected_at": datetime.utcnow().isoformat(),
-                    "rejected_by": coach_id,
-                    "rejection_notes": body.rejection_notes,
-                }
-            )
-            .eq("id", plan_id)
-            .execute()
+        result = plan_repo.update_status(
+            plan_id, "rejected", coach_id, notes=body.rejection_notes
         )
 
         # Trigger regeneration in background (new version with parent_plan_id)
@@ -414,7 +364,7 @@ async def reject_plan(
             plan["week_start"],
         )
 
-        return update_result.data[0] if update_result.data else {}
+        return result if result else {}
     except HTTPException:
         raise
     except ValueError as e:
@@ -440,29 +390,19 @@ async def get_current_plan(user=Depends(get_current_user)):
     for that week. Returns 204 No Content if no approved plan exists.
     """
     try:
-        athlete_id = await _get_athlete_id_for_user(user)
+        athlete_id = _get_athlete_id_for_user(user)
 
         # Calculate current week's Monday
         today = date.today()
         days_since_monday = today.weekday()  # 0=Mon, 6=Sun
         current_monday = (today - timedelta(days=days_since_monday)).isoformat()
 
-        sb = get_supabase()
-        result = (
-            sb.table("weekly_plans")
-            .select("*")
-            .eq("athlete_id", athlete_id)
-            .eq("status", "approved")
-            .eq("week_start", current_monday)
-            .execute()
-        )
+        plan = plan_repo.get_current_for_athlete(athlete_id, current_monday)
 
-        if not result.data:
-            from fastapi.responses import Response
-
+        if not plan:
             return Response(status_code=204)
 
-        return result.data[0]
+        return plan
     except HTTPException:
         raise
     except RuntimeError as e:
@@ -487,29 +427,18 @@ async def get_today_workout(user=Depends(get_current_user)):
     FastAPI from matching "today" as a plan_id path parameter.
     """
     try:
-        athlete_id = await _get_athlete_id_for_user(user)
+        athlete_id = _get_athlete_id_for_user(user)
 
         # Calculate current week's Monday
         today = date.today()
         days_since_monday = today.weekday()  # 0=Mon, 6=Sun
         current_monday = (today - timedelta(days=days_since_monday)).isoformat()
 
-        sb = get_supabase()
-        result = (
-            sb.table("weekly_plans")
-            .select("*")
-            .eq("athlete_id", athlete_id)
-            .eq("status", "approved")
-            .eq("week_start", current_monday)
-            .execute()
-        )
+        plan = plan_repo.get_today_for_athlete(athlete_id, current_monday)
 
-        if not result.data:
-            from fastapi.responses import Response
-
+        if not plan:
             return Response(status_code=204)
 
-        plan = result.data[0]
         plan_data = plan.get("plan_data", {})
         days = plan_data.get("days", [])
 
@@ -528,8 +457,6 @@ async def get_today_workout(user=Depends(get_current_user)):
                 break
 
         if today_plan_day is None:
-            from fastapi.responses import Response
-
             return Response(status_code=204)
 
         # If today is a rest day, return with a message (no adaptation needed)
@@ -577,17 +504,11 @@ async def get_plan(plan_id: str, user=Depends(get_current_user)):
         if role != "coach":
             raise HTTPException(status_code=403, detail="Coach role required")
 
-        sb = get_supabase()
-        result = (
-            sb.table("weekly_plans")
-            .select("*")
-            .eq("id", plan_id)
-            .execute()
-        )
-        if not result.data:
+        plan = plan_repo.get_by_id(plan_id)
+        if not plan:
             raise HTTPException(status_code=404, detail="Plan not found")
 
-        return result.data[0]
+        return plan
     except HTTPException:
         raise
     except RuntimeError as e:

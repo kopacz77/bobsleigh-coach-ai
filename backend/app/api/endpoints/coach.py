@@ -3,6 +3,8 @@
 Provides endpoints for coaches to manage their athlete roster, view
 multi-athlete PMC summaries, and receive computed alerts for concerning
 trends. All endpoints require coach role in app_metadata/user_metadata.
+
+All data access goes through the repository layer (no direct Supabase calls).
 """
 
 import logging
@@ -10,12 +12,15 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.core.security import get_current_user
-from app.db.session import get_supabase
+from app.db.repositories.coach_repo import CoachRepository
 from app.services.coach_service import CoachService
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+# Module-level repository singleton
+coach_repo = CoachRepository()
 
 
 def _get_user_role(user) -> str:
@@ -26,6 +31,24 @@ def _get_user_role(user) -> str:
     if role == "athlete" and hasattr(user, "user_metadata") and user.user_metadata:
         role = user.user_metadata.get("role", "athlete")
     return role
+
+
+def _get_coach_id_for_user(user) -> str:
+    """Look up the coach_id for the authenticated user.
+
+    Args:
+        user: Auth user object with .id attribute (UUID string).
+
+    Returns:
+        The coach UUID string.
+
+    Raises:
+        ValueError: If no coach record exists for this user.
+    """
+    coach_id = coach_repo.get_coach_id_by_user_id(user.id)
+    if not coach_id:
+        raise ValueError(f"No coach record found for user {user.id}")
+    return coach_id
 
 
 @router.get("/roster")
@@ -128,15 +151,8 @@ async def add_athlete_to_roster(
         if role != "coach":
             raise HTTPException(status_code=403, detail="Coach role required")
 
-        # Verify athlete exists
-        sb = get_supabase()
-        athlete_result = (
-            sb.table("athletes")
-            .select("id")
-            .eq("id", athlete_id)
-            .execute()
-        )
-        if not athlete_result.data:
+        # Verify athlete exists via repository
+        if not coach_repo.athlete_exists(athlete_id):
             raise HTTPException(
                 status_code=404, detail="Athlete not found"
             )
