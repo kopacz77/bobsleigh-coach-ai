@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-05-02)
 
 **Core value:** The AI generates genuinely useful, personalized weekly training plans that a bobsleigh coach would actually trust and use with their athletes.
-**Current focus:** Phase 6 — AI Training Engine
+**Current focus:** Phase 7 -- Polish & Deploy
 
 ## Current Position
 
-Phase: 6 of 7 (AI Training Engine)
-Plan: 5 of 5 in phase 6
-Status: Phase complete
-Last activity: 2026-05-04 — Completed 06-05-PLAN.md
+Phase: 7 of 7 (Polish & Deploy)
+Plan: 2 of 4 in phase 7
+Status: In progress
+Last activity: 2026-05-11 -- Completed 07-02-PLAN.md
 
-Progress: ███████████████░ 86% (24 plans complete, ~4 remaining in phase 7)
+Progress: ██████████████████░░ 93% (26 plans complete, ~2 remaining in phase 7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 24
+- Total plans completed: 26
 - Average duration: ~4min
-- Total execution time: ~107min
+- Total execution time: ~113min
 
 **By Phase:**
 
@@ -33,10 +33,11 @@ Progress: ███████████████░ 86% (24 plans complet
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
 | 6. AI Training Engine | 5/5 | ~18min | ~4min |
+| 7. Polish & Deploy | 2/4 | ~6min | ~3min |
 
 **Recent Trend:**
-- Last 5 plans: 06-01 (6min), 06-02 (3min), 06-03 (2min), 06-04 (3min), 06-05 (4min)
-- Trend: Steady pace, phase 6 complete at 18min total (5 plans)
+- Last 5 plans: 06-03 (2min), 06-04 (3min), 06-05 (4min), 07-01 (n/a), 07-02 (6min)
+- Trend: Steady pace, phase 7 repository migration complete
 
 ## Accumulated Context
 
@@ -133,25 +134,35 @@ Recent decisions affecting current work:
 - GenerateAllButton calculates next Monday automatically (no manual date picker)
 - PlanReviewCard uses Collapse for expandable detail (not separate route/page)
 - Injury risk display thresholds: <0.3 low/green, 0.3-0.6 moderate/yellow, >=0.6 high/red
+- BaseRepository uses engine.connect() context manager for lightweight SQLAlchemy Core queries
+- Wellbeing repository uses schema column names (assessment_date, athlete_id) not legacy Supabase names
+- TrainingLoadRepository colocated in workout_repo.py (same training domain)
+- Coach readiness uses DISTINCT ON + batch fetch instead of N+1 per-athlete queries
+- get_supabase() deprecated but kept until all files migrated
+- Repository instantiation as module-level singletons (e.g., athlete_repo = AthleteRepository())
 
 ### Pending Todos
 
-- Deploy database schema to Supabase (manual step from 01-02 Task 2)
-- Deploy RLS policies migration to Supabase (manual step from 02-04 Task 1)
-- Deploy auth_roles_migration.sql to Supabase (manual step from 02-03 Task 1)
-- Deploy weekly_plans_migration.sql to Supabase (manual step from 06-01 Task 1)
-- Set up .env with Supabase credentials
-- Run docker-compose verification (manual step from 01-04 Task 2)
+- ~~Deploy database schema to Supabase~~ -> Absorbed into Phase 7
+- ~~Deploy RLS policies migration to Supabase~~ -> Absorbed into Phase 7
+- ~~Deploy auth_roles_migration.sql to Supabase~~ -> Absorbed into Phase 7
+- ~~Deploy weekly_plans_migration.sql to Supabase~~ -> Absorbed into Phase 7
+- ~~Set up .env with Supabase credentials~~ -> Absorbed into Phase 7
+- ~~Run docker-compose verification~~ -> Absorbed into Phase 7
+- Migrate remaining endpoint files (plans.py, coach.py, performance.py, auth.py) to repository layer
+- Migrate all service files off get_supabase() to repository layer
+- Remove supabase dependency from requirements.txt after full migration
 
 ### Blockers/Concerns
 
 - ~150+ modified but uncommitted files from 6 months of work (non-planning files)
 - SQLAlchemy models use Integer PKs but Supabase uses UUIDs (kept as-is for now)
-- Supabase schema not yet deployed (manual step deferred)
-- Docker full-stack verification not yet run (requires Supabase credentials)
+- Old Supabase project is paused -- needs data recovery, new project creation, and consolidated schema deployment (all Phase 7)
+- Docker full-stack verification not yet run (requires Supabase credentials -- Phase 7)
+- TrainingService still uses Supabase internally (deferred to service migration plan)
 
 ## Session Continuity
 
-Last session: 2026-05-04
-Stopped at: Completed 06-05-PLAN.md (athlete workout views). Phase 6 fully complete. Ready for phase 7.
+Last session: 2026-05-11
+Stopped at: Completed 07-02-PLAN.md (repository layer + endpoint migration). 4 endpoint files fully migrated off Supabase PostgREST.
 Resume file: None
