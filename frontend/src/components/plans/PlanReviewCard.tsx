@@ -184,7 +184,7 @@ const PlanReviewCard = ({ plan }: PlanReviewCardProps) => {
                       <Text size="xs" fw={600} c="dimmed" tt="uppercase" mb={4}>
                         {sectionLabel}
                       </Text>
-                      <Table size="xs" withRowBorders={false}>
+                      <Table fz="xs" withRowBorders={false}>
                         <Table.Thead>
                           <Table.Tr>
                             <Table.Th>Exercise</Table.Th>
