@@ -17,6 +17,12 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
+    # Auth provider: "dev" (no Supabase needed) or "supabase" (real auth)
+    AUTH_PROVIDER: str = "dev"
+    DEV_USER_ID: str = "00000000-0000-0000-0000-000000000001"
+    DEV_USER_EMAIL: str = "coach@dev.local"
+    DEV_USER_ROLE: str = "coach"
+
     # Database settings
     DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/bobsleigh"
 
