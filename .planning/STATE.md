@@ -12,16 +12,16 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 Phase: 7 of 7 (Polish & Deploy)
 Plan: 6 of 9 in phase 7
 Status: In progress
-Last activity: 2026-05-11 -- Completed 07-03a-PLAN.md
+Last activity: 2026-05-11 -- Completed 07-06-PLAN.md
 
-Progress: ███████████████████░ 97% (29 plans complete, ~3 remaining in phase 7)
+Progress: ███████████████████░ 97% (30 plans complete, ~2 remaining in phase 7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 29
-- Average duration: ~4min
-- Total execution time: ~134min
+- Total plans completed: 30
+- Average duration: ~5min
+- Total execution time: ~141min
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ███████████████████░ 97% (29 p
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
 | 6. AI Training Engine | 5/5 | ~18min | ~4min |
-| 7. Polish & Deploy | 5/9 | ~27min | ~5min |
+| 7. Polish & Deploy | 6/9 | ~34min | ~6min |
 
 **Recent Trend:**
-- Last 5 plans: 07-01 (8min), 07-02 (6min), 07-05 (8min), 07-03a (5min)
-- Trend: Steady pace, repository migration on track
+- Last 5 plans: 07-01 (8min), 07-02 (6min), 07-05 (8min), 07-03a (5min), 07-06 (7min)
+- Trend: Steady pace, mobile workout UX complete
 
 ## Accumulated Context
 
@@ -154,6 +154,11 @@ Recent decisions affecting current work:
 - TrainingLoadRepository also in separate training_load_repo.py (in addition to workout_repo.py) for cleaner service imports
 - All endpoint files migrated off get_supabase() -- zero Supabase PostgREST calls in endpoint layer
 - plan_repo.update_status handles approved/rejected branching internally (single method for both transitions)
+- Audio is primary timer notification; vibration is Android Chrome enhancement only
+- Wake lock uses wantLockRef pattern to track intent vs actual state for re-acquire
+- Rest timer auto-starts on set completion with 120s default
+- RPE selector shown only after all sets completed for an exercise
+- Complete Workout maps SetLogger state to WorkoutCreate schema (sets count, last-set weight/reps, exercise RPE)
 
 ### Pending Todos
 
@@ -178,5 +183,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-11
-Stopped at: Completed 07-03a-PLAN.md (remaining repos + endpoint migration). All endpoint files now Supabase-free.
+Stopped at: Completed 07-06-PLAN.md (active workout flow). Mobile-optimized gym UX with wake lock, rest timer, set logging, and dashboard integration.
 Resume file: None
