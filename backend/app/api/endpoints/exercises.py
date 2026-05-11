@@ -9,9 +9,11 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.core.security import get_current_user
-from app.db.session import get_supabase
+from app.db.repositories.exercise_repo import ExerciseRepository
 
 router = APIRouter()
+
+exercise_repo = ExerciseRepository()
 
 
 @router.get("")
@@ -39,27 +41,17 @@ async def list_exercises(
     measurement_type.
     """
     try:
-        sb = get_supabase()
-        query = sb.table("exercises").select("*").eq("is_active", True)
-
-        if search:
-            query = query.ilike("name", f"*{search}*")
-        if category:
-            query = query.eq("category", category)
-        if muscle_group:
-            query = query.contains("muscle_groups", [muscle_group])
-        if equipment:
-            query = query.contains("equipment_needed", [equipment])
-        if measurement_type:
-            query = query.eq("measurement_type", measurement_type)
-
-        query = query.order("name").range(offset, offset + limit - 1)
-        result = query.execute()
-        return result.data
+        return exercise_repo.search(
+            query=search,
+            category=category,
+            muscle_group=muscle_group,
+            equipment=equipment,
+            measurement_type=measurement_type,
+            offset=offset,
+            limit=limit,
+        )
     except HTTPException:
         raise
-    except RuntimeError as e:
-        raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to fetch exercises: {str(e)}"
@@ -77,20 +69,14 @@ async def get_exercise_categories(user=Depends(get_current_user)):
     - measurement_types (from measurement_type column)
     """
     try:
-        sb = get_supabase()
-        result = (
-            sb.table("exercises")
-            .select("category, muscle_groups, equipment_needed, measurement_type")
-            .eq("is_active", True)
-            .execute()
-        )
+        rows = exercise_repo.get_categories()
 
         categories: set[str] = set()
         muscle_groups: set[str] = set()
         equipment: set[str] = set()
         measurement_types: set[str] = set()
 
-        for row in result.data:
+        for row in rows:
             if row.get("category"):
                 categories.add(row["category"])
             if row.get("muscle_groups"):
@@ -110,8 +96,6 @@ async def get_exercise_categories(user=Depends(get_current_user)):
         }
     except HTTPException:
         raise
-    except RuntimeError as e:
-        raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
         raise HTTPException(
             status_code=500,

@@ -10,17 +10,19 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 
 from app.core.security import get_current_user
-from app.db.session import get_supabase
+from app.db.repositories.athlete_repo import AthleteRepository
 from app.schemas.athlete import AthleteCreate, AthleteUpdate
 
 router = APIRouter()
+
+athlete_repo = AthleteRepository()
 
 
 async def get_athlete_for_user(user) -> dict:
     """Look up the athlete record for the authenticated user.
 
     Args:
-        user: Supabase User object with .id attribute (UUID string).
+        user: Auth user object with .id attribute (UUID string).
 
     Returns:
         The athlete record dict.
@@ -28,14 +30,13 @@ async def get_athlete_for_user(user) -> dict:
     Raises:
         HTTPException 404 if no athlete profile exists for this user.
     """
-    sb = get_supabase()
-    result = sb.table("athletes").select("*").eq("user_id", user.id).execute()
-    if not result.data:
+    athlete = athlete_repo.get_by_user_id(user.id)
+    if not athlete:
         raise HTTPException(
             status_code=404,
             detail="No athlete profile found for this user",
         )
-    return result.data[0]
+    return athlete
 
 
 def _verify_ownership(athlete: dict, user) -> None:
@@ -43,7 +44,7 @@ def _verify_ownership(athlete: dict, user) -> None:
 
     Args:
         athlete: Athlete record dict with user_id field.
-        user: Supabase User object with .id attribute.
+        user: Auth user object with .id attribute.
 
     Raises:
         HTTPException 403 if the user does not own this athlete record.
@@ -63,17 +64,7 @@ async def get_athletes(user=Depends(get_current_user)):
     Coach access to multiple athletes will be added in Phase 5.
     """
     try:
-        supabase = get_supabase()
-        result = (
-            supabase.table("athletes")
-            .select("*")
-            .eq("user_id", user.id)
-            .eq("is_active", True)
-            .execute()
-        )
-        return result.data
-    except RuntimeError as e:
-        raise HTTPException(status_code=503, detail=str(e))
+        return athlete_repo.get_active_by_user_id(user.id)
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to fetch athletes: {str(e)}"
@@ -84,17 +75,13 @@ async def get_athletes(user=Depends(get_current_user)):
 async def get_athlete(athlete_id: str, user=Depends(get_current_user)):
     """Get a specific athlete by UUID. Only the owner can access."""
     try:
-        supabase = get_supabase()
-        result = supabase.table("athletes").select("*").eq("id", athlete_id).execute()
-        if not result.data:
+        athlete = athlete_repo.get_by_id(athlete_id)
+        if not athlete:
             raise HTTPException(status_code=404, detail="Athlete not found")
-        athlete = result.data[0]
         _verify_ownership(athlete, user)
         return athlete
     except HTTPException:
         raise
-    except RuntimeError as e:
-        raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to fetch athlete: {str(e)}"
@@ -109,14 +96,10 @@ async def create_athlete(athlete: AthleteCreate, user=Depends(get_current_user))
     ignoring any client-provided value for security.
     """
     try:
-        supabase = get_supabase()
         data = athlete.model_dump(exclude_none=True)
         # Always set user_id from the authenticated user (don't trust client)
         data["user_id"] = user.id
-        result = supabase.table("athletes").insert(data).execute()
-        return result.data[0]
-    except RuntimeError as e:
-        raise HTTPException(status_code=503, detail=str(e))
+        return athlete_repo.create(data)
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to create athlete: {str(e)}"
@@ -129,28 +112,21 @@ async def update_athlete(
 ):
     """Update an existing athlete. Only the owner can update."""
     try:
-        supabase = get_supabase()
         # Verify ownership first
-        existing = (
-            supabase.table("athletes").select("*").eq("id", athlete_id).execute()
-        )
-        if not existing.data:
+        existing = athlete_repo.get_by_id(athlete_id)
+        if not existing:
             raise HTTPException(status_code=404, detail="Athlete not found")
-        _verify_ownership(existing.data[0], user)
+        _verify_ownership(existing, user)
 
         data = athlete.model_dump(exclude_none=True)
         if not data:
             raise HTTPException(status_code=400, detail="No fields to update")
-        result = (
-            supabase.table("athletes").update(data).eq("id", athlete_id).execute()
-        )
-        if not result.data:
+        result = athlete_repo.update(athlete_id, data)
+        if not result:
             raise HTTPException(status_code=404, detail="Athlete not found")
-        return result.data[0]
+        return result
     except HTTPException:
         raise
-    except RuntimeError as e:
-        raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to update athlete: {str(e)}"
@@ -161,28 +137,18 @@ async def update_athlete(
 async def delete_athlete(athlete_id: str, user=Depends(get_current_user)):
     """Soft-delete an athlete. Only the owner can delete."""
     try:
-        supabase = get_supabase()
         # Verify ownership first
-        existing = (
-            supabase.table("athletes").select("*").eq("id", athlete_id).execute()
-        )
-        if not existing.data:
+        existing = athlete_repo.get_by_id(athlete_id)
+        if not existing:
             raise HTTPException(status_code=404, detail="Athlete not found")
-        _verify_ownership(existing.data[0], user)
+        _verify_ownership(existing, user)
 
-        result = (
-            supabase.table("athletes")
-            .update({"is_active": False})
-            .eq("id", athlete_id)
-            .execute()
-        )
-        if not result.data:
+        result = athlete_repo.soft_delete(athlete_id)
+        if not result:
             raise HTTPException(status_code=404, detail="Athlete not found")
         return {"message": "Athlete deleted successfully"}
     except HTTPException:
         raise
-    except RuntimeError as e:
-        raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to delete athlete: {str(e)}"

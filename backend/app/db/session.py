@@ -25,7 +25,13 @@ def get_db():
 
 
 def get_supabase() -> Client:
-    """Get a Supabase client with service role key for backend operations."""
+    """Get a Supabase client with service role key for backend operations.
+
+    .. deprecated::
+        This function is being replaced by the repository layer
+        (app.db.repositories). Do not add new usages. Will be removed
+        once all endpoint and service files are fully migrated.
+    """
     if not settings.SUPABASE_URL or not settings.SUPABASE_SERVICE_ROLE_KEY:
         raise RuntimeError(
             "Supabase credentials not configured. "
