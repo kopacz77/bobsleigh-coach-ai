@@ -111,40 +111,40 @@ export function PerformanceMetrics({ athleteId }: PerformanceMetricsProps) {
   }
 
   return (
-    <Card withBorder p="md" radius="md">
+    <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
       <Stack>
-        <Title order={3}>Performance Metrics</Title>
+        <Title order={3} fz={{ base: "md", md: "lg" }}>Performance Metrics</Title>
 
         <Grid>
-          <Grid.Col span={{ base: 12, md: 3 }}>
+          <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
             <Stack ta="center" gap="xs">
               <RingProgress
-                size={120}
-                thickness={12}
+                size={100}
+                thickness={10}
                 roundCaps
                 sections={[{ value: Math.min(totalMetrics * 10, 100), color: "blue" }]}
                 label={
-                  <Text fw={700} ta="center" size="xl">
+                  <Text fw={700} ta="center" size="lg">
                     {totalMetrics}
                   </Text>
                 }
               />
-              <Text fw={500} size="lg">
+              <Text fw={500} size="sm">
                 Metrics Tracked
               </Text>
-              <Text size="sm" c="dimmed" ta="center">
+              <Text size="xs" c="dimmed" ta="center">
                 Across {groups.length} categor{groups.length === 1 ? "y" : "ies"}
               </Text>
             </Stack>
           </Grid.Col>
 
           {groups.map((group) => (
-            <Grid.Col key={group.label} span={{ base: 12, md: 3 }}>
-              <Card withBorder h="100%">
+            <Grid.Col key={group.label} span={{ base: 12, sm: 6, md: 3 }}>
+              <Card withBorder h="100%" p="sm">
                 <Stack>
                   <Group justify="space-between">
-                    <Text fw={500}>{group.label}</Text>
-                    <Text fw={700}>{group.items.length} tests</Text>
+                    <Text fw={500} size="sm">{group.label}</Text>
+                    <Text fw={700} size="sm">{group.items.length} tests</Text>
                   </Group>
                   <Progress
                     value={Math.min(group.items.length * 20, 100)}
@@ -154,9 +154,9 @@ export function PerformanceMetrics({ athleteId }: PerformanceMetricsProps) {
 
                   <Stack gap={5} mt="xs">
                     {group.items.map((item) => (
-                      <Group key={item.name} justify="space-between">
-                        <Text size="sm">{item.name}</Text>
-                        <Text size="sm">
+                      <Group key={item.name} justify="space-between" wrap="nowrap">
+                        <Text size="sm" style={{ minWidth: 0 }}>{item.name}</Text>
+                        <Text size="sm" fw={500} style={{ whiteSpace: "nowrap" }}>
                           {item.value} {item.unit}
                         </Text>
                       </Group>

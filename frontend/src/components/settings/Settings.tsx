@@ -39,11 +39,11 @@ export function Settings() {
 
   return (
     <Stack gap="lg">
-      <Card withBorder p="md" radius="md">
+      <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
         <Stack>
-          <Title order={3}>Application Settings</Title>
+          <Title order={3} fz={{ base: "md", md: "lg" }}>Application Settings</Title>
 
-          <Group justify="space-between">
+          <Group justify="space-between" wrap="wrap" gap="sm">
             <Text>Units</Text>
             <SegmentedControl
               value={units}
@@ -60,6 +60,7 @@ export function Settings() {
             <Switch
               checked={notifications}
               onChange={(event) => setNotifications(event.currentTarget.checked)}
+              size="md"
             />
           </Group>
 
@@ -68,24 +69,25 @@ export function Settings() {
             <Switch
               checked={emailUpdates}
               onChange={(event) => setEmailUpdates(event.currentTarget.checked)}
+              size="md"
             />
           </Group>
         </Stack>
       </Card>
 
-      <Card withBorder p="md" radius="md">
+      <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
         <Stack>
-          <Title order={3}>Security Settings</Title>
+          <Title order={3} fz={{ base: "md", md: "lg" }}>Security Settings</Title>
           <MFASetup />
         </Stack>
       </Card>
 
-      <Card withBorder p="md" radius="md">
+      <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
         <Stack>
-          <Title order={3}>Data Settings</Title>
+          <Title order={3} fz={{ base: "md", md: "lg" }}>Data Settings</Title>
 
-          <Group justify="space-between">
-            <div>
+          <Group justify="space-between" wrap="nowrap" gap="sm">
+            <div style={{ flex: 1 }}>
               <Text>Anonymous Data Sharing</Text>
               <Text size="xs" c="dimmed">
                 Share anonymous training data to improve AI recommendations
@@ -94,11 +96,13 @@ export function Settings() {
             <Switch
               checked={dataSharing}
               onChange={(event) => setDataSharing(event.currentTarget.checked)}
+              size="md"
+              style={{ flexShrink: 0 }}
             />
           </Group>
 
-          <Group justify="space-between">
-            <div>
+          <Group justify="space-between" wrap="nowrap" gap="sm">
+            <div style={{ flex: 1 }}>
               <Text>Auto-Sync Data</Text>
               <Text size="xs" c="dimmed">
                 Automatically sync data with connected devices
@@ -107,16 +111,16 @@ export function Settings() {
             <Switch
               checked={autoSync}
               onChange={(event) => setAutoSync(event.currentTarget.checked)}
+              size="md"
+              style={{ flexShrink: 0 }}
             />
           </Group>
         </Stack>
       </Card>
 
-      <Group justify="flex-end">
-        <Button onClick={handleSubmit} loading={isSubmitting}>
-          Save Settings
-        </Button>
-      </Group>
+      <Button onClick={handleSubmit} loading={isSubmitting} fullWidth>
+        Save Settings
+      </Button>
     </Stack>
   );
 }

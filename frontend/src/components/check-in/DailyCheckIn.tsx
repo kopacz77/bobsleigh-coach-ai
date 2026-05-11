@@ -124,10 +124,10 @@ const DailyCheckIn = () => {
       </Text>
 
       {/* Readiness circle */}
-      <Paper p="md" radius="md" withBorder mb="xl">
-        <Group justify="space-between">
+      <Paper p={{ base: "sm", md: "md" }} radius="md" withBorder mb="xl">
+        <Group justify="space-between" wrap="wrap" gap="sm">
           <Box>
-            <Text size="xl" fw={700}>
+            <Text size="lg" fw={700}>
               Today&apos;s Readiness
             </Text>
             <Text size="sm" c="dimmed">
@@ -170,6 +170,7 @@ const DailyCheckIn = () => {
               { value: 5, label: "OK" },
               { value: 10, label: "Great" },
             ]}
+            thumbSize={26}
             mb="lg"
           />
         </Box>
@@ -190,6 +191,7 @@ const DailyCheckIn = () => {
               { value: 10, label: "High" },
             ]}
             color="orange"
+            thumbSize={26}
             mb="lg"
           />
         </Box>
@@ -209,6 +211,7 @@ const DailyCheckIn = () => {
               { value: 5, label: "OK" },
               { value: 10, label: "Great" },
             ]}
+            thumbSize={26}
             mb="lg"
           />
         </Box>
@@ -228,6 +231,7 @@ const DailyCheckIn = () => {
               { value: 5, label: "OK" },
               { value: 10, label: "High" },
             ]}
+            thumbSize={26}
             mb="lg"
           />
         </Box>
@@ -247,6 +251,7 @@ const DailyCheckIn = () => {
               { value: 5, label: "OK" },
               { value: 10, label: "Sharp" },
             ]}
+            thumbSize={26}
             mb="lg"
           />
         </Box>
@@ -273,17 +278,16 @@ const DailyCheckIn = () => {
       />
 
       {/* Submit */}
-      <Group justify="right">
-        <Button
-          onClick={handleSubmit}
-          loading={submitMutation.isPending || loadingToday}
-          variant="filled"
-          color="blue"
-          leftSection={<IconFlame size={20} />}
-        >
-          {isUpdate ? "Update Check-In" : "Submit Check-In"}
-        </Button>
-      </Group>
+      <Button
+        onClick={handleSubmit}
+        loading={submitMutation.isPending || loadingToday}
+        variant="filled"
+        color="blue"
+        leftSection={<IconFlame size={20} />}
+        fullWidth
+      >
+        {isUpdate ? "Update Check-In" : "Submit Check-In"}
+      </Button>
     </Box>
   );
 };

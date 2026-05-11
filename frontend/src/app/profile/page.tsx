@@ -5,8 +5,8 @@ import { ProfileCard } from "@/components/profile/ProfileCard";
 export default function ProfilePage() {
   return (
     <AppShell>
-      <Stack gap="xl">
-        <Title>Profile</Title>
+      <Stack gap="lg" px={{ base: "xs", md: "lg" }}>
+        <Title fz={{ base: "lg", md: "xl" }}>Profile</Title>
 
         <ProfileCard />
       </Stack>

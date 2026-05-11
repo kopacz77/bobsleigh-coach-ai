@@ -111,6 +111,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                   { value: 10, label: "10" },
                 ]}
                 color={getScaleColor(feedback.sessionRpe)}
+                thumbSize={26}
               />
 
               <Group justify="space-between">
@@ -162,6 +163,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                   { value: 10, label: "10" },
                 ]}
                 color={getScaleColor(feedback.muscleSoreness, true)}
+                thumbSize={26}
               />
 
               <Group justify="space-between">
@@ -211,6 +213,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                     { value: 10, label: "10" },
                   ]}
                   color={getScaleColor(feedback.energyLevel)}
+                  thumbSize={26}
                 />
 
                 <Group justify="space-between">
@@ -244,6 +247,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
                     { value: 10, label: "10" },
                   ]}
                   color={getScaleColor(feedback.motivationLevel)}
+                  thumbSize={26}
                 />
 
                 <Group justify="space-between">
@@ -311,10 +315,10 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
   };
 
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <Card shadow="sm" p={{ base: "sm", md: "lg" }} radius="md" withBorder>
       <Stack gap="lg">
-        <Group justify="space-between" ta="center">
-          <Title order={2}>Daily Training Feedback</Title>
+        <Group justify="space-between" wrap="wrap">
+          <Title order={2} fz={{ base: "lg", md: "xl" }}>Daily Training Feedback</Title>
           <Text size="sm" c="dimmed">
             Step {currentStep + 1} of {steps.length}
           </Text>
@@ -322,10 +326,10 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
 
         <Progress value={((currentStep + 1) / steps.length) * 100} size="sm" />
 
-        <div style={{ minHeight: "300px" }}>{renderStep()}</div>
+        <div style={{ minHeight: "280px" }}>{renderStep()}</div>
 
-        <Group justify="space-between">
-          <Group>
+        <Group justify="space-between" wrap="wrap" gap="sm">
+          <Group gap="sm">
             {currentStep > 0 && (
               <Button
                 variant="light"
@@ -342,7 +346,7 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
             )}
           </Group>
 
-          <Group>
+          <Group gap="sm">
             {currentStep < steps.length - 1 ? (
               <Button onClick={() => setCurrentStep(currentStep + 1)} disabled={isLoading}>
                 Next

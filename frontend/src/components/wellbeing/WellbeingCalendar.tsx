@@ -113,37 +113,35 @@ export function WellbeingCalendar() {
 
   // Render color indicators for the calendar legend
   const renderLegend = () => (
-    <Group mt="xs">
-      <Group gap="xs" align="center">
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: theme.colors.green[4] }} />
+    <Group mt="xs" gap="sm" wrap="wrap">
+      <Group gap="xs" align="center" wrap="nowrap">
+        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: theme.colors.green[4], flexShrink: 0 }} />
         <Text size="xs">Great (8-10)</Text>
       </Group>
-      <Group gap="xs" align="center">
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: theme.colors.teal[3] }} />
+      <Group gap="xs" align="center" wrap="nowrap">
+        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: theme.colors.teal[3], flexShrink: 0 }} />
         <Text size="xs">Good (6-8)</Text>
       </Group>
-      <Group gap="xs" align="center">
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: theme.colors.yellow[4] }} />
-        <Text size="xs">Average (4-6)</Text>
+      <Group gap="xs" align="center" wrap="nowrap">
+        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: theme.colors.yellow[4], flexShrink: 0 }} />
+        <Text size="xs">Avg (4-6)</Text>
       </Group>
-      <Group gap="xs" align="center">
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: theme.colors.orange[4] }} />
-        <Text size="xs">Below Average (2-4)</Text>
+      <Group gap="xs" align="center" wrap="nowrap">
+        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: theme.colors.orange[4], flexShrink: 0 }} />
+        <Text size="xs">Low (2-4)</Text>
       </Group>
-      <Group gap="xs" align="center">
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: theme.colors.red[4] }} />
+      <Group gap="xs" align="center" wrap="nowrap">
+        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: theme.colors.red[4], flexShrink: 0 }} />
         <Text size="xs">Poor (0-2)</Text>
       </Group>
     </Group>
   );
 
   return (
-    <Card withBorder p="md" radius="md">
+    <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
       <Stack>
-        <Group justify="apart">
-          <Title order={3}>Wellbeing Calendar</Title>
-        </Group>
-        
+        <Title order={3} fz={{ base: "md", md: "lg" }}>Wellbeing Calendar</Title>
+
         <Text c="dimmed" size="sm">
           View your wellbeing over time. Click on a date to see your assessment for that day.
         </Text>
@@ -155,8 +153,8 @@ export function WellbeingCalendar() {
         ) : (
           <>
             <Calendar
-              size="lg"
-              style={{ width: '100%' }}
+              size="md"
+              style={{ width: '100%', maxWidth: '100%' }}
               maxDate={new Date()}
               getDayProps={(date) => ({
                 style: { 
@@ -190,7 +188,7 @@ export function WellbeingCalendar() {
                   </Text>
                   
                   <Grid>
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, xs: 6 }}>
                       <Paper withBorder p="md" radius="md">
                         <Group align="center" gap="xs">
                           <IconZzz size={20} color={theme.colors.blue[6]} />
@@ -204,7 +202,7 @@ export function WellbeingCalendar() {
                       </Paper>
                     </Grid.Col>
                     
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, xs: 6 }}>
                       <Paper withBorder p="md" radius="md">
                         <Group align="center" gap="xs">
                           <IconMoodNervous size={20} color={theme.colors.red[6]} />
@@ -218,7 +216,7 @@ export function WellbeingCalendar() {
                       </Paper>
                     </Grid.Col>
                     
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, xs: 6 }}>
                       <Paper withBorder p="md" radius="md">
                         <Group align="center" gap="xs">
                           <IconSalad size={20} color={theme.colors.green[6]} />
@@ -232,7 +230,7 @@ export function WellbeingCalendar() {
                       </Paper>
                     </Grid.Col>
                     
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, xs: 6 }}>
                       <Paper withBorder p="md" radius="md">
                         <Group align="center" gap="xs">
                           <IconBarbell size={20} color={theme.colors.orange[6]} />
@@ -246,7 +244,7 @@ export function WellbeingCalendar() {
                       </Paper>
                     </Grid.Col>
                     
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, xs: 6 }}>
                       <Paper withBorder p="md" radius="md">
                         <Group align="center" gap="xs">
                           <IconMoodSmile size={20} color={theme.colors.violet[6]} />
@@ -260,7 +258,7 @@ export function WellbeingCalendar() {
                       </Paper>
                     </Grid.Col>
                     
-                    <Grid.Col span={6}>
+                    <Grid.Col span={{ base: 12, xs: 6 }}>
                       <Paper withBorder p="md" radius="md">
                         <Group align="center" gap="xs">
                           <IconMoodSmile size={20} color={theme.colors.blue[6]} />
