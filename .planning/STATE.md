@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 7 of 7 (Polish & Deploy)
-Plan: 5 of 9 in phase 7
+Plan: 6 of 9 in phase 7
 Status: In progress
-Last activity: 2026-05-11 -- Completed 07-05-PLAN.md
+Last activity: 2026-05-11 -- Completed 07-03a-PLAN.md
 
-Progress: ███████████████████░ 96% (28 plans complete, ~4 remaining in phase 7)
+Progress: ███████████████████░ 97% (29 plans complete, ~3 remaining in phase 7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 28
+- Total plans completed: 29
 - Average duration: ~4min
-- Total execution time: ~129min
+- Total execution time: ~134min
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ███████████████████░ 96% (28 p
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
 | 6. AI Training Engine | 5/5 | ~18min | ~4min |
-| 7. Polish & Deploy | 4/9 | ~22min | ~6min |
+| 7. Polish & Deploy | 5/9 | ~27min | ~5min |
 
 **Recent Trend:**
-- Last 5 plans: 06-05 (4min), 07-01 (8min), 07-02 (6min), 07-05 (8min)
-- Trend: Steady pace, design system and dark mode complete
+- Last 5 plans: 07-01 (8min), 07-02 (6min), 07-05 (8min), 07-03a (5min)
+- Trend: Steady pace, repository migration on track
 
 ## Accumulated Context
 
@@ -151,6 +151,9 @@ Recent decisions affecting current work:
 - SupabaseProvider still rendered in dev mode as inner wrapper so useSupabase() calls get safe defaults
 - AuthGuard checks AuthModeContext and passes through immediately in dev mode
 - Auth provider singleton cached at module level (get_auth_provider factory)
+- TrainingLoadRepository also in separate training_load_repo.py (in addition to workout_repo.py) for cleaner service imports
+- All endpoint files migrated off get_supabase() -- zero Supabase PostgREST calls in endpoint layer
+- plan_repo.update_status handles approved/rejected branching internally (single method for both transitions)
 
 ### Pending Todos
 
@@ -160,7 +163,7 @@ Recent decisions affecting current work:
 - ~~Deploy weekly_plans_migration.sql to Supabase~~ -> Absorbed into Phase 7
 - ~~Set up .env with Supabase credentials~~ -> Absorbed into Phase 7
 - ~~Run docker-compose verification~~ -> Absorbed into Phase 7
-- Migrate remaining endpoint files (plans.py, coach.py, performance.py, auth.py) to repository layer
+- ~~Migrate remaining endpoint files (plans.py, coach.py, performance.py, auth.py) to repository layer~~ -> Done in 07-03a
 - Migrate all service files off get_supabase() to repository layer
 - Remove supabase dependency from requirements.txt after full migration
 
@@ -175,5 +178,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-11
-Stopped at: Completed 07-05-PLAN.md (design system and dark mode). DESIGN.md created, Mantine theme tokens applied, dark mode with system preference and manual toggle.
+Stopped at: Completed 07-03a-PLAN.md (remaining repos + endpoint migration). All endpoint files now Supabase-free.
 Resume file: None
