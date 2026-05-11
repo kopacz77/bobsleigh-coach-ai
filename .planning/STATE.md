@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 7 of 7 (Polish & Deploy)
-Plan: 2 of 4 in phase 7 (07-01 + 07-02 complete)
+Plan: 5 of 9 in phase 7
 Status: In progress
-Last activity: 2026-05-11 -- Completed 07-01-PLAN.md
+Last activity: 2026-05-11 -- Completed 07-05-PLAN.md
 
-Progress: ███████████████████░ 96% (27 plans complete, ~1 remaining in phase 7)
+Progress: ███████████████████░ 96% (28 plans complete, ~4 remaining in phase 7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 27
+- Total plans completed: 28
 - Average duration: ~4min
-- Total execution time: ~121min
+- Total execution time: ~129min
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ███████████████████░ 96% (27 p
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
 | 6. AI Training Engine | 5/5 | ~18min | ~4min |
-| 7. Polish & Deploy | 3/4 | ~14min | ~5min |
+| 7. Polish & Deploy | 4/9 | ~22min | ~6min |
 
 **Recent Trend:**
-- Last 5 plans: 06-04 (3min), 06-05 (4min), 07-02 (6min), 07-05 (n/a), 07-01 (8min)
-- Trend: Steady pace, dev auth bypass operational
+- Last 5 plans: 06-05 (4min), 07-01 (8min), 07-02 (6min), 07-05 (8min)
+- Trend: Steady pace, design system and dark mode complete
 
 ## Accumulated Context
 
@@ -140,6 +140,11 @@ Recent decisions affecting current work:
 - Coach readiness uses DISTINCT ON + batch fetch instead of N+1 per-athlete queries
 - get_supabase() deprecated but kept until all files migrated
 - Repository instantiation as module-level singletons (e.g., athlete_repo = AthleteRepository())
+- Steel Blue (#1971C2) as primary color -- athletic authority, universal trust, no team-color bias
+- 44px minimum touch target height for all interactive elements (gym use)
+- 14px minimum font size in workout-active views (readable at arm's length)
+- 12px card radius (lg), 8px button/input radius (md) -- professional not bubbly
+- defaultColorScheme=auto follows OS preference, manual toggle in header
 - Auth provider abstraction: Protocol + factory pattern with dev/supabase implementations (backend)
 - Dev mode: AUTH_PROVIDER=dev (backend) + NEXT_PUBLIC_AUTH_MODE=dev (frontend) for credential-free development
 - DevAuthProvider returns static configured user for any token (no validation)
@@ -170,5 +175,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-11
-Stopped at: Completed 07-01-PLAN.md (dev auth provider abstraction). Backend + frontend auth bypass fully operational.
+Stopped at: Completed 07-05-PLAN.md (design system and dark mode). DESIGN.md created, Mantine theme tokens applied, dark mode with system preference and manual toggle.
 Resume file: None
