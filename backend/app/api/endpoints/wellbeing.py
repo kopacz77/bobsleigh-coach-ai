@@ -10,10 +10,35 @@ from datetime import date, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Query, Response
 
 from app.core.security import get_current_user
-from app.db.session import get_supabase
+from app.db.repositories.athlete_repo import AthleteRepository
+from app.db.repositories.wellbeing_repo import WellbeingRepository
 from app.schemas.wellbeing import CheckInCreate
 
 router = APIRouter()
+
+athlete_repo = AthleteRepository()
+wellbeing_repo = WellbeingRepository()
+
+
+def _get_athlete_id_for_user_sync(user) -> str:
+    """Look up the athlete_id for the authenticated user (sync).
+
+    Args:
+        user: Auth user object with .id attribute (UUID string).
+
+    Returns:
+        The athlete UUID string.
+
+    Raises:
+        HTTPException 404 if no athlete profile exists for this user.
+    """
+    athlete_id = athlete_repo.get_id_by_user_id(user.id)
+    if not athlete_id:
+        raise HTTPException(
+            status_code=404,
+            detail="No athlete profile found for this user",
+        )
+    return athlete_id
 
 
 def _calculate_readiness(row: dict) -> dict:
@@ -65,18 +90,17 @@ def _get_user_role(user) -> str:
 async def submit_checkin(checkin: CheckInCreate, user=Depends(get_current_user)):
     """Submit a daily wellbeing check-in.
 
-    Sets user_id from authenticated user and date to today (server-side).
-    Upserts on (user_id, date) so re-submitting the same day updates
-    the existing record. Calculates readiness_score on response (not stored).
+    Sets athlete_id from authenticated user and date to today (server-side).
+    Upserts on (athlete_id, assessment_date) so re-submitting the same day
+    updates the existing record. Calculates readiness_score on response
+    (not stored).
     """
     try:
-        sb = get_supabase()
+        athlete_id = _get_athlete_id_for_user_sync(user)
         today = date.today().isoformat()
 
         # Build the row data for the wellbeing_assessments table
         data = checkin.model_dump(exclude={"flag_concern"})
-        data["user_id"] = user.id
-        data["date"] = today
 
         # Encode concern flag into notes prefix
         if checkin.flag_concern:
@@ -84,37 +108,14 @@ async def submit_checkin(checkin: CheckInCreate, user=Depends(get_current_user))
             if not notes.startswith("[CONCERN]"):
                 data["notes"] = f"[CONCERN] {notes}".strip() if notes else "[CONCERN]"
 
-        # Upsert: check if a record already exists for this user + date
-        existing = (
-            sb.table("wellbeing_assessments")
-            .select("id")
-            .eq("user_id", user.id)
-            .eq("date", today)
-            .execute()
-        )
-
-        if existing.data:
-            # Update existing record
-            result = (
-                sb.table("wellbeing_assessments")
-                .update(data)
-                .eq("id", existing.data[0]["id"])
-                .execute()
-            )
-        else:
-            # Insert new record
-            result = (
-                sb.table("wellbeing_assessments")
-                .insert(data)
-                .execute()
-            )
-
-        if not result.data:
+        # Upsert via repository
+        result = wellbeing_repo.upsert(athlete_id, today, data)
+        if not result:
             raise HTTPException(
                 status_code=500, detail="Failed to save check-in"
             )
 
-        return _calculate_readiness(result.data[0])
+        return _calculate_readiness(result)
     except HTTPException:
         raise
     except RuntimeError as e:
@@ -135,22 +136,18 @@ async def get_today_checkin(
     Includes has_concern derived from [CONCERN] prefix in notes.
     """
     try:
-        sb = get_supabase()
+        athlete_id = _get_athlete_id_for_user_sync(user)
         today = date.today().isoformat()
 
-        result = (
-            sb.table("wellbeing_assessments")
-            .select("*")
-            .eq("user_id", user.id)
-            .eq("date", today)
-            .execute()
-        )
+        result = wellbeing_repo.get_by_athlete_and_date(athlete_id, today)
 
-        if not result.data:
+        if not result:
             response.status_code = 204
             return None
 
-        return _calculate_readiness(result.data[0])
+        return _calculate_readiness(result)
+    except HTTPException:
+        raise
     except RuntimeError as e:
         raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
@@ -171,19 +168,14 @@ async def get_wellbeing_history(
     readiness_score and recovery_status.
     """
     try:
-        sb = get_supabase()
+        athlete_id = _get_athlete_id_for_user_sync(user)
         date_from = (date.today() - timedelta(days=days)).isoformat()
 
-        result = (
-            sb.table("wellbeing_assessments")
-            .select("*")
-            .eq("user_id", user.id)
-            .gte("date", date_from)
-            .order("date", desc=False)
-            .execute()
-        )
+        rows = wellbeing_repo.get_range(athlete_id, date_from)
 
-        return [_calculate_readiness(row) for row in result.data]
+        return [_calculate_readiness(row) for row in rows]
+    except HTTPException:
+        raise
     except RuntimeError as e:
         raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
@@ -205,34 +197,33 @@ async def get_coach_readiness(user=Depends(get_current_user)):
         if role != "coach":
             raise HTTPException(status_code=403, detail="Coach role required")
 
-        sb = get_supabase()
         today = date.today().isoformat()
 
         # Get all active athletes
-        athletes_result = (
-            sb.table("athletes")
-            .select("id, user_id, first_name, last_name")
-            .eq("is_active", True)
-            .execute()
+        athletes = athlete_repo.get_all_active_with_fields(
+            "id, user_id, first_name, last_name"
         )
 
-        statuses = []
-        for athlete in athletes_result.data:
-            # Get the latest wellbeing assessment for this athlete's user
-            assessment_result = (
-                sb.table("wellbeing_assessments")
-                .select("*")
-                .eq("user_id", athlete["user_id"])
-                .order("date", desc=True)
-                .limit(1)
-                .execute()
-            )
+        if not athletes:
+            return []
 
+        # Batch fetch latest assessments for all athletes
+        athlete_ids = [a["id"] for a in athletes]
+        assessments = wellbeing_repo.get_batch_latest_by_athlete_ids(athlete_ids)
+
+        # Index assessments by athlete_id for quick lookup
+        assessment_by_athlete: dict[str, dict] = {}
+        for assessment in assessments:
+            assessment_by_athlete[str(assessment["athlete_id"])] = assessment
+
+        statuses = []
+        for athlete in athletes:
             athlete_name = (
                 f"{athlete['first_name']} {athlete['last_name']}"
             )
+            assessment = assessment_by_athlete.get(str(athlete["id"]))
 
-            if not assessment_result.data:
+            if not assessment:
                 statuses.append(
                     {
                         "athlete_id": athlete["id"],
@@ -245,34 +236,20 @@ async def get_coach_readiness(user=Depends(get_current_user)):
                 )
                 continue
 
-            row = assessment_result.data[0]
-            is_today = row["date"] == today
+            enriched = _calculate_readiness(assessment)
+            assessment_date = str(assessment.get("assessment_date", ""))
+            is_today = assessment_date == today
 
-            if is_today:
-                enriched = _calculate_readiness(row)
-                statuses.append(
-                    {
-                        "athlete_id": athlete["id"],
-                        "athlete_name": athlete_name,
-                        "date": row["date"],
-                        "readiness_score": enriched["readiness_score"],
-                        "recovery_status": enriched["recovery_status"],
-                        "has_concern": enriched["has_concern"],
-                    }
-                )
-            else:
-                # Has assessment but not from today
-                enriched = _calculate_readiness(row)
-                statuses.append(
-                    {
-                        "athlete_id": athlete["id"],
-                        "athlete_name": athlete_name,
-                        "date": row["date"],
-                        "readiness_score": enriched["readiness_score"],
-                        "recovery_status": "gray",
-                        "has_concern": enriched["has_concern"],
-                    }
-                )
+            statuses.append(
+                {
+                    "athlete_id": athlete["id"],
+                    "athlete_name": athlete_name,
+                    "date": assessment_date,
+                    "readiness_score": enriched["readiness_score"],
+                    "recovery_status": enriched["recovery_status"] if is_today else "gray",
+                    "has_concern": enriched["has_concern"],
+                }
+            )
 
         return statuses
     except HTTPException:

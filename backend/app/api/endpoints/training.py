@@ -6,13 +6,14 @@ Coach-specific endpoints check for coach role in app_metadata/user_metadata.
 """
 
 import logging
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.core.security import get_current_user
-from app.db.session import get_supabase
+from app.db.repositories.athlete_repo import AthleteRepository
+from app.db.repositories.workout_repo import TrainingLoadRepository, WorkoutRepository
 from app.schemas.training import WorkoutCreate
 from app.services.training_service import TrainingService
 
@@ -20,12 +21,16 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+athlete_repo = AthleteRepository()
+workout_repo = WorkoutRepository()
+training_load_repo = TrainingLoadRepository()
+
 
 async def _get_athlete_id_for_user(user) -> str:
     """Look up the athlete_id for the authenticated user.
 
     Args:
-        user: Supabase User object with .id attribute (UUID string).
+        user: Auth user object with .id attribute (UUID string).
 
     Returns:
         The athlete UUID string.
@@ -33,19 +38,13 @@ async def _get_athlete_id_for_user(user) -> str:
     Raises:
         HTTPException 404 if no athlete profile exists for this user.
     """
-    sb = get_supabase()
-    result = (
-        sb.table("athletes")
-        .select("id")
-        .eq("user_id", user.id)
-        .execute()
-    )
-    if not result.data:
+    athlete_id = athlete_repo.get_id_by_user_id(user.id)
+    if not athlete_id:
         raise HTTPException(
             status_code=404,
             detail="No athlete profile found for this user",
         )
-    return result.data[0]["id"]
+    return athlete_id
 
 
 async def _verify_athlete_ownership(athlete_id: str, user) -> None:
@@ -53,20 +52,12 @@ async def _verify_athlete_ownership(athlete_id: str, user) -> None:
 
     Args:
         athlete_id: UUID of the athlete to check.
-        user: Supabase User object with .id attribute.
+        user: Auth user object with .id attribute.
 
     Raises:
         HTTPException 403 if the athlete does not belong to this user.
     """
-    sb = get_supabase()
-    result = (
-        sb.table("athletes")
-        .select("id")
-        .eq("id", athlete_id)
-        .eq("user_id", user.id)
-        .execute()
-    )
-    if not result.data:
+    if not athlete_repo.verify_ownership(athlete_id, user.id):
         raise HTTPException(
             status_code=403,
             detail="Not authorized to access this athlete's data",
@@ -102,16 +93,17 @@ async def get_workouts(
         else:
             athlete_id = await _get_athlete_id_for_user(user)
 
-        training_service = TrainingService()
-        return await training_service.get_recent_workouts(
+        workouts = workout_repo.get_by_athlete(
             athlete_id,
-            limit=limit,
             offset=offset,
+            limit=limit,
             workout_type=workout_type,
             date_from=date_from,
             date_to=date_to,
             search=search,
         )
+        # Attach exercise data to each workout
+        return workout_repo.get_workouts_with_exercises(workouts)
     except HTTPException:
         raise
     except RuntimeError as e:
@@ -139,8 +131,13 @@ async def get_weekly_workouts(
         else:
             athlete_id = await _get_athlete_id_for_user(user)
 
-        training_service = TrainingService()
-        return await training_service.get_weekly_workouts(athlete_id, week_start)
+        start_date = datetime.strptime(week_start, "%Y-%m-%d").date()
+        end_date = start_date + timedelta(days=6)
+
+        workouts = workout_repo.get_by_athlete_date_range(
+            athlete_id, week_start, end_date.isoformat()
+        )
+        return workout_repo.get_workouts_with_exercises(workouts)
     except HTTPException:
         raise
     except RuntimeError as e:
@@ -155,17 +152,10 @@ async def get_weekly_workouts(
 async def get_workout(workout_id: str, user=Depends(get_current_user)):
     """Get a specific workout by UUID. Verifies ownership."""
     try:
-        supabase = get_supabase()
-        result = (
-            supabase.table("workouts")
-            .select("*, workout_exercises(*, exercises(name))")
-            .eq("id", workout_id)
-            .execute()
-        )
-        if not result.data:
+        workout = workout_repo.get_with_exercises(workout_id)
+        if not workout:
             raise HTTPException(status_code=404, detail="Workout not found")
 
-        workout = result.data[0]
         # Verify the workout belongs to the authenticated user's athlete
         await _verify_athlete_ownership(workout["athlete_id"], user)
 
@@ -187,11 +177,31 @@ async def create_workout(workout: WorkoutCreate, user=Depends(get_current_user))
         # Get the authenticated user's athlete_id
         athlete_id = await _get_athlete_id_for_user(user)
 
-        training_service = TrainingService()
         data = workout.model_dump(exclude_none=True)
         # Always set athlete_id from the authenticated user (don't trust client)
         data["athlete_id"] = athlete_id
-        return await training_service.create_workout(data)
+
+        # Separate exercises from workout data if present
+        exercises = data.pop("exercises", None)
+
+        created_workout = workout_repo.create(data)
+
+        # If exercises were provided, insert them linked to the workout
+        if exercises:
+            workout_id = created_workout["id"]
+            for i, exercise in enumerate(exercises):
+                exercise_data = exercise if isinstance(exercise, dict) else exercise.model_dump(exclude_none=True)
+                exercise_data["workout_id"] = workout_id
+                exercise_data["exercise_order"] = i + 1
+            workout_repo.create_exercises_batch(
+                [
+                    (ex if isinstance(ex, dict) else ex.model_dump(exclude_none=True))
+                    | {"workout_id": created_workout["id"], "exercise_order": i + 1}
+                    for i, ex in enumerate(exercises)
+                ]
+            )
+
+        return created_workout
     except HTTPException:
         raise
     except RuntimeError as e:
@@ -225,55 +235,18 @@ def _upsert_training_load(workout: dict) -> None:
         return
 
     srpe = float(rpe) * float(duration)
-
-    sb = get_supabase()
-
-    # Check for existing training_loads row for this athlete + date
-    existing = (
-        sb.table("training_loads")
-        .select("id, training_load")
-        .eq("athlete_id", athlete_id)
-        .eq("date", workout_date)
-        .execute()
-    )
-
-    if existing.data:
-        # Sum: replace with existing load + new sRPE
-        existing_load = float(existing.data[0]["training_load"])
-        new_total = existing_load + srpe
-        sb.table("training_loads").update(
-            {"training_load": new_total, "rpe": rpe}
-        ).eq("id", existing.data[0]["id"]).execute()
-        logger.info(
-            "Updated training_loads for athlete %s on %s: %.1f -> %.1f",
-            athlete_id, workout_date, existing_load, new_total,
-        )
-    else:
-        # Insert new row
-        sb.table("training_loads").insert(
-            {
-                "athlete_id": athlete_id,
-                "date": workout_date,
-                "training_load": srpe,
-                "rpe": rpe,
-            }
-        ).execute()
-        logger.info(
-            "Inserted training_loads for athlete %s on %s: %.1f",
-            athlete_id, workout_date, srpe,
-        )
+    training_load_repo.upsert(athlete_id, str(workout_date), srpe, float(rpe))
 
 
 @router.patch("/workouts/{workout_id}")
 async def update_workout(workout_id: str, updates: dict, user=Depends(get_current_user)):
     """Update a workout (completion status, RPE, notes). Verifies ownership."""
     try:
-        supabase = get_supabase()
         # Fetch workout to verify ownership
-        result = supabase.table("workouts").select("athlete_id").eq("id", workout_id).execute()
-        if not result.data:
+        existing = workout_repo.get_by_id(workout_id)
+        if not existing:
             raise HTTPException(status_code=404, detail="Workout not found")
-        await _verify_athlete_ownership(result.data[0]["athlete_id"], user)
+        await _verify_athlete_ownership(existing["athlete_id"], user)
 
         # Only allow updating safe fields
         allowed_fields = {"is_completed", "rpe", "notes", "actual_load"}
@@ -281,28 +254,26 @@ async def update_workout(workout_id: str, updates: dict, user=Depends(get_curren
         if not safe_updates:
             raise HTTPException(status_code=400, detail="No valid fields to update")
 
-        result = supabase.table("workouts").update(safe_updates).eq("id", workout_id).execute()
-        updated_workout = result.data[0] if result.data else {}
+        updated_workout = workout_repo.update(workout_id, safe_updates)
+        if not updated_workout:
+            updated_workout = {}
 
         # After successful update, upsert training load if workout is completed
         # with both RPE and duration values
         try:
             if updated_workout:
-                # Re-fetch the full workout row to get all fields needed for sRPE
-                full_result = (
-                    supabase.table("workouts")
-                    .select("athlete_id, date, rpe, duration, is_completed")
-                    .eq("id", workout_id)
-                    .execute()
-                )
-                if full_result.data:
-                    full_workout = full_result.data[0]
-                    if (
-                        full_workout.get("is_completed")
-                        and full_workout.get("rpe")
-                        and full_workout.get("duration")
-                    ):
-                        _upsert_training_load(full_workout)
+                full_workout = workout_repo.get_by_id(workout_id)
+                if full_workout and (
+                    full_workout.get("is_completed")
+                    and full_workout.get("rpe")
+                    and full_workout.get("duration_minutes")
+                ):
+                    _upsert_training_load({
+                        "athlete_id": full_workout["athlete_id"],
+                        "date": full_workout["date"],
+                        "rpe": full_workout["rpe"],
+                        "duration": full_workout["duration_minutes"],
+                    })
         except Exception as e:
             # Training load upsert failure should not break the workout update
             logger.error(
@@ -343,27 +314,18 @@ async def get_athletes_workout_status(
         if role != "coach":
             raise HTTPException(status_code=403, detail="Coach role required")
 
-        supabase = get_supabase()
         date_from = (date.today() - timedelta(days=days)).isoformat()
 
         # Get all active athletes
-        athletes_result = (
-            supabase.table("athletes")
-            .select("id, first_name, last_name")
-            .eq("is_active", True)
-            .execute()
-        )
+        athletes = athlete_repo.get_all_active_with_fields("id, first_name, last_name")
 
         statuses = []
-        for athlete in athletes_result.data:
-            workouts_result = (
-                supabase.table("workouts")
-                .select("id, is_completed, date, name")
-                .eq("athlete_id", athlete["id"])
-                .gte("date", date_from)
-                .execute()
+        for athlete in athletes:
+            workouts = workout_repo.get_by_athlete(
+                athlete["id"],
+                date_from=date_from,
+                limit=100,
             )
-            workouts = workouts_result.data
             statuses.append(
                 {
                     "athlete_id": athlete["id"],
@@ -399,21 +361,13 @@ async def get_athlete_workouts_for_coach(
         if role != "coach":
             raise HTTPException(status_code=403, detail="Coach role required")
 
-        supabase = get_supabase()
-        query = (
-            supabase.table("workouts")
-            .select("*, workout_exercises(*, exercises(name, category))")
-            .eq("athlete_id", athlete_id)
-            .order("date", desc=True)
-            .limit(limit)
+        workouts = workout_repo.get_by_athlete(
+            athlete_id,
+            limit=limit,
+            date_from=date_from,
+            date_to=date_to,
         )
-        if date_from:
-            query = query.gte("date", date_from)
-        if date_to:
-            query = query.lte("date", date_to)
-
-        result = query.execute()
-        return result.data
+        return workout_repo.get_workouts_with_exercises(workouts)
     except HTTPException:
         raise
     except RuntimeError as e:
