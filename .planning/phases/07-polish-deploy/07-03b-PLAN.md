@@ -2,8 +2,8 @@
 phase: 07-polish-deploy
 plan: 03b
 type: execute
-wave: 2
-depends_on: ["07-02"]
+wave: 3
+depends_on: ["07-03a"]
 files_modified:
   - backend/app/services/plan_generation_service.py
   - backend/app/services/pmc_service.py
