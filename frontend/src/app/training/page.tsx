@@ -4,6 +4,7 @@ import { Button, Group, Modal, Stack, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { Suspense } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { TrainingTabs } from "@/components/training/TrainingTabs";
 import { WorkoutForm } from "@/components/training/WorkoutForm";
@@ -27,7 +28,9 @@ export default function TrainingPage() {
           </Button>
         </Group>
 
-        <TrainingTabs />
+        <Suspense>
+          <TrainingTabs />
+        </Suspense>
 
         <Modal
           opened={opened}

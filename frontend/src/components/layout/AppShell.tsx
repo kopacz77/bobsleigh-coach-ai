@@ -2,12 +2,14 @@
 
 import {
   Burger,
+  Divider,
   Group,
+  NavLink,
   AppShell as MantineAppShell,
-  rem,
   ScrollArea,
   Text,
-  UnstyledButton,
+  ThemeIcon,
+  rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -24,36 +26,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { ColorSchemeToggle } from "@/components/ui/ColorSchemeToggle";
 
-interface NavLinkItem {
-  icon: ReactNode;
+interface NavItem {
+  icon: typeof IconDashboard;
   label: string;
   href: string;
-}
-
-interface NavLinkProps extends NavLinkItem {
-  active?: boolean;
-}
-
-function NavLink({ icon, label, active, href }: NavLinkProps) {
-  return (
-    <Link href={href} passHref style={{ textDecoration: "none" }}>
-      <UnstyledButton
-        w="100%"
-        p="md"
-        style={{
-          borderRadius: "6px",
-          backgroundColor: active ? "var(--mantine-color-blue-light)" : "transparent",
-          color: active ? "var(--mantine-color-blue-filled)" : "inherit",
-        }}
-      >
-        <Group>
-          {icon}
-          <Text size="sm">{label}</Text>
-        </Group>
-      </UnstyledButton>
-    </Link>
-  );
 }
 
 interface AppShellProps {
@@ -61,66 +39,24 @@ interface AppShellProps {
 }
 
 export function AppShell({ children }: AppShellProps) {
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle, close }] = useDisclosure(false);
   const pathname = usePathname();
   const { isCoach, user, logout } = useAuth();
 
-  const iconSize = rem(20);
-
-  const coachLinks: NavLinkItem[] = [
-    {
-      icon: <IconDashboard size={iconSize} stroke={1.5} />,
-      label: "Dashboard",
-      href: "/dashboard",
-    },
-    {
-      icon: <IconUsers size={iconSize} stroke={1.5} />,
-      label: "Athletes",
-      href: "/athletes",
-    },
-    {
-      icon: <IconChartBar size={iconSize} stroke={1.5} />,
-      label: "Performance",
-      href: "/performance",
-    },
-    {
-      icon: <IconSettings size={iconSize} stroke={1.5} />,
-      label: "Settings",
-      href: "/settings",
-    },
+  const coachLinks: NavItem[] = [
+    { icon: IconDashboard, label: "Dashboard", href: "/dashboard" },
+    { icon: IconUsers, label: "Athletes", href: "/athletes" },
+    { icon: IconChartBar, label: "Performance", href: "/performance" },
+    { icon: IconSettings, label: "Settings", href: "/settings" },
   ];
 
-  const athleteLinks: NavLinkItem[] = [
-    {
-      icon: <IconDashboard size={iconSize} stroke={1.5} />,
-      label: "Dashboard",
-      href: "/dashboard",
-    },
-    {
-      icon: <IconBarbell size={iconSize} stroke={1.5} />,
-      label: "Training",
-      href: "/training",
-    },
-    {
-      icon: <IconChartBar size={iconSize} stroke={1.5} />,
-      label: "Performance",
-      href: "/performance",
-    },
-    {
-      icon: <IconHeart size={iconSize} stroke={1.5} />,
-      label: "Wellbeing",
-      href: "/wellbeing",
-    },
-    {
-      icon: <IconUser size={iconSize} stroke={1.5} />,
-      label: "Profile",
-      href: "/profile",
-    },
-    {
-      icon: <IconSettings size={iconSize} stroke={1.5} />,
-      label: "Settings",
-      href: "/settings",
-    },
+  const athleteLinks: NavItem[] = [
+    { icon: IconDashboard, label: "Dashboard", href: "/dashboard" },
+    { icon: IconBarbell, label: "Training", href: "/training" },
+    { icon: IconChartBar, label: "Performance", href: "/performance" },
+    { icon: IconHeart, label: "Wellbeing", href: "/wellbeing" },
+    { icon: IconUser, label: "Profile", href: "/profile" },
+    { icon: IconSettings, label: "Settings", href: "/settings" },
   ];
 
   const navLinks = isCoach ? coachLinks : athleteLinks;
@@ -129,7 +65,7 @@ export function AppShell({ children }: AppShellProps) {
     <MantineAppShell
       header={{ height: 60 }}
       navbar={{
-        width: 300,
+        width: 260,
         breakpoint: "sm",
         collapsed: { mobile: !opened },
       }}
@@ -137,41 +73,73 @@ export function AppShell({ children }: AppShellProps) {
     >
       <MantineAppShell.Header>
         <Group h="100%" px="md" justify="space-between">
-          <Group>
+          <Group gap="sm">
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-            <Text fw={700} size="lg">
+            <Text
+              fw={700}
+              size="lg"
+              variant="gradient"
+              gradient={{ from: "steelBlue.7", to: "steelBlue.5", deg: 135 }}
+            >
               Bobsleigh Coach AI
             </Text>
           </Group>
-          {user?.email && (
-            <Text size="sm" c="dimmed">
-              {user.email}
-            </Text>
-          )}
+          <Group gap="sm">
+            {user?.email && (
+              <Text size="sm" c="dimmed" visibleFrom="sm">
+                {user.email}
+              </Text>
+            )}
+            <ColorSchemeToggle />
+          </Group>
         </Group>
       </MantineAppShell.Header>
 
-      <MantineAppShell.Navbar p="md">
+      <MantineAppShell.Navbar p="sm">
         <MantineAppShell.Section grow component={ScrollArea}>
-          {navLinks.map((link) => (
-            <NavLink key={link.href} {...link} active={pathname === link.href} />
-          ))}
+          {navLinks.map((link) => {
+            const active = pathname === link.href;
+            return (
+              <NavLink
+                key={link.href}
+                component={Link}
+                href={link.href}
+                label={link.label}
+                active={active}
+                onClick={close}
+                leftSection={
+                  <ThemeIcon variant={active ? "light" : "subtle"} size="md" radius="md">
+                    <link.icon size={rem(18)} stroke={1.5} />
+                  </ThemeIcon>
+                }
+                styles={{
+                  root: {
+                    borderRadius: "var(--mantine-radius-md)",
+                    marginBottom: 4,
+                  },
+                }}
+              />
+            );
+          })}
         </MantineAppShell.Section>
 
+        <Divider my="sm" />
+
         <MantineAppShell.Section>
-          <UnstyledButton
-            w="100%"
-            p="md"
+          <NavLink
+            label="Logout"
             onClick={logout}
-            style={{
-              borderRadius: "6px",
+            leftSection={
+              <ThemeIcon variant="subtle" size="md" radius="md" color="red">
+                <IconLogout size={rem(18)} stroke={1.5} />
+              </ThemeIcon>
+            }
+            styles={{
+              root: {
+                borderRadius: "var(--mantine-radius-md)",
+              },
             }}
-          >
-            <Group>
-              <IconLogout size={iconSize} stroke={1.5} />
-              <Text size="sm">Logout</Text>
-            </Group>
-          </UnstyledButton>
+          />
         </MantineAppShell.Section>
       </MantineAppShell.Navbar>
 
