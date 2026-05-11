@@ -23,7 +23,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { DatePickerInput, type DateValue } from "@mantine/dates";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 import {
   IconArrowDown,
   IconArrowUp,
@@ -177,7 +177,7 @@ interface OverviewMetricCardProps {
  */
 const AdminDashboard: React.FC = () => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase } = useSupabase();
   const [loading, setLoading] = useState<boolean>(false);
   const [athletes, setAthletes] = useState<Athlete[]>([]);
   const [teamStats, setTeamStats] = useState<TeamStats>({

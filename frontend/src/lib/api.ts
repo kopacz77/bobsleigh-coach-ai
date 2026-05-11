@@ -3,6 +3,7 @@ import axios from "axios";
 import { supabase } from "@/lib/supabase";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const AUTH_MODE = process.env.NEXT_PUBLIC_AUTH_MODE || "dev";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -11,32 +12,38 @@ const api = axios.create({
   },
 });
 
-// Request interceptor: attach Supabase access token as Bearer header
+// Request interceptor: attach auth token as Bearer header
 api.interceptors.request.use(
   async (config) => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    if (session?.access_token) {
-      config.headers.Authorization = `Bearer ${session.access_token}`;
+    if (AUTH_MODE === "dev") {
+      // In dev mode the backend DevAuthProvider ignores the token value
+      config.headers.Authorization = "Bearer dev-token";
+    } else {
+      // In supabase mode, attach the real access token
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session?.access_token) {
+        config.headers.Authorization = `Bearer ${session.access_token}`;
+      }
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
-// Response interceptor: redirect to login on 401
+// Response interceptor: redirect to login on 401 (supabase mode only)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && AUTH_MODE !== "dev") {
       // Token expired or invalid -- redirect to login
       if (typeof window !== "undefined") {
         window.location.href = "/auth/login";
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 // API endpoints

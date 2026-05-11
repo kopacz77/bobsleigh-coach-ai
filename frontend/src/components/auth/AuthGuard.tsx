@@ -4,19 +4,28 @@ import { Center, Loader } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSupabase } from "@/providers/SupabaseProvider";
+import { useAuthMode } from "@/providers/AuthProvider";
 
 interface AuthGuardProps {
   children: React.ReactNode;
 }
 
 export function AuthGuard({ children }: AuthGuardProps) {
+  const authMode = useAuthMode();
   const { supabase, loading: providerLoading } = useSupabase();
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
+  // In dev mode the user is always authenticated -- skip Supabase checks
   useEffect(() => {
+    if (authMode === "dev") {
+      setIsAuthenticated(true);
+      setIsLoading(false);
+      return;
+    }
+
     if (!supabase) return;
 
     // Get initial session
@@ -38,7 +47,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [supabase, pathname]);
+  }, [supabase, pathname, authMode]);
 
   function handleRedirect(authed: boolean) {
     const isAuthPage = pathname.startsWith("/auth/");
@@ -50,6 +59,11 @@ export function AuthGuard({ children }: AuthGuardProps) {
       // Logged in but on an auth page -> redirect to dashboard
       router.push("/dashboard");
     }
+  }
+
+  // In dev mode, never show loading state
+  if (authMode === "dev") {
+    return <>{children}</>;
   }
 
   if (providerLoading || isLoading) {

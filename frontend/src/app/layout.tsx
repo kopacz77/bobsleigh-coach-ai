@@ -6,7 +6,7 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
-import { SupabaseProvider } from "@/providers/SupabaseProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 import { theme } from "@/styles/theme";
 
 export const metadata = {
@@ -16,9 +16,9 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <ColorSchemeScript />
+        <ColorSchemeScript defaultColorScheme="auto" />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
@@ -27,12 +27,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ReactQueryProvider>
-          <SupabaseProvider>
-            <MantineProvider theme={theme}>
+          <AuthProvider>
+            <MantineProvider theme={theme} defaultColorScheme="auto">
               <Notifications position="top-right" />
               <AuthGuard>{children}</AuthGuard>
             </MantineProvider>
-          </SupabaseProvider>
+          </AuthProvider>
         </ReactQueryProvider>
       </body>
     </html>
