@@ -25,7 +25,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/providers/AuthProvider";
 import { ColorSchemeToggle } from "@/components/ui/ColorSchemeToggle";
 
 interface NavItem {

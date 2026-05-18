@@ -1,7 +1,7 @@
 "use client";
 
 import { Center, Loader } from "@mantine/core";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/providers/AuthProvider";
 import CoachDashboard from "@/components/dashboard/CoachDashboard";
 import AthleteDashboard from "@/components/dashboard/AthleteDashboard";
 import { AppShell } from "@/components/layout/AppShell";

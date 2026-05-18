@@ -1355,6 +1355,7 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
                     <Stack gap="xs">
                       {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, index) => {
                         const isToday = new Date().getDay() === (index + 1) % 7;
+                        const intensity = weeklyMetrics[index]?.workoutIntensity ?? 0;
                         return (
                           <Group
                             key={day}
@@ -1366,18 +1367,16 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
                             <Text fw={isToday ? 500 : 400}>{day}</Text>
                             <Badge
                               color={
-                                weeklyMetrics[index].workoutIntensity > 7
+                                intensity > 7
                                   ? "red"
-                                  : weeklyMetrics[index].workoutIntensity > 4
+                                  : intensity > 4
                                     ? "yellow"
-                                    : weeklyMetrics[index].workoutIntensity > 0
+                                    : intensity > 0
                                       ? "green"
                                       : "gray"
                               }
                             >
-                              {weeklyMetrics[index].workoutIntensity > 0
-                                ? `${weeklyMetrics[index].workoutIntensity}/10`
-                                : "Rest"}
+                              {intensity > 0 ? `${intensity}/10` : "Rest"}
                             </Badge>
                           </Group>
                         );

@@ -2,7 +2,7 @@
 
 import { Container, Paper, Skeleton, Stack, Tabs, Text, Title } from "@mantine/core";
 import { IconChartLine, IconClipboardCheck, IconTrendingUp } from "@tabler/icons-react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/providers/AuthProvider";
 import { PerformanceChart } from "@/components/dashboard/PerformanceChart";
 import { PerformanceMetrics, PerformanceTrends } from "@/components/performance";
 
