@@ -1,21 +1,20 @@
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-${SUPABASE_URL}}
-        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY:-${SUPABASE_KEY}}
-        NEXT_PUBLIC_API_URL: http://localhost:8000
+  db:
+    image: postgres:16-alpine
     ports:
-      - "3000:3000"
+      - "5432:5432"
     environment:
-      - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://localhost:8000
-      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-${SUPABASE_URL}}
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY:-${SUPABASE_KEY}}
-    depends_on:
-      - backend
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bobsleigh
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/sql/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
@@ -26,26 +25,34 @@ services:
     volumes:
       - ./backend:/app
     environment:
-      - ENVIRONMENT=development
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/bobsleigh
-      - SUPABASE_URL=${SUPABASE_URL}
-      - SUPABASE_KEY=${SUPABASE_KEY}
-      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
-      - SECRET_KEY=${SECRET_KEY:-dev-secret-key}
-      - CORS_ORIGINS=http://localhost:3000,http://frontend:3000
+      ENVIRONMENT: development
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/bobsleigh
+      AUTH_PROVIDER: dev
+      DEV_USER_ID: "00000000-0000-0000-0000-000000000001"
+      DEV_USER_EMAIL: "coach@dev.local"
+      DEV_USER_ROLE: "coach"
+      CORS_ORIGINS: "http://localhost:3000"
+      SECRET_KEY: "dev-secret-key-not-for-production"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
-  db:
-    image: postgres:16-alpine
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # NEXT_PUBLIC_* vars are baked into the client bundle at build time.
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+        NEXT_PUBLIC_AUTH_MODE: dev
     ports:
-      - "5432:5432"
+      - "3000:3000"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=bobsleigh
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_AUTH_MODE: dev
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:
