@@ -16,7 +16,8 @@ import copy
 import logging
 from datetime import date
 
-from app.db.session import get_supabase
+from app.db.repositories.athlete_repo import AthleteRepository
+from app.db.repositories.wellbeing_repo import WellbeingRepository
 
 logger = logging.getLogger(__name__)
 
@@ -70,6 +71,11 @@ class MorningAdaptationService:
     determines a load multiplier, and applies it to all weight-based exercises.
     Does NOT modify the original plan -- adapted values are additional fields.
     """
+
+    def __init__(self) -> None:
+        """Initialize morning adaptation service with repositories."""
+        self.athlete_repo = AthleteRepository()
+        self.wellbeing_repo = WellbeingRepository()
 
     async def adapt_workout(self, plan_day: dict, athlete_user_id: str) -> dict:
         """Adapt a planned workout day based on morning wellness check-in.
@@ -146,26 +152,13 @@ class MorningAdaptationService:
     async def _get_todays_checkin(self, user_id: str) -> dict | None:
         """Fetch today's wellbeing assessment for the given user.
 
-        Returns the row dict if found, or None if no check-in exists today.
+        Resolves user_id -> athlete_id (wellbeing_assessments is keyed by
+        athlete_id), then queries today's record. Returns the row dict if
+        found, or None if no check-in exists today.
         """
         try:
-            sb = get_supabase()
             today = date.today().isoformat()
-
-            result = (
-                sb.table("wellbeing_assessments")
-                .select(
-                    "sleep_quality, stress_level, nutrition_quality, "
-                    "physical_readiness, mental_clarity"
-                )
-                .eq("user_id", user_id)
-                .eq("date", today)
-                .execute()
-            )
-
-            if result.data:
-                return result.data[0]
-            return None
+            return self.wellbeing_repo.get_by_user_and_date(user_id, today)
         except Exception as e:
             logger.error(
                 "Failed to fetch wellbeing check-in for user %s: %s",

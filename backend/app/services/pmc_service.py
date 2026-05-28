@@ -1,14 +1,14 @@
 """Performance Management Chart (PMC) service.
 
 This module provides services for calculating and analyzing PMC metrics
-using real training load data from the Supabase database.
+using real training load data via the repository layer.
 """
 
 import numpy as np
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
-from app.db.session import get_supabase
+from app.db.repositories.training_load_repo import TrainingLoadRepository
 
 
 class PMCService:
@@ -32,6 +32,8 @@ class PMCService:
         self.ctl_decay = np.exp(-1 / ctl_days)
         self.atl_decay = np.exp(-1 / atl_days)
 
+        self.training_load_repo = TrainingLoadRepository()
+
     async def calculate_pmc_for_athlete(
         self, athlete_id: str, days: int = 90
     ) -> Dict[str, List]:
@@ -45,19 +47,9 @@ class PMCService:
             Dictionary with dates, loads, CTL, ATL, and TSB values.
             Returns empty lists if no training data exists.
         """
-        # Query real training loads from the database
-        supabase = get_supabase()
+        # Query real training loads via repository
         from_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
-        result = (
-            supabase.table("training_loads")
-            .select("date, training_load")
-            .eq("athlete_id", athlete_id)
-            .gte("date", from_date)
-            .order("date")
-            .execute()
-        )
-
-        db_loads = result.data
+        db_loads = self.training_load_repo.get_date_and_load(athlete_id, from_date)
 
         # If no training data exists, return empty response
         if not db_loads:
@@ -70,13 +62,19 @@ class PMCService:
             }
 
         # Build a complete date series filling gaps with 0 load (rest days)
-        start_date = datetime.strptime(db_loads[0]["date"], "%Y-%m-%d")
-        end_date = datetime.strptime(db_loads[-1]["date"], "%Y-%m-%d")
+        # Repository returns 'date' as a date object from SQLAlchemy; normalize to string.
+        def _date_str(value) -> str:
+            if isinstance(value, str):
+                return value
+            return value.strftime("%Y-%m-%d")
+
+        start_date = datetime.strptime(_date_str(db_loads[0]["date"]), "%Y-%m-%d")
+        end_date = datetime.strptime(_date_str(db_loads[-1]["date"]), "%Y-%m-%d")
         total_days = (end_date - start_date).days + 1
 
         # Create a lookup for loads by date
         load_by_date = {
-            row["date"]: float(row["training_load"]) for row in db_loads
+            _date_str(row["date"]): float(row["training_load"]) for row in db_loads
         }
 
         # Build continuous date series

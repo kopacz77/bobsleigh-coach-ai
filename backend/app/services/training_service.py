@@ -1,13 +1,16 @@
 """Training service for handling workout data and recommendations.
 
-This module provides services for managing workout data and generating recommendations
-using real Supabase database queries.
+This module provides services for managing workout data and generating
+recommendations using the repository layer (SQLAlchemy-backed).
 """
 
 from datetime import date, datetime, timedelta
 from typing import Dict, List, Optional
 
-from app.db.session import get_supabase
+from sqlalchemy import text
+
+from app.db.repositories.workout_repo import WorkoutRepository
+from app.db.session import engine
 from app.services.pmc_service import PMCService
 
 
@@ -17,6 +20,7 @@ class TrainingService:
     def __init__(self):
         """Initialize the training service."""
         self.pmc_service = PMCService()
+        self.workout_repo = WorkoutRepository()
 
     async def get_recent_workouts(
         self,
@@ -42,29 +46,16 @@ class TrainingService:
         Returns:
             List of workouts with their exercises
         """
-        supabase = get_supabase()
-        query = (
-            supabase.table("workouts")
-            .select("*, workout_exercises(*, exercises(name))")
-            .eq("athlete_id", athlete_id)
+        workouts = self.workout_repo.get_by_athlete(
+            athlete_id,
+            offset=offset,
+            limit=limit,
+            workout_type=workout_type,
+            date_from=date_from,
+            date_to=date_to,
+            search=search,
         )
-
-        if workout_type:
-            query = query.eq("workout_type", workout_type)
-        if date_from:
-            query = query.gte("date", date_from)
-        if date_to:
-            query = query.lte("date", date_to)
-        if search:
-            query = query.ilike("name", f"*{search}*")
-
-        result = (
-            query
-            .order("date", desc=True)
-            .range(offset, offset + limit - 1)
-            .execute()
-        )
-        return result.data
+        return self.workout_repo.get_workouts_with_exercises(workouts)
 
     async def get_weekly_workouts(
         self,
@@ -80,21 +71,14 @@ class TrainingService:
         Returns:
             List of workouts for the week, ordered by date ascending
         """
-        supabase = get_supabase()
         # Calculate week end (Sunday = week_start + 6 days)
         start_date = datetime.strptime(week_start, "%Y-%m-%d").date()
         end_date = start_date + timedelta(days=6)
 
-        result = (
-            supabase.table("workouts")
-            .select("*, workout_exercises(*, exercises(name))")
-            .eq("athlete_id", athlete_id)
-            .gte("date", week_start)
-            .lte("date", end_date.isoformat())
-            .order("date", desc=False)
-            .execute()
+        workouts = self.workout_repo.get_by_athlete_date_range(
+            athlete_id, week_start, end_date.isoformat()
         )
-        return result.data
+        return self.workout_repo.get_workouts_with_exercises(workouts)
 
     async def create_workout(self, workout_data: Dict) -> Dict:
         """Create a new workout in the database.
@@ -105,12 +89,10 @@ class TrainingService:
         Returns:
             Created workout data with generated UUID
         """
-        supabase = get_supabase()
         # Separate exercises from workout data if present
         exercises = workout_data.pop("exercises", None)
 
-        result = supabase.table("workouts").insert(workout_data).execute()
-        created_workout = result.data[0]
+        created_workout = self.workout_repo.create(workout_data)
 
         # If exercises were provided, insert them linked to the workout
         if exercises:
@@ -118,7 +100,7 @@ class TrainingService:
             for i, exercise in enumerate(exercises):
                 exercise["workout_id"] = workout_id
                 exercise["exercise_order"] = i + 1
-            supabase.table("workout_exercises").insert(exercises).execute()
+            self.workout_repo.create_exercises_batch(exercises)
 
         return created_workout
 
@@ -131,19 +113,24 @@ class TrainingService:
         Returns:
             Training recommendations dict with status and recommended workouts
         """
-        supabase = get_supabase()
-
-        # Query stored recommendations
-        result = (
-            supabase.table("training_recommendations")
-            .select("*")
-            .eq("athlete_id", athlete_id)
-            .order("recommendation_date", desc=True)
-            .limit(5)
-            .execute()
-        )
-
-        stored_recommendations = result.data
+        # Query stored recommendations via SQLAlchemy (no dedicated repo yet)
+        stored_recommendations: List[Dict] = []
+        try:
+            with engine.connect() as conn:
+                result = conn.execute(
+                    text(
+                        "SELECT * FROM training_recommendations "
+                        "WHERE athlete_id = :athlete_id "
+                        "ORDER BY recommendation_date DESC LIMIT 5"
+                    ),
+                    {"athlete_id": athlete_id},
+                )
+                stored_recommendations = [
+                    dict(row._mapping) for row in result
+                ]
+        except Exception:
+            # Table may not exist in all environments -- treat as empty
+            stored_recommendations = []
 
         # Also get current PMC status for context
         status = await self.pmc_service.get_training_recommendations(athlete_id)

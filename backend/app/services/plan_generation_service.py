@@ -12,7 +12,10 @@ import math
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from app.db.session import get_supabase
+from app.db.repositories.athlete_repo import AthleteRepository
+from app.db.repositories.plan_repo import PlanRepository
+from app.db.repositories.wellbeing_repo import WellbeingRepository
+from app.db.repositories.workout_repo import WorkoutRepository
 from app.services.exercise_selection_service import ExerciseSelectionService
 from app.services.pmc_service import PMCService
 
@@ -426,6 +429,10 @@ class PlanGenerationService:
         """Initialize the plan generation service."""
         self.pmc_service = PMCService()
         self.exercise_service = ExerciseSelectionService()
+        self.athlete_repo = AthleteRepository()
+        self.workout_repo = WorkoutRepository()
+        self.wellbeing_repo = WellbeingRepository()
+        self.plan_repo = PlanRepository()
 
     async def generate_plan(
         self,
@@ -453,10 +460,8 @@ class PlanGenerationService:
 
         end_date = start_date + timedelta(days=6)
 
-        sb = get_supabase()
-
         # 1. Fetch athlete profile
-        athlete = await self._get_athlete(sb, athlete_id)
+        athlete = await self._get_athlete(athlete_id)
 
         # 2. Get current PMC state
         pmc_data = await self.pmc_service.calculate_pmc_for_athlete(
@@ -469,17 +474,17 @@ class PlanGenerationService:
         # 3. Get recent workouts (last 4 weeks)
         four_weeks_ago = (start_date - timedelta(weeks=4)).isoformat()
         recent_workouts = await self._get_recent_workouts(
-            sb, athlete_id, four_weeks_ago
+            athlete_id, four_weeks_ago, start_date.isoformat()
         )
 
         # 4. Get recent wellbeing data (last 7 days)
         seven_days_ago = (start_date - timedelta(days=7)).isoformat()
         recent_wellbeing = await self._get_recent_wellbeing(
-            sb, athlete_id, seven_days_ago
+            athlete_id, seven_days_ago
         )
 
         # 5. Get coach feedback history (rejection notes)
-        feedback_history = await self._get_feedback_history(sb, athlete_id)
+        feedback_history = await self._get_feedback_history(athlete_id)
 
         # 6. Determine training phase
         training_phase = self._determine_phase(athlete)
@@ -530,39 +535,32 @@ class PlanGenerationService:
         )
 
         # 13. Check for existing plan (same athlete + week + version)
-        existing = (
-            sb.table("weekly_plans")
-            .select("id, version")
-            .eq("athlete_id", athlete_id)
-            .eq("week_start", week_start)
-            .order("version", desc=True)
-            .limit(1)
-            .execute()
-        )
+        existing = self.plan_repo.get_latest_version(athlete_id, week_start)
         version = 1
         parent_plan_id = None
-        if existing.data:
-            version = existing.data[0]["version"] + 1
-            parent_plan_id = existing.data[0]["id"]
+        if existing:
+            version = existing["version"] + 1
+            parent_plan_id = existing["id"]
 
-        # 14. Save to weekly_plans table
+        # 14. Save to weekly_plans table.
+        # JSONB columns (plan_data, generation_metadata, injury_risk_factors)
+        # must be serialized to JSON strings when going through SQLAlchemy text().
+        import json
         row = {
             "athlete_id": athlete_id,
             "week_start": week_start,
             "week_end": end_date.isoformat(),
-            "plan_data": plan_data,
+            "plan_data": json.dumps(plan_data),
             "training_phase": training_phase,
             "status": "pending_review",
             "version": version,
             "parent_plan_id": parent_plan_id,
-            "generation_metadata": generation_metadata,
+            "generation_metadata": json.dumps(generation_metadata),
             "injury_risk_score": injury_risk["score"],
-            "injury_risk_factors": injury_risk["factors"],
+            "injury_risk_factors": json.dumps(injury_risk["factors"]),
         }
-        insert_result = sb.table("weekly_plans").insert(row).execute()
-        saved_plan = insert_result.data[0] if insert_result.data else row
-
-        return saved_plan
+        saved_plan = self.plan_repo.create(row)
+        return saved_plan if saved_plan else row
 
     async def generate_plans_batch(
         self,
@@ -603,11 +601,10 @@ class PlanGenerationService:
     # Internal helpers
     # ================================================================
 
-    async def _get_athlete(self, sb: Any, athlete_id: str) -> Dict:
+    async def _get_athlete(self, athlete_id: str) -> Dict:
         """Fetch athlete profile from the athletes table.
 
         Args:
-            sb: Supabase client.
             athlete_id: Athlete UUID.
 
         Returns:
@@ -616,101 +613,65 @@ class PlanGenerationService:
         Raises:
             ValueError: If athlete not found.
         """
-        result = (
-            sb.table("athletes")
-            .select("*")
-            .eq("id", athlete_id)
-            .execute()
-        )
-        if not result.data:
+        athlete = self.athlete_repo.get_by_id(athlete_id)
+        if not athlete:
             raise ValueError(f"Athlete not found: {athlete_id}")
-        return result.data[0]
+        return athlete
 
     async def _get_recent_workouts(
-        self, sb: Any, athlete_id: str, from_date: str
+        self, athlete_id: str, from_date: str, to_date: str
     ) -> List[Dict]:
-        """Fetch recent workouts with their exercises.
+        """Fetch recent workouts with their exercises via repository layer.
 
         Args:
-            sb: Supabase client.
             athlete_id: Athlete UUID.
             from_date: Start date for query (ISO format).
+            to_date: End date for query (ISO format).
 
         Returns:
-            List of workout dicts with workout_exercises.
+            List of workout dicts with workout_exercises attached.
         """
-        result = (
-            sb.table("workouts")
-            .select("*, workout_exercises(*, exercises(name, category))")
-            .eq("athlete_id", athlete_id)
-            .gte("date", from_date)
-            .order("date", desc=True)
-            .execute()
+        workouts = self.workout_repo.get_by_athlete(
+            athlete_id,
+            offset=0,
+            limit=200,
+            date_from=from_date,
+            date_to=to_date,
         )
-        return result.data
+        return self.workout_repo.get_workouts_with_exercises(workouts)
 
     async def _get_recent_wellbeing(
-        self, sb: Any, athlete_id: str, from_date: str
+        self, athlete_id: str, from_date: str
     ) -> List[Dict]:
-        """Fetch recent wellbeing assessments.
+        """Fetch recent wellbeing assessments via repository layer.
 
-        Uses athlete_id to look up user_id first, since wellbeing_assessments
-        are keyed by user_id in production.
+        Uses athlete_id directly since the wellbeing_assessments table is
+        keyed by athlete_id (per fresh_clean_schema.sql).
 
         Args:
-            sb: Supabase client.
             athlete_id: Athlete UUID.
             from_date: Start date for query (ISO format).
 
         Returns:
-            List of wellbeing assessment dicts.
+            List of wellbeing assessment dicts, newest first.
         """
-        # Get user_id from athlete record
-        athlete_result = (
-            sb.table("athletes")
-            .select("user_id")
-            .eq("id", athlete_id)
-            .execute()
-        )
-        if not athlete_result.data or not athlete_result.data[0].get("user_id"):
-            return []
+        rows = self.wellbeing_repo.get_range(athlete_id, from_date)
+        # Returned ascending; reverse for newest-first to preserve legacy contract.
+        return list(reversed(rows))
 
-        user_id = athlete_result.data[0]["user_id"]
-        result = (
-            sb.table("wellbeing_assessments")
-            .select("*")
-            .eq("user_id", user_id)
-            .gte("date", from_date)
-            .order("date", desc=True)
-            .execute()
-        )
-        return result.data
-
-    async def _get_feedback_history(
-        self, sb: Any, athlete_id: str
-    ) -> List[Dict]:
+    async def _get_feedback_history(self, athlete_id: str) -> List[Dict]:
         """Get rejection notes from past plans for this athlete.
 
         Args:
-            sb: Supabase client.
             athlete_id: Athlete UUID.
 
         Returns:
             List of dicts with rejection_notes from rejected plans.
         """
-        result = (
-            sb.table("weekly_plans")
-            .select("rejection_notes, rejected_at, week_start")
-            .eq("athlete_id", athlete_id)
-            .eq("status", "rejected")
-            .order("rejected_at", desc=True)
-            .limit(10)
-            .execute()
+        rows = self.plan_repo.get_for_athlete(
+            athlete_id, status="rejected", limit=10
         )
-        return [
-            row for row in result.data
-            if row.get("rejection_notes")
-        ]
+        return [row for row in rows if row.get("rejection_notes")]
 
     def _determine_phase(self, athlete: Dict) -> str:
         """Determine the current training phase for an athlete.

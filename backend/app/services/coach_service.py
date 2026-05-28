@@ -8,7 +8,8 @@ calculated on read (not stored) matching the established readiness pattern.
 from datetime import date, datetime, timedelta
 from typing import Dict, List
 
-from app.db.session import get_supabase
+from app.db.repositories.coach_repo import CoachRepository
+from app.db.repositories.wellbeing_repo import WellbeingRepository
 from app.services.pmc_service import PMCService
 
 
@@ -42,6 +43,8 @@ class CoachService:
     def __init__(self):
         """Initialize the coach service."""
         self.pmc_service = PMCService()
+        self.coach_repo = CoachRepository()
+        self.wellbeing_repo = WellbeingRepository()
 
     async def get_coach_id(self, user_id: str) -> str:
         """Look up the coach UUID for a given auth user ID.
@@ -55,16 +58,10 @@ class CoachService:
         Raises:
             ValueError: If no coach record exists for this user.
         """
-        sb = get_supabase()
-        result = (
-            sb.table("coaches")
-            .select("id")
-            .eq("user_id", user_id)
-            .execute()
-        )
-        if not result.data:
+        coach_id = self.coach_repo.get_coach_id_by_user_id(user_id)
+        if not coach_id:
             raise ValueError(f"No coach record found for user {user_id}")
-        return result.data[0]["id"]
+        return coach_id
 
     async def get_athlete_ids(self, coach_id: str) -> List[str]:
         """Get list of active athlete IDs for a coach.
@@ -75,15 +72,7 @@ class CoachService:
         Returns:
             List of athlete UUID strings for active relationships.
         """
-        sb = get_supabase()
-        result = (
-            sb.table("coach_athletes")
-            .select("athlete_id")
-            .eq("coach_id", coach_id)
-            .is_("ended_at", "null")
-            .execute()
-        )
-        return [row["athlete_id"] for row in result.data]
+        return self.coach_repo.get_athlete_ids(coach_id)
 
     async def get_roster(self, coach_id: str) -> List[Dict]:
         """Get the coach's athlete roster with joined athlete data.
@@ -94,18 +83,7 @@ class CoachService:
         Returns:
             List of roster entries with athlete details (name, email, status).
         """
-        sb = get_supabase()
-        result = (
-            sb.table("coach_athletes")
-            .select(
-                "athlete_id, relationship_type, access_level, started_at, "
-                "athletes(id, first_name, last_name, email, is_active)"
-            )
-            .eq("coach_id", coach_id)
-            .is_("ended_at", "null")
-            .execute()
-        )
-        return result.data
+        return self.coach_repo.get_athletes(coach_id)
 
     async def get_athletes_pmc_summary(self, coach_id: str) -> List[Dict]:
         """Get PMC summary (CTL/ATL/TSB) for all coached athletes.
@@ -125,18 +103,8 @@ class CoachService:
         if not athlete_ids:
             return []
 
-        # Batch-fetch athlete names
-        sb = get_supabase()
-        athletes_result = (
-            sb.table("athletes")
-            .select("id, first_name, last_name")
-            .in_("id", athlete_ids)
-            .execute()
-        )
-        name_map = {
-            a["id"]: f"{a['first_name']} {a['last_name']}"
-            for a in athletes_result.data
-        }
+        # Batch-fetch athlete names via repository
+        name_map = self.coach_repo.get_athlete_names(athlete_ids)
 
         summaries = []
 
@@ -195,45 +163,28 @@ class CoachService:
         if not athlete_ids:
             return []
 
-        sb = get_supabase()
         today = date.today()
         today_str = today.isoformat()
         two_days_ago = (today - timedelta(days=2)).isoformat()
+        seven_days_ago = (today - timedelta(days=7)).isoformat()
 
-        # Batch-fetch athlete names
-        athletes_result = (
-            sb.table("athletes")
-            .select("id, user_id, first_name, last_name")
-            .in_("id", athlete_ids)
-            .execute()
-        )
+        # Batch-fetch athlete metadata via repository
+        athlete_rows = self.coach_repo.get_athletes_with_user_ids(athlete_ids)
         athlete_map = {
             a["id"]: {
                 "name": f"{a['first_name']} {a['last_name']}",
                 "user_id": a["user_id"],
             }
-            for a in athletes_result.data
+            for a in athlete_rows
         }
 
-        # Batch-fetch recent wellbeing assessments (last 7 days for all athletes)
-        user_ids = [info["user_id"] for info in athlete_map.values()]
-        wellbeing_result = (
-            sb.table("wellbeing_assessments")
-            .select("user_id, date, sleep_quality, stress_level, "
-                    "nutrition_quality, physical_readiness, mental_clarity")
-            .in_("user_id", user_ids)
-            .gte("date", (today - timedelta(days=7)).isoformat())
-            .order("date", desc=True)
-            .execute()
-        )
-
-        # Index wellbeing by user_id
-        wellbeing_by_user: Dict[str, List[dict]] = {}
-        for row in wellbeing_result.data:
-            uid = row["user_id"]
-            if uid not in wellbeing_by_user:
-                wellbeing_by_user[uid] = []
-            wellbeing_by_user[uid].append(row)
+        # Build per-athlete recent assessment lists (last 7 days).
+        # The wellbeing schema is now keyed by athlete_id + assessment_date.
+        wellbeing_by_athlete: Dict[str, List[dict]] = {}
+        for athlete_id in athlete_ids:
+            rows = self.wellbeing_repo.get_range(athlete_id, seven_days_ago)
+            # get_range returns ascending order; reverse for newest-first.
+            wellbeing_by_athlete[athlete_id] = list(reversed(rows))
 
         alerts = []
 
@@ -243,12 +194,14 @@ class CoachService:
                 continue
 
             athlete_name = info["name"]
-            user_id = info["user_id"]
-            assessments = wellbeing_by_user.get(user_id, [])
+            assessments = wellbeing_by_athlete.get(athlete_id, [])
 
             # Alert 1: missed_checkin - no assessment in 2+ days
             if assessments:
-                latest_date = assessments[0]["date"]
+                latest = assessments[0].get("assessment_date")
+                latest_date = (
+                    latest if isinstance(latest, str) else latest.isoformat()
+                )
                 if latest_date < two_days_ago:
                     alerts.append(
                         {
@@ -280,29 +233,38 @@ class CoachService:
                 )
 
             # Alert 2: low_readiness - avg readiness < 4 over last 2 days
-            recent_assessments = [
-                a for a in assessments if a["date"] >= two_days_ago
-            ]
+            recent_assessments = []
+            for a in assessments:
+                a_date = a.get("assessment_date")
+                a_date_str = (
+                    a_date if isinstance(a_date, str) else a_date.isoformat()
+                )
+                if a_date_str >= two_days_ago:
+                    recent_assessments.append(a)
             if recent_assessments:
-                readiness_scores = [
-                    _calculate_readiness(a) for a in recent_assessments
-                ]
-                avg_readiness = sum(readiness_scores) / len(readiness_scores)
-                if avg_readiness < 4:
-                    alerts.append(
-                        {
-                            "type": "low_readiness",
-                            "severity": "high",
-                            "athlete_id": athlete_id,
-                            "athlete_name": athlete_name,
-                            "message": (
-                                f"{athlete_name} has low readiness "
-                                f"(avg {avg_readiness:.1f}/10 over last 2 days). "
-                                f"Recovery day recommended."
-                            ),
-                            "date": today_str,
-                        }
-                    )
+                readiness_scores = []
+                for a in recent_assessments:
+                    try:
+                        readiness_scores.append(_calculate_readiness(a))
+                    except (KeyError, TypeError):
+                        continue
+                if readiness_scores:
+                    avg_readiness = sum(readiness_scores) / len(readiness_scores)
+                    if avg_readiness < 4:
+                        alerts.append(
+                            {
+                                "type": "low_readiness",
+                                "severity": "high",
+                                "athlete_id": athlete_id,
+                                "athlete_name": athlete_name,
+                                "message": (
+                                    f"{athlete_name} has low readiness "
+                                    f"(avg {avg_readiness:.1f}/10 over last 2 days). "
+                                    f"Recovery day recommended."
+                                ),
+                                "date": today_str,
+                            }
+                        )
 
         # PMC-based alerts: fatigue_spike and overtraining_risk
         pmc_summaries = await self.get_athletes_pmc_summary(coach_id)
@@ -324,6 +286,11 @@ class CoachService:
                 is_fatigue_spike = True
 
             if is_fatigue_spike and current_tsb >= -30:
+                ratio_str = (
+                    f"{current_atl / current_ctl:.2f}"
+                    if current_ctl > 0
+                    else "N/A"
+                )
                 alerts.append(
                     {
                         "type": "fatigue_spike",
@@ -332,8 +299,7 @@ class CoachService:
                         "athlete_name": athlete_name,
                         "message": (
                             f"{athlete_name} shows a fatigue spike "
-                            f"(TSB: {current_tsb}, ATL/CTL: "
-                            f"{current_atl / current_ctl:.2f if current_ctl > 0 else 'N/A'}). "
+                            f"(TSB: {current_tsb}, ATL/CTL: {ratio_str}). "
                             f"Consider reducing training load."
                         ),
                         "date": today_str,
@@ -375,22 +341,9 @@ class CoachService:
         Returns:
             The inserted coach_athletes row.
         """
-        sb = get_supabase()
-        today_str = date.today().isoformat()
-        result = (
-            sb.table("coach_athletes")
-            .insert(
-                {
-                    "coach_id": coach_id,
-                    "athlete_id": athlete_id,
-                    "relationship_type": relationship_type,
-                    "access_level": "full",
-                    "started_at": today_str,
-                }
-            )
-            .execute()
+        return self.coach_repo.add_athlete(
+            coach_id, athlete_id, relationship_type
         )
-        return result.data[0] if result.data else {}
 
     async def remove_athlete(self, coach_id: str, athlete_id: str) -> Dict:
         """Soft-remove an athlete from the coach's roster.
@@ -405,14 +358,5 @@ class CoachService:
         Returns:
             The updated coach_athletes row.
         """
-        sb = get_supabase()
-        today_str = date.today().isoformat()
-        result = (
-            sb.table("coach_athletes")
-            .update({"ended_at": today_str})
-            .eq("coach_id", coach_id)
-            .eq("athlete_id", athlete_id)
-            .is_("ended_at", "null")
-            .execute()
-        )
-        return result.data[0] if result.data else {}
+        result = self.coach_repo.remove_athlete(coach_id, athlete_id)
+        return result if result else {}

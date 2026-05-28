@@ -1,13 +1,13 @@
 """Performance service for handling athlete performance data and analysis.
 
 This module provides services for analyzing and visualizing athlete performance
-using real Supabase database queries.
+using the repository layer (SQLAlchemy-backed).
 """
 
 from datetime import date, datetime, timedelta
 from typing import Dict, List, Optional
 
-from app.db.session import get_supabase
+from app.db.repositories.performance_repo import PerformanceRepository
 from app.services.pmc_service import PMCService
 
 
@@ -17,6 +17,7 @@ class PerformanceService:
     def __init__(self):
         """Initialize the performance service."""
         self.pmc_service = PMCService()
+        self.performance_repo = PerformanceRepository()
 
     async def get_performance_metrics(self, athlete_id: str) -> List[Dict]:
         """Get performance metrics for an athlete from the database.
@@ -27,15 +28,7 @@ class PerformanceService:
         Returns:
             List of performance metric records
         """
-        supabase = get_supabase()
-        result = (
-            supabase.table("performance_metrics")
-            .select("*")
-            .eq("athlete_id", athlete_id)
-            .order("date", desc=True)
-            .execute()
-        )
-        return result.data
+        return self.performance_repo.get_by_athlete(athlete_id)
 
     async def get_performance_trends(
         self, athlete_id: str, metric: str, days: int = 90
@@ -50,18 +43,8 @@ class PerformanceService:
         Returns:
             List of performance metric records filtered by metric and date range
         """
-        supabase = get_supabase()
         from_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
-        result = (
-            supabase.table("performance_metrics")
-            .select("*")
-            .eq("athlete_id", athlete_id)
-            .eq("metric_name", metric)
-            .gte("date", from_date)
-            .order("date")
-            .execute()
-        )
-        return result.data
+        return self.performance_repo.get_trends(athlete_id, metric, from_date)
 
     async def get_training_load(self, athlete_id: str, days: int = 90) -> Dict:
         """Get training load data using the PMC model with real database data.

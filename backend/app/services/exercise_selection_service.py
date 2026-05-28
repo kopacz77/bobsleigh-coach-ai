@@ -7,7 +7,7 @@ defaults when database exercises are unavailable.
 
 from typing import Dict, List, Optional
 
-from app.db.session import get_supabase
+from app.db.repositories.exercise_repo import ExerciseRepository
 
 
 # Mapping from session type to exercise categories in the exercises table
@@ -193,6 +193,10 @@ class ExerciseSelectionService:
     defaults when the database has insufficient exercises.
     """
 
+    def __init__(self) -> None:
+        """Initialize the exercise selection service."""
+        self.exercise_repo = ExerciseRepository()
+
     async def select_exercises(
         self,
         session_type: str,
@@ -249,23 +253,28 @@ class ExerciseSelectionService:
             return []
 
         try:
-            sb = get_supabase()
-            result = (
-                sb.table("exercises")
-                .select("id, name, category, measurement_type, "
-                        "muscle_groups, difficulty_level")
-                .eq("is_active", True)
-                .in_("category", categories)
-                .limit(count)
-                .execute()
-            )
+            # Query each category and aggregate results since the repo's
+            # search() takes a single category at a time.
+            collected: List[Dict] = []
+            seen_ids: set = set()
+            for cat in categories:
+                rows = self.exercise_repo.search(category=cat, limit=count)
+                for ex in rows:
+                    if ex["id"] in seen_ids:
+                        continue
+                    seen_ids.add(ex["id"])
+                    collected.append(ex)
+                    if len(collected) >= count:
+                        break
+                if len(collected) >= count:
+                    break
 
-            if not result.data:
+            if not collected:
                 return []
 
             return [
                 self._format_db_exercise(ex, section)
-                for ex in result.data
+                for ex in collected[:count]
             ]
         except Exception:
             # Database unavailable -- fall through to fallback

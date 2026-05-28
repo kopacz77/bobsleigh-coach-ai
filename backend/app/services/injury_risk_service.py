@@ -9,9 +9,10 @@ commonly used in athlete monitoring literature.
 """
 
 import logging
+from datetime import date, timedelta
 from typing import Any, Dict, List
 
-from app.db.session import get_supabase
+from app.db.repositories.wellbeing_repo import WellbeingRepository
 from app.services.pmc_service import PMCService
 
 logger = logging.getLogger(__name__)
@@ -60,6 +61,7 @@ class InjuryRiskService:
     def __init__(self) -> None:
         """Initialize injury risk service with PMC dependency."""
         self.pmc_service = PMCService()
+        self.wellbeing_repo = WellbeingRepository()
 
     async def assess_risk(self, athlete_id: str) -> Dict[str, Any]:
         """Assess composite injury risk for an athlete.
@@ -178,8 +180,8 @@ class InjuryRiskService:
     ) -> List[Dict]:
         """Fetch recent wellbeing assessments for an athlete.
 
-        Looks up athlete.user_id first since wellbeing_assessments
-        are keyed by user_id (not athlete_id).
+        Uses athlete_id directly since the wellbeing_assessments table is
+        keyed by athlete_id (per fresh_clean_schema.sql).
 
         Args:
             athlete_id: Athlete UUID.
@@ -188,33 +190,7 @@ class InjuryRiskService:
         Returns:
             List of wellbeing assessment dicts, newest first.
         """
-        sb = get_supabase()
-
-        # Look up user_id from athletes table
-        athlete_result = (
-            sb.table("athletes")
-            .select("user_id")
-            .eq("id", athlete_id)
-            .execute()
-        )
-        if not athlete_result.data or not athlete_result.data[0].get("user_id"):
-            return []
-
-        user_id = athlete_result.data[0]["user_id"]
-
-        from datetime import date, timedelta
-
         from_date = (date.today() - timedelta(days=days)).isoformat()
-
-        result = (
-            sb.table("wellbeing_assessments")
-            .select(
-                "date, sleep_quality, stress_level, "
-                "nutrition_quality, physical_readiness, mental_clarity"
-            )
-            .eq("user_id", user_id)
-            .gte("date", from_date)
-            .order("date", desc=True)
-            .execute()
-        )
-        return result.data
+        # get_range returns ascending; reverse for newest-first
+        rows = self.wellbeing_repo.get_range(athlete_id, from_date)
+        return list(reversed(rows))
