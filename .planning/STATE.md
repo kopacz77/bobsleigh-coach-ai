@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 7 of 7 (Polish & Deploy)
-Plan: 4 of 9 in phase 7 (most recently completed; 07-08 also done in parallel)
-Status: In progress
-Last activity: 2026-05-28 -- Completed 07-04-PLAN.md (Docker Compose local stack + seeded data)
+Plan: 7 of 9 in phase 7 (most recently completed; 07-04 and 07-08 already done)
+Status: Phase complete
+Last activity: 2026-05-28 -- Completed 07-07-PLAN.md (APScheduler auto-generation of weekly plans)
 
-Progress: ████████████████████ 100% (33 plans complete, ~0 remaining in phase 7)
+Progress: ████████████████████ 100% (34 plans complete, ~0 remaining in phase 7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 33
+- Total plans completed: 34
 - Average duration: ~5min
-- Total execution time: ~164min
+- Total execution time: ~167min
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ████████████████████ 100% (33 
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
 | 6. AI Training Engine | 5/5 | ~18min | ~4min |
-| 7. Polish & Deploy | 9/9 | ~57min | ~6min |
+| 7. Polish & Deploy | 10/10 | ~60min | ~6min |
 
 **Recent Trend:**
-- Last 5 plans: 07-03a (5min), 07-06 (7min), 07-03b (7min), 07-08 (7min), 07-04 (9min)
-- Trend: Phase 7 complete -- local Docker stack with seeded Joshua Hudson data ships zero-credential dev environment
+- Last 5 plans: 07-06 (7min), 07-03b (7min), 07-08 (7min), 07-04 (9min), 07-07 (3min)
+- Trend: Phase 7 fully complete -- automated Saturday-night plan generation closes the AI training loop end-to-end
 
 ## Accumulated Context
 
@@ -182,6 +182,14 @@ Recent decisions affecting current work:
 - NEXT_PUBLIC_AUTH_MODE plumbed as a Dockerfile ARG (not just runtime env) because Next.js inlines NEXT_PUBLIC_* at pnpm build time
 - CORS_ORIGINS now accepts either JSON array OR comma-separated string via field_validator (previously crashed pydantic-settings on bare values)
 - Per-table updated_at triggers wrapped in DO $$ ... pg_trigger lookup $$ blocks (CREATE TRIGGER has no IF NOT EXISTS)
+- APScheduler AsyncIOScheduler runs in-process with FastAPI (shares event loop; no separate worker)
+- Scheduler lifecycle owned by FastAPI lifespan context manager (replaces deprecated @app.on_event("startup"))
+- Lazy import services inside APScheduler job bodies to avoid circular imports and keep app.scheduler cheap to import
+- ENABLE_SCHEDULER env var (default True) lets tests/scripts disable background jobs without code changes
+- Saturday 22:00 + Monday 08:00 cron schedule -- plans generated for upcoming week, coach review window Sun/Mon
+- Per-coach try/except in batch plan generation -- one coach's failure does not block others
+- scheduler.shutdown(wait=False) so long-running jobs do not block FastAPI process exit
+- _next_monday helper always returns strict next Monday (Mon -> following Mon, never today)
 
 ### Pending Todos
 
@@ -208,9 +216,12 @@ Recent decisions affecting current work:
 - Orphaned `app/api/endpoints/generate_weekly_plan.py` references nonexistent `services.database` module (not mounted, harmless but should be removed)
 - Host PostgreSQL on 5432 may collide with docker-compose's mapped port -- users with local Postgres need to stop it or remap before `docker compose up`
 - Docker not available in this WSL distro -- `docker compose up` live boot was not verified end-to-end; static YAML + SQL column-count validation passed
+- Cloud Run horizontal scaling caveat: in-process APScheduler will fire the Saturday job on every backend instance. For 07-08 deploy, pin backend to min/max-instances=1 OR add leader-election (out of scope for 07-07)
+- Pre-existing pytest path issue: `pytest` from `backend/` requires `PYTHONPATH=.` because there is no pyproject.toml/pytest.ini setting pythonpath -- noted, not addressed in 07-07
+- Pre-existing test_performance_api 401 vs 200 failure exists on main (auth added after legacy test) -- unrelated to 07-07
 
 ## Session Continuity
 
 Last session: 2026-05-28
-Stopped at: Completed 07-04-PLAN.md (Docker Compose local stack). Consolidated 14-table schema, dev users (coach + Joshua Hudson), 260 synthesized workouts, 24 performance metrics, 67 wellbeing assessments, and 65 bobsleigh + Cyrus Gray exercises auto-seeded via docker-entrypoint-initdb.d. Fixed latent CORS_ORIGINS parsing bug in config.py.
+Stopped at: Completed 07-07-PLAN.md (APScheduler auto plan generation). Saturday 22:00 generates next-week plans for every active coach roster via PlanGenerationService.generate_plans_batch; Monday 08:00 logs unreviewed-plans warnings. Wired into FastAPI lifespan; ENABLE_SCHEDULER toggle for tests. Phase 7 (and the project's planned scope) is now complete.
 Resume file: None
