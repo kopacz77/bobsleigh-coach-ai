@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 7 of 7 (Polish & Deploy)
-Plan: 7 of 9 in phase 7
+Plan: 8 of 9 in phase 7
 Status: In progress
-Last activity: 2026-05-28 -- Completed 07-03b-PLAN.md (service-layer Supabase decoupling)
+Last activity: 2026-05-28 -- Completed 07-08-PLAN.md (offline workout queue via Dexie/IndexedDB)
 
-Progress: ████████████████████ 97% (31 plans complete, ~2 remaining in phase 7)
+Progress: ████████████████████ 100% (32 plans complete, ~1 remaining in phase 7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 31
+- Total plans completed: 32
 - Average duration: ~5min
-- Total execution time: ~148min
+- Total execution time: ~155min
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ████████████████████ 97% (31 p
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
 | 6. AI Training Engine | 5/5 | ~18min | ~4min |
-| 7. Polish & Deploy | 7/9 | ~41min | ~6min |
+| 7. Polish & Deploy | 8/9 | ~48min | ~6min |
 
 **Recent Trend:**
-- Last 5 plans: 07-02 (6min), 07-05 (8min), 07-03a (5min), 07-06 (7min), 07-03b (7min)
-- Trend: Steady pace; backend Supabase decoupling complete
+- Last 5 plans: 07-05 (8min), 07-03a (5min), 07-06 (7min), 07-03b (7min), 07-08 (7min)
+- Trend: Steady pace; offline-first workout queue shipped, ready for PWA work
 
 ## Accumulated Context
 
@@ -167,6 +167,11 @@ Recent decisions affecting current work:
 - get_supabase() emits DeprecationWarning when called; only SupabaseAuthProvider may still use it
 - Fixed latent f-string bug in coach_service fatigue_spike alert (invalid `:.2f if ... else 'N/A'` format spec)
 - Orphaned `app/api/endpoints/generate_weekly_plan.py` (not mounted, imports nonexistent module) flagged for cleanup
+- Offline writes use Dexie 4 (IndexedDB) with auto-sync on 'online' event + 30s polling safety-net
+- Network-error detection via axios error shape (no response + ERR_NETWORK/ECONNABORTED), not just string matching, so 4xx/5xx still surface to user
+- OfflineDb singleton at module scope: Dexie opens IndexedDB lazily so SSR import is harmless
+- Failed offline-sync attempts increment retries + store last_error -- nothing is ever dropped silently
+- `AuthState.user` is intentionally `unknown` (dev/supabase providers return different types) -- consumers narrow at use-site with `as { id?, email? }`
 
 ### Pending Todos
 
@@ -195,5 +200,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-05-28
-Stopped at: Completed 07-03b-PLAN.md (service-layer Supabase decoupling). All 8 backend services and /health endpoint migrated to repository layer; get_supabase() deprecated.
+Stopped at: Completed 07-08-PLAN.md (offline workout queue). Dexie.js IndexedDB queue, useOfflineSync hook with auto-sync on reconnect, OfflineIndicator badge, and ActiveWorkout offline fallback all shipped. Fixed pre-existing TS build failures in dashboard/performance/AppShell as blocking deviation.
 Resume file: None
