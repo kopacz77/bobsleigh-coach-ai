@@ -1,3 +1,5 @@
+import warnings
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -28,10 +30,17 @@ def get_supabase() -> Client:
     """Get a Supabase client with service role key for backend operations.
 
     .. deprecated::
-        This function is being replaced by the repository layer
-        (app.db.repositories). Do not add new usages. Will be removed
-        once all endpoint and service files are fully migrated.
+        This function has been replaced by the repository layer
+        (app.db.repositories). Remaining usages are limited to
+        SupabaseAuthProvider in app/auth/auth_provider.py. Emits a
+        DeprecationWarning when called from any other module.
     """
+    warnings.warn(
+        "get_supabase() is deprecated. Use repository classes from "
+        "app.db.repositories instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     if not settings.SUPABASE_URL or not settings.SUPABASE_SERVICE_ROLE_KEY:
         raise RuntimeError(
             "Supabase credentials not configured. "

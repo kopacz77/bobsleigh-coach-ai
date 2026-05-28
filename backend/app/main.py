@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
 from app.api.router import api_router
 from app.core.config import settings
+from app.db.session import engine
 
 # Create FastAPI app
 app = FastAPI(
@@ -28,14 +30,17 @@ app.include_router(api_router, prefix="/api")
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint with database connectivity test"""
+    """Health check endpoint with database connectivity test.
+
+    Uses SQLAlchemy engine (not Supabase client) so the backend can run
+    against any PostgreSQL database including local PostgreSQL in
+    AUTH_PROVIDER=dev mode.
+    """
     db_status = "disconnected"
     try:
-        from app.db.session import get_supabase
-
-        sb = get_supabase()
-        result = sb.table("sports").select("id").limit(1).execute()
-        db_status = "connected" if result.data else "empty"
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT id FROM sports LIMIT 1"))
+            db_status = "connected" if result.fetchone() else "empty"
     except Exception as e:
         db_status = f"error: {str(e)}"
 
