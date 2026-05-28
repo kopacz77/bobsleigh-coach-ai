@@ -33,6 +33,7 @@ services:
       DEV_USER_ROLE: "coach"
       CORS_ORIGINS: "http://localhost:3000"
       SECRET_KEY: "dev-secret-key-not-for-production"
+      ENABLE_SCHEDULER: "True"
     depends_on:
       db:
         condition: service_healthy

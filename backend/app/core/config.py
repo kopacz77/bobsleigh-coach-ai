@@ -48,6 +48,11 @@ class Settings(BaseSettings):
     SUPABASE_KEY: str = ""
     SUPABASE_SERVICE_ROLE_KEY: str = ""
 
+    # Scheduler settings
+    # When False, the APScheduler background job runner does not start.
+    # Tests and one-off scripts should set ENABLE_SCHEDULER=false.
+    ENABLE_SCHEDULER: bool = True
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 

@@ -20,6 +20,9 @@ bcrypt==4.1.2
 numpy>=1.26.3
 pandas>=2.1.4
 
+# Scheduling
+apscheduler==3.10.4
+
 # Testing
 pytest==7.4.4
 httpx>=0.24.0,<0.25.0
