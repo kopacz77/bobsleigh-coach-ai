@@ -1,6 +1,7 @@
 // Export all UI components for easy importing
 
 export { ColorSchemeToggle } from "./ColorSchemeToggle";
+export { OfflineIndicator } from "./OfflineIndicator";
 export { TrendCharts } from "../charts/TrendCharts";
 export { ErrorBoundary, withErrorBoundary } from "../common/ErrorBoundary";
 export {

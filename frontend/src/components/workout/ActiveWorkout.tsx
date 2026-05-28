@@ -23,8 +23,37 @@ import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { useWakeLock } from "@/hooks/useWakeLock";
 import { useCreateWorkout } from "@/hooks/useTraining";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
+import { OfflineIndicator } from "@/components/ui/OfflineIndicator";
 import { type SetData, SetLogger } from "./SetLogger";
 import { RestTimer } from "./RestTimer";
+
+/**
+ * Heuristic to decide whether a workout submission failure is a network
+ * error (which should fall back to the offline queue) vs a real API error
+ * like 4xx/5xx (which the user should see and not silently queue).
+ */
+function isNetworkError(err: unknown): boolean {
+  if (typeof navigator !== "undefined" && !navigator.onLine) return true;
+  if (!err || typeof err !== "object") return false;
+  // Axios error shape: { response, request, message, code }
+  const e = err as {
+    response?: unknown;
+    request?: unknown;
+    message?: string;
+    code?: string;
+  };
+  // If the server responded (any status), it's not a network error.
+  if (e.response) return false;
+  if (e.code === "ERR_NETWORK" || e.code === "ECONNABORTED") return true;
+  const msg = (e.message ?? "").toLowerCase();
+  if (msg.includes("network") || msg.includes("fetch") || msg.includes("failed to fetch")) {
+    return true;
+  }
+  // A request was made but no response received (DNS/offline)
+  if (e.request && !e.response) return true;
+  return false;
+}
 
 interface PlannedExercise {
   exercise_id?: string;
@@ -54,6 +83,7 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
   const router = useRouter();
   const wakeLock = useWakeLock();
   const createWorkout = useCreateWorkout();
+  const { queueWorkout } = useOfflineSync();
 
   const [exerciseLogs, setExerciseLogs] = useState<Map<number, ExerciseLog>>(
     () => new Map(),
@@ -135,19 +165,58 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
         exercises: exerciseData,
       };
 
-      await createWorkout.mutateAsync(workoutPayload);
+      try {
+        await createWorkout.mutateAsync(workoutPayload);
 
-      // Release wake lock
-      await wakeLock.release();
+        // Release wake lock
+        await wakeLock.release();
 
-      notifications.show({
-        title: "Workout Complete",
-        message: `Logged ${exerciseData.length} exercises with ${exerciseData.reduce((acc, ex) => acc + (ex?.sets ?? 0), 0)} total sets`,
-        color: "green",
-        icon: <IconCheck size={16} />,
-      });
+        notifications.show({
+          title: "Workout Complete",
+          message: `Logged ${exerciseData.length} exercises with ${exerciseData.reduce((acc, ex) => acc + (ex?.sets ?? 0), 0)} total sets`,
+          color: "green",
+          icon: <IconCheck size={16} />,
+        });
 
-      router.push("/dashboard");
+        router.push("/dashboard");
+      } catch (err) {
+        // Network errors (no server response) -> queue offline and pretend success.
+        // Real API errors (4xx/5xx) bubble up so the user can correct and retry.
+        if (isNetworkError(err)) {
+          try {
+            await queueWorkout(
+              workoutPayload as unknown as Parameters<
+                typeof queueWorkout
+              >[0],
+            );
+            await wakeLock.release();
+
+            notifications.show({
+              title: "Workout Saved Offline",
+              message:
+                "No connection -- your workout is queued and will sync automatically when you're back online.",
+              color: "blue",
+              icon: <IconCheck size={16} />,
+            });
+
+            router.push("/dashboard");
+            return;
+          } catch (queueErr) {
+            // IndexedDB failure -- surface this to the user; data would be lost otherwise.
+            notifications.show({
+              title: "Could Not Save Workout",
+              message:
+                "Network is offline and local storage is unavailable. Please reconnect and try again.",
+              color: "red",
+              icon: <IconAlertCircle size={16} />,
+            });
+            console.error("Offline queue failed:", queueErr);
+            return;
+          }
+        }
+        // Re-throw non-network errors to the outer catch.
+        throw err;
+      }
     } catch {
       notifications.show({
         title: "Error Saving Workout",
@@ -168,6 +237,7 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
   if (!plan || exercises.length === 0) {
     return (
       <Stack gap="lg" p={{ base: "sm", md: "lg" }}>
+        <OfflineIndicator />
         <Card withBorder radius="lg" p="xl">
           <Stack align="center" gap="md">
             <IconBarbell size={48} color="var(--mantine-color-dimmed)" />
@@ -193,6 +263,7 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
 
   return (
     <Stack gap="md" p={{ base: "xs", md: "lg" }}>
+      <OfflineIndicator />
       {/* Workout header */}
       <Card withBorder radius="lg" p={{ base: "sm", md: "lg" }}>
         <Group justify="space-between" wrap="nowrap">
