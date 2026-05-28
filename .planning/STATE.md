@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 7 of 7 (Polish & Deploy)
-Plan: 6 of 9 in phase 7
+Plan: 7 of 9 in phase 7
 Status: In progress
-Last activity: 2026-05-11 -- Completed 07-06-PLAN.md
+Last activity: 2026-05-28 -- Completed 07-03b-PLAN.md (service-layer Supabase decoupling)
 
-Progress: ███████████████████░ 97% (30 plans complete, ~2 remaining in phase 7)
+Progress: ████████████████████ 97% (31 plans complete, ~2 remaining in phase 7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 30
+- Total plans completed: 31
 - Average duration: ~5min
-- Total execution time: ~141min
+- Total execution time: ~148min
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ███████████████████░ 97% (30 p
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
 | 6. AI Training Engine | 5/5 | ~18min | ~4min |
-| 7. Polish & Deploy | 6/9 | ~34min | ~6min |
+| 7. Polish & Deploy | 7/9 | ~41min | ~6min |
 
 **Recent Trend:**
-- Last 5 plans: 07-01 (8min), 07-02 (6min), 07-05 (8min), 07-03a (5min), 07-06 (7min)
-- Trend: Steady pace, mobile workout UX complete
+- Last 5 plans: 07-02 (6min), 07-05 (8min), 07-03a (5min), 07-06 (7min), 07-03b (7min)
+- Trend: Steady pace; backend Supabase decoupling complete
 
 ## Accumulated Context
 
@@ -159,6 +159,14 @@ Recent decisions affecting current work:
 - Rest timer auto-starts on set completion with 120s default
 - RPE selector shown only after all sets completed for an exercise
 - Complete Workout maps SetLogger state to WorkoutCreate schema (sets count, last-set weight/reps, exercise RPE)
+- All 8 backend services migrated off get_supabase() to repository layer (07-03b)
+- Wellbeing services aligned to athlete_id-keyed schema (fresh_clean_schema.sql) -- repository layer is source of truth
+- morning_adaptation keeps user_id signature; wellbeing_repo.get_by_user_and_date JOINs athletes internally
+- JSONB columns (plan_data, generation_metadata, injury_risk_factors) serialized via json.dumps when binding through SQLAlchemy text()
+- /health endpoint uses SQLAlchemy engine.connect() instead of Supabase client (works without Supabase credentials)
+- get_supabase() emits DeprecationWarning when called; only SupabaseAuthProvider may still use it
+- Fixed latent f-string bug in coach_service fatigue_spike alert (invalid `:.2f if ... else 'N/A'` format spec)
+- Orphaned `app/api/endpoints/generate_weekly_plan.py` (not mounted, imports nonexistent module) flagged for cleanup
 
 ### Pending Todos
 
@@ -169,8 +177,11 @@ Recent decisions affecting current work:
 - ~~Set up .env with Supabase credentials~~ -> Absorbed into Phase 7
 - ~~Run docker-compose verification~~ -> Absorbed into Phase 7
 - ~~Migrate remaining endpoint files (plans.py, coach.py, performance.py, auth.py) to repository layer~~ -> Done in 07-03a
-- Migrate all service files off get_supabase() to repository layer
-- Remove supabase dependency from requirements.txt after full migration
+- ~~Migrate all service files off get_supabase() to repository layer~~ -> Done in 07-03b
+- ~~Migrate health check to SQLAlchemy~~ -> Done in 07-03b
+- ~~Deprecate get_supabase() helper~~ -> Done in 07-03b (DeprecationWarning emitted)
+- Remove supabase dependency from requirements.txt after SupabaseAuthProvider also migrated or proven not needed in dev
+- Clean up orphaned `app/api/endpoints/generate_weekly_plan.py` (not mounted, references nonexistent module)
 
 ### Blockers/Concerns
 
@@ -178,10 +189,11 @@ Recent decisions affecting current work:
 - SQLAlchemy models use Integer PKs but Supabase uses UUIDs (kept as-is for now)
 - Old Supabase project is paused -- needs data recovery, new project creation, and consolidated schema deployment (all Phase 7)
 - Docker full-stack verification not yet run (requires Supabase credentials -- Phase 7)
-- TrainingService still uses Supabase internally (deferred to service migration plan)
+- ~~TrainingService still uses Supabase internally~~ -> Resolved in 07-03b
+- Orphaned `app/api/endpoints/generate_weekly_plan.py` references nonexistent `services.database` module (not mounted, harmless but should be removed)
 
 ## Session Continuity
 
-Last session: 2026-05-11
-Stopped at: Completed 07-06-PLAN.md (active workout flow). Mobile-optimized gym UX with wake lock, rest timer, set logging, and dashboard integration.
+Last session: 2026-05-28
+Stopped at: Completed 07-03b-PLAN.md (service-layer Supabase decoupling). All 8 backend services and /health endpoint migrated to repository layer; get_supabase() deprecated.
 Resume file: None
