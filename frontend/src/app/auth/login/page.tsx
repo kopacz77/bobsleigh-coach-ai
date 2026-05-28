@@ -18,7 +18,7 @@ import { IconBrandGoogle } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,8 @@ export default function LoginPage() {
     try {
       const result = await login(values.email, values.password);
       if (result?.error) {
-        setError(result.error.message);
+        const err = result.error as { message?: string };
+        setError(err.message ?? "Login failed");
       } else {
         router.push("/dashboard");
       }

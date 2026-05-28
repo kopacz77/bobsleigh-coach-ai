@@ -17,7 +17,7 @@ import { useForm } from "@mantine/form";
 import { IconBrandGoogle } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
@@ -47,7 +47,8 @@ export default function SignupPage() {
     try {
       const result = await signup(values.email, values.password);
       if (result?.error) {
-        setError(result.error.message);
+        const err = result.error as { message?: string };
+        setError(err.message ?? "Sign up failed");
       } else {
         setSuccess(true);
       }
