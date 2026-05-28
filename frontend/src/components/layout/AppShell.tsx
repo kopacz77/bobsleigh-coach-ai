@@ -41,7 +41,9 @@ interface AppShellProps {
 export function AppShell({ children }: AppShellProps) {
   const [opened, { toggle, close }] = useDisclosure(false);
   const pathname = usePathname();
-  const { isCoach, user, logout } = useAuth();
+  const { isCoach, user: rawUser, logout } = useAuth();
+  // user is typed as unknown in the unified AuthState; narrow to read email.
+  const user = rawUser as { email?: string; id?: string } | null | undefined;
 
   const coachLinks: NavItem[] = [
     { icon: IconDashboard, label: "Dashboard", href: "/dashboard" },

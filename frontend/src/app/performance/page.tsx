@@ -11,7 +11,7 @@ import { PerformanceMetrics, PerformanceTrends } from "@/components/performance"
  */
 export default function PerformancePage() {
   const { user, loading } = useAuth();
-  const athleteId = user?.id ?? "";
+  const athleteId = (user as { id?: string } | null | undefined)?.id ?? "";
 
   if (loading) {
     return (

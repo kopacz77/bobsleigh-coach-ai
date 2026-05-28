@@ -8,6 +8,9 @@ import { AppShell } from "@/components/layout/AppShell";
 
 export default function DashboardPage() {
   const { user, isCoach, loading } = useAuth();
+  // user is typed as unknown in the unified AuthState. Narrow to the
+  // minimal shape we read here.
+  const userId = (user as { id?: string } | null | undefined)?.id ?? "";
 
   if (loading) {
     return (
@@ -22,9 +25,9 @@ export default function DashboardPage() {
   return (
     <AppShell>
       {isCoach ? (
-        <CoachDashboard userId={user?.id ?? ""} userProfile={null} />
+        <CoachDashboard userId={userId} userProfile={null} />
       ) : (
-        <AthleteDashboard userId={user?.id ?? ""} />
+        <AthleteDashboard userId={userId} />
       )}
     </AppShell>
   );
