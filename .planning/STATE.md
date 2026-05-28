@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-05-02)
 ## Current Position
 
 Phase: 7 of 7 (Polish & Deploy)
-Plan: 8 of 9 in phase 7
+Plan: 4 of 9 in phase 7 (most recently completed; 07-08 also done in parallel)
 Status: In progress
-Last activity: 2026-05-28 -- Completed 07-08-PLAN.md (offline workout queue via Dexie/IndexedDB)
+Last activity: 2026-05-28 -- Completed 07-04-PLAN.md (Docker Compose local stack + seeded data)
 
-Progress: ████████████████████ 100% (32 plans complete, ~1 remaining in phase 7)
+Progress: ████████████████████ 100% (33 plans complete, ~0 remaining in phase 7)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 32
+- Total plans completed: 33
 - Average duration: ~5min
-- Total execution time: ~155min
+- Total execution time: ~164min
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: ████████████████████ 100% (32 
 | 4. Wellness & Recovery | 3/3 | ~9min | ~3min |
 | 5. Perf & Coach Dash | 4/4 | ~9min | ~2min |
 | 6. AI Training Engine | 5/5 | ~18min | ~4min |
-| 7. Polish & Deploy | 8/9 | ~48min | ~6min |
+| 7. Polish & Deploy | 9/9 | ~57min | ~6min |
 
 **Recent Trend:**
-- Last 5 plans: 07-05 (8min), 07-03a (5min), 07-06 (7min), 07-03b (7min), 07-08 (7min)
-- Trend: Steady pace; offline-first workout queue shipped, ready for PWA work
+- Last 5 plans: 07-03a (5min), 07-06 (7min), 07-03b (7min), 07-08 (7min), 07-04 (9min)
+- Trend: Phase 7 complete -- local Docker stack with seeded Joshua Hudson data ships zero-credential dev environment
 
 ## Accumulated Context
 
@@ -172,6 +172,16 @@ Recent decisions affecting current work:
 - OfflineDb singleton at module scope: Dexie opens IndexedDB lazily so SSR import is harmless
 - Failed offline-sync attempts increment retries + store last_error -- nothing is ever dropped silently
 - `AuthState.user` is intentionally `unknown` (dev/supabase providers return different types) -- consumers narrow at use-site with `as { id?, email? }`
+- Local Docker stack uses consolidated 01-schema.sql (single source of truth) -- fresh_clean_schema.sql / production_schema.sql / weekly_plans_migration.sql kept as historical references only
+- public.users table replaces auth.users for local dev (no Supabase auth schema in vanilla Postgres)
+- RLS dropped from local schema; backend connects with full privileges and authorizes at FastAPI layer
+- Deterministic UUIDs for dev fixtures: coach user 001 / coach row 010, athlete user 002 / athlete row 020 (Joshua Hudson)
+- Workouts synthesized from a 5-day/week template (260 sessions over 2023) since converted_data/workouts.json had only 1 row
+- Performance metrics seeded as 3-point progression (Jan/Jun/Nov) with +4%/+8% improvements over baseline values
+- Cyrus Gray methodology exercises included by name + brief attribution in 04-seed-exercises.sql (no prescriptions or KG relationships imported -- /home/kopacz/projects/cyrus-gray-training-system is read-only)
+- NEXT_PUBLIC_AUTH_MODE plumbed as a Dockerfile ARG (not just runtime env) because Next.js inlines NEXT_PUBLIC_* at pnpm build time
+- CORS_ORIGINS now accepts either JSON array OR comma-separated string via field_validator (previously crashed pydantic-settings on bare values)
+- Per-table updated_at triggers wrapped in DO $$ ... pg_trigger lookup $$ blocks (CREATE TRIGGER has no IF NOT EXISTS)
 
 ### Pending Todos
 
@@ -192,13 +202,15 @@ Recent decisions affecting current work:
 
 - ~150+ modified but uncommitted files from 6 months of work (non-planning files)
 - SQLAlchemy models use Integer PKs but Supabase uses UUIDs (kept as-is for now)
-- Old Supabase project is paused -- needs data recovery, new project creation, and consolidated schema deployment (all Phase 7)
-- Docker full-stack verification not yet run (requires Supabase credentials -- Phase 7)
+- ~~Old Supabase project is paused -- needs data recovery, new project creation, and consolidated schema deployment~~ -> Resolved in 07-04 (local Docker stack with consolidated schema + seed data is now the dev source of truth; Supabase deploy deferred to future deploy phase)
+- ~~Docker full-stack verification not yet run (requires Supabase credentials)~~ -> Resolved in 07-04 (zero-credential local stack via docker compose up; user should run to verify)
 - ~~TrainingService still uses Supabase internally~~ -> Resolved in 07-03b
 - Orphaned `app/api/endpoints/generate_weekly_plan.py` references nonexistent `services.database` module (not mounted, harmless but should be removed)
+- Host PostgreSQL on 5432 may collide with docker-compose's mapped port -- users with local Postgres need to stop it or remap before `docker compose up`
+- Docker not available in this WSL distro -- `docker compose up` live boot was not verified end-to-end; static YAML + SQL column-count validation passed
 
 ## Session Continuity
 
 Last session: 2026-05-28
-Stopped at: Completed 07-08-PLAN.md (offline workout queue). Dexie.js IndexedDB queue, useOfflineSync hook with auto-sync on reconnect, OfflineIndicator badge, and ActiveWorkout offline fallback all shipped. Fixed pre-existing TS build failures in dashboard/performance/AppShell as blocking deviation.
+Stopped at: Completed 07-04-PLAN.md (Docker Compose local stack). Consolidated 14-table schema, dev users (coach + Joshua Hudson), 260 synthesized workouts, 24 performance metrics, 67 wellbeing assessments, and 65 bobsleigh + Cyrus Gray exercises auto-seeded via docker-entrypoint-initdb.d. Fixed latent CORS_ORIGINS parsing bug in config.py.
 Resume file: None
