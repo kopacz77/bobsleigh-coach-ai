@@ -12,7 +12,7 @@ Take the existing scaffolding — broken frontend, mock-data backend, standalone
 - [x] **Phase 4: Wellness & Recovery** - Daily check-in, readiness scoring, injury flagging, trends
 - [x] **Phase 5: Performance & Coach Dashboard** - PMC tracking, real-data coach dashboard, alerts
 - [x] **Phase 6: AI Training Engine** - Plan generation, coach approval, adaptive load, injury risk
-- [ ] **Phase 7: Polish & Deploy** - Database abstraction, Docker dev environment, mobile UX, design polish, scheduled tasks
+- [x] **Phase 7: Polish & Deploy** - Database abstraction, Docker dev environment, mobile UX, design polish, scheduled tasks
 
 ## Phase Details
 
@@ -132,16 +132,16 @@ Plans:
   5. Workout data queues locally when offline and syncs on reconnect
 **Plans**: 9 plans
 Plans:
-- [ ] 07-01-PLAN.md — Swappable auth provider abstraction (backend + frontend dev auth bypass)
-- [ ] 07-02-PLAN.md — Repository layer base + athlete/exercise/workout/wellbeing repo migration
-- [ ] 07-03a-PLAN.md — Remaining repositories (plan/coach/performance/training_load) + endpoint migration
-- [ ] 07-03b-PLAN.md — Service files migration + health check + get_supabase deprecation
-- [ ] 07-04-PLAN.md — Docker Compose environment with PostgreSQL, consolidated schema, seed data
-- [ ] 07-05-PLAN.md — Design system (DESIGN.md) + Mantine theme + dark mode + layout polish
-- [ ] 07-06-PLAN.md — Mobile active workout flow (wake lock, rest timer, set logging, dashboard integration)
-- [ ] 07-07-PLAN.md — APScheduler for automated Saturday night plan generation
-- [ ] 07-08-PLAN.md — Offline workout data queuing (Dexie.js/IndexedDB + sync-on-reconnect)
-- [ ] 07-09-PLAN.md — Mobile responsiveness audit and fixes for all existing screens
+- [x] 07-01-PLAN.md — Swappable auth provider abstraction (backend + frontend dev auth bypass)
+- [x] 07-02-PLAN.md — Repository layer base + athlete/exercise/workout/wellbeing repo migration
+- [x] 07-03a-PLAN.md — Remaining repositories (plan/coach/performance/training_load) + endpoint migration
+- [x] 07-03b-PLAN.md — Service files migration + health check + get_supabase deprecation
+- [x] 07-04-PLAN.md — Docker Compose environment with PostgreSQL, consolidated schema, seed data
+- [x] 07-05-PLAN.md — Design system (DESIGN.md) + Mantine theme + dark mode + layout polish
+- [x] 07-06-PLAN.md — Mobile active workout flow (wake lock, rest timer, set logging, dashboard integration)
+- [x] 07-07-PLAN.md — APScheduler for automated Saturday night plan generation
+- [x] 07-08-PLAN.md — Offline workout data queuing (Dexie.js/IndexedDB + sync-on-reconnect)
+- [x] 07-09-PLAN.md — Mobile responsiveness audit and fixes for all existing screens
 **Includes deferred from Phase 6**: APScheduler or cron-based auto-generation of weekly plans (Saturday night), coach notification if plans not reviewed by Monday morning.
 **Deferred**: Storybook component library (not critical for MVP, can add post-launch).
 
@@ -155,4 +155,4 @@ Plans:
 | 4. Wellness & Recovery | 3/3 | Complete | 2026-05-03 |
 | 5. Performance & Coach Dashboard | 4/4 | Complete | 2026-05-03 |
 | 6. AI Training Engine | 5/5 | Complete | 2026-05-04 |
-| 7. Polish & Deploy | 0/9 | Not started | - |
+| 7. Polish & Deploy | 9/9 | Complete | 2026-05-28 |
