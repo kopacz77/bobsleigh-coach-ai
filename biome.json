@@ -69,7 +69,10 @@
       "!**/.next",
       "!**/backend",
       "!**/ml",
-      "!**/*.py"
+      "!**/*.py",
+      "!**/.planning",
+      "!**/*_export.json",
+      "!**/*.backup"
     ]
   }
 }
