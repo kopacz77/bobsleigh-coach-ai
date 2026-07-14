@@ -66,3 +66,5 @@ ml/models/checkpoints/
 
 # Docker
 docker-compose.override.yml
+# TypeScript incremental build cache (regenerated on every build)
+*.tsbuildinfo
