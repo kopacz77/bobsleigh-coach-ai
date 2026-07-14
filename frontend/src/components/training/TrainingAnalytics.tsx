@@ -178,12 +178,32 @@ export function TrainingAnalytics() {
                       <LineChart data={performanceData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" />
-                        <YAxis yAxisId="left" label={{ value: "Weight (kg)", angle: -90, position: "insideLeft" }} />
-                        <YAxis yAxisId="right" orientation="right" reversed label={{ value: "Time (s)", angle: 90, position: "insideRight" }} />
+                        <YAxis
+                          yAxisId="left"
+                          label={{ value: "Weight (kg)", angle: -90, position: "insideLeft" }}
+                        />
+                        <YAxis
+                          yAxisId="right"
+                          orientation="right"
+                          reversed
+                          label={{ value: "Time (s)", angle: 90, position: "insideRight" }}
+                        />
                         <Tooltip />
                         <Legend />
-                        <Line yAxisId="left" type="monotone" dataKey="squat" stroke="#ff6384" name="Squat 1RM (kg)" />
-                        <Line yAxisId="right" type="monotone" dataKey="sprint" stroke="#36a2eb" name="Sprint 30m (s)" />
+                        <Line
+                          yAxisId="left"
+                          type="monotone"
+                          dataKey="squat"
+                          stroke="#ff6384"
+                          name="Squat 1RM (kg)"
+                        />
+                        <Line
+                          yAxisId="right"
+                          type="monotone"
+                          dataKey="sprint"
+                          stroke="#36a2eb"
+                          name="Sprint 30m (s)"
+                        />
                       </LineChart>
                     </ResponsiveContainer>
                   </Stack>

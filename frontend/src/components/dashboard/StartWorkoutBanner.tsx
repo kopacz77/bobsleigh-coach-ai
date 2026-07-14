@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  Loader,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Badge, Button, Card, Group, Loader, Stack, Text } from "@mantine/core";
 import { IconBarbell, IconPlayerPlay } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -55,12 +47,8 @@ export function StartWorkoutBanner() {
     );
   }
 
-  const exerciseCount =
-    todayPlan?.exercises?.length ??
-    todayPlan?.planned_exercises?.length ??
-    0;
-  const workoutName =
-    todayPlan?.plan_name ?? todayPlan?.workout_name ?? null;
+  const exerciseCount = todayPlan?.exercises?.length ?? todayPlan?.planned_exercises?.length ?? 0;
+  const workoutName = todayPlan?.plan_name ?? todayPlan?.workout_name ?? null;
   const phase = todayPlan?.training_phase ?? todayPlan?.phase ?? null;
 
   if (!todayPlan) {

@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Group,
-  Loader,
   Paper,
   Select,
   SimpleGrid,
@@ -30,16 +29,12 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import CoachReadiness from "@/components/dashboard/CoachReadiness";
 import CoachPlanQueue from "@/components/plans/CoachPlanQueue";
 import { CoachWorkoutView } from "@/components/training";
-import {
-  useCoachAlerts,
-  useCoachPMCSummary,
-  useCoachRoster,
-} from "@/hooks/useCoachDashboard";
+import { useCoachAlerts, useCoachPMCSummary, useCoachRoster } from "@/hooks/useCoachDashboard";
 import { usePendingPlans } from "@/hooks/usePlans";
 
 /**
@@ -130,27 +125,16 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
   const [alertFilter, setAlertFilter] = useState("all");
 
   // React Query hooks -- all data from /api/coach/* endpoints
-  const {
-    data: roster,
-    isLoading: rosterLoading,
-  } = useCoachRoster();
-  const {
-    data: pmcSummary,
-    isLoading: pmcLoading,
-  } = useCoachPMCSummary();
-  const {
-    data: alerts,
-    isLoading: alertsLoading,
-  } = useCoachAlerts();
+  const { data: roster, isLoading: rosterLoading } = useCoachRoster();
+  const { data: pmcSummary, isLoading: pmcLoading } = useCoachPMCSummary();
+  const { data: alerts, isLoading: alertsLoading } = useCoachAlerts();
 
   const { data: pendingPlans } = usePendingPlans();
   const pendingCount = pendingPlans?.length ?? 0;
 
   const alertList: any[] = alerts || [];
   const filteredAlerts =
-    alertFilter === "all"
-      ? alertList
-      : alertList.filter((a: any) => a.type === alertFilter);
+    alertFilter === "all" ? alertList : alertList.filter((a: any) => a.type === alertFilter);
 
   // Handle athlete click
   const handleAthleteClick = (athleteId: string) => {
@@ -162,9 +146,7 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
       <Group justify="space-between" mb="lg">
         <Box>
           <Title order={2}>Coach Dashboard</Title>
-          <Text c="dimmed">
-            Monitor your athletes&apos; wellbeing and performance
-          </Text>
+          <Text c="dimmed">Monitor your athletes&apos; wellbeing and performance</Text>
         </Box>
       </Group>
 
@@ -186,10 +168,7 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
           >
             Plans
           </Tabs.Tab>
-          <Tabs.Tab
-            value="check-ins"
-            leftSection={<IconClipboardCheck size={14} />}
-          >
+          <Tabs.Tab value="check-ins" leftSection={<IconClipboardCheck size={14} />}>
             Check-Ins
           </Tabs.Tab>
           <Tabs.Tab value="workouts" leftSection={<IconBarbell size={14} />}>
@@ -256,28 +235,14 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
                           <Text fw={500}>{athlete.athlete_name}</Text>
                         </Table.Td>
                         <Table.Td ta="right">
-                          <Text>
-                            {athlete.ctl != null
-                              ? athlete.ctl.toFixed(1)
-                              : "--"}
-                          </Text>
+                          <Text>{athlete.ctl != null ? athlete.ctl.toFixed(1) : "--"}</Text>
                         </Table.Td>
                         <Table.Td ta="right">
-                          <Text>
-                            {athlete.atl != null
-                              ? athlete.atl.toFixed(1)
-                              : "--"}
-                          </Text>
+                          <Text>{athlete.atl != null ? athlete.atl.toFixed(1) : "--"}</Text>
                         </Table.Td>
                         <Table.Td ta="right">
-                          <Badge
-                            color={tsbColor(athlete.tsb)}
-                            variant="light"
-                            size="lg"
-                          >
-                            {athlete.tsb != null
-                              ? athlete.tsb.toFixed(1)
-                              : "--"}
+                          <Badge color={tsbColor(athlete.tsb)} variant="light" size="lg">
+                            {athlete.tsb != null ? athlete.tsb.toFixed(1) : "--"}
                           </Badge>
                           <Text size="xs" c="dimmed">
                             {tsbLabel(athlete.tsb)}
@@ -285,9 +250,7 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
                         </Table.Td>
                         <Table.Td ta="right">
                           <Text>
-                            {athlete.last_load != null
-                              ? athlete.last_load.toFixed(0)
-                              : "--"}
+                            {athlete.last_load != null ? athlete.last_load.toFixed(0) : "--"}
                           </Text>
                         </Table.Td>
                       </Table.Tr>
@@ -296,8 +259,7 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
                 </Table>
               ) : (
                 <Text c="dimmed" ta="center" py="xl">
-                  No PMC data available. Athletes need training history for PMC
-                  calculations.
+                  No PMC data available. Athletes need training history for PMC calculations.
                 </Text>
               )}
             </Paper>
@@ -337,10 +299,7 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
                           <Text fw={500}>{alert.message}</Text>
                         </Group>
                         <Group gap="xs">
-                          <Badge
-                            color={severityColor(alert.severity)}
-                            size="sm"
-                          >
+                          <Badge color={severityColor(alert.severity)} size="sm">
                             {alert.severity}
                           </Badge>
                           <Text size="xs" c="dimmed">
@@ -439,9 +398,7 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
                       </Group>
 
                       <Badge color={severityColor(alert.severity)}>
-                        {alert.severity.charAt(0).toUpperCase() +
-                          alert.severity.slice(1)}{" "}
-                        Priority
+                        {alert.severity.charAt(0).toUpperCase() + alert.severity.slice(1)} Priority
                       </Badge>
                     </Group>
 

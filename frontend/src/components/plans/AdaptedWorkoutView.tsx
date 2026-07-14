@@ -1,16 +1,6 @@
 "use client";
 
-import {
-  Alert,
-  Badge,
-  Card,
-  Divider,
-  Group,
-  Loader,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Alert, Badge, Card, Divider, Group, Loader, Stack, Text, Title } from "@mantine/core";
 import {
   IconAdjustments,
   IconBed,
@@ -132,7 +122,7 @@ function ExerciseRow({ exercise }: { exercise: Exercise }) {
                       </Text>
                     </>
                   ) : (
-                    <>{exercise.reps}</>
+                    exercise.reps
                   )}
                   {" reps"}
                 </>
@@ -162,12 +152,8 @@ function ExerciseRow({ exercise }: { exercise: Exercise }) {
           )}
 
           {/* Distance / Duration for non-weight exercises */}
-          {exercise.distance_m != null && (
-            <Text size="sm">{exercise.distance_m}m</Text>
-          )}
-          {exercise.duration_seconds != null && (
-            <Text size="sm">{exercise.duration_seconds}s</Text>
-          )}
+          {exercise.distance_m != null && <Text size="sm">{exercise.distance_m}m</Text>}
+          {exercise.duration_seconds != null && <Text size="sm">{exercise.duration_seconds}s</Text>}
         </Group>
 
         {/* Rest period */}
@@ -298,12 +284,7 @@ export function AdaptedWorkoutView() {
 
         {/* Target RPE */}
         {workout.target_rpe != null && workout.target_rpe > 0 && (
-          <Badge
-            variant="light"
-            color="blue"
-            size="lg"
-            leftSection={<IconFlame size={14} />}
-          >
+          <Badge variant="light" color="blue" size="lg" leftSection={<IconFlame size={14} />}>
             Target RPE: {workout.target_rpe}
           </Badge>
         )}
@@ -341,10 +322,7 @@ export function AdaptedWorkoutView() {
         {/* Exercise Sections */}
         {sections.map((section) => (
           <Stack key={section.name} gap="xs">
-            <Divider
-              label={SECTION_LABELS[section.name] || section.name}
-              labelPosition="left"
-            />
+            <Divider label={SECTION_LABELS[section.name] || section.name} labelPosition="left" />
             {section.exercises.map((exercise, idx) => (
               <ExerciseRow
                 key={`${section.name}-${exercise.exercise_name || exercise.name || idx}`}

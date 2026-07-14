@@ -318,7 +318,9 @@ export function DailyFeedbackForm({ onSubmit, onCancel, isLoading }: DailyFeedba
     <Card shadow="sm" p={{ base: "sm", md: "lg" }} radius="md" withBorder>
       <Stack gap="lg">
         <Group justify="space-between" wrap="wrap">
-          <Title order={2} fz={{ base: "lg", md: "xl" }}>Daily Training Feedback</Title>
+          <Title order={2} fz={{ base: "lg", md: "xl" }}>
+            Daily Training Feedback
+          </Title>
           <Text size="sm" c="dimmed">
             Step {currentStep + 1} of {steps.length}
           </Text>

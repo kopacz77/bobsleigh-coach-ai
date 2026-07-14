@@ -1,8 +1,8 @@
 // frontend/src/components/settings/MFASetup.tsx
 
-import { Box, Button, Image, Paper, Text, TextInput, Title } from "@mantine/core";
-import { useSupabase } from '@/providers/SupabaseProvider';
-import React, { useState } from "react";
+import { Box, Button, Paper, Text, TextInput, Title } from "@mantine/core";
+import { useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 const MFASetup = () => {
   const { supabase, loading: supabaseLoading } = useSupabase();
@@ -42,10 +42,10 @@ const MFASetup = () => {
     if (!supabase) return;
     try {
       setError("");
-      // Use type assertion to work around the type definition issues
+      // `code` is not in the published types; the parameter name varies between
+      // Supabase versions, so the cast carries the suppression.
       const { data, error } = await supabase.auth.mfa.challenge({
         factorId,
-        // @ts-ignore - Parameter name varies between Supabase versions
         code: verificationCode,
       } as any);
 

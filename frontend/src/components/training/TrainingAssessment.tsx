@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Divider,
   Group,
   List,
   MultiSelect,
@@ -12,14 +11,12 @@ import {
   Slider,
   Text,
   Textarea,
-  TextInput,
   ThemeIcon,
   Title,
   useMantineTheme,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconActivity, // Replaced IconMuscle with IconActivity
   IconArrowDown,
@@ -33,6 +30,7 @@ import {
 } from "@tabler/icons-react";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * Training area option
@@ -411,7 +409,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
     const currentValue = Number(assessment[metric]);
     const previousValue = Number(previousAssessment[metric]);
 
-    if (isNaN(currentValue) || isNaN(previousValue)) return null;
+    if (Number.isNaN(currentValue) || Number.isNaN(previousValue)) return null;
 
     const diff = currentValue - previousValue;
 

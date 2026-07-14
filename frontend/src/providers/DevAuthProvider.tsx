@@ -90,7 +90,7 @@ export function DevAuthProvider({ children }: { children: React.ReactNode }) {
       signup,
       logout,
     }),
-    [login, loginWithGoogle, signup, logout],
+    [login, loginWithGoogle, signup, logout]
   );
 
   return <DevAuthContext.Provider value={value}>{children}</DevAuthContext.Provider>;

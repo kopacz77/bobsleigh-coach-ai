@@ -1,12 +1,9 @@
 import {
   Box,
   Button,
-  Chip,
-  Divider,
   Group,
   MultiSelect,
   Paper,
-  Radio,
   Select,
   SimpleGrid,
   Text,
@@ -17,7 +14,6 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconArrowRight,
   IconCalendarEvent,
@@ -25,13 +21,21 @@ import {
   IconTarget,
   IconTrophy,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * GoalSetting component allows athletes to define their seasonal and competition goals
  * specifically focused on bobsleigh performance metrics and events
  */
-const GoalSetting = ({ userId, onComplete }: { userId: string; onComplete?: (data: any) => void }) => {
+const GoalSetting = ({
+  userId,
+  onComplete,
+}: {
+  userId: string;
+  onComplete?: (data: any) => void;
+}) => {
   const theme = useMantineTheme();
   const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState(false);
@@ -93,9 +97,10 @@ const GoalSetting = ({ userId, onComplete }: { userId: string; onComplete?: (dat
   ];
 
   // Handle text input changes
-  const handleTextChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setGoals((prev) => ({ ...prev, [field]: event.target.value }));
-  };
+  const handleTextChange =
+    (field: string) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setGoals((prev) => ({ ...prev, [field]: event.target.value }));
+    };
 
   // Handle select changes
   const handleSelectChange = (field: string) => (value: any) => {

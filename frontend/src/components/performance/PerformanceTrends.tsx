@@ -65,7 +65,7 @@ export function PerformanceTrends({ athleteId }: PerformanceTrendsProps) {
     if (!trendData || !Array.isArray(trendData) || trendData.length === 0) return [];
     return (trendData as TrendRow[]).map((item) => ({
       date: new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(
-        new Date(item.test_date || item.date || ""),
+        new Date(item.test_date || item.date || "")
       ),
       value: item.value,
     }));

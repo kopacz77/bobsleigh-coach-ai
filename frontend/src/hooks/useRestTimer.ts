@@ -52,7 +52,7 @@ export function useRestTimer(defaultSeconds = 120) {
         });
       }, 1000);
     },
-    [defaultSeconds, clearTimer, notifyComplete],
+    [defaultSeconds, clearTimer, notifyComplete]
   );
 
   const stop = useCallback(() => {

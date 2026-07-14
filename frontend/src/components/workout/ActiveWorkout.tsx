@@ -13,20 +13,15 @@ import {
   Title,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import {
-  IconAlertCircle,
-  IconBarbell,
-  IconCheck,
-  IconPlayerStop,
-} from "@tabler/icons-react";
+import { IconAlertCircle, IconBarbell, IconCheck, IconPlayerStop } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
-import { useWakeLock } from "@/hooks/useWakeLock";
-import { useCreateWorkout } from "@/hooks/useTraining";
-import { useOfflineSync } from "@/hooks/useOfflineSync";
 import { OfflineIndicator } from "@/components/ui/OfflineIndicator";
-import { type SetData, SetLogger } from "./SetLogger";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
+import { useCreateWorkout } from "@/hooks/useTraining";
+import { useWakeLock } from "@/hooks/useWakeLock";
 import { RestTimer } from "./RestTimer";
+import { type SetData, SetLogger } from "./SetLogger";
 
 /**
  * Heuristic to decide whether a workout submission failure is a network
@@ -85,9 +80,7 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
   const createWorkout = useCreateWorkout();
   const { queueWorkout } = useOfflineSync();
 
-  const [exerciseLogs, setExerciseLogs] = useState<Map<number, ExerciseLog>>(
-    () => new Map(),
-  );
+  const [exerciseLogs, setExerciseLogs] = useState<Map<number, ExerciseLog>>(() => new Map());
   const [autoStartRest, setAutoStartRest] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -108,7 +101,7 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
         return next;
       });
     },
-    [],
+    []
   );
 
   const handleStartRest = useCallback(() => {
@@ -126,8 +119,7 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
     return log.sets.every((s) => s.completed);
   }).length;
 
-  const progressPercent =
-    exercises.length > 0 ? (completedExercises / exercises.length) * 100 : 0;
+  const progressPercent = exercises.length > 0 ? (completedExercises / exercises.length) * 100 : 0;
 
   const handleCompleteWorkout = async () => {
     setSubmitting(true);
@@ -184,11 +176,7 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
         // Real API errors (4xx/5xx) bubble up so the user can correct and retry.
         if (isNetworkError(err)) {
           try {
-            await queueWorkout(
-              workoutPayload as unknown as Parameters<
-                typeof queueWorkout
-              >[0],
-            );
+            await queueWorkout(workoutPayload as unknown as Parameters<typeof queueWorkout>[0]);
             await wakeLock.release();
 
             notifications.show({
@@ -245,8 +233,8 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
               No Workout Planned
             </Title>
             <Text c="dimmed" ta="center">
-              There is no workout plan for today. You can log a freeform workout
-              from the Training page.
+              There is no workout plan for today. You can log a freeform workout from the Training
+              page.
             </Text>
             <Button
               size="lg"
@@ -297,17 +285,13 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
 
         {!wakeLock.isSupported && (
           <Alert color="yellow" variant="light" mt="sm" fz="sm">
-            Screen wake lock not supported in this browser. Your screen may dim
-            during rest periods.
+            Screen wake lock not supported in this browser. Your screen may dim during rest periods.
           </Alert>
         )}
       </Card>
 
       {/* Rest Timer */}
-      <RestTimer
-        autoStartSeconds={autoStartRest}
-        onAutoStartHandled={handleAutoStartHandled}
-      />
+      <RestTimer autoStartSeconds={autoStartRest} onAutoStartHandled={handleAutoStartHandled} />
 
       {/* Exercise list */}
       {exercises.map((exercise, index) => (
@@ -321,12 +305,7 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
       ))}
 
       {/* Action buttons */}
-      <Group
-        grow
-        mt="md"
-        mb="xl"
-        style={{ position: "sticky", bottom: 0, zIndex: 50 }}
-      >
+      <Group grow mt="md" mb="xl" style={{ position: "sticky", bottom: 0, zIndex: 50 }}>
         <Button
           variant="outline"
           color="red"

@@ -1,10 +1,10 @@
 "use client";
 
 import { Center, Loader } from "@mantine/core";
-import { useAuth } from "@/providers/AuthProvider";
-import CoachDashboard from "@/components/dashboard/CoachDashboard";
 import AthleteDashboard from "@/components/dashboard/AthleteDashboard";
+import CoachDashboard from "@/components/dashboard/CoachDashboard";
 import { AppShell } from "@/components/layout/AppShell";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function DashboardPage() {
   const { user, isCoach, loading } = useAuth();

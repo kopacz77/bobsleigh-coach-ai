@@ -11,10 +11,8 @@ import {
   Stack,
   Text,
   ThemeIcon,
-  Title,
   useMantineTheme,
 } from "@mantine/core";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconArrowRight,
   IconAward,
@@ -25,14 +23,14 @@ import {
   IconCheckbox,
   IconClipboardText,
   IconClock,
-  IconPercentage,
   IconRun,
   IconTarget,
   IconTrophy,
   IconUser,
 } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 import { DailyCheckIn } from "../check-in";
 
 /**
@@ -50,8 +48,8 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
   const { supabase, loading: supabaseLoading } = useSupabase();
   const [todayCheckIn, setTodayCheckIn] = useState<any>(null);
   const [upcomingWorkouts, setUpcomingWorkouts] = useState<any[]>([]);
-  const [recentPerformance, setRecentPerformance] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [_recentPerformance, setRecentPerformance] = useState<any>(null);
+  const [_loading, setLoading] = useState(true);
   const [showCheckIn, setShowCheckIn] = useState(false);
 
   // Fetch data on component mount
@@ -103,7 +101,7 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
           console.error("Error fetching performance data:", performanceError);
         }
 
-        setRecentPerformance(performanceData && performanceData[0] ? performanceData[0] : null);
+        setRecentPerformance(performanceData?.[0] ? performanceData[0] : null);
       } catch (error) {
         console.error("Error in dashboard data fetch:", error);
       } finally {
@@ -118,7 +116,11 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
 
   // Format date for display
   const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric" };
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 

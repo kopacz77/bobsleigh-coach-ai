@@ -81,7 +81,9 @@ export function TrainingSummary() {
     <Card withBorder shadow="sm" p={{ base: "sm", md: "md" }}>
       <Stack gap="md">
         <Group justify="space-between" wrap="wrap">
-          <Title order={3} fz={{ base: "md", md: "lg" }}>Weekly Training Summary</Title>
+          <Title order={3} fz={{ base: "md", md: "lg" }}>
+            Weekly Training Summary
+          </Title>
           <Text c="dimmed" fz="sm">
             Mar 9 - Mar 15, 2025
           </Text>

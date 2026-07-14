@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Card,
   Center,
@@ -12,6 +11,8 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
+import dayjs from "dayjs";
+import { useState } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -22,7 +23,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import dayjs from "dayjs";
 import { useWellbeingHistory } from "@/hooks/useWellbeing";
 
 interface ChartDataPoint {
@@ -56,7 +56,7 @@ export function WellbeingTrends() {
             nutritionQuality: d.nutrition_quality,
             physicalReadiness: d.physical_readiness,
             mentalClarity: d.mental_clarity,
-          }),
+          })
         )
       : null;
 

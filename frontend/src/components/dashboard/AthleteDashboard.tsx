@@ -1,13 +1,11 @@
 "use client";
 
 import {
-  ActionIcon,
   Avatar,
   Badge,
   Box,
   Button,
   Card,
-  Divider,
   Group,
   Paper,
   Progress,
@@ -19,11 +17,9 @@ import {
   Text,
   ThemeIcon,
   Title,
-  Tooltip,
   useMantineTheme,
 } from "@mantine/core";
-import { Calendar, DatePicker, DateValue } from "@mantine/dates";
-import { useSupabase } from '@/providers/SupabaseProvider';
+import { Calendar } from "@mantine/dates";
 import {
   IconActivity,
   IconArrowDown,
@@ -35,33 +31,23 @@ import {
   IconCalendarEvent,
   IconCalendarStats,
   IconChartLine,
-  IconChecklist,
   IconClockHour4,
   IconDirections,
   IconHeartbeat,
   IconMapPin,
   IconMedal,
   IconMinus,
-  IconMoodHappy,
-  IconPencil,
   IconStar,
   IconTrophy,
   IconUsers,
 } from "@tabler/icons-react";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { StartWorkoutBanner } from "./StartWorkoutBanner";
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
-  Cell,
   Tooltip as ChartTooltip,
-  Legend,
   Line,
   LineChart,
-  Pie,
-  PieChart,
   PolarAngleAxis,
   PolarGrid,
   PolarRadiusAxis,
@@ -71,6 +57,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useSupabase } from "@/providers/SupabaseProvider";
+import { StartWorkoutBanner } from "./StartWorkoutBanner";
 
 // Type Definitions
 interface AthleteProfileProps {
@@ -196,8 +184,8 @@ interface PerformanceItem {
 const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
   const theme = useMantineTheme();
   const { supabase, loading: supabaseLoading } = useSupabase();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [todayDate] = useState<Date>(new Date());
+  const [_loading, setLoading] = useState<boolean>(false);
+  const [_todayDate] = useState<Date>(new Date());
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [wellbeingData, setWellbeingData] = useState<WellbeingData | null>(null);
   const [upcomingWorkouts, setUpcomingWorkouts] = useState<Workout[]>([]);

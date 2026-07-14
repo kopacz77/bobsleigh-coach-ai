@@ -3,11 +3,7 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { useCallback, useEffect, useState } from "react";
 import { trainingAPI } from "@/lib/api";
-import {
-  offlineDb,
-  type PendingWorkout,
-  type PendingWorkoutPayload,
-} from "@/lib/offlineDb";
+import { offlineDb, type PendingWorkout, type PendingWorkoutPayload } from "@/lib/offlineDb";
 
 /**
  * Detect whether the navigator reports an online state.
@@ -45,18 +41,15 @@ export function useOfflineSync(): UseOfflineSyncResult {
       return offlineDb.pendingWorkouts.count();
     }, []) ?? 0;
 
-  const queueWorkout = useCallback(
-    async (payload: PendingWorkoutPayload): Promise<void> => {
-      if (typeof window === "undefined") return;
-      const record: PendingWorkout = {
-        payload,
-        created_at: new Date().toISOString(),
-        retries: 0,
-      };
-      await offlineDb.pendingWorkouts.add(record);
-    },
-    [],
-  );
+  const queueWorkout = useCallback(async (payload: PendingWorkoutPayload): Promise<void> => {
+    if (typeof window === "undefined") return;
+    const record: PendingWorkout = {
+      payload,
+      created_at: new Date().toISOString(),
+      retries: 0,
+    };
+    await offlineDb.pendingWorkouts.add(record);
+  }, []);
 
   const syncPending = useCallback(async (): Promise<{
     synced: number;
@@ -74,21 +67,16 @@ export function useOfflineSync(): UseOfflineSyncResult {
     let failed = 0;
 
     try {
-      const queued = await offlineDb.pendingWorkouts
-        .orderBy("created_at")
-        .toArray();
+      const queued = await offlineDb.pendingWorkouts.orderBy("created_at").toArray();
 
       for (const item of queued) {
         if (item.id === undefined) continue;
         try {
-          await trainingAPI.createWorkout(
-            item.payload as unknown as Record<string, unknown>,
-          );
+          await trainingAPI.createWorkout(item.payload as unknown as Record<string, unknown>);
           await offlineDb.pendingWorkouts.delete(item.id);
           synced += 1;
         } catch (err) {
-          const message =
-            err instanceof Error ? err.message : "Unknown sync error";
+          const message = err instanceof Error ? err.message : "Unknown sync error";
           await offlineDb.pendingWorkouts.update(item.id, {
             retries: item.retries + 1,
             last_error: message,

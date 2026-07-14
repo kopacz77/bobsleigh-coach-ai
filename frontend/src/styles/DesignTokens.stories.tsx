@@ -46,8 +46,8 @@ function DesignTokens() {
       <div>
         <Title order={2}>Design tokens</Title>
         <Text c="dimmed" size="sm" mt="xs">
-          Sport-coaching palette from DESIGN.md. Steel blue carries the brand,
-          coaching green signals positive outcomes, intensity orange flags load.
+          Sport-coaching palette from DESIGN.md. Steel blue carries the brand, coaching green
+          signals positive outcomes, intensity orange flags load.
         </Text>
       </div>
 

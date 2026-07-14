@@ -1,6 +1,16 @@
 "use client";
 
-import { Card, Grid, Group, Progress, RingProgress, Skeleton, Stack, Text, Title } from "@mantine/core";
+import {
+  Card,
+  Grid,
+  Group,
+  Progress,
+  RingProgress,
+  Skeleton,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useMemo } from "react";
 import { usePerformanceMetrics } from "@/hooks/usePerformance";
 
@@ -58,7 +68,10 @@ export function PerformanceMetrics({ athleteId }: PerformanceMetricsProps) {
     }
 
     return Object.entries(byType).map(([type, metricsMap]) => {
-      const config = TYPE_CONFIG[type] || { label: type.charAt(0).toUpperCase() + type.slice(1), color: "gray" };
+      const config = TYPE_CONFIG[type] || {
+        label: type.charAt(0).toUpperCase() + type.slice(1),
+        color: "gray",
+      };
       return {
         label: config.label,
         color: config.color,
@@ -113,7 +126,9 @@ export function PerformanceMetrics({ athleteId }: PerformanceMetricsProps) {
   return (
     <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
       <Stack>
-        <Title order={3} fz={{ base: "md", md: "lg" }}>Performance Metrics</Title>
+        <Title order={3} fz={{ base: "md", md: "lg" }}>
+          Performance Metrics
+        </Title>
 
         <Grid>
           <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
@@ -143,8 +158,12 @@ export function PerformanceMetrics({ athleteId }: PerformanceMetricsProps) {
               <Card withBorder h="100%" p="sm">
                 <Stack>
                   <Group justify="space-between">
-                    <Text fw={500} size="sm">{group.label}</Text>
-                    <Text fw={700} size="sm">{group.items.length} tests</Text>
+                    <Text fw={500} size="sm">
+                      {group.label}
+                    </Text>
+                    <Text fw={700} size="sm">
+                      {group.items.length} tests
+                    </Text>
                   </Group>
                   <Progress
                     value={Math.min(group.items.length * 20, 100)}
@@ -155,7 +174,9 @@ export function PerformanceMetrics({ athleteId }: PerformanceMetricsProps) {
                   <Stack gap={5} mt="xs">
                     {group.items.map((item) => (
                       <Group key={item.name} justify="space-between" wrap="nowrap">
-                        <Text size="sm" style={{ minWidth: 0 }}>{item.name}</Text>
+                        <Text size="sm" style={{ minWidth: 0 }}>
+                          {item.name}
+                        </Text>
                         <Text size="sm" fw={500} style={{ whiteSpace: "nowrap" }}>
                           {item.value} {item.unit}
                         </Text>

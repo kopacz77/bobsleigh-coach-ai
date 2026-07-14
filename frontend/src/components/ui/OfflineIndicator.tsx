@@ -29,9 +29,7 @@ export function OfflineIndicator() {
           leftSection={<IconCloudOff size={14} />}
           aria-label="Offline mode"
         >
-          {pendingCount > 0
-            ? `Offline -- ${pendingCount} pending`
-            : "Offline"}
+          {pendingCount > 0 ? `Offline -- ${pendingCount} pending` : "Offline"}
         </Badge>
       </Group>
     );

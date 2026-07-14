@@ -1,11 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
 import {
   Badge,
   Center,
   Group,
-  Loader,
   Select,
   SimpleGrid,
   Skeleton,
@@ -16,6 +14,7 @@ import {
   Title,
 } from "@mantine/core";
 import { IconFilter, IconSearch } from "@tabler/icons-react";
+import { useCallback, useEffect, useState } from "react";
 import { exerciseAPI } from "@/lib/api";
 
 /** Shape returned from GET /api/exercises (matches database row). */
@@ -238,23 +237,14 @@ export function ExerciseLibrary() {
                   )}
                 </Table.Td>
                 <Table.Td>
-                  <Badge
-                    variant="light"
-                    color={CATEGORY_COLORS[ex.category] ?? "gray"}
-                    size="sm"
-                  >
+                  <Badge variant="light" color={CATEGORY_COLORS[ex.category] ?? "gray"} size="sm">
                     {formatCategory(ex.category)}
                   </Badge>
                 </Table.Td>
                 <Table.Td>
                   <Group gap={4} wrap="wrap">
                     {(ex.muscle_groups ?? []).map((mg) => (
-                      <Badge
-                        key={mg}
-                        variant="light"
-                        color="blue"
-                        size="xs"
-                      >
+                      <Badge key={mg} variant="light" color="blue" size="xs">
                         {formatCategory(mg)}
                       </Badge>
                     ))}
@@ -263,12 +253,7 @@ export function ExerciseLibrary() {
                 <Table.Td>
                   <Group gap={4} wrap="wrap">
                     {(ex.equipment_needed ?? []).map((eq) => (
-                      <Badge
-                        key={eq}
-                        variant="light"
-                        color="gray"
-                        size="xs"
-                      >
+                      <Badge key={eq} variant="light" color="gray" size="xs">
                         {formatCategory(eq)}
                       </Badge>
                     ))}
@@ -292,8 +277,7 @@ export function ExerciseLibrary() {
                       }
                       size="sm"
                     >
-                      {DIFFICULTY_LABELS[ex.difficulty_level] ??
-                        `Level ${ex.difficulty_level}`}
+                      {DIFFICULTY_LABELS[ex.difficulty_level] ?? `Level ${ex.difficulty_level}`}
                     </Badge>
                   ) : (
                     <Text size="sm" c="dimmed">

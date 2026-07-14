@@ -29,7 +29,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 // Response interceptor: redirect to login on 401 (supabase mode only)
@@ -43,7 +43,7 @@ api.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 // API endpoints
@@ -61,7 +61,7 @@ export const trainingAPI = {
     const queryString = new URLSearchParams(
       Object.entries(params)
         .filter(([, v]) => v !== undefined && v !== "")
-        .map(([k, v]) => [k, String(v)]),
+        .map(([k, v]) => [k, String(v)])
     ).toString();
     return api.get(`/api/training/workouts?${queryString}`);
   },
@@ -73,17 +73,17 @@ export const trainingAPI = {
     api.get(`/api/training/recommendations?athlete_id=${athleteId}`),
   getAthleteWorkoutsForCoach: (
     athleteId: string,
-    params?: { limit?: number; date_from?: string; date_to?: string },
+    params?: { limit?: number; date_from?: string; date_to?: string }
   ) => {
     const queryString = params
       ? new URLSearchParams(
           Object.entries(params)
             .filter(([, v]) => v !== undefined)
-            .map(([k, v]) => [k, String(v)]),
+            .map(([k, v]) => [k, String(v)])
         ).toString()
       : "";
     return api.get(
-      `/api/training/coach/athletes/${athleteId}/workouts${queryString ? "?" + queryString : ""}`,
+      `/api/training/coach/athletes/${athleteId}/workouts${queryString ? `?${queryString}` : ""}`
     );
   },
   getAthletesWorkoutStatus: (days = 7) =>
@@ -103,7 +103,7 @@ export const exerciseAPI = {
     const queryString = new URLSearchParams(
       Object.entries(params)
         .filter(([, v]) => v !== undefined && v !== "")
-        .map(([k, v]) => [k, String(v)]),
+        .map(([k, v]) => [k, String(v)])
     ).toString();
     return api.get(`/api/exercises?${queryString}`);
   },

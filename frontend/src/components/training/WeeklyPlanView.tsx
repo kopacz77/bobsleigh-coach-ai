@@ -13,11 +13,11 @@ import {
   Title,
 } from "@mantine/core";
 import {
-  IconChevronLeft,
-  IconChevronRight,
   IconAlertCircle,
   IconCalendarEvent,
   IconCheck,
+  IconChevronLeft,
+  IconChevronRight,
   IconClock,
 } from "@tabler/icons-react";
 import dayjs from "dayjs";
@@ -132,23 +132,14 @@ export function WeeklyPlanView() {
       </Group>
 
       <Group justify="center">
-        <Badge
-          variant="outline"
-          size="sm"
-          style={{ cursor: "pointer" }}
-          onClick={goToday}
-        >
+        <Badge variant="outline" size="sm" style={{ cursor: "pointer" }} onClick={goToday}>
           Today
         </Badge>
       </Group>
 
       {/* Error state */}
       {isError && (
-        <Alert
-          icon={<IconAlertCircle size={16} />}
-          title="Failed to load workouts"
-          color="red"
-        >
+        <Alert icon={<IconAlertCircle size={16} />} title="Failed to load workouts" color="red">
           {(error as Error)?.message ?? "An unexpected error occurred."}
         </Alert>
       )}
@@ -168,8 +159,7 @@ export function WeeklyPlanView() {
             const dayWorkouts = workoutsByDate.get(dateStr) ?? [];
             const isToday = currentDate.isSame(dayjs(), "day");
             const hasWorkouts = dayWorkouts.length > 0;
-            const allCompleted =
-              hasWorkouts && dayWorkouts.every((w) => w.is_completed);
+            const allCompleted = hasWorkouts && dayWorkouts.every((w) => w.is_completed);
 
             let borderColor = "gray";
             if (hasWorkouts) {

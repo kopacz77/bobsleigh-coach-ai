@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ActionIcon,
   Badge,
   Button,
   Card,
@@ -13,7 +12,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { IconPlus, IconPlayerPlay } from "@tabler/icons-react";
+import { IconPlayerPlay, IconPlus } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 
 export interface SetData {
@@ -45,7 +44,7 @@ export function SetLogger({ exercise, exerciseIndex, onStartRest, onSetsChange }
       weight_kg: exercise.planned_weight_kg,
       reps: exercise.planned_reps,
       completed: false,
-    })),
+    }))
   );
   const [rpe, setRpe] = useState<string | null>(null);
 
@@ -63,7 +62,7 @@ export function SetLogger({ exercise, exerciseIndex, onStartRest, onSetsChange }
         return next;
       });
     },
-    [exerciseIndex, onSetsChange, rpe],
+    [exerciseIndex, onSetsChange, rpe]
   );
 
   const handleComplete = useCallback(
@@ -88,7 +87,7 @@ export function SetLogger({ exercise, exerciseIndex, onStartRest, onSetsChange }
         }
       }
     },
-    [updateSet, onStartRest, sets],
+    [updateSet, onStartRest, sets]
   );
 
   const addSet = useCallback(() => {
@@ -113,7 +112,7 @@ export function SetLogger({ exercise, exerciseIndex, onStartRest, onSetsChange }
       const rpeVal = value ? Number(value) : null;
       onSetsChange(exerciseIndex, sets, rpeVal);
     },
-    [exerciseIndex, sets, onSetsChange],
+    [exerciseIndex, sets, onSetsChange]
   );
 
   return (
@@ -128,11 +127,7 @@ export function SetLogger({ exercise, exerciseIndex, onStartRest, onSetsChange }
             {exercise.planned_weight_kg ? ` @ ${exercise.planned_weight_kg}kg` : ""}
           </Text>
         </Stack>
-        <Badge
-          color={allDone ? "green" : "blue"}
-          size="lg"
-          variant="light"
-        >
+        <Badge color={allDone ? "green" : "blue"} size="lg" variant="light">
           {completedCount}/{sets.length}
         </Badge>
       </Group>
@@ -199,12 +194,7 @@ export function SetLogger({ exercise, exerciseIndex, onStartRest, onSetsChange }
       </Stack>
 
       <Group mt="md" gap="sm">
-        <Button
-          variant="light"
-          size="sm"
-          leftSection={<IconPlus size={16} />}
-          onClick={addSet}
-        >
+        <Button variant="light" size="sm" leftSection={<IconPlus size={16} />} onClick={addSet}>
           Add Set
         </Button>
         <Button

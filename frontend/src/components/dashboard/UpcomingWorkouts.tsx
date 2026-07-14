@@ -35,7 +35,12 @@ function WorkoutItem({ date, day, title, type, duration, intensity, isAI = false
   }[intensity];
 
   return (
-    <Group justify="space-between" p="sm" wrap="nowrap" style={{ borderBottom: `1px solid ${theme.colors.gray[1]}` }}>
+    <Group
+      justify="space-between"
+      p="sm"
+      wrap="nowrap"
+      style={{ borderBottom: `1px solid ${theme.colors.gray[1]}` }}
+    >
       <Group wrap="nowrap" style={{ flex: 1, minWidth: 0 }}>
         <ThemeIcon size="xl" radius="md" color="gray.2" style={{ flexShrink: 0 }}>
           <Text fw={700} c="dark">
@@ -45,7 +50,9 @@ function WorkoutItem({ date, day, title, type, duration, intensity, isAI = false
 
         <Stack gap={0} style={{ minWidth: 0 }}>
           <Group gap="xs" wrap="wrap">
-            <Text fw={500} size="sm" style={{ whiteSpace: "nowrap" }}>{title}</Text>
+            <Text fw={500} size="sm" style={{ whiteSpace: "nowrap" }}>
+              {title}
+            </Text>
             {isAI && (
               <Badge size="xs" color="blue">
                 AI

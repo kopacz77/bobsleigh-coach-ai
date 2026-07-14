@@ -7,7 +7,6 @@ import {
   Divider,
   Group,
   List,
-  MultiSelect,
   NumberInput,
   Paper,
   Select,
@@ -21,13 +20,11 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconArrowRight,
   IconBulb,
   IconClockHour4,
   IconDeviceAnalytics,
-  IconEqual,
   IconJumpRope,
   IconRun, // Using IconRun instead of the missing IconRunning
   IconTrendingDown,
@@ -45,6 +42,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * Test Category Option
@@ -309,7 +307,9 @@ const PerformanceAssessment: React.FC<PerformanceAssessmentProps> = ({ userId })
 
         // Fix for Set iteration issue in TypeScript
         const categoriesSet = new Set<string>();
-        data.forEach((item) => categoriesSet.add(item.test_category));
+        data.forEach((item) => {
+          categoriesSet.add(item.test_category);
+        });
         const uniqueCategories = Array.from(categoriesSet);
 
         setTestCategories(uniqueCategories);

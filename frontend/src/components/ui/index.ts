@@ -1,7 +1,5 @@
 // Export all UI components for easy importing
 
-export { ColorSchemeToggle } from "./ColorSchemeToggle";
-export { OfflineIndicator } from "./OfflineIndicator";
 export { TrendCharts } from "../charts/TrendCharts";
 export { ErrorBoundary, withErrorBoundary } from "../common/ErrorBoundary";
 export {
@@ -15,3 +13,5 @@ export { DailyFeedbackForm } from "../feedback/DailyFeedbackForm";
 export { ExerciseCard } from "../training/ExerciseCard";
 export { LoadAdjustments } from "../training/LoadAdjustments";
 export { SessionRecommendations } from "../training/SessionRecommendations";
+export { ColorSchemeToggle } from "./ColorSchemeToggle";
+export { OfflineIndicator } from "./OfflineIndicator";

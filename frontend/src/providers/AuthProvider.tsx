@@ -1,9 +1,9 @@
 "use client";
 
 import { createContext, useContext } from "react";
+import { useAuth as useSupabaseAuth } from "@/hooks/useAuth";
 import { DevAuthProvider, useDevAuth } from "@/providers/DevAuthProvider";
 import { SupabaseProvider } from "@/providers/SupabaseProvider";
-import { useAuth as useSupabaseAuth } from "@/hooks/useAuth";
 
 /**
  * Unified auth shape.  Both the dev and supabase auth hooks return this shape
@@ -31,7 +31,7 @@ const AUTH_MODE = process.env.NEXT_PUBLIC_AUTH_MODE || "dev";
  * Components like AuthGuard can read this to skip Supabase auth checks.
  */
 export const AuthModeContext = createContext<"dev" | "supabase">(
-  AUTH_MODE === "dev" ? "dev" : "supabase",
+  AUTH_MODE === "dev" ? "dev" : "supabase"
 );
 
 export function useAuthMode() {
@@ -82,6 +82,7 @@ function useDevAuthWrapped(): AuthState {
  * Only used when auth mode is supabase.
  */
 function useSupabaseAuthWrapped(): AuthState {
+  // biome-ignore lint/correctness/useHookAtTopLevel: this is a top-level call; Biome flags it only because useAuth() reaches it through a build-time branch.
   const auth = useSupabaseAuth();
   return {
     user: auth.user,
@@ -112,7 +113,9 @@ export function useAuth(): AuthState {
   // AUTH_MODE is a build-time constant -- this branch is dead-code-eliminated
   // by Next.js / webpack at build time, so only one hook is ever called.
   if (AUTH_MODE === "dev") {
+    // biome-ignore lint/correctness/useHookAtTopLevel: AUTH_MODE is inlined at build time, so exactly one branch survives and hook order stays stable.
     return useDevAuthWrapped();
   }
+  // biome-ignore lint/correctness/useHookAtTopLevel: see above -- the branch is resolved at build time, not per render.
   return useSupabaseAuthWrapped();
 }

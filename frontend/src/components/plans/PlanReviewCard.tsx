@@ -21,7 +21,7 @@ import {
   IconChevronUp,
   IconX,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { useApprovePlan, useRejectPlan } from "@/hooks/usePlans";
 
@@ -97,7 +97,7 @@ const PlanReviewCard = ({ plan }: PlanReviewCardProps) => {
             color: "red",
           });
         },
-      },
+      }
     );
   };
 
@@ -175,7 +175,8 @@ const PlanReviewCard = ({ plan }: PlanReviewCardProps) => {
                 {/* Render each section: warm_up, main, accessory, cool_down */}
                 {["warm_up", "main", "accessory", "cool_down"].map((section) => {
                   const exercises = day[section];
-                  if (!exercises || !Array.isArray(exercises) || exercises.length === 0) return null;
+                  if (!exercises || !Array.isArray(exercises) || exercises.length === 0)
+                    return null;
                   const sectionLabel = section
                     .replace("_", " ")
                     .replace(/\b\w/g, (c: string) => c.toUpperCase());

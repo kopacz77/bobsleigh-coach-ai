@@ -14,7 +14,6 @@ import {
   Tooltip,
 } from "@mantine/core";
 import {
-  IconAlertTriangle,
   IconCheck,
   IconClock,
   IconInfoCircle,
@@ -24,7 +23,7 @@ import {
   IconTrendingUp,
   IconWeight,
 } from "@tabler/icons-react";
-import { ExerciseSet, type SessionExercise } from "@/lib/types/training";
+import type { SessionExercise } from "@/lib/types/training";
 
 interface ExerciseCardProps {
   sessionExercise: SessionExercise;

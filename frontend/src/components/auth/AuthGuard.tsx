@@ -3,8 +3,8 @@
 import { Center, Loader } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSupabase } from "@/providers/SupabaseProvider";
 import { useAuthMode } from "@/providers/AuthProvider";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 interface AuthGuardProps {
   children: React.ReactNode;

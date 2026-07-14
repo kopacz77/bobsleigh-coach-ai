@@ -41,7 +41,9 @@ export function Settings() {
     <Stack gap="lg">
       <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
         <Stack>
-          <Title order={3} fz={{ base: "md", md: "lg" }}>Application Settings</Title>
+          <Title order={3} fz={{ base: "md", md: "lg" }}>
+            Application Settings
+          </Title>
 
           <Group justify="space-between" wrap="wrap" gap="sm">
             <Text>Units</Text>
@@ -77,14 +79,18 @@ export function Settings() {
 
       <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
         <Stack>
-          <Title order={3} fz={{ base: "md", md: "lg" }}>Security Settings</Title>
+          <Title order={3} fz={{ base: "md", md: "lg" }}>
+            Security Settings
+          </Title>
           <MFASetup />
         </Stack>
       </Card>
 
       <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
         <Stack>
-          <Title order={3} fz={{ base: "md", md: "lg" }}>Data Settings</Title>
+          <Title order={3} fz={{ base: "md", md: "lg" }}>
+            Data Settings
+          </Title>
 
           <Group justify="space-between" wrap="nowrap" gap="sm">
             <div style={{ flex: 1 }}>

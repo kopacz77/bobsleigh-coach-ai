@@ -5,8 +5,8 @@ import "@mantine/notifications/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { AuthGuard } from "@/components/auth/AuthGuard";
-import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 import { theme } from "@/styles/theme";
 
 export const metadata = {

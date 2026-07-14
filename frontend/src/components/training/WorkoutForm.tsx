@@ -10,20 +10,19 @@ import {
   NumberInput,
   Select,
   Stack,
-  Text,
   Textarea,
   TextInput,
   Title,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
+import { useDebouncedValue } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
-import { useDebouncedValue } from "@mantine/hooks";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { exerciseAPI } from "@/lib/api";
+import { useState } from "react";
 import { useCreateWorkout } from "@/hooks/useTraining";
+import { exerciseAPI } from "@/lib/api";
 
 interface WorkoutFormValues {
   name: string;
@@ -60,12 +59,10 @@ export function WorkoutForm({ onSuccess }: WorkoutFormProps = {}) {
     queryFn: () => exerciseAPI.search({ search: debouncedSearch || undefined, limit: 50 }),
   });
 
-  const exerciseOptions = (exerciseResults?.data || []).map(
-    (ex: { id: string; name: string }) => ({
-      value: ex.id,
-      label: ex.name,
-    })
-  );
+  const exerciseOptions = (exerciseResults?.data || []).map((ex: { id: string; name: string }) => ({
+    value: ex.id,
+    label: ex.name,
+  }));
 
   const workoutTypes = [
     { value: "strength", label: "Strength" },
@@ -179,7 +176,9 @@ export function WorkoutForm({ onSuccess }: WorkoutFormProps = {}) {
   // Auto-fill exercise name when exercise_id changes
   const handleExerciseChange = (value: string, index: number) => {
     form.setFieldValue(`exercises.${index}.exercise_id`, value);
-    const exercise = exerciseOptions.find((ex: { value: string; label: string }) => ex.value === value);
+    const exercise = exerciseOptions.find(
+      (ex: { value: string; label: string }) => ex.value === value
+    );
     if (exercise) {
       form.setFieldValue(`exercises.${index}.name`, exercise.label);
     }

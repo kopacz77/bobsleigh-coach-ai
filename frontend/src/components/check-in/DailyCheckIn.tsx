@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Box,
@@ -47,7 +47,7 @@ function calculateReadiness(form: CheckInFormState): number {
       form.nutrition_quality +
       form.physical_readiness +
       form.mental_clarity) /
-      5,
+      5
   );
 }
 
@@ -261,18 +261,14 @@ const DailyCheckIn = () => {
       <Checkbox
         label="Flag injury or concern for coach"
         checked={form.flag_concern}
-        onChange={(e) =>
-          setForm((prev) => ({ ...prev, flag_concern: e.currentTarget.checked }))
-        }
+        onChange={(e) => setForm((prev) => ({ ...prev, flag_concern: e.currentTarget.checked }))}
         mb="md"
       />
 
       <Textarea
         placeholder="Additional notes (optional)"
         value={form.notes}
-        onChange={(e) =>
-          setForm((prev) => ({ ...prev, notes: e.currentTarget.value }))
-        }
+        onChange={(e) => setForm((prev) => ({ ...prev, notes: e.currentTarget.value }))}
         minRows={2}
         mb="xl"
       />

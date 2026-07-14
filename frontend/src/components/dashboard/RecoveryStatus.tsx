@@ -62,7 +62,9 @@ export function RecoveryStatus() {
     <Card withBorder shadow="sm" p={{ base: "sm", md: "md" }} h="100%">
       <Stack gap="md" justify="space-between" h="100%">
         <Group justify="space-between">
-          <Title order={3} fz={{ base: "md", md: "lg" }}>Recovery Status</Title>
+          <Title order={3} fz={{ base: "md", md: "lg" }}>
+            Recovery Status
+          </Title>
           <ThemeIcon size="md" radius="xl" color={scoreColor}>
             <IconBattery3 style={{ width: rem(16), height: rem(16) }} />
           </ThemeIcon>

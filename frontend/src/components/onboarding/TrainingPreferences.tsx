@@ -10,28 +10,33 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  ThemeIcon,
   TextInput,
   Title,
   useMantineTheme,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconArrowRight,
   IconBarbell,
   IconCalendarEvent,
-  IconClock,
   IconDeviceFloppy,
   IconHeartbeat,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * TrainingPreferences component allows athletes to set their availability
  * and training preferences specifically for bobsleigh training
  */
-const TrainingPreferences = ({ userId, onComplete }: { userId: string; onComplete?: (data: any) => void }) => {
+const TrainingPreferences = ({
+  userId,
+  onComplete,
+}: {
+  userId: string;
+  onComplete?: (data: any) => void;
+}) => {
   const theme = useMantineTheme();
   const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState(false);
@@ -89,15 +94,16 @@ const TrainingPreferences = ({ userId, onComplete }: { userId: string; onComplet
   ];
 
   // Handle checkbox changes for availability
-  const handleAvailabilityChange = (day: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPreferences((prev) => ({
-      ...prev,
-      availability: {
-        ...prev.availability,
-        [day]: event.currentTarget.checked,
-      },
-    }));
-  };
+  const handleAvailabilityChange =
+    (day: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPreferences((prev) => ({
+        ...prev,
+        availability: {
+          ...prev.availability,
+          [day]: event.currentTarget.checked,
+        },
+      }));
+    };
 
   // Handle select changes
   const handleSelectChange = (field: string) => (value: string | null) => {
@@ -136,10 +142,10 @@ const TrainingPreferences = ({ userId, onComplete }: { userId: string; onComplet
         saturday_available: preferences.availability.saturday,
         sunday_available: preferences.availability.sunday,
         preferred_time_of_day: preferences.preferredTime,
-        training_days_per_week: Number.parseInt(preferences.trainingDays),
+        training_days_per_week: Number.parseInt(preferences.trainingDays, 10),
         preferred_start_time: preferences.preferredStartTime,
         preferred_end_time: preferences.preferredEndTime,
-        max_session_duration_min: Number.parseInt(preferences.maxSessionDuration),
+        max_session_duration_min: Number.parseInt(preferences.maxSessionDuration, 10),
         rest_day_preference: preferences.restDayPreference,
         preferred_training_types: preferences.preferredTrainingTypes,
         recovery_methods: preferences.recoveryMethods,
@@ -380,7 +386,7 @@ const TrainingPreferences = ({ userId, onComplete }: { userId: string; onComplet
           <Group
             justify="space-between"
             p="md"
-            style={{ border: "1px solid " + theme.colors.gray[3], borderRadius: theme.radius.sm }}
+            style={{ border: `1px solid ${theme.colors.gray[3]}`, borderRadius: theme.radius.sm }}
           >
             <Text>Enable Training Notifications</Text>
             <Checkbox
@@ -392,7 +398,7 @@ const TrainingPreferences = ({ userId, onComplete }: { userId: string; onComplet
           <Group
             justify="space-between"
             p="md"
-            style={{ border: "1px solid " + theme.colors.gray[3], borderRadius: theme.radius.sm }}
+            style={{ border: `1px solid ${theme.colors.gray[3]}`, borderRadius: theme.radius.sm }}
           >
             <Text>Enable Check-in Reminders</Text>
             <Checkbox checked={preferences.reminders} onChange={handleToggle("reminders")} />
@@ -401,7 +407,7 @@ const TrainingPreferences = ({ userId, onComplete }: { userId: string; onComplet
           <Group
             justify="space-between"
             p="md"
-            style={{ border: "1px solid " + theme.colors.gray[3], borderRadius: theme.radius.sm }}
+            style={{ border: `1px solid ${theme.colors.gray[3]}`, borderRadius: theme.radius.sm }}
           >
             <div>
               <Text>Adaptive Training</Text>

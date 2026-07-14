@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  rem,
-  SegmentedControl,
-  Select,
-  Stack,
-  Tabs,
-  Text,
-  Title,
-} from "@mantine/core";
+import { rem, SegmentedControl, Select, Stack, Tabs, Text, Title } from "@mantine/core";
 import {
   IconBarbell,
   IconCalendarStats,
@@ -19,15 +11,15 @@ import {
 } from "@tabler/icons-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { AdaptedWorkoutView } from "@/components/plans/AdaptedWorkoutView";
+import { WeeklyPlanOverview } from "@/components/plans/WeeklyPlanOverview";
+import { useWorkouts } from "@/hooks/useTraining";
 import { ExerciseLibrary } from "./ExerciseLibrary";
 import { PlannedVsActual } from "./PlannedVsActual";
 import { TrainingAnalytics } from "./TrainingAnalytics";
 import { TrainingRecommendations } from "./TrainingRecommendations";
 import { WeeklyPlanView } from "./WeeklyPlanView";
 import { WorkoutList } from "./WorkoutList";
-import { useWorkouts } from "@/hooks/useTraining";
-import { AdaptedWorkoutView } from "@/components/plans/AdaptedWorkoutView";
-import { WeeklyPlanOverview } from "@/components/plans/WeeklyPlanOverview";
 
 const VALID_TABS = ["weekly", "history", "exercises", "comparison", "recommendations", "analytics"];
 

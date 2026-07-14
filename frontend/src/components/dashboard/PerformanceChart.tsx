@@ -37,13 +37,13 @@ export function PerformanceChart({ athleteId, days = 42 }: PerformanceChartProps
     return data.daily_load.map(
       (item: { date: string; load: number; ctl: number; atl: number; tsb: number }) => ({
         date: new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(
-          new Date(item.date),
+          new Date(item.date)
         ),
         dailyLoad: Math.round(item.load),
         ctl: Math.round(item.ctl * 10) / 10,
         atl: Math.round(item.atl * 10) / 10,
         tsb: Math.round(item.tsb * 10) / 10,
-      }),
+      })
     );
   }, [data]);
 

@@ -1,4 +1,4 @@
-import { type MantineColorsTuple, createTheme } from "@mantine/core";
+import { createTheme, type MantineColorsTuple } from "@mantine/core";
 
 /**
  * Design tokens from DESIGN.md applied as Mantine v7 theme.
@@ -49,11 +49,9 @@ const intensity: MantineColorsTuple = [
 
 export const theme = createTheme({
   primaryColor: "steelBlue",
-  fontFamily:
-    "Inter, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+  fontFamily: "Inter, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
   headings: {
-    fontFamily:
-      "Inter, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+    fontFamily: "Inter, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
     sizes: {
       h1: { fontSize: "1.875rem", fontWeight: "700", lineHeight: "1.2" },
       h2: { fontSize: "1.5rem", fontWeight: "600", lineHeight: "1.3" },

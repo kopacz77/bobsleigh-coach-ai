@@ -66,7 +66,7 @@ export default function WorkoutPage() {
             planned_sets: ex.planned_sets ?? ex.sets ?? 3,
             planned_reps: ex.planned_reps ?? ex.reps ?? 10,
             planned_weight_kg: ex.planned_weight_kg ?? ex.weight_kg ?? null,
-          }),
+          })
         ),
       }
     : null;

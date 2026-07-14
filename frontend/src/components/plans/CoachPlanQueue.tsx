@@ -1,7 +1,6 @@
 "use client";
 
 import { Group, Loader, Stack, Text, Title } from "@mantine/core";
-import React from "react";
 
 import { usePendingPlans } from "@/hooks/usePlans";
 

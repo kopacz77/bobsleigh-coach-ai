@@ -1,7 +1,5 @@
 "use client";
 
-import type React from 'react';
-import { useState, useEffect } from 'react';
 import {
   ActionIcon,
   Badge,
@@ -18,7 +16,6 @@ import {
   Select,
   SimpleGrid,
   Slider,
-  Stack,
   Text,
   Textarea,
   ThemeIcon,
@@ -29,7 +26,6 @@ import {
 import { DatePickerInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconActivity,
   IconAlertCircle,
@@ -46,6 +42,9 @@ import {
   IconTrash,
   IconZzz,
 } from "@tabler/icons-react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * Option type for select inputs
@@ -146,7 +145,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [recoveryData, setRecoveryData] = useState<RecoverySession[]>([]);
   const [injuryData, setInjuryData] = useState<Injury[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, _setSelectedDate] = useState<Date>(new Date());
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
   const [injuryModalOpened, { open: openInjuryModal, close: closeInjuryModal }] =
     useDisclosure(false);
@@ -471,28 +470,26 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       if (selectedRecovery) {
         // Update existing recovery
         const { error } = await supabase
-          .from('recovery_sessions')
+          .from("recovery_sessions")
           .update(recoveryData)
-          .eq('id', selectedRecovery.id);
-        
+          .eq("id", selectedRecovery.id);
+
         if (error) {
           throw error;
         }
       } else {
         // Insert new recovery
-        const { error } = await supabase
-          .from('recovery_sessions')
-          .insert(recoveryData);
-        
+        const { error } = await supabase.from("recovery_sessions").insert(recoveryData);
+
         if (error) {
           throw error;
         }
       }
 
       notifications.show({
-        title: 'Success',
-        message: 'Recovery data saved successfully',
-        color: 'green',
+        title: "Success",
+        message: "Recovery data saved successfully",
+        color: "green",
       });
 
       // Refresh recovery data
@@ -509,11 +506,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       setRecoveryData(data || []);
       closeModal();
     } catch (error) {
-      console.error('Error saving recovery data:', error);
+      console.error("Error saving recovery data:", error);
       notifications.show({
-        title: 'Error',
-        message: 'Failed to save recovery data',
-        color: 'red',
+        title: "Error",
+        message: "Failed to save recovery data",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -569,9 +566,9 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       }
 
       notifications.show({
-        title: 'Success',
-        message: 'Injury record deleted successfully',
-        color: 'green',
+        title: "Success",
+        message: "Injury record deleted successfully",
+        color: "green",
       });
 
       // Refresh injury data
@@ -584,11 +581,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       setInjuryData(data || []);
       closeInjuryModal();
     } catch (error) {
-      console.error('Error deleting injury record:', error);
+      console.error("Error deleting injury record:", error);
       notifications.show({
-        title: 'Error',
-        message: 'Failed to delete injury record',
-        color: 'red',
+        title: "Error",
+        message: "Failed to delete injury record",
+        color: "red",
       });
     } finally {
       setDeleteLoading(false);
@@ -599,9 +596,9 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
   const handleSubmitInjury = async () => {
     if (!injury.body_area || !injury.injury_type) {
       notifications.show({
-        title: 'Missing Information',
-        message: 'Please fill in all required fields',
-        color: 'orange',
+        title: "Missing Information",
+        message: "Please fill in all required fields",
+        color: "orange",
       });
       return;
     }
@@ -626,28 +623,26 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       if (selectedInjury) {
         // Update existing injury
         const { error } = await supabase
-          .from('injuries')
+          .from("injuries")
           .update(injuryData)
-          .eq('id', selectedInjury.id);
-        
+          .eq("id", selectedInjury.id);
+
         if (error) {
           throw error;
         }
       } else {
         // Insert new injury
-        const { error } = await supabase
-          .from('injuries')
-          .insert(injuryData);
-        
+        const { error } = await supabase.from("injuries").insert(injuryData);
+
         if (error) {
           throw error;
         }
       }
 
       notifications.show({
-        title: 'Success',
-        message: 'Injury data saved successfully',
-        color: 'green',
+        title: "Success",
+        message: "Injury data saved successfully",
+        color: "green",
       });
 
       // Refresh injury data
@@ -660,11 +655,11 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
       setInjuryData(data || []);
       closeInjuryModal();
     } catch (error) {
-      console.error('Error saving injury data:', error);
+      console.error("Error saving injury data:", error);
       notifications.show({
-        title: 'Error',
-        message: 'Failed to save injury data',
-        color: 'red',
+        title: "Error",
+        message: "Failed to save injury data",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -782,7 +777,7 @@ const RecoveryHealth: React.FC<RecoveryHealthProps> = ({ userId }) => {
                           .sort((a, b) => b[1] - a[1])
                           .slice(0, 3);
 
-                        return sortedMethods.map(([method, count]) => {
+                        return sortedMethods.map(([method, _count]) => {
                           const methodInfo = recoveryMethods.find((m) => m.value === method);
                           const MethodIcon = methodInfo?.icon;
                           return (

@@ -153,7 +153,7 @@ export function SessionRecommendations({
       <Text fw={600} size="md">
         {title}
       </Text>
-      {exercises.map((sessionExercise, index) => (
+      {exercises.map((sessionExercise, _index) => (
         <ExerciseCard
           key={sessionExercise.id}
           sessionExercise={sessionExercise}
@@ -174,7 +174,10 @@ export function SessionRecommendations({
             <Stack gap={4}>
               <Title order={2}>Today's Training Recommendation</Title>
               <Text size="sm" c="dimmed">
-                Generated on {recommendation.createdAt ? new Date(recommendation.createdAt).toLocaleString() : 'N/A'}
+                Generated on{" "}
+                {recommendation.createdAt
+                  ? new Date(recommendation.createdAt).toLocaleString()
+                  : "N/A"}
               </Text>
             </Stack>
 

@@ -15,7 +15,7 @@ export function useUpdateAthleteProfile() {
   return useMutation({
     mutationFn: ({ athleteId, data }: { athleteId: number; data: any }) =>
       athleteAPI.updateProfile(athleteId, data).then((res) => res.data),
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       // Invalidate and refetch athlete data
       queryClient.invalidateQueries({ queryKey: ["athlete", variables.athleteId] });
     },

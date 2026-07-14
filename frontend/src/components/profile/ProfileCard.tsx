@@ -83,7 +83,9 @@ export function ProfileCard() {
       {isEditing ? (
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
-            <Title order={3} fz={{ base: "md", md: "lg" }}>Edit Profile</Title>
+            <Title order={3} fz={{ base: "md", md: "lg" }}>
+              Edit Profile
+            </Title>
 
             <Stack gap="sm">
               <TextInput
@@ -142,7 +144,12 @@ export function ProfileCard() {
               <Button type="submit" loading={isSubmitting} fullWidth>
                 Save Changes
               </Button>
-              <Button variant="outline" onClick={() => setIsEditing(false)} disabled={isSubmitting} fullWidth>
+              <Button
+                variant="outline"
+                onClick={() => setIsEditing(false)}
+                disabled={isSubmitting}
+                fullWidth
+              >
                 Cancel
               </Button>
             </Stack>

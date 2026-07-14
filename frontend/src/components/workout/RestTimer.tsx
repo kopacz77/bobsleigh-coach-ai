@@ -54,8 +54,7 @@ export function RestTimer({ autoStartSeconds, onAutoStartHandled }: RestTimerPro
   const progress = remaining > 0 ? (remaining / maxSeconds) * 100 : 0;
 
   // Color transitions: green -> yellow -> red as time runs out
-  const timerColor =
-    remaining > 30 ? "green" : remaining > 10 ? "yellow" : "red";
+  const timerColor = remaining > 30 ? "green" : remaining > 10 ? "yellow" : "red";
 
   // Minimized floating indicator when collapsed and running
   if (!expanded && isRunning) {

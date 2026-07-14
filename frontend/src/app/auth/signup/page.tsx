@@ -33,8 +33,7 @@ export default function SignupPage() {
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      password: (value) =>
-        value.length >= 8 ? null : "Password must be at least 8 characters",
+      password: (value) => (value.length >= 8 ? null : "Password must be at least 8 characters"),
       confirmPassword: (value, values) =>
         value === values.password ? null : "Passwords do not match",
     },

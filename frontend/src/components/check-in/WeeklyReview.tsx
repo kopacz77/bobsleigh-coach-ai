@@ -1,38 +1,29 @@
 import {
-  Badge,
   Box,
   Button,
   Group,
-  MantineColor,
   MultiSelect,
   Paper,
   Progress,
-  rem,
-  Select,
   SimpleGrid,
   Slider,
   Tabs,
   Text,
   Textarea,
-  ThemeIcon,
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import { DatePicker, DatePickerInput, type DateValue } from "@mantine/dates";
+import { DatePicker, type DateValue } from "@mantine/dates";
 import { notifications } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
-  IconArrowRight,
   IconCalendarStats,
   IconCaretRight,
   IconChartBar,
-  IconEqual,
   IconMedal,
   IconNotes,
   IconRun,
   IconTarget,
   IconTrendingDown,
-  IconTrendingUp,
 } from "@tabler/icons-react";
 import type React from "react";
 import { useEffect, useState } from "react";
@@ -46,6 +37,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 interface WeeklyReviewProps {
   userId: string;

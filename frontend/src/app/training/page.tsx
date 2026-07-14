@@ -32,13 +32,7 @@ export default function TrainingPage() {
           <TrainingTabs />
         </Suspense>
 
-        <Modal
-          opened={opened}
-          onClose={close}
-          title="Log Workout"
-          size="lg"
-          centered
-        >
+        <Modal opened={opened} onClose={close} title="Log Workout" size="lg" centered>
           <WorkoutForm onSuccess={handleWorkoutSaved} />
         </Modal>
       </Stack>

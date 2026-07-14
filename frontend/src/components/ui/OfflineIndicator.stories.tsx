@@ -1,6 +1,6 @@
 import { Badge, Group } from "@mantine/core";
-import { IconCloudOff, IconCloudUpload } from "@tabler/icons-react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { IconCloudOff, IconCloudUpload } from "@tabler/icons-react";
 
 /**
  * Presentational shell of OfflineIndicator that takes props directly instead of

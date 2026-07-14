@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Group, Modal, Textarea } from "@mantine/core";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface RejectFeedbackModalProps {
   opened: boolean;

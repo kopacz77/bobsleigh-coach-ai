@@ -3,7 +3,6 @@
 import { Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconWand } from "@tabler/icons-react";
-import React from "react";
 
 import { useGenerateBatch } from "@/hooks/usePlans";
 

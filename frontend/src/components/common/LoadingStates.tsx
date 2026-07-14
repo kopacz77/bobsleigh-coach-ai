@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Alert,
   Card,
   Group,
   Loader,
@@ -12,13 +11,7 @@ import {
   ThemeIcon,
   Timeline,
 } from "@mantine/core";
-import {
-  IconActivity,
-  IconBrain,
-  IconChartLine,
-  IconCheck,
-  IconTargetArrow,
-} from "@tabler/icons-react";
+import { IconBrain, IconChartLine, IconCheck, IconTargetArrow } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
 interface AIProcessingLoaderProps {

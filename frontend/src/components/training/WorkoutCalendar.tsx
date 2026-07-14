@@ -10,16 +10,14 @@ import {
   Group,
   Paper,
   rem,
-  SimpleGrid,
   Skeleton,
   Stack,
   Text,
   Title,
-  Tooltip,
   useMantineTheme,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import { IconChevronLeft, IconChevronRight, IconInfoCircle, IconPlus } from "@tabler/icons-react";
+import { IconInfoCircle, IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
 
 interface EventData {
@@ -44,7 +42,7 @@ const getIntensityColor = (intensity: "Low" | "Medium" | "High") => {
 export function WorkoutCalendar() {
   const theme = useMantineTheme();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, _setIsLoading] = useState(false);
 
   // Mock events data
   const events: EventData[] = [
@@ -153,20 +151,30 @@ export function WorkoutCalendar() {
       <Stack gap="xs">
         <Group justify="space-between" wrap="wrap">
           <Group gap="xs" wrap="wrap">
-            <Text fw={500} size="sm">{event.name}</Text>
+            <Text fw={500} size="sm">
+              {event.name}
+            </Text>
             {event.isAI && (
-              <Badge size="xs" color="blue">AI</Badge>
+              <Badge size="xs" color="blue">
+                AI
+              </Badge>
             )}
             {event.isCompleted && (
-              <Badge size="xs" color="green">Done</Badge>
+              <Badge size="xs" color="green">
+                Done
+              </Badge>
             )}
           </Group>
-          <Badge color={getIntensityColor(event.intensity)} size="sm">{event.intensity}</Badge>
+          <Badge color={getIntensityColor(event.intensity)} size="sm">
+            {event.intensity}
+          </Badge>
         </Group>
 
         <Group gap="sm">
           <Text size="sm">{event.type}</Text>
-          <Text size="sm" c="dimmed">-</Text>
+          <Text size="sm" c="dimmed">
+            -
+          </Text>
           <Text size="sm">{event.duration} min</Text>
         </Group>
 
@@ -267,9 +275,7 @@ export function WorkoutCalendar() {
                     <Skeleton height={100} radius="md" />
                   </Stack>
                 ) : todayEvents.length > 0 ? (
-                  <Stack gap="md">
-                    {todayEvents.map((event) => renderEventCard(event))}
-                  </Stack>
+                  <Stack gap="md">{todayEvents.map((event) => renderEventCard(event))}</Stack>
                 ) : (
                   <Stack gap="md" justify="center" ta="center" style={{ height: "200px" }}>
                     <Text c="dimmed">No workouts scheduled for this day</Text>

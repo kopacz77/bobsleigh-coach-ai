@@ -1,19 +1,7 @@
 "use client";
 
-import {
-  Badge,
-  Card,
-  Group,
-  Loader,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import {
-  IconCalendarOff,
-  IconClock,
-  IconMoon,
-} from "@tabler/icons-react";
+import { Badge, Card, Group, Loader, Stack, Text, Title } from "@mantine/core";
+import { IconCalendarOff, IconClock, IconMoon } from "@tabler/icons-react";
 
 import { useCurrentPlan } from "@/hooks/usePlans";
 import { InjuryRiskBanner } from "./InjuryRiskBanner";
@@ -79,7 +67,7 @@ function isToday(dateStr?: string): boolean {
 function formatDate(dateStr?: string): string {
   if (!dateStr) return "";
   try {
-    const d = new Date(dateStr + "T00:00:00");
+    const d = new Date(`${dateStr}T00:00:00`);
     return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
   } catch {
     return dateStr;
@@ -129,7 +117,11 @@ function DayCard({ day }: { day: PlanDay }) {
               </Badge>
             )}
           </Group>
-          <Text size="sm" c={day.is_rest_day ? "dimmed" : undefined} fs={day.is_rest_day ? "italic" : undefined}>
+          <Text
+            size="sm"
+            c={day.is_rest_day ? "dimmed" : undefined}
+            fs={day.is_rest_day ? "italic" : undefined}
+          >
             {day.title}
           </Text>
         </Stack>
@@ -151,11 +143,7 @@ function DayCard({ day }: { day: PlanDay }) {
                 </Badge>
               )}
               {day.estimated_duration_minutes > 0 && (
-                <Badge
-                  variant="outline"
-                  size="sm"
-                  leftSection={<IconClock size={12} />}
-                >
+                <Badge variant="outline" size="sm" leftSection={<IconClock size={12} />}>
                   {day.estimated_duration_minutes}m
                 </Badge>
               )}
@@ -245,11 +233,7 @@ export function WeeklyPlanOverview() {
       )}
 
       {/* Injury risk banner */}
-      <InjuryRiskBanner
-        riskScore={riskScore}
-        riskLevel={riskLevel}
-        riskFactors={riskFactors}
-      />
+      <InjuryRiskBanner riskScore={riskScore} riskLevel={riskLevel} riskFactors={riskFactors} />
 
       {/* 7-day vertical stack */}
       <Stack gap="xs">

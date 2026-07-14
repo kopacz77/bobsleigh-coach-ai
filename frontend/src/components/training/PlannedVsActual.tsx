@@ -1,16 +1,6 @@
 "use client";
 
-import {
-  Alert,
-  Badge,
-  Card,
-  Group,
-  Skeleton,
-  Stack,
-  Table,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Alert, Badge, Card, Group, Skeleton, Stack, Table, Text, Title } from "@mantine/core";
 import { IconAlertCircle, IconCheck, IconMinus } from "@tabler/icons-react";
 import { useWorkout } from "@/hooks/useTraining";
 
@@ -65,7 +55,12 @@ function buildMetricRows(we: WorkoutExercise): MetricRow[] {
     rows.push({ label: "Reps", planned: we.planned_reps, actual: we.actual_reps, unit: "" });
   }
   if (we.planned_weight != null) {
-    rows.push({ label: "Weight", planned: we.planned_weight, actual: we.actual_weight, unit: "kg" });
+    rows.push({
+      label: "Weight",
+      planned: we.planned_weight,
+      actual: we.actual_weight,
+      unit: "kg",
+    });
   }
   if (we.planned_distance != null) {
     rows.push({
@@ -122,7 +117,7 @@ export function PlannedVsActual({ workoutId }: PlannedVsActualProps) {
   }
 
   const exercises: WorkoutExercise[] = (workout.workout_exercises ?? []).sort(
-    (a: WorkoutExercise, b: WorkoutExercise) => a.exercise_order - b.exercise_order,
+    (a: WorkoutExercise, b: WorkoutExercise) => a.exercise_order - b.exercise_order
   );
 
   const hasAnyPlannedValues = exercises.some((we) => {

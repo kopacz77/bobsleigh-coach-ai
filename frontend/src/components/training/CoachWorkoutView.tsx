@@ -1,20 +1,7 @@
 "use client";
 
-import {
-  Accordion,
-  Badge,
-  Group,
-  Skeleton,
-  Stack,
-  Text,
-  ThemeIcon,
-} from "@mantine/core";
-import {
-  IconCheck,
-  IconClock,
-  IconUser,
-  IconX,
-} from "@tabler/icons-react";
+import { Accordion, Badge, Group, Skeleton, Stack, Text, ThemeIcon } from "@mantine/core";
+import { IconCheck, IconClock, IconUser } from "@tabler/icons-react";
 import { useAthletesWorkoutStatus } from "@/hooks/useTraining";
 
 interface RecentWorkout {

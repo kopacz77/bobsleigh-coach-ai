@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Divider,
   Group,
   NumberInput,
   Paper,
@@ -10,15 +9,12 @@ import {
   Slider,
   Text,
   Textarea,
-  ThemeIcon,
   Title,
   useMantineTheme,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconArrowRight,
-  IconBarbell,
   IconDeviceFloppy,
   IconHeartbeat,
   IconJumpRope,
@@ -26,13 +22,21 @@ import {
   IconTimeline,
   IconWeight,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * InitialAssessment component collects baseline performance metrics
  * from athletes specific to bobsleigh requirements
  */
-const InitialAssessment = ({ userId, onComplete }: { userId: string; onComplete?: (data: any) => void }) => {
+const InitialAssessment = ({
+  userId,
+  onComplete,
+}: {
+  userId: string;
+  onComplete?: (data: any) => void;
+}) => {
   const theme = useMantineTheme();
   const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState(false);

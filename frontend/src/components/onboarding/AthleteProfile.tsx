@@ -8,7 +8,6 @@ import {
   NumberInput,
   Paper,
   Radio,
-  RadioGroup,
   Select,
   SimpleGrid,
   Stepper,
@@ -19,7 +18,6 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconCheck,
   IconChevronLeft,
@@ -30,7 +28,9 @@ import {
   IconUser,
   IconWeight,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * AthleteProfile component for onboarding new athletes with bobsleigh-specific profile fields
@@ -41,7 +41,7 @@ interface AthleteProfileProps {
 }
 
 const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
-  const theme = useMantineTheme();
+  const _theme = useMantineTheme();
   const { supabase, loading: supabaseLoading } = useSupabase();
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -202,7 +202,9 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
         user_id: userId,
         first_name: profile.firstName,
         last_name: profile.lastName,
-        birth_date: profile.birthDate ? (profile.birthDate as Date).toISOString().split("T")[0] : null,
+        birth_date: profile.birthDate
+          ? (profile.birthDate as Date).toISOString().split("T")[0]
+          : null,
         gender: profile.gender,
         email: profile.email,
         phone: profile.phone,
@@ -213,13 +215,16 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
         body_fat_percentage: Number.parseFloat(profile.bodyFat) || null,
         experience_level: profile.experienceLevel,
         bobsleigh_position: profile.bobsleighPosition,
-        years_experience: Number.parseInt(profile.yearsExperience) || 0,
+        years_experience: Number.parseInt(profile.yearsExperience, 10) || 0,
         previous_sports: profile.previousSports,
         competition_level: profile.competitionLevel,
         specializations: profile.specialization,
         primary_goal: profile.primaryGoal,
         secondary_goal: profile.secondaryGoal,
-        preferred_training_days: typeof profile.preferredTrainingDays === 'string' ? Number.parseInt(profile.preferredTrainingDays) : profile.preferredTrainingDays || 5,
+        preferred_training_days:
+          typeof profile.preferredTrainingDays === "string"
+            ? Number.parseInt(profile.preferredTrainingDays, 10)
+            : profile.preferredTrainingDays || 5,
         preferred_training_time: profile.preferredTrainingTime,
         avatar_url: avatarPath ? `storage/athlete-avatars/${avatarPath}` : null,
       };
@@ -360,7 +365,11 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
           </Paper>
 
           <Group justify="flex-end" mt="xl">
-            <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
+            <Button
+              onClick={handleNextStep}
+              rightSection={<IconChevronRight size={16} />}
+              size="md"
+            >
               Next Step
             </Button>
           </Group>
@@ -428,7 +437,11 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
               Back
             </Button>
 
-            <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
+            <Button
+              onClick={handleNextStep}
+              rightSection={<IconChevronRight size={16} />}
+              size="md"
+            >
               Next Step
             </Button>
           </Group>
@@ -517,7 +530,11 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
               Back
             </Button>
 
-            <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
+            <Button
+              onClick={handleNextStep}
+              rightSection={<IconChevronRight size={16} />}
+              size="md"
+            >
               Next Step
             </Button>
           </Group>

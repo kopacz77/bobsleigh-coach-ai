@@ -224,9 +224,7 @@ export function WorkoutList() {
                           <Menu shadow="md" position="bottom-end">
                             <Menu.Target>
                               <ActionIcon variant="subtle">
-                                <IconDotsVertical
-                                  style={{ width: rem(16), height: rem(16) }}
-                                />
+                                <IconDotsVertical style={{ width: rem(16), height: rem(16) }} />
                               </ActionIcon>
                             </Menu.Target>
 

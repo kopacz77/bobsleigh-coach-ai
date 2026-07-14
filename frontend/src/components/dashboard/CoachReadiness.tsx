@@ -64,7 +64,7 @@ export default function CoachReadiness() {
 
   // Sort: red first, then yellow, then gray, then green
   const sorted = [...athletes].sort(
-    (a, b) => (STATUS_ORDER[a.recovery_status] ?? 4) - (STATUS_ORDER[b.recovery_status] ?? 4),
+    (a, b) => (STATUS_ORDER[a.recovery_status] ?? 4) - (STATUS_ORDER[b.recovery_status] ?? 4)
   );
 
   const dotColor = (status: string) => {
@@ -128,7 +128,10 @@ export default function CoachReadiness() {
                   </Text>
                 </Table.Td>
                 <Table.Td>
-                  <Badge color={STATUS_BADGE_COLOR[athlete.recovery_status] ?? "gray"} variant="light">
+                  <Badge
+                    color={STATUS_BADGE_COLOR[athlete.recovery_status] ?? "gray"}
+                    variant="light"
+                  >
                     {STATUS_LABEL[athlete.recovery_status] ?? "Unknown"}
                   </Badge>
                 </Table.Td>

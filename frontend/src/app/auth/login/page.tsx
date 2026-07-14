@@ -63,8 +63,7 @@ export default function LoginPage() {
     try {
       await loginWithGoogle();
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : "An error occurred during Google login";
+      const message = err instanceof Error ? err.message : "An error occurred during Google login";
       setError(message);
       setLoading(false);
     }

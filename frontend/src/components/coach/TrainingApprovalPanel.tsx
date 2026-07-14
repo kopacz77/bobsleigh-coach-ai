@@ -1,44 +1,39 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
 import {
-  Card,
-  Title,
-  Text,
-  Stack,
-  Group,
-  Button,
-  Badge,
-  Switch,
-  Tabs,
-  Textarea,
-  ActionIcon,
-  Modal,
-  List,
-  ThemeIcon,
   Accordion,
-  Divider
-} from '@mantine/core';
+  Badge,
+  Button,
+  Card,
+  Divider,
+  Group,
+  List,
+  Modal,
+  Stack,
+  Tabs,
+  Text,
+  Textarea,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
 import {
-  IconCheck,
-  IconX,
-  IconEdit,
-  IconInfoCircle,
+  IconAlertTriangle,
   IconBarbell,
   IconCalendar,
+  IconCheck,
+  IconEdit,
   IconGitCompare,
   IconUserExclamation,
-  IconAlertTriangle
-} from '@tabler/icons-react';
-
-import { WorkoutDayCard } from '../training/WorkoutDayCard';
+  IconX,
+} from "@tabler/icons-react";
+import { useState } from "react";
 
 interface TrainingPlanDayData {
   id: string;
   title: string;
   date: string;
   day: string;
-  intensity: 'Low' | 'Medium' | 'High';
+  intensity: "Low" | "Medium" | "High";
   exerciseGroups: {
     id: string;
     name: string;
@@ -92,7 +87,7 @@ export function TrainingApprovalPanel({
   pendingPlans,
   onApprove,
   onReject,
-  onModify
+  onModify,
 }: TrainingApprovalPanelProps) {
   const [selectedPlan, setSelectedPlan] = useState<TrainingPlanData | null>(
     pendingPlans.length > 0 ? pendingPlans[0] : null
@@ -100,7 +95,7 @@ export function TrainingApprovalPanel({
   const [modifiedPlan, setModifiedPlan] = useState<TrainingPlanData | null>(null);
   const [isModifying, setIsModifying] = useState(false);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
-  const [rejectionReason, setRejectionReason] = useState('');
+  const [rejectionReason, setRejectionReason] = useState("");
   const [showComparison, setShowComparison] = useState(false);
 
   const handleSelectPlan = (plan: TrainingPlanData) => {
@@ -131,10 +126,10 @@ export function TrainingApprovalPanel({
     if (selectedPlan) {
       onReject(selectedPlan.id, rejectionReason);
       setRejectModalOpen(false);
-      setRejectionReason('');
+      setRejectionReason("");
 
       // Select the next plan if available
-      const currentIndex = pendingPlans.findIndex(plan => plan.id === selectedPlan.id);
+      const currentIndex = pendingPlans.findIndex((plan) => plan.id === selectedPlan.id);
       if (currentIndex >= 0 && currentIndex < pendingPlans.length - 1) {
         setSelectedPlan(pendingPlans[currentIndex + 1]);
       } else if (pendingPlans.length > 1) {
@@ -147,11 +142,11 @@ export function TrainingApprovalPanel({
 
   const getTrainingPhaseLabel = (phase: string) => {
     const phaseLabels: Record<string, string> = {
-      general_preparation: 'General Preparation',
-      specific_preparation: 'Specific Preparation',
-      pre_competition: 'Pre-Competition',
-      competition: 'Competition',
-      transition: 'Transition'
+      general_preparation: "General Preparation",
+      specific_preparation: "Specific Preparation",
+      pre_competition: "Pre-Competition",
+      competition: "Competition",
+      transition: "Transition",
     };
 
     return phaseLabels[phase] || phase;
@@ -166,18 +161,16 @@ export function TrainingApprovalPanel({
           <Group justify="space-between">
             <Title order={4}>Training Context</Title>
 
-            {metadata.injuryAccommodation && (
-              <Badge color="red">Injury Accommodations</Badge>
-            )}
+            {metadata.injuryAccommodation && <Badge color="red">Injury Accommodations</Badge>}
 
-            {metadata.recoveryFocus && (
-              <Badge color="orange">Recovery Focus</Badge>
-            )}
+            {metadata.recoveryFocus && <Badge color="orange">Recovery Focus</Badge>}
           </Group>
 
           <Group grow>
             <Stack gap="xs">
-              <Text size="sm" fw={500}>Training Phase</Text>
+              <Text size="sm" fw={500}>
+                Training Phase
+              </Text>
               <Badge size="lg" fullWidth>
                 {getTrainingPhaseLabel(metadata.trainingPhase)}
               </Badge>
@@ -185,7 +178,9 @@ export function TrainingApprovalPanel({
 
             {metadata.competitionProximity !== undefined && (
               <Stack gap="xs">
-                <Text size="sm" fw={500}>Competition</Text>
+                <Text size="sm" fw={500}>
+                  Competition
+                </Text>
                 <Badge size="lg" color="green" fullWidth>
                   In {metadata.competitionProximity} days
                 </Badge>
@@ -197,18 +192,24 @@ export function TrainingApprovalPanel({
 
           <Group grow>
             <Stack gap={0} align="center">
-              <Text size="sm" fw={500}>CTL (Fitness)</Text>
+              <Text size="sm" fw={500}>
+                CTL (Fitness)
+              </Text>
               <Text size="xl">{metadata.pmcMetrics.ctl.toFixed(1)}</Text>
             </Stack>
 
             <Stack gap={0} align="center">
-              <Text size="sm" fw={500}>ATL (Fatigue)</Text>
+              <Text size="sm" fw={500}>
+                ATL (Fatigue)
+              </Text>
               <Text size="xl">{metadata.pmcMetrics.atl.toFixed(1)}</Text>
             </Stack>
 
             <Stack gap={0} align="center">
-              <Text size="sm" fw={500}>TSB (Form)</Text>
-              <Text size="xl" c={metadata.pmcMetrics.tsb >= 0 ? 'green' : 'red'}>
+              <Text size="sm" fw={500}>
+                TSB (Form)
+              </Text>
+              <Text size="xl" c={metadata.pmcMetrics.tsb >= 0 ? "green" : "red"}>
                 {metadata.pmcMetrics.tsb.toFixed(1)}
               </Text>
             </Stack>
@@ -232,7 +233,9 @@ export function TrainingApprovalPanel({
           <ThemeIcon size={64} radius={100} color="blue">
             <IconCheck size={32} />
           </ThemeIcon>
-          <Title order={3} ta="center">No Training Plans Need Approval</Title>
+          <Title order={3} ta="center">
+            No Training Plans Need Approval
+          </Title>
           <Text ta="center" c="dimmed">
             All athlete training plans have been reviewed. Check back later for new generated plans.
           </Text>
@@ -267,7 +270,7 @@ export function TrainingApprovalPanel({
 
         <Tabs.Panel value="list" pt="md">
           <Stack>
-            {pendingPlans.map(plan => (
+            {pendingPlans.map((plan) => (
               <Card
                 key={plan.id}
                 withBorder
@@ -275,15 +278,16 @@ export function TrainingApprovalPanel({
                 radius="md"
                 onClick={() => handleSelectPlan(plan)}
                 style={{
-                  cursor: 'pointer',
-                  backgroundColor: selectedPlan?.id === plan.id ? '#f8f9fa' : undefined
+                  cursor: "pointer",
+                  backgroundColor: selectedPlan?.id === plan.id ? "#f8f9fa" : undefined,
                 }}
               >
                 <Group justify="space-between">
                   <div>
                     <Text fw={500}>{plan.athleteName}</Text>
                     <Text size="sm" c="dimmed">
-                      Week {plan.weekNumber} • {new Date(plan.startDate).toLocaleDateString()} to {new Date(plan.endDate).toLocaleDateString()}
+                      Week {plan.weekNumber} • {new Date(plan.startDate).toLocaleDateString()} to{" "}
+                      {new Date(plan.endDate).toLocaleDateString()}
                     </Text>
                   </div>
 
@@ -300,9 +304,7 @@ export function TrainingApprovalPanel({
                       </ThemeIcon>
                     )}
 
-                    <Badge>
-                      {getTrainingPhaseLabel(plan.metadata.trainingPhase)}
-                    </Badge>
+                    <Badge>{getTrainingPhaseLabel(plan.metadata.trainingPhase)}</Badge>
                   </Group>
                 </Group>
               </Card>
@@ -315,7 +317,9 @@ export function TrainingApprovalPanel({
             <Stack>
               <Group justify="space-between">
                 <div>
-                  <Text size="xl" fw={700}>{selectedPlan.athleteName} • Week {selectedPlan.weekNumber}</Text>
+                  <Text size="xl" fw={700}>
+                    {selectedPlan.athleteName} • Week {selectedPlan.weekNumber}
+                  </Text>
                   <Text size="sm" c="dimmed">
                     Generated on {new Date(selectedPlan.metadata.generatedOn).toLocaleString()}
                   </Text>
@@ -357,18 +361,25 @@ export function TrainingApprovalPanel({
               {/* Week Overview */}
               <Card withBorder p="md" radius="md">
                 <Accordion>
-                  {selectedPlan.days.map((day, index) => (
+                  {selectedPlan.days.map((day, _index) => (
                     <Accordion.Item key={day.id} value={day.id}>
                       <Accordion.Control>
                         <Group>
-                          <Text fw={500}>{day.day} • {day.title}</Text>
+                          <Text fw={500}>
+                            {day.day} • {day.title}
+                          </Text>
                           {day.isRestDay ? (
                             <Badge color="gray">Rest Day</Badge>
                           ) : (
-                            <Badge color={
-                              day.intensity === 'High' ? 'red' :
-                              day.intensity === 'Medium' ? 'yellow' : 'green'
-                            }>
+                            <Badge
+                              color={
+                                day.intensity === "High"
+                                  ? "red"
+                                  : day.intensity === "Medium"
+                                    ? "yellow"
+                                    : "green"
+                              }
+                            >
                               {day.intensity} Intensity
                             </Badge>
                           )}
@@ -376,22 +387,22 @@ export function TrainingApprovalPanel({
                       </Accordion.Control>
                       <Accordion.Panel>
                         {day.isRestDay ? (
-                          <Text>{day.notes || 'Rest and recovery day.'}</Text>
+                          <Text>{day.notes || "Rest and recovery day."}</Text>
                         ) : (
                           <Stack>
                             {day.notes && (
-                              <Text size="sm" fs="italic">{day.notes}</Text>
+                              <Text size="sm" fs="italic">
+                                {day.notes}
+                              </Text>
                             )}
-                            {day.exerciseGroups.map(group => (
+                            {day.exerciseGroups.map((group) => (
                               <Card key={group.id} withBorder shadow="xs" p="md">
                                 <Group justify="space-between" mb="xs">
                                   <Text fw={500}>{group.name}</Text>
-                                  {group.mhg && (
-                                    <Badge>MHG: {group.mhg}kg</Badge>
-                                  )}
+                                  {group.mhg && <Badge>MHG: {group.mhg}kg</Badge>}
                                 </Group>
                                 <List>
-                                  {group.exercises.map(exercise => (
+                                  {group.exercises.map((exercise) => (
                                     <List.Item key={exercise.id}>
                                       <Text>
                                         {exercise.name}: {exercise.sets} sets
@@ -402,7 +413,9 @@ export function TrainingApprovalPanel({
                                         {exercise.rest && ` (${exercise.rest}s rest)`}
                                       </Text>
                                       {exercise.notes && (
-                                        <Text size="xs" c="dimmed">{exercise.notes}</Text>
+                                        <Text size="xs" c="dimmed">
+                                          {exercise.notes}
+                                        </Text>
                                       )}
                                     </List.Item>
                                   ))}
@@ -447,8 +460,8 @@ export function TrainingApprovalPanel({
 
             {/* Modification interface would go here */}
             <Text>
-              Training plan modification interface would be implemented here.
-              Coaches would be able to:
+              Training plan modification interface would be implemented here. Coaches would be able
+              to:
             </Text>
             <List>
               <List.Item>Change exercise selections</List.Item>
@@ -468,8 +481,8 @@ export function TrainingApprovalPanel({
       >
         <Stack>
           <Text size="sm">
-            Please provide a reason for rejecting this training plan.
-            This feedback will help improve future recommendations.
+            Please provide a reason for rejecting this training plan. This feedback will help
+            improve future recommendations.
           </Text>
 
           <Textarea

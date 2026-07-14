@@ -1,5 +1,9 @@
 // Export all training-related components
 
+// AI plan components (from plans directory)
+export { AdaptedWorkoutView } from "@/components/plans/AdaptedWorkoutView";
+export { InjuryRiskBanner } from "@/components/plans/InjuryRiskBanner";
+export { WeeklyPlanOverview } from "@/components/plans/WeeklyPlanOverview";
 export { CoachWorkoutView } from "./CoachWorkoutView";
 export { ExerciseLibrary } from "./ExerciseLibrary";
 export { PlannedVsActual } from "./PlannedVsActual";
@@ -12,8 +16,3 @@ export { WeeklyPlanView } from "./WeeklyPlanView";
 export { WorkoutCalendar } from "./WorkoutCalendar";
 export { WorkoutForm } from "./WorkoutForm";
 export { WorkoutList } from "./WorkoutList";
-
-// AI plan components (from plans directory)
-export { AdaptedWorkoutView } from "@/components/plans/AdaptedWorkoutView";
-export { InjuryRiskBanner } from "@/components/plans/InjuryRiskBanner";
-export { WeeklyPlanOverview } from "@/components/plans/WeeklyPlanOverview";

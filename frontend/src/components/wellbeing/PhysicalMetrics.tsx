@@ -20,7 +20,6 @@ import {
 import { DatePickerInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconEye,
   IconHeart,
@@ -45,6 +44,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * Metric type definition
@@ -415,7 +415,9 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   const getUniqueMetricTypes = (): UniqueMetricType[] => {
     // Fix for Set iteration in TypeScript by using Array.from()
     const typeSet = new Set<string>();
-    metrics.forEach((metric) => typeSet.add(metric.type));
+    metrics.forEach((metric) => {
+      typeSet.add(metric.type);
+    });
     const types = Array.from(typeSet);
 
     return types.map((type) => {
@@ -435,7 +437,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   const renderTooltip = (props: CustomTooltipProps): React.ReactNode | null => {
     const { active, payload, label } = props;
 
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
       return (
         <Paper p="xs" withBorder shadow="sm">
           <Text fw={600}>{formatDate(label)}</Text>

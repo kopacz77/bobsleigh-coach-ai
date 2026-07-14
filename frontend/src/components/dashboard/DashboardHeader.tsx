@@ -4,14 +4,16 @@ import { Badge, Button, Group, Stack, Text, Title, useMantineTheme } from "@mant
 import { IconCalendarPlus, IconTarget } from "@tabler/icons-react";
 
 export function DashboardHeader() {
-  const theme = useMantineTheme();
+  const _theme = useMantineTheme();
 
   return (
     <Stack gap="md">
       <Group justify="space-between" wrap="wrap">
         <Stack gap="xs">
           <Group ta="center" gap="xs">
-            <Title order={1} fz={{ base: "lg", md: "xl" }}>Dashboard</Title>
+            <Title order={1} fz={{ base: "lg", md: "xl" }}>
+              Dashboard
+            </Title>
             <Badge color="blue" variant="light" size="lg">
               Bobsleigh
             </Badge>
@@ -25,7 +27,9 @@ export function DashboardHeader() {
           <Button variant="outline" leftSection={<IconTarget size={16} />} size="sm">
             Set Goals
           </Button>
-          <Button leftSection={<IconCalendarPlus size={16} />} size="sm">Log Workout</Button>
+          <Button leftSection={<IconCalendarPlus size={16} />} size="sm">
+            Log Workout
+          </Button>
         </Group>
       </Group>
     </Stack>

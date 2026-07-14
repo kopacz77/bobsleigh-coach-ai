@@ -191,7 +191,11 @@ export function LoadAdjustments({
                       </Group>
 
                       <Group gap="xs">
-                        <Badge color={getAdjustmentColor(adjustment.type)} variant="light" size="sm">
+                        <Badge
+                          color={getAdjustmentColor(adjustment.type)}
+                          variant="light"
+                          size="sm"
+                        >
                           {formatPercentage(adjustment.percentage)}
                         </Badge>
                         <Progress

@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
 import {
   ActionIcon,
   Badge,
@@ -17,11 +16,10 @@ import {
   Title,
   Tooltip,
   useMantineTheme,
-} from '@mantine/core';
-import { Calendar } from '@mantine/dates';
-import { useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
-import { useSupabase } from '@/providers/SupabaseProvider';
+} from "@mantine/core";
+import { Calendar } from "@mantine/dates";
+import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import {
   IconBulb,
   IconCheck,
@@ -35,6 +33,8 @@ import {
   IconTrash,
   IconX,
 } from "@tabler/icons-react";
+import React, { useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 type DateChangeHandler = (date: Date) => void;
 
@@ -107,7 +107,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [addModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
   const [viewModalOpened, { open: openViewModal, close: closeViewModal }] = useDisclosure(false);
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, _setSelectedDate] = useState<Date>(new Date());
   const [selectedReflection, setSelectedReflection] = useState<Reflection | null>(null);
 
   // Form state

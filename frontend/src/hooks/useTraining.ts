@@ -76,11 +76,12 @@ export function useTrainingRecommendations(athleteId: string) {
 
 export function useAthleteWorkoutsForCoach(
   athleteId: string,
-  params?: { limit?: number; date_from?: string; date_to?: string },
+  params?: { limit?: number; date_from?: string; date_to?: string }
 ) {
   return useQuery({
     queryKey: ["coach", "athlete-workouts", athleteId, params],
-    queryFn: () => trainingAPI.getAthleteWorkoutsForCoach(athleteId, params).then((res) => res.data),
+    queryFn: () =>
+      trainingAPI.getAthleteWorkoutsForCoach(athleteId, params).then((res) => res.data),
     staleTime: 2 * 60 * 1000,
     enabled: !!athleteId,
   });

@@ -4,12 +4,12 @@ import {
   Burger,
   Divider,
   Group,
-  NavLink,
   AppShell as MantineAppShell,
+  NavLink,
+  rem,
   ScrollArea,
   Text,
   ThemeIcon,
-  rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -25,8 +25,8 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { useAuth } from "@/providers/AuthProvider";
 import { ColorSchemeToggle } from "@/components/ui/ColorSchemeToggle";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface NavItem {
   icon: typeof IconDashboard;

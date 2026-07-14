@@ -14,8 +14,12 @@ export function TrainingHeader() {
     <Stack gap="md">
       <Group justify="space-between" wrap="wrap">
         <Stack gap="xs">
-          <Title order={1} fz={{ base: "lg", md: "xl" }}>Training</Title>
-          <Text c="dimmed" size="sm">Manage your training sessions and view AI recommendations</Text>
+          <Title order={1} fz={{ base: "lg", md: "xl" }}>
+            Training
+          </Title>
+          <Text c="dimmed" size="sm">
+            Manage your training sessions and view AI recommendations
+          </Text>
         </Stack>
 
         <Group gap="sm" wrap="wrap">
@@ -66,7 +70,9 @@ export function TrainingHeader() {
             </Menu.Dropdown>
           </Menu>
 
-          <Button leftSection={<IconPlus size={16} />} size="sm">Add Workout</Button>
+          <Button leftSection={<IconPlus size={16} />} size="sm">
+            Add Workout
+          </Button>
         </Group>
       </Group>
     </Stack>

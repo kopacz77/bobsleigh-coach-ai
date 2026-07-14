@@ -46,7 +46,7 @@ export function useAuth() {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       return { data, error };
     },
-    [supabase],
+    [supabase]
   );
 
   const loginWithGoogle = useCallback(async () => {
@@ -60,7 +60,7 @@ export function useAuth() {
       const { data, error } = await supabase.auth.signUp({ email, password });
       return { data, error };
     },
-    [supabase],
+    [supabase]
   );
 
   const logout = useCallback(async () => {

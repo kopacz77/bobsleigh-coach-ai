@@ -16,7 +16,6 @@ import {
 import { Calendar } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { useSupabase } from '@/providers/SupabaseProvider';
 import {
   IconMoodCry,
   IconMoodHappy,
@@ -27,6 +26,7 @@ import {
 } from "@tabler/icons-react";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * Emotion option type
@@ -226,8 +226,8 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
       const moodEntry = {
         user_id: userId,
         date: dateString,
-        mood_score: Number.parseInt(currentMood.mood_score),
-        energy_level: Number.parseInt(currentMood.energy_level),
+        mood_score: Number.parseInt(currentMood.mood_score, 10),
+        energy_level: Number.parseInt(currentMood.energy_level, 10),
         primary_emotion: currentMood.primary_emotion,
         secondary_emotion: currentMood.secondary_emotion || null,
         notes: currentMood.notes || null,

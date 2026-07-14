@@ -75,7 +75,9 @@ export function TrainingRecommendations() {
   return (
     <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
       <Stack>
-        <Title order={3} fz={{ base: "md", md: "lg" }}>Recommended Training</Title>
+        <Title order={3} fz={{ base: "md", md: "lg" }}>
+          Recommended Training
+        </Title>
 
         <Text size="sm" c="dimmed">
           These AI-generated workouts are tailored to your current fitness, fatigue levels, and
@@ -88,7 +90,9 @@ export function TrainingRecommendations() {
               <Accordion.Control>
                 <Stack gap={4}>
                   <Group justify="space-between" wrap="wrap">
-                    <Text fw={500} size="sm">{formatDate(workout.date)}</Text>
+                    <Text fw={500} size="sm">
+                      {formatDate(workout.date)}
+                    </Text>
                     <Badge color={getBadgeColor(workout.intensity)}>{workout.intensity}</Badge>
                   </Group>
                   <Text size="sm" c="dimmed">
@@ -109,7 +113,9 @@ export function TrainingRecommendations() {
 
                   {workout.exercises.map((exercise, exIndex) => (
                     <Card key={exIndex} withBorder p="sm" radius="sm">
-                      <Text fw={500} size="sm">{exercise.name}</Text>
+                      <Text fw={500} size="sm">
+                        {exercise.name}
+                      </Text>
                       <Text size="sm">
                         {exercise.sets} sets
                         {exercise.reps && ` x ${exercise.reps} reps`}
@@ -122,7 +128,12 @@ export function TrainingRecommendations() {
                     </Card>
                   ))}
 
-                  <Button leftSection={<IconCalendarPlus size={16} />} mt="sm" variant="light" fullWidth>
+                  <Button
+                    leftSection={<IconCalendarPlus size={16} />}
+                    mt="sm"
+                    variant="light"
+                    fullWidth
+                  >
                     Add to Training Log
                   </Button>
                 </Stack>

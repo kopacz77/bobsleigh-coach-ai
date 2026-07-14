@@ -1,20 +1,23 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { AppShell } from '@/components/layout/AppShell';
-import { Tabs, Title, Stack, Group, Button } from '@mantine/core';
-import { IconChartLine, IconCalendarStats, IconClipboardHeart, IconNotebook, IconHeartbeat } from '@tabler/icons-react';
-import { DailyCheckIn } from '@/components/check-in';
+import { Button, Group, Stack, Tabs, Title } from "@mantine/core";
 import {
-  RecoveryHealth,
-  Reflection,
-} from '@/components/wellbeing';
-import { WellbeingCalendar } from '@/components/wellbeing/WellbeingCalendar';
-import { WellbeingTrends } from '@/components/wellbeing/WellbeingTrends';
-import { useRouter } from 'next/navigation';
+  IconCalendarStats,
+  IconChartLine,
+  IconClipboardHeart,
+  IconHeartbeat,
+  IconNotebook,
+} from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { DailyCheckIn } from "@/components/check-in";
+import { AppShell } from "@/components/layout/AppShell";
+import { RecoveryHealth, Reflection } from "@/components/wellbeing";
+import { WellbeingCalendar } from "@/components/wellbeing/WellbeingCalendar";
+import { WellbeingTrends } from "@/components/wellbeing/WellbeingTrends";
 
 export default function WellbeingPage() {
-  const [activeTab, setActiveTab] = useState<string | null>('checkin');
+  const [activeTab, setActiveTab] = useState<string | null>("checkin");
   const router = useRouter();
 
   return (
@@ -22,9 +25,7 @@ export default function WellbeingPage() {
       <Stack gap="xl">
         <Group justify="space-between">
           <Title>Wellbeing Tracker</Title>
-          <Button onClick={() => router.push('/wellbeing/history')}>
-            View History
-          </Button>
+          <Button onClick={() => router.push("/wellbeing/history")}>View History</Button>
         </Group>
 
         <Tabs value={activeTab} onChange={setActiveTab}>
