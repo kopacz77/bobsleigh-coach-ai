@@ -1,0 +1,4 @@
+# Biome formats with LF (see biome.json -> formatter.lineEnding).
+# Without this, a checkout on Windows reintroduces CRLF and every formatted
+# file shows up as fully rewritten in the next diff.
+* text=auto eol=lf
