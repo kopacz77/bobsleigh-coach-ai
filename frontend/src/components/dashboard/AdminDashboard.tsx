@@ -9,7 +9,6 @@ import {
   Group,
   Paper,
   Progress,
-  RingProgress,
   ScrollArea,
   Select,
   SimpleGrid,
@@ -23,7 +22,6 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { DatePickerInput, type DateValue } from "@mantine/dates";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
   IconArrowDown,
   IconArrowUp,
@@ -31,22 +29,16 @@ import {
   IconChartLine,
   IconCheck,
   IconCheckbox, //performance
-  IconChevronDown,
-  IconChevronUp,
   IconClipboard, //compliance
   IconClipboardCheck,
   IconEye,
   IconFilter,
   IconFlag,
   IconMail,
-  IconMaximize,
   IconMessage2, //messages
   IconMessages, //alerts
   IconMinus,
-  IconPencil,
-  IconTrees, // teams
   IconUsers,
-  IconVinyl, //intensity
   IconX,
 } from "@tabler/icons-react";
 import type React from "react";
@@ -54,21 +46,16 @@ import { useEffect, useState } from "react";
 import {
   Area,
   Bar,
-  BarChart,
   CartesianGrid,
-  Cell,
   Tooltip as ChartTooltip,
   ComposedChart,
-  Legend,
   Line,
   LineChart,
-  Pie,
-  PieChart,
-  Rectangle,
   ResponsiveContainer,
   XAxis,
   YAxis,
 } from "recharts";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 // Define interfaces for type safety
 interface TeamOption {
@@ -177,8 +164,8 @@ interface OverviewMetricCardProps {
  */
 const AdminDashboard: React.FC = () => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState<boolean>(false);
+  const { supabase } = useSupabase();
+  const [_loading, setLoading] = useState<boolean>(false);
   const [athletes, setAthletes] = useState<Athlete[]>([]);
   const [teamStats, setTeamStats] = useState<TeamStats>({
     totalAthletes: 0,
@@ -647,40 +634,45 @@ const AdminDashboard: React.FC = () => {
       expandedAthleteData;
 
     return (
-      <Paper p="md" radius="md" withBorder mb="xl">
-        <Group justify="space-between" mb="md">
-          <Group>
-            <Avatar
-              size={50}
-              src={athletes.find((a) => a.id === expandedAthlete)?.avatar}
-              radius={50}
-            />
-            <Box>
-              <Title order={3}>{personalInfo.name}</Title>
-              <Group gap="xs">
-                <Text size="sm">{personalInfo.position}</Text>
-                <Text size="sm" c="dimmed">
-                  •
-                </Text>
-                <Text size="sm">
-                  {teams.find((t) => t.value === personalInfo.team)?.label || personalInfo.team}
-                </Text>
-              </Group>
-            </Box>
-          </Group>
+      <Paper p={{ base: "sm", md: "md" }} radius="md" withBorder mb="xl">
+        <Stack gap="sm" mb="md">
+          <Group justify="space-between" wrap="wrap">
+            <Group>
+              <Avatar
+                size={40}
+                src={athletes.find((a) => a.id === expandedAthlete)?.avatar}
+                radius={40}
+              />
+              <Box>
+                <Title order={3} fz={{ base: "md", md: "lg" }}>
+                  {personalInfo.name}
+                </Title>
+                <Group gap="xs">
+                  <Text size="sm">{personalInfo.position}</Text>
+                  <Text size="sm" c="dimmed">
+                    -
+                  </Text>
+                  <Text size="sm">
+                    {teams.find((t) => t.value === personalInfo.team)?.label || personalInfo.team}
+                  </Text>
+                </Group>
+              </Box>
+            </Group>
 
-          <Group>
-            <Button
-              variant="outline"
-              onClick={() => handleContactAthlete(expandedAthlete, "message")}
-            >
-              Message
-            </Button>
-            <ActionIcon onClick={handleCloseAthleteDetails}>
-              <IconX size={20} />
-            </ActionIcon>
+            <Group gap="xs">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleContactAthlete(expandedAthlete, "message")}
+              >
+                Message
+              </Button>
+              <ActionIcon size={36} onClick={handleCloseAthleteDetails}>
+                <IconX size={20} />
+              </ActionIcon>
+            </Group>
           </Group>
-        </Group>
+        </Stack>
 
         <Divider mb="md" />
 
@@ -927,21 +919,117 @@ const AdminDashboard: React.FC = () => {
     );
   };
 
+  // Mobile-friendly card layout for athletes (visible on small screens)
+  const renderAthletesCards = () => {
+    if (athletes.length === 0) {
+      return (
+        <Text ta="center" c="dimmed" py="xl">
+          No athletes found with the current filters.
+        </Text>
+      );
+    }
+
+    return (
+      <Stack gap="sm">
+        {athletes.map((athlete) => {
+          const checkInStatus = getCheckInStatus(athlete.lastCheckIn);
+          return (
+            <Card key={athlete.id} withBorder p="sm" radius="md">
+              <Stack gap="xs">
+                <Group justify="space-between">
+                  <Group gap="sm">
+                    <Avatar size={36} src={athlete.avatar} radius={36} />
+                    <Box>
+                      <Text size="sm" fw={500}>
+                        {athlete.name}
+                      </Text>
+                      <Text size="xs" c="dimmed">
+                        {athlete.position}
+                      </Text>
+                    </Box>
+                  </Group>
+                  <Badge
+                    color={getAlertColor(athlete.alerts)}
+                    variant={athlete.alerts > 0 ? "filled" : "light"}
+                  >
+                    {athlete.alerts} alert{athlete.alerts !== 1 ? "s" : ""}
+                  </Badge>
+                </Group>
+
+                <Group justify="space-between">
+                  <Group gap="xs">
+                    <Text size="sm" fw={500}>
+                      Readiness: {athlete.readiness}
+                    </Text>
+                    {getTrendIcon(athlete.performanceTrend)}
+                  </Group>
+                  <Badge color={checkInStatus.color} variant="light" size="sm">
+                    {checkInStatus.text}
+                  </Badge>
+                </Group>
+
+                <Group gap="xs" wrap="nowrap">
+                  <Box style={{ flex: 1 }}>
+                    <Progress
+                      value={athlete.compliance}
+                      color={
+                        athlete.compliance < 70
+                          ? "red"
+                          : athlete.compliance < 85
+                            ? "yellow"
+                            : "green"
+                      }
+                      size="sm"
+                    />
+                  </Box>
+                  <Text size="xs" fw={500}>
+                    {athlete.compliance}%
+                  </Text>
+                </Group>
+
+                <Group gap="xs" justify="flex-end">
+                  <Button
+                    variant="light"
+                    size="xs"
+                    onClick={() => handleViewAthleteDetails(athlete.id)}
+                    leftSection={<IconEye size={14} />}
+                  >
+                    Details
+                  </Button>
+                  <ActionIcon size={36} onClick={() => handleContactAthlete(athlete.id, "message")}>
+                    <IconMessage2 size={16} />
+                  </ActionIcon>
+                  <ActionIcon size={36} onClick={() => handleContactAthlete(athlete.id, "email")}>
+                    <IconMail size={16} />
+                  </ActionIcon>
+                </Group>
+              </Stack>
+            </Card>
+          );
+        })}
+      </Stack>
+    );
+  };
+
   return (
     <Box>
-      <Paper p="md" radius="md" withBorder mb="xl">
-        <Group justify="space-between" mb="xl">
+      <Paper p={{ base: "sm", md: "md" }} radius="md" withBorder mb="xl">
+        <Stack gap="md" mb="xl">
           <Box>
-            <Title order={2}>Coach Dashboard</Title>
-            <Text c="dimmed">Monitor your athletes' performance and wellbeing</Text>
+            <Title order={2} fz={{ base: "lg", md: "xl" }}>
+              Coach Dashboard
+            </Title>
+            <Text c="dimmed" size="sm">
+              Monitor your athletes' performance and wellbeing
+            </Text>
           </Box>
-          <Group>
+          <Group gap="sm" wrap="wrap">
             <Select
               placeholder="Select Team"
               data={teams}
               value={selectedTeam}
               onChange={(value) => setSelectedTeam(value || "all")}
-              w={200}
+              w={{ base: "100%", sm: 200 }}
               leftSection={<IconFilter size={14} />}
             />
             <DatePickerInput
@@ -949,11 +1037,11 @@ const AdminDashboard: React.FC = () => {
               placeholder="Date Range"
               value={dateRange}
               onChange={setDateRange}
-              w={250}
+              w={{ base: "100%", sm: 250 }}
               clearable={false}
             />
           </Group>
-        </Group>
+        </Stack>
 
         {renderTeamSummary()}
 
@@ -961,9 +1049,11 @@ const AdminDashboard: React.FC = () => {
 
         {expandedAthlete && expandedAthleteData && renderExpandedAthleteView()}
 
-        <Paper p="md" radius="md" withBorder mt="xl">
-          <Group justify="space-between" mb="md">
-            <Title order={3}>Athletes</Title>
+        <Paper p={{ base: "sm", md: "md" }} radius="md" withBorder mt="xl">
+          <Stack gap="md" mb="md">
+            <Title order={3} fz={{ base: "md", md: "lg" }}>
+              Athletes
+            </Title>
             <Select
               placeholder="Sorted by Readiness"
               data={[
@@ -973,11 +1063,17 @@ const AdminDashboard: React.FC = () => {
                 { value: "name", label: "Name" },
               ]}
               defaultValue="readiness"
-              w={200}
+              w={{ base: "100%", sm: 200 }}
             />
-          </Group>
+          </Stack>
 
-          <ScrollArea>{renderAthletesList()}</ScrollArea>
+          {/* Table for larger screens */}
+          <Box visibleFrom="sm">
+            <ScrollArea>{renderAthletesList()}</ScrollArea>
+          </Box>
+
+          {/* Card layout for mobile */}
+          <Box hiddenFrom="sm">{renderAthletesCards()}</Box>
         </Paper>
       </Paper>
     </Box>

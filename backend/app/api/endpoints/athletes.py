@@ -1,104 +1,155 @@
-from typing import List
+"""Athlete endpoints with user-based data filtering.
+
+Defense-in-depth: even though the backend uses the service role key
+(which bypasses RLS), we filter data at the application level to ensure
+athletes can only access their own data.
+"""
+
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.schemas.athlete import Athlete, AthleteCreate, AthleteUpdate
+from app.core.security import get_current_user
+from app.db.repositories.athlete_repo import AthleteRepository
+from app.schemas.athlete import AthleteCreate, AthleteUpdate
 
 router = APIRouter()
 
-
-@router.get("/", response_model=List[Athlete])
-async def get_athletes():
-    """Get all athletes"""
-    # Placeholder data
-    athletes = [
-        Athlete(
-            id=1,
-            user_id=1,
-            first_name="John",
-            last_name="Doe",
-            email="john@example.com",
-            sport="Bobsleigh",
-            height=185,
-            weight=85,
-            birth_date="1995-05-15",
-        ),
-        Athlete(
-            id=2,
-            user_id=2,
-            first_name="Jane",
-            last_name="Smith",
-            email="jane@example.com",
-            sport="Bobsleigh",
-            height=170,
-            weight=65,
-            birth_date="1997-08-22",
-        ),
-    ]
-    return athletes
+athlete_repo = AthleteRepository()
 
 
-@router.get("/{athlete_id}", response_model=Athlete)
-async def get_athlete(athlete_id: int):
-    """Get a specific athlete by ID"""
-    # Placeholder data
-    if athlete_id == 1:
-        return Athlete(
-            id=1,
-            user_id=1,
-            first_name="John",
-            last_name="Doe",
-            email="john@example.com",
-            sport="Bobsleigh",
-            height=185,
-            weight=85,
-            birth_date="1995-05-15",
+async def get_athlete_for_user(user) -> dict:
+    """Look up the athlete record for the authenticated user.
+
+    Args:
+        user: Auth user object with .id attribute (UUID string).
+
+    Returns:
+        The athlete record dict.
+
+    Raises:
+        HTTPException 404 if no athlete profile exists for this user.
+    """
+    athlete = athlete_repo.get_by_user_id(user.id)
+    if not athlete:
+        raise HTTPException(
+            status_code=404,
+            detail="No athlete profile found for this user",
         )
-    raise HTTPException(status_code=404, detail="Athlete not found")
+    return athlete
 
 
-@router.post("/", response_model=Athlete)
-async def create_athlete(athlete: AthleteCreate):
-    """Create a new athlete"""
-    # This would save the athlete to the database
-    return Athlete(
-        id=3,
-        user_id=3,
-        first_name=athlete.first_name,
-        last_name=athlete.last_name,
-        email=athlete.email,
-        sport=athlete.sport,
-        height=athlete.height,
-        weight=athlete.weight,
-        birth_date=athlete.birth_date,
-    )
+def _verify_ownership(athlete: dict, user) -> None:
+    """Verify the athlete record belongs to the authenticated user.
+
+    Args:
+        athlete: Athlete record dict with user_id field.
+        user: Auth user object with .id attribute.
+
+    Raises:
+        HTTPException 403 if the user does not own this athlete record.
+    """
+    if athlete.get("user_id") != user.id:
+        raise HTTPException(
+            status_code=403,
+            detail="Not authorized to access this athlete's data",
+        )
 
 
-@router.put("/{athlete_id}", response_model=Athlete)
-async def update_athlete(athlete_id: int, athlete: AthleteUpdate):
-    """Update an existing athlete"""
-    # This would update the athlete in the database
-    if athlete_id != 1:
-        raise HTTPException(status_code=404, detail="Athlete not found")
+@router.get("/")
+async def get_athletes(user=Depends(get_current_user)):
+    """Get the authenticated user's own athlete profile.
 
-    return Athlete(
-        id=athlete_id,
-        user_id=1,
-        first_name=athlete.first_name or "John",
-        last_name=athlete.last_name or "Doe",
-        email="john@example.com",
-        sport=athlete.sport or "Bobsleigh",
-        height=athlete.height or 185,
-        weight=athlete.weight or 85,
-        birth_date=athlete.birth_date or "1995-05-15",
-    )
+    Returns a list containing only the user's own athlete record.
+    Coach access to multiple athletes will be added in Phase 5.
+    """
+    try:
+        return athlete_repo.get_active_by_user_id(user.id)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to fetch athletes: {str(e)}"
+        )
+
+
+@router.get("/{athlete_id}")
+async def get_athlete(athlete_id: str, user=Depends(get_current_user)):
+    """Get a specific athlete by UUID. Only the owner can access."""
+    try:
+        athlete = athlete_repo.get_by_id(athlete_id)
+        if not athlete:
+            raise HTTPException(status_code=404, detail="Athlete not found")
+        _verify_ownership(athlete, user)
+        return athlete
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to fetch athlete: {str(e)}"
+        )
+
+
+@router.post("/")
+async def create_athlete(athlete: AthleteCreate, user=Depends(get_current_user)):
+    """Create a new athlete profile linked to the authenticated user.
+
+    The user_id is set automatically from the authenticated user's ID,
+    ignoring any client-provided value for security.
+    """
+    try:
+        data = athlete.model_dump(exclude_none=True)
+        # Always set user_id from the authenticated user (don't trust client)
+        data["user_id"] = user.id
+        return athlete_repo.create(data)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to create athlete: {str(e)}"
+        )
+
+
+@router.put("/{athlete_id}")
+async def update_athlete(
+    athlete_id: str, athlete: AthleteUpdate, user=Depends(get_current_user)
+):
+    """Update an existing athlete. Only the owner can update."""
+    try:
+        # Verify ownership first
+        existing = athlete_repo.get_by_id(athlete_id)
+        if not existing:
+            raise HTTPException(status_code=404, detail="Athlete not found")
+        _verify_ownership(existing, user)
+
+        data = athlete.model_dump(exclude_none=True)
+        if not data:
+            raise HTTPException(status_code=400, detail="No fields to update")
+        result = athlete_repo.update(athlete_id, data)
+        if not result:
+            raise HTTPException(status_code=404, detail="Athlete not found")
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to update athlete: {str(e)}"
+        )
 
 
 @router.delete("/{athlete_id}")
-async def delete_athlete(athlete_id: int):
-    """Delete an athlete"""
-    # This would delete the athlete from the database
-    if athlete_id != 1:
-        raise HTTPException(status_code=404, detail="Athlete not found")
+async def delete_athlete(athlete_id: str, user=Depends(get_current_user)):
+    """Soft-delete an athlete. Only the owner can delete."""
+    try:
+        # Verify ownership first
+        existing = athlete_repo.get_by_id(athlete_id)
+        if not existing:
+            raise HTTPException(status_code=404, detail="Athlete not found")
+        _verify_ownership(existing, user)
 
-    return {"message": "Athlete deleted successfully"}
+        result = athlete_repo.soft_delete(athlete_id)
+        if not result:
+            raise HTTPException(status_code=404, detail="Athlete not found")
+        return {"message": "Athlete deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to delete athlete: {str(e)}"
+        )

@@ -18,7 +18,8 @@ class AthleteBase(BaseModel):
 class AthleteCreate(AthleteBase):
     """Schema for creating a new athlete"""
 
-    pass
+    training_level: Optional[str] = "intermediate"
+    is_active: Optional[bool] = True
 
 
 class AthleteUpdate(BaseModel):
@@ -30,13 +31,17 @@ class AthleteUpdate(BaseModel):
     height: Optional[float] = None
     weight: Optional[float] = None
     birth_date: Optional[str] = None
+    training_level: Optional[str] = None
+    is_active: Optional[bool] = None
 
 
 class Athlete(AthleteBase):
     """Schema for a complete athlete"""
 
-    id: int
-    user_id: int
+    id: str
+    user_id: Optional[str] = None
+    training_level: Optional[str] = "intermediate"
+    is_active: Optional[bool] = True
 
     class Config:
         from_attributes = True

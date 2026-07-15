@@ -1,54 +1,31 @@
+"use client";
 
-// Path: c:\users\a_kop\bobsleigh-coach-ai\frontend\src\components\wellbeing\WellbeingAssessment.tsx
-
-'use client';
-
-import type React from 'react';
-import { useState, useEffect } from 'react';
-
-'use client';
-
-
-import { 
-  Box, 
-  Button, 
-  Group, 
-  Paper, 
-  SimpleGrid, 
-  Slider, 
-  Stack,
-
-  useMantineTheme,
+import {
+  Box,
+  Button,
+  Divider,
+  Group,
   NumberInput,
-  Divider
-} from '@mantine/core';
-import { 
-  IconHeartFilled, 
-  IconBrain, 
-  IconZzz, 
-  IconSalad, 
-  IconMoodNervous // Using IconMoodNervous instead of the missing IconStress
-} from '@tabler/icons-react';
-import { notifications } from '@mantine/notifications';
-import { supabase } from '@/lib/supabase';
-import { DateInput } from '@mantine/dates';
-
-  Text, 
-  Textarea, 
-  Title, 
-  useMantineTheme
-} from '@mantine/core';
-import { showNotification } from '@mantine/notifications';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { 
-  IconBrain, 
-  IconHeartFilled, 
-  IconMoodNervous, // Using IconMoodNervous instead of the missing IconStress, 
-  IconSalad, 
-  IconZzz 
-} from '@tabler/icons-react';
-import type React from 'react';
-import { useEffect, useState } from 'react';
+  Paper,
+  SimpleGrid,
+  Slider,
+  Text,
+  Textarea,
+  Title,
+  useMantineTheme,
+} from "@mantine/core";
+import { DateInput } from "@mantine/dates";
+import { notifications } from "@mantine/notifications";
+import {
+  IconBrain,
+  IconHeartFilled,
+  IconMoodNervous,
+  IconSalad,
+  IconZzz,
+} from "@tabler/icons-react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 /**
  * WellbeingAssessment props interface
@@ -57,7 +34,6 @@ interface WellbeingAssessmentProps {
   userId: string;
   date?: Date;
 }
-
 
 /**
  * Assessment data interface
@@ -82,7 +58,7 @@ interface AssessmentData {
 const WellbeingAssessment = ({ userId }: { userId: string }) => {
   const theme = useMantineTheme();
   const [loading, setLoading] = useState<boolean>(false);
-  
+
   // Assessment form state
   const [assessment, setAssessment] = useState<AssessmentData>({
     sleep_quality: 5,
@@ -91,9 +67,9 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
     physical_readiness: 5,
     mental_clarity: 5,
     sleep_hours: 7,
-    body_weight: '',
-    resting_hr: '',
-    notes: '',
+    body_weight: "",
+    resting_hr: "",
+    notes: "",
   });
 
   // Get current date
@@ -107,55 +83,55 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
     try {
       if (!userId) return;
 
-      const dateString = date.toISOString().split('T')[0];
+      const dateString = date.toISOString().split("T")[0];
 
       const { data: wellbeingData, error: wellbeingError } = await supabase
-        .from('wellbeing_assessments')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('date', dateString)
+        .from("wellbeing_assessments")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("date", dateString)
         .single();
 
-      if (wellbeingError && wellbeingError.code !== 'PGRST116') {
+      if (wellbeingError && wellbeingError.code !== "PGRST116") {
         // PGRST116 means no rows returned, which is fine
-        console.error('Error fetching wellbeing data:', wellbeingError);
+        console.error("Error fetching wellbeing data:", wellbeingError);
         return;
       }
 
       const { data: metricsData, error: metricsError } = await supabase
-        .from('daily_metrics')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('date', dateString)
+        .from("daily_metrics")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("date", dateString)
         .single();
 
-      if (metricsError && metricsError.code !== 'PGRST116') {
-        console.error('Error fetching daily metrics:', metricsError);
+      if (metricsError && metricsError.code !== "PGRST116") {
+        console.error("Error fetching daily metrics:", metricsError);
       }
 
       // Update form if we found existing data
       if (wellbeingData) {
-        setAssessment(prev => ({
+        setAssessment((prev) => ({
           ...prev,
           sleep_quality: wellbeingData.sleep_quality,
           stress_level: wellbeingData.stress_level,
           nutrition_quality: wellbeingData.nutrition_quality,
           physical_readiness: wellbeingData.physical_readiness,
           mental_clarity: wellbeingData.mental_clarity,
-          notes: wellbeingData.notes || '',
+          notes: wellbeingData.notes || "",
         }));
       }
 
       if (metricsData?.metrics) {
-        setAssessment(prev => ({
+        setAssessment((prev) => ({
           ...prev,
           sleep_hours: metricsData.metrics.sleep_hours || 7,
-          body_weight: metricsData.metrics.body_weight?.toString() || '',
-          resting_hr: metricsData.metrics.resting_heart_rate?.toString() || '',
+          body_weight: metricsData.metrics.body_weight?.toString() || "",
+          resting_hr: metricsData.metrics.resting_heart_rate?.toString() || "",
         }));
       }
     } catch (error) {
-      console.error('Error in wellbeing assessment fetch:', error);
+      console.error("Error in wellbeing assessment fetch:", error);
     }
   };
 
@@ -164,15 +140,18 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
   };
 
   const handleSleepHoursChange = (value: string | number) => {
-    setAssessment(prev => ({ ...prev, sleep_hours: typeof value === 'string' ? Number.parseFloat(value) || 7 : value }));
+    setAssessment((prev) => ({
+      ...prev,
+      sleep_hours: typeof value === "string" ? Number.parseFloat(value) || 7 : value,
+    }));
   };
 
   const handleBodyWeightChange = (value: string | number) => {
-    setAssessment(prev => ({ ...prev, body_weight: value.toString() }));
+    setAssessment((prev) => ({ ...prev, body_weight: value.toString() }));
   };
 
   const handleRestingHRChange = (value: string | number) => {
-    setAssessment(prev => ({ ...prev, resting_hr: value.toString() }));
+    setAssessment((prev) => ({ ...prev, resting_hr: value.toString() }));
   };
 
   const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -189,14 +168,14 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    
-    try {
-      if (!userId) throw new Error('User ID is required');
 
-      const dateString = date.toISOString().split('T')[0];
+    try {
+      if (!userId) throw new Error("User ID is required");
+
+      const dateString = date.toISOString().split("T")[0];
 
       // Save wellbeing assessment
-      const { error: wellbeingError } = await supabase.from('wellbeing_assessments').upsert({
+      const { error: wellbeingError } = await supabase.from("wellbeing_assessments").upsert({
         user_id: userId,
         date: dateString,
         sleep_quality: assessment.sleep_quality,
@@ -212,12 +191,13 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
       // Save metrics in daily_metrics if provided
       if (assessment.body_weight || assessment.resting_hr || assessment.sleep_hours) {
         const metrics: Record<string, number> = {};
-        
+
         if (assessment.body_weight) metrics.body_weight = Number.parseFloat(assessment.body_weight);
-        if (assessment.resting_hr) metrics.resting_heart_rate = Number.parseInt(assessment.resting_hr);
+        if (assessment.resting_hr)
+          metrics.resting_heart_rate = Number.parseInt(assessment.resting_hr, 10);
         if (assessment.sleep_hours) metrics.sleep_hours = assessment.sleep_hours;
 
-        const { error: metricsError } = await supabase.from('daily_metrics').upsert({
+        const { error: metricsError } = await supabase.from("daily_metrics").upsert({
           user_id: userId,
           date: dateString,
           metrics,
@@ -227,16 +207,17 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
       }
 
       notifications.show({
-        title: 'Success',
-        message: 'Your wellbeing assessment has been saved',
-        color: 'green',
+        title: "Success",
+        message: "Your wellbeing assessment has been saved",
+        color: "green",
       });
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to save wellbeing assessment';
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to save wellbeing assessment";
       notifications.show({
-        title: 'Error',
+        title: "Error",
         message: errorMessage,
-        color: 'red',
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -251,26 +232,28 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
   };
 
   const getWellbeingScore = (): number => {
-    const {
-      sleep_quality,
-      stress_level,
-      nutrition_quality,
-      physical_readiness,
-      mental_clarity
-    } = assessment;
-    
+    const { sleep_quality, stress_level, nutrition_quality, physical_readiness, mental_clarity } =
+      assessment;
+
     // Calculate average of all metrics (invert stress level since lower is better)
     return Math.round(
-      (sleep_quality + (10 - stress_level) + nutrition_quality + physical_readiness + mental_clarity) / 5
+      (sleep_quality +
+        (10 - stress_level) +
+        nutrition_quality +
+        physical_readiness +
+        mental_clarity) /
+        5
     );
   };
 
   return (
     <Box>
-      <Title order={2} mb="md">Daily Wellbeing Assessment</Title>
+      <Title order={2} mb="md">
+        Daily Wellbeing Assessment
+      </Title>
       <Text c="dimmed" mb="xl">
-        Rate your wellbeing metrics to help optimize your training and recovery. These metrics
-        help our AI provide personalized recommendations for your training program.
+        Rate your wellbeing metrics to help optimize your training and recovery. These metrics help
+        our AI provide personalized recommendations for your training program.
       </Text>
 
       <DateInput
@@ -284,23 +267,29 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
       <Paper p="md" radius="md" withBorder mb="xl">
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
           <Box>
-            <Text size="xl" fw={700}>Wellbeing Score</Text>
-            <Text size="sm" c="dimmed" mb="md">Aggregate score based on all metrics</Text>
+            <Text size="xl" fw={700}>
+              Wellbeing Score
+            </Text>
+            <Text size="sm" c="dimmed" mb="md">
+              Aggregate score based on all metrics
+            </Text>
           </Box>
-          <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Box style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <Box
               style={{
                 width: 120,
                 height: 120,
-                borderRadius: '50%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                borderRadius: "50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
                 backgroundColor: getSliderColor(getWellbeingScore()),
-                color: '#fff',
+                color: "#fff",
               }}
             >
-              <Text size="xl" fw={700}>{getWellbeingScore()}</Text>
+              <Text size="xl" fw={700}>
+                {getWellbeingScore()}
+              </Text>
             </Box>
           </Box>
         </SimpleGrid>
@@ -317,14 +306,14 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
           </Text>
           <Slider
             value={assessment.sleep_quality}
-            onChange={handleSliderChange('sleep_quality')}
+            onChange={handleSliderChange("sleep_quality")}
             min={1}
             max={10}
             step={1}
             marks={[
-              { value: 1, label: 'Poor' },
-              { value: 5, label: 'Average' },
-              { value: 10, label: 'Excellent' },
+              { value: 1, label: "Poor" },
+              { value: 5, label: "Average" },
+              { value: 10, label: "Excellent" },
             ]}
             color={getSliderColor(assessment.sleep_quality)}
             mb="lg"
@@ -341,14 +330,14 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
           </Text>
           <Slider
             value={assessment.stress_level}
-            onChange={handleSliderChange('stress_level')}
+            onChange={handleSliderChange("stress_level")}
             min={1}
             max={10}
             step={1}
             marks={[
-              { value: 1, label: 'Relaxed' },
-              { value: 5, label: 'Moderate' },
-              { value: 10, label: 'Extremely' },
+              { value: 1, label: "Relaxed" },
+              { value: 5, label: "Moderate" },
+              { value: 10, label: "Extremely" },
             ]}
             // Inverted color scale for stress (lower is better)
             color={getSliderColor(11 - assessment.stress_level)}
@@ -366,14 +355,14 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
           </Text>
           <Slider
             value={assessment.nutrition_quality}
-            onChange={handleSliderChange('nutrition_quality')}
+            onChange={handleSliderChange("nutrition_quality")}
             min={1}
             max={10}
             step={1}
             marks={[
-              { value: 1, label: 'Poor' },
-              { value: 5, label: 'Average' },
-              { value: 10, label: 'Excellent' },
+              { value: 1, label: "Poor" },
+              { value: 5, label: "Average" },
+              { value: 10, label: "Excellent" },
             ]}
             color={getSliderColor(assessment.nutrition_quality)}
             mb="lg"
@@ -390,21 +379,21 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
           </Text>
           <Slider
             value={assessment.physical_readiness}
-            onChange={handleSliderChange('physical_readiness')}
+            onChange={handleSliderChange("physical_readiness")}
             min={1}
             max={10}
             step={1}
             marks={[
-              { value: 1, label: 'Fatigued' },
-              { value: 5, label: 'Average' },
-              { value: 10, label: 'Energized' },
+              { value: 1, label: "Fatigued" },
+              { value: 5, label: "Average" },
+              { value: 10, label: "Energized" },
             ]}
             color={getSliderColor(assessment.physical_readiness)}
             mb="lg"
           />
         </Paper>
 
-        <Paper p="md" radius="md" withBorder style={{ gridColumn: 'span 2' }}>
+        <Paper p="md" radius="md" withBorder style={{ gridColumn: "span 2" }}>
           <Group mb="xs">
             <IconBrain size={24} color={theme.colors.violet[6]} />
             <Text fw={600}>Mental Clarity</Text>
@@ -414,14 +403,14 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
           </Text>
           <Slider
             value={assessment.mental_clarity}
-            onChange={handleSliderChange('mental_clarity')}
+            onChange={handleSliderChange("mental_clarity")}
             min={1}
             max={10}
             step={1}
             marks={[
-              { value: 1, label: 'Foggy' },
-              { value: 5, label: 'Average' },
-              { value: 10, label: 'Clear' },
+              { value: 1, label: "Foggy" },
+              { value: 5, label: "Average" },
+              { value: 10, label: "Clear" },
             ]}
             color={getSliderColor(assessment.mental_clarity)}
             mb="lg"
@@ -433,7 +422,9 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
 
       <SimpleGrid cols={{ base: 1, md: 3 }} spacing="lg">
         <Paper p="md" radius="md" withBorder>
-          <Text fw={600} mb="xs">Sleep Duration</Text>
+          <Text fw={600} mb="xs">
+            Sleep Duration
+          </Text>
           <NumberInput
             placeholder="Hours of sleep"
             value={assessment.sleep_hours}
@@ -441,12 +432,13 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
             min={0}
             max={24}
             step={0.5}
-            
           />
         </Paper>
 
         <Paper p="md" radius="md" withBorder>
-          <Text fw={600} mb="xs">Body Weight (kg)</Text>
+          <Text fw={600} mb="xs">
+            Body Weight (kg)
+          </Text>
           <NumberInput
             placeholder="Enter weight"
             value={assessment.body_weight ? Number.parseFloat(assessment.body_weight) : undefined}
@@ -454,15 +446,16 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
             min={30}
             max={150}
             step={0.1}
-            
           />
         </Paper>
 
         <Paper p="md" radius="md" withBorder>
-          <Text fw={600} mb="xs">Resting Heart Rate (bpm)</Text>
+          <Text fw={600} mb="xs">
+            Resting Heart Rate (bpm)
+          </Text>
           <NumberInput
             placeholder="Enter HR"
-            value={assessment.resting_hr ? Number.parseInt(assessment.resting_hr) : undefined}
+            value={assessment.resting_hr ? Number.parseInt(assessment.resting_hr, 10) : undefined}
             onChange={handleRestingHRChange}
             min={30}
             max={200}
@@ -472,7 +465,9 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
       </SimpleGrid>
 
       <Paper p="md" radius="md" withBorder mt="xl">
-        <Text fw={600} mb="sm">Additional Notes</Text>
+        <Text fw={600} mb="sm">
+          Additional Notes
+        </Text>
         <Textarea
           placeholder="Enter any additional notes about your wellbeing (e.g., injuries, illness, life stressors)"
           value={assessment.notes}
@@ -482,12 +477,7 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
         />
 
         <Group justify="right">
-          <Button
-            onClick={handleSubmit}
-            loading={loading}
-            variant="filled"
-            color="blue"
-          >
+          <Button onClick={handleSubmit} loading={loading} variant="filled" color="blue">
             Save Assessment
           </Button>
         </Group>

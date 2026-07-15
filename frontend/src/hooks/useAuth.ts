@@ -1,60 +1,104 @@
-import type { User } from "@supabase/supabase-js";
+import type { Session, User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getCurrentUser, signInWithGoogle, signOut, supabase } from "@/lib/supabase";
+import { useCallback, useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
+
+export type UserRole = "coach" | "athlete" | "admin";
 
 export function useAuth() {
+  const { supabase, loading: providerLoading } = useSupabase();
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // Set up Supabase auth state listener
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        setUser(session.user);
-      } else {
-        setUser(null);
-      }
+    if (!supabase) return;
+
+    // Get initial session from local storage (synchronous restore)
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      setSession(currentSession);
+      setUser(currentSession?.user ?? null);
       setLoading(false);
     });
 
-    // Get initial user
-    async function getInitialUser() {
-      try {
-        const user = await getCurrentUser();
-        setUser(user);
-      } catch (error) {
-        console.error("Error getting current user:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
+    // Listen for auth state changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+      setUser(newSession?.user ?? null);
+      setLoading(false);
+    });
 
-    getInitialUser();
-
-    // Clean up subscription on unmount
     return () => subscription.unsubscribe();
-  }, []);
+  }, [supabase]);
 
-  const login = async () => {
-    const { error } = await signInWithGoogle();
-    if (error) throw error;
-  };
+  // Derive role from app_metadata (secure, not user-writable)
+  const role: UserRole = (session?.user?.app_metadata?.role as UserRole) || "athlete";
+  const isCoach = role === "coach";
+  const isAthlete = role === "athlete" || !session?.user?.app_metadata?.role;
+  const isAdmin = role === "admin";
 
-  const logout = async () => {
-    const { error } = await signOut();
-    if (error) throw error;
+  const login = useCallback(
+    async (email: string, password: string) => {
+      if (!supabase) return { data: null, error: new Error("Supabase not initialized") };
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      return { data, error };
+    },
+    [supabase]
+  );
+
+  const loginWithGoogle = useCallback(async () => {
+    if (!supabase) return;
+    await supabase.auth.signInWithOAuth({ provider: "google" });
+  }, [supabase]);
+
+  const signup = useCallback(
+    async (email: string, password: string) => {
+      if (!supabase) return { data: null, error: new Error("Supabase not initialized") };
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      return { data, error };
+    },
+    [supabase]
+  );
+
+  const logout = useCallback(async () => {
+    if (!supabase) return;
+    await supabase.auth.signOut();
     router.push("/auth/login");
-  };
+  }, [supabase, router]);
+
+  // While provider is loading, keep loading true
+  if (providerLoading) {
+    return {
+      user: null,
+      session: null,
+      loading: true,
+      isAuthenticated: false,
+      role: "athlete" as UserRole,
+      isCoach: false,
+      isAthlete: true,
+      isAdmin: false,
+      login,
+      loginWithGoogle,
+      signup,
+      logout,
+    };
+  }
 
   return {
     user,
+    session,
     loading,
-    login,
-    logout,
     isAuthenticated: !!user,
+    role,
+    isCoach,
+    isAthlete,
+    isAdmin,
+    login,
+    loginWithGoogle,
+    signup,
+    logout,
   };
 }

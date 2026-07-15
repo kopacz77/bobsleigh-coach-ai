@@ -4,6 +4,9 @@ node_modules/
 out/
 .pnpm-store/
 
+# Storybook
+storybook-static/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -22,6 +25,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!frontend/src/lib/
 lib64/
 parts/
 sdist/
@@ -62,3 +66,5 @@ ml/models/checkpoints/
 
 # Docker
 docker-compose.override.yml
+# TypeScript incremental build cache (regenerated on every build)
+*.tsbuildinfo

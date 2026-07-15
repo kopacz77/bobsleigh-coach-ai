@@ -13,7 +13,6 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
   IconBarbell,
   IconCheck,
@@ -25,7 +24,8 @@ import {
   IconUser,
 } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 // Import onboarding step components
 import AthleteProfile from "./AthleteProfile";
@@ -37,19 +37,20 @@ import TrainingPreferences from "./TrainingPreferences";
  * Main Onboarding component that guides new athletes through the setup process
  * with multiple steps for profile creation, goal setting, and initial assessments
  */
-const Onboarding = ({ userId, userProfile }) => {
-  const theme = useMantineTheme();
+const Onboarding = ({ userId, userProfile }: { userId: string; userProfile: any }) => {
+  const _theme = useMantineTheme();
   const router = useRouter();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [completedSteps, setCompletedSteps] = useState([]);
-  const [onboardingComplete, setOnboardingComplete] = useState(false);
+  const [_completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const [_onboardingComplete, setOnboardingComplete] = useState(false);
 
   // Check if user has completed onboarding
   useEffect(() => {
     const checkOnboardingStatus = async () => {
       if (!userId) return;
+      if (!supabase) return;
 
       try {
         const { data, error } = await supabase
@@ -63,7 +64,7 @@ const Onboarding = ({ userId, userProfile }) => {
           return;
         }
 
-        if (data && data.onboarding_completed) {
+        if (data?.onboarding_completed) {
           router.push("/dashboard");
         }
       } catch (error) {
@@ -138,24 +139,30 @@ const Onboarding = ({ userId, userProfile }) => {
     },
     {
       title: "Athlete Profile",
-      component: ({ onComplete }) => <AthleteProfile userId={userId} onComplete={onComplete} />,
+      component: ({ onComplete }: { onComplete?: (data: any) => void }) => (
+        <AthleteProfile userId={userId} onComplete={onComplete!} />
+      ),
       description: "Basic information",
     },
     {
       title: "Goal Setting",
-      component: ({ onComplete }) => <GoalSetting userId={userId} onComplete={onComplete} />,
+      component: ({ onComplete }: { onComplete?: (data: any) => void }) => (
+        <GoalSetting userId={userId} onComplete={onComplete} />
+      ),
       description: "Set your goals",
     },
     {
       title: "Training Preferences",
-      component: ({ onComplete }) => (
+      component: ({ onComplete }: { onComplete?: (data: any) => void }) => (
         <TrainingPreferences userId={userId} onComplete={onComplete} />
       ),
       description: "Training schedule",
     },
     {
       title: "Initial Assessment",
-      component: ({ onComplete }) => <InitialAssessment userId={userId} onComplete={onComplete} />,
+      component: ({ onComplete }: { onComplete?: (data: any) => void }) => (
+        <InitialAssessment userId={userId} onComplete={onComplete} />
+      ),
       description: "Baseline metrics",
     },
     {
@@ -194,7 +201,7 @@ const Onboarding = ({ userId, userProfile }) => {
   ];
 
   // Handle step completion
-  const handleStepComplete = async (data) => {
+  const handleStepComplete = async (_data: any) => {
     setCompletedSteps((prev) => [...prev, step]);
     handleNextStep();
   };
@@ -228,6 +235,7 @@ const Onboarding = ({ userId, userProfile }) => {
 
   // Complete onboarding
   const completeOnboarding = async () => {
+    if (!supabase) return;
     setLoading(true);
 
     try {
@@ -297,7 +305,7 @@ const Onboarding = ({ userId, userProfile }) => {
             </Text>
           </Box>
 
-          <Stepper active={step} onStepClick={setStep} breakpoint="sm" allowNextStepsSelect={false}>
+          <Stepper active={step} onStepClick={setStep} allowNextStepsSelect={false}>
             {steps.map((s, index) => (
               <Stepper.Step
                 key={index}
@@ -325,7 +333,11 @@ const Onboarding = ({ userId, userProfile }) => {
             )}
 
             {step === 0 && (
-              <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
+              <Button
+                onClick={handleNextStep}
+                rightSection={<IconChevronRight size={16} />}
+                size="md"
+              >
                 Get Started
               </Button>
             )}

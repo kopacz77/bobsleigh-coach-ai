@@ -4,20 +4,25 @@ import {
   ActionIcon,
   Button,
   Card,
+  Checkbox,
   Divider,
   Group,
   NumberInput,
   Select,
   Stack,
-  Text,
   Textarea,
   TextInput,
   Title,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
+import { useDebouncedValue } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useCreateWorkout } from "@/hooks/useTraining";
+import { exerciseAPI } from "@/lib/api";
 
 interface WorkoutFormValues {
   name: string;
@@ -25,6 +30,8 @@ interface WorkoutFormValues {
   type: string;
   duration: number;
   notes: string;
+  rpe: number | "";
+  is_completed: boolean;
   exercises: {
     exercise_id: string;
     name: string;
@@ -37,18 +44,25 @@ interface WorkoutFormValues {
   }[];
 }
 
-export function WorkoutForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+interface WorkoutFormProps {
+  onSuccess?: () => void;
+}
 
-  // Exercise options (in a real app, these would come from the backend)
-  const exerciseOptions = [
-    { value: "1", label: "Squat" },
-    { value: "2", label: "Bench Press" },
-    { value: "3", label: "Deadlift" },
-    { value: "4", label: "Power Clean" },
-    { value: "5", label: "30m Sprint" },
-    { value: "6", label: "Box Jump" },
-  ];
+export function WorkoutForm({ onSuccess }: WorkoutFormProps = {}) {
+  const createWorkout = useCreateWorkout();
+  const [exerciseSearch, setExerciseSearch] = useState("");
+  const [debouncedSearch] = useDebouncedValue(exerciseSearch, 300);
+
+  // Fetch exercises from the API with search
+  const { data: exerciseResults } = useQuery({
+    queryKey: ["exercises", "search", debouncedSearch],
+    queryFn: () => exerciseAPI.search({ search: debouncedSearch || undefined, limit: 50 }),
+  });
+
+  const exerciseOptions = (exerciseResults?.data || []).map((ex: { id: string; name: string }) => ({
+    value: ex.id,
+    label: ex.name,
+  }));
 
   const workoutTypes = [
     { value: "strength", label: "Strength" },
@@ -65,6 +79,8 @@ export function WorkoutForm() {
       type: "",
       duration: 60,
       notes: "",
+      rpe: "",
+      is_completed: false,
       exercises: [
         {
           exercise_id: "",
@@ -81,6 +97,11 @@ export function WorkoutForm() {
     validate: {
       name: (value) => (value ? null : "Workout name is required"),
       type: (value) => (value ? null : "Workout type is required"),
+      rpe: (value) => {
+        if (value === "" || value === undefined) return null;
+        if (typeof value === "number" && value >= 1 && value <= 10) return null;
+        return "RPE must be between 1 and 10";
+      },
       exercises: {
         exercise_id: (value) => (value ? null : "Please select an exercise"),
       },
@@ -88,25 +109,50 @@ export function WorkoutForm() {
   });
 
   const handleSubmit = async (values: WorkoutFormValues) => {
-    setIsSubmitting(true);
     try {
-      // In a real app, you would submit to your API
-      console.log("Submitting workout:", values);
-      // api.post('/api/training/workouts', values);
+      // Format date as YYYY-MM-DD string
+      const dateStr = values.date.toISOString().split("T")[0];
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Filter out exercises with no exercise_id selected
+      const validExercises = values.exercises
+        .filter((ex) => ex.exercise_id)
+        .map(({ name: _name, ...rest }) => rest);
 
-      // Reset form
+      const payload: Record<string, unknown> = {
+        name: values.name,
+        date: dateStr,
+        workout_type: values.type,
+        duration: values.duration,
+        notes: values.notes || undefined,
+        is_completed: values.is_completed,
+        exercises: validExercises.length > 0 ? validExercises : undefined,
+      };
+
+      // Only include RPE if set
+      if (values.rpe !== "" && values.rpe !== undefined) {
+        payload.rpe = values.rpe;
+      }
+
+      await createWorkout.mutateAsync(payload);
+
+      // Reset form on success
       form.reset();
 
-      // Show success message
-      alert("Workout saved successfully!");
-    } catch (error) {
-      console.error("Error saving workout:", error);
-      alert("Error saving workout. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+      notifications.show({
+        title: "Success",
+        message: "Workout saved successfully!",
+        color: "green",
+      });
+
+      onSuccess?.();
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Error saving workout. Please try again.";
+      notifications.show({
+        title: "Error",
+        message,
+        color: "red",
+      });
     }
   };
 
@@ -130,7 +176,9 @@ export function WorkoutForm() {
   // Auto-fill exercise name when exercise_id changes
   const handleExerciseChange = (value: string, index: number) => {
     form.setFieldValue(`exercises.${index}.exercise_id`, value);
-    const exercise = exerciseOptions.find((ex) => ex.value === value);
+    const exercise = exerciseOptions.find(
+      (ex: { value: string; label: string }) => ex.value === value
+    );
     if (exercise) {
       form.setFieldValue(`exercises.${index}.name`, exercise.label);
     }
@@ -182,6 +230,15 @@ export function WorkoutForm() {
             {...form.getInputProps("notes")}
           />
 
+          <NumberInput
+            label="Rate of Perceived Exertion (RPE)"
+            placeholder="1-10"
+            min={1}
+            max={10}
+            description="How hard was this workout? (1 = very easy, 10 = maximal effort)"
+            {...form.getInputProps("rpe")}
+          />
+
           <Divider label="Exercises" labelPosition="center" />
 
           {form.values.exercises.map((_, index) => (
@@ -190,8 +247,11 @@ export function WorkoutForm() {
                 <Group grow>
                   <Select
                     label="Exercise"
-                    placeholder="Select exercise"
+                    placeholder="Search exercises..."
                     data={exerciseOptions}
+                    searchable
+                    onSearchChange={setExerciseSearch}
+                    nothingFoundMessage="No exercises found"
                     required
                     {...form.getInputProps(`exercises.${index}.exercise_id`)}
                     onChange={(value) => handleExerciseChange(value || "", index)}
@@ -227,7 +287,7 @@ export function WorkoutForm() {
                     label="Weight (kg)"
                     placeholder="0"
                     min={0}
-                    precision={1}
+                    decimalScale={1}
                     {...form.getInputProps(`exercises.${index}.weight`)}
                   />
                 </Group>
@@ -244,7 +304,7 @@ export function WorkoutForm() {
                     label="Time (seconds)"
                     placeholder="0"
                     min={0}
-                    precision={1}
+                    decimalScale={1}
                     {...form.getInputProps(`exercises.${index}.time`)}
                   />
                 </Group>
@@ -262,8 +322,14 @@ export function WorkoutForm() {
             Add Exercise
           </Button>
 
+          <Checkbox
+            label="Mark as completed"
+            description="Check if this workout has been completed"
+            {...form.getInputProps("is_completed", { type: "checkbox" })}
+          />
+
           <Group justify="flex-end" mt="md">
-            <Button type="submit" loading={isSubmitting}>
+            <Button type="submit" loading={createWorkout.isPending}>
               Save Workout
             </Button>
           </Group>

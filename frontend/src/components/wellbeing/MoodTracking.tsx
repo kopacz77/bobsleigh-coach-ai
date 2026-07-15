@@ -16,7 +16,6 @@ import {
 import { Calendar } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
   IconMoodCry,
   IconMoodHappy,
@@ -27,6 +26,7 @@ import {
 } from "@tabler/icons-react";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * Emotion option type
@@ -76,7 +76,7 @@ interface MoodTrackingProps {
  */
 const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [moodData, setMoodData] = useState<MoodEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -115,6 +115,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
   useEffect(() => {
     const fetchMoodData = async () => {
       if (!userId) return;
+      if (!supabase) return;
 
       try {
         const startOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
@@ -206,6 +207,7 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
 
   // Submit mood data
   const handleSubmit = async () => {
+    if (!supabase) return;
     if (!currentMood.primary_emotion) {
       showNotification({
         title: "Missing Information",
@@ -224,8 +226,8 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
       const moodEntry = {
         user_id: userId,
         date: dateString,
-        mood_score: Number.parseInt(currentMood.mood_score),
-        energy_level: Number.parseInt(currentMood.energy_level),
+        mood_score: Number.parseInt(currentMood.mood_score, 10),
+        energy_level: Number.parseInt(currentMood.energy_level, 10),
         primary_emotion: currentMood.primary_emotion,
         secondary_emotion: currentMood.secondary_emotion || null,
         notes: currentMood.notes || null,

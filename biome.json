@@ -1,5 +1,10 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.3/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
@@ -58,14 +63,16 @@
       "**/frontend/src/**/*.{js,jsx,ts,tsx,json}",
       "**/frontend/**/*.{js,ts,json}",
       "**/*.{js,ts,json}",
-      "**/*.{js,ts,json}",
-      "!**/node_modules/**",
-      "!**/dist/**",
-      "!**/build/**",
-      "!**/.next/**",
-      "!**/backend/**",
-      "!**/ml/**",
-      "!**/*.py"
+      "!**/node_modules",
+      "!**/dist",
+      "!**/build",
+      "!**/.next",
+      "!**/backend",
+      "!**/ml",
+      "!**/*.py",
+      "!**/.planning",
+      "!**/*_export.json",
+      "!**/*.backup"
     ]
   }
 }

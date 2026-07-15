@@ -1,27 +1,34 @@
-import { Grid, Stack, Title } from "@mantine/core";
-import { AthleteStats } from "@/components/dashboard/AthleteStats";
-import { PerformanceChart } from "@/components/dashboard/PerformanceChart";
+"use client";
+
+import { Center, Loader } from "@mantine/core";
+import AthleteDashboard from "@/components/dashboard/AthleteDashboard";
+import CoachDashboard from "@/components/dashboard/CoachDashboard";
 import { AppShell } from "@/components/layout/AppShell";
-import { TrainingRecommendations } from "@/components/training/TrainingRecommendations";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function DashboardPage() {
+  const { user, isCoach, loading } = useAuth();
+  // user is typed as unknown in the unified AuthState. Narrow to the
+  // minimal shape we read here.
+  const userId = (user as { id?: string } | null | undefined)?.id ?? "";
+
+  if (loading) {
+    return (
+      <AppShell>
+        <Center style={{ height: "60vh" }}>
+          <Loader size="xl" />
+        </Center>
+      </AppShell>
+    );
+  }
+
   return (
     <AppShell>
-      <Stack gap="xl">
-        <Title>Dashboard</Title>
-
-        <AthleteStats />
-
-        <Grid>
-          <Grid.Col span={{ base: 12, md: 8 }}>
-            <PerformanceChart />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 12, md: 4 }}>
-            <TrainingRecommendations />
-          </Grid.Col>
-        </Grid>
-      </Stack>
+      {isCoach ? (
+        <CoachDashboard userId={userId} userProfile={null} />
+      ) : (
+        <AthleteDashboard userId={userId} />
+      )}
     </AppShell>
   );
 }

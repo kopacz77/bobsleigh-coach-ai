@@ -1,31 +1,30 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { 
-  Card, 
-  Group, 
-  Stack, 
-  Text, 
-  Title, 
-  Badge, 
-  Button, 
-  Accordion, 
-  Divider, 
-  ThemeIcon,
-  NumberInput,
+import {
+  Accordion,
   ActionIcon,
+  Badge,
+  Button,
+  Card,
+  Divider,
+  Group,
   Modal,
+  NumberInput,
+  Select,
+  Stack,
+  Text,
   Textarea,
-  Select
-} from '@mantine/core';
-import { 
-  IconBarbell, 
-  IconThumbUp, 
-  IconThumbDown, 
-  IconCheck, 
-  IconChartLine,
-  IconMessageCircle
-} from '@tabler/icons-react';
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
+import {
+  IconBarbell,
+  IconCheck,
+  IconMessageCircle,
+  IconThumbDown,
+  IconThumbUp,
+} from "@tabler/icons-react";
+import { useState } from "react";
 
 interface Exercise {
   id: string;
@@ -52,7 +51,7 @@ interface WorkoutDayProps {
   title: string;
   date: string;
   day: string;
-  intensity: 'Low' | 'Medium' | 'High';
+  intensity: "Low" | "Medium" | "High";
   exerciseGroups: ExerciseGroup[];
   notes?: string;
   approved?: boolean;
@@ -63,55 +62,55 @@ interface WorkoutDayProps {
 
 interface WorkoutFeedback {
   workoutId: string;
-  rating: 'positive' | 'negative';
+  rating: "positive" | "negative";
   rpe?: number;
   comments?: string;
   limitingFactors?: string[];
 }
 
-export function WorkoutDayCard({ 
-  id, 
-  title, 
-  date, 
+export function WorkoutDayCard({
+  id,
+  title,
+  date,
   day,
-  intensity, 
-  exerciseGroups, 
+  intensity,
+  exerciseGroups,
   notes,
   approved = true,
   isAI = false,
   onFeedback,
-  onComplete
+  onComplete,
 }: WorkoutDayProps) {
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
-  const [feedbackType, setFeedbackType] = useState<'positive' | 'negative'>('positive');
+  const [feedbackType, setFeedbackType] = useState<"positive" | "negative">("positive");
   const [rpe, setRpe] = useState<number | undefined>(undefined);
-  const [comments, setComments] = useState('');
+  const [comments, setComments] = useState("");
   const [limitingFactors, setLimitingFactors] = useState<string[]>([]);
 
   const getIntensityColor = (intensity: string) => {
     switch (intensity) {
-      case 'High':
-        return 'red';
-      case 'Medium':
-        return 'yellow';
-      case 'Low':
-        return 'green';
+      case "High":
+        return "red";
+      case "Medium":
+        return "yellow";
+      case "Low":
+        return "green";
       default:
-        return 'blue';
+        return "blue";
     }
   };
 
   const handleExerciseComplete = (
-    exerciseId: string, 
+    exerciseId: string,
     data: Partial<Exercise>,
-    groupId: string
+    _groupId: string
   ) => {
     if (onComplete) {
       onComplete(exerciseId, data);
     }
   };
 
-  const openFeedbackModal = (type: 'positive' | 'negative') => {
+  const openFeedbackModal = (type: "positive" | "negative") => {
     setFeedbackType(type);
     setFeedbackModalOpen(true);
   };
@@ -123,54 +122,62 @@ export function WorkoutDayCard({
         rating: feedbackType,
         rpe,
         comments,
-        limitingFactors
+        limitingFactors,
       });
     }
     setFeedbackModalOpen(false);
     // Reset form
     setRpe(undefined);
-    setComments('');
+    setComments("");
     setLimitingFactors([]);
   };
 
   return (
     <>
       <Card withBorder shadow="sm" radius="md" p="md">
-        <Group position="apart" mb="xs">
+        <Group justify="space-between" mb="xs">
           <Group>
             <Title order={3}>{title}</Title>
             {isAI && (
-              <Badge color="blue" variant="filled">AI Generated</Badge>
+              <Badge color="blue" variant="filled">
+                AI Generated
+              </Badge>
             )}
             {!approved && (
-              <Badge color="yellow" variant="filled">Pending Coach Approval</Badge>
+              <Badge color="yellow" variant="filled">
+                Pending Coach Approval
+              </Badge>
             )}
           </Group>
           <Badge size="lg" color={getIntensityColor(intensity)}>
             {intensity}
           </Badge>
         </Group>
-        
+
         <Group mb="md">
-          <Text c="dimmed">{day} • {date}</Text>
+          <Text c="dimmed">
+            {day} • {date}
+          </Text>
         </Group>
-        
+
         {notes && (
-          <Text mb="md" size="sm" style={{fontStyle: 'italic'}}>{notes}</Text>
+          <Text mb="md" size="sm" style={{ fontStyle: "italic" }}>
+            {notes}
+          </Text>
         )}
-        
+
         <Accordion>
-          {exerciseGroups.map(group => (
+          {exerciseGroups.map((group) => (
             <Accordion.Item value={group.id} key={group.id}>
               <Accordion.Control>
-                <Group position="apart">
+                <Group justify="space-between">
                   <Group>
                     <ThemeIcon size="md" color="blue" variant="light">
                       <IconBarbell size={16} />
                     </ThemeIcon>
                     <Text fw={500}>{group.name}</Text>
                   </Group>
-                  
+
                   {group.mhg && (
                     <Badge color="blue" variant="outline">
                       MHG: {group.mhg}kg
@@ -179,24 +186,26 @@ export function WorkoutDayCard({
                 </Group>
               </Accordion.Control>
               <Accordion.Panel>
-                <Stack spacing="xs">
-                  {group.exercises.map(exercise => (
+                <Stack gap="xs">
+                  {group.exercises.map((exercise) => (
                     <Card key={exercise.id} shadow="xs" p="sm" withBorder>
-                      <Group position="apart" mb="xs">
+                      <Group justify="space-between" mb="xs">
                         <Text fw={500}>{exercise.name}</Text>
-                        <ActionIcon 
+                        <ActionIcon
                           color={exercise.isCompleted ? "green" : "gray"}
                           variant="subtle"
-                          onClick={() => handleExerciseComplete(
-                            exercise.id, 
-                            { isCompleted: !exercise.isCompleted },
-                            group.id
-                          )}
+                          onClick={() =>
+                            handleExerciseComplete(
+                              exercise.id,
+                              { isCompleted: !exercise.isCompleted },
+                              group.id
+                            )
+                          }
                         >
                           <IconCheck size={16} />
                         </ActionIcon>
                       </Group>
-                      
+
                       <Text size="sm">
                         {exercise.sets} sets
                         {exercise.reps && ` × ${exercise.reps} reps`}
@@ -205,11 +214,13 @@ export function WorkoutDayCard({
                         {exercise.duration && ` × ${exercise.duration}s`}
                         {exercise.rest && ` (${exercise.rest}s rest)`}
                       </Text>
-                      
+
                       {exercise.notes && (
-                        <Text size="xs" c="dimmed" mt="xs">{exercise.notes}</Text>
+                        <Text size="xs" c="dimmed" mt="xs">
+                          {exercise.notes}
+                        </Text>
                       )}
-                      
+
                       {/* Optional: Add input fields for workout tracking */}
                       {approved && (
                         <Group grow mt="xs">
@@ -220,12 +231,19 @@ export function WorkoutDayCard({
                               defaultValue={exercise.weight}
                               min={0}
                               step={2.5}
-                              precision={1}
-                              onChange={(value) => handleExerciseComplete(
-                                exercise.id, 
-                                { weight: value || 0 },
-                                group.id
-                              )}
+                              decimalScale={1}
+                              onChange={(value) =>
+                                handleExerciseComplete(
+                                  exercise.id,
+                                  {
+                                    weight:
+                                      typeof value === "string"
+                                        ? Number.parseFloat(value) || 0
+                                        : value,
+                                  },
+                                  group.id
+                                )
+                              }
                             />
                           )}
                           {exercise.reps !== undefined && (
@@ -234,11 +252,18 @@ export function WorkoutDayCard({
                               label="Reps"
                               defaultValue={exercise.reps}
                               min={0}
-                              onChange={(value) => handleExerciseComplete(
-                                exercise.id, 
-                                { reps: value || 0 },
-                                group.id
-                              )}
+                              onChange={(value) =>
+                                handleExerciseComplete(
+                                  exercise.id,
+                                  {
+                                    reps:
+                                      typeof value === "string"
+                                        ? Number.parseInt(value, 10) || 0
+                                        : value,
+                                  },
+                                  group.id
+                                )
+                              }
                             />
                           )}
                         </Group>
@@ -250,45 +275,42 @@ export function WorkoutDayCard({
             </Accordion.Item>
           ))}
         </Accordion>
-        
+
         <Divider my="md" />
-        
+
         {approved ? (
-          <Group position="apart">
-            <Button 
-              leftIcon={<IconThumbUp size={16} />}
+          <Group justify="space-between">
+            <Button
+              leftSection={<IconThumbUp size={16} />}
               variant="light"
-              onClick={() => openFeedbackModal('positive')}
+              onClick={() => openFeedbackModal("positive")}
             >
               Felt Good
             </Button>
-            <Button 
-              leftIcon={<IconThumbDown size={16} />}
+            <Button
+              leftSection={<IconThumbDown size={16} />}
               variant="light"
               color="red"
-              onClick={() => openFeedbackModal('negative')}
+              onClick={() => openFeedbackModal("negative")}
             >
               Struggled
             </Button>
           </Group>
         ) : (
-          <Group position="right">
-            <Button 
-              leftIcon={<IconMessageCircle size={16} />}
-              variant="light"
-            >
+          <Group justify="flex-end">
+            <Button leftSection={<IconMessageCircle size={16} />} variant="light">
               Request Changes
             </Button>
           </Group>
         )}
       </Card>
-      
+
       <Modal
         opened={feedbackModalOpen}
         onClose={() => setFeedbackModalOpen(false)}
         title={
           <Text fw={700}>
-            {feedbackType === 'positive' ? 'Workout Felt Good' : 'Workout Challenges'}
+            {feedbackType === "positive" ? "Workout Felt Good" : "Workout Challenges"}
           </Text>
         }
       >
@@ -299,30 +321,33 @@ export function WorkoutDayCard({
             min={1}
             max={10}
             value={rpe}
-            onChange={setRpe}
+            onChange={(value) =>
+              setRpe(typeof value === "string" ? Number.parseInt(value, 10) || undefined : value)
+            }
           />
-          
-          {feedbackType === 'negative' && (
+
+          {feedbackType === "negative" && (
             <Select
               label="Limiting Factors"
               description="What made this workout challenging?"
               data={[
-                { value: 'fatigue', label: 'Overall Fatigue' },
-                { value: 'soreness', label: 'Muscle Soreness' },
-                { value: 'technique', label: 'Technical Difficulty' },
-                { value: 'weight', label: 'Weight Too Heavy' },
-                { value: 'intensity', label: 'Too High Intensity' },
-                { value: 'recovery', label: 'Insufficient Recovery' },
-                { value: 'mental', label: 'Mental Fatigue' },
-                { value: 'other', label: 'Other' },
+                { value: "fatigue", label: "Overall Fatigue" },
+                { value: "soreness", label: "Muscle Soreness" },
+                { value: "technique", label: "Technical Difficulty" },
+                { value: "weight", label: "Weight Too Heavy" },
+                { value: "intensity", label: "Too High Intensity" },
+                { value: "recovery", label: "Insufficient Recovery" },
+                { value: "mental", label: "Mental Fatigue" },
+                { value: "other", label: "Other" },
               ]}
               placeholder="Select factors"
-              value={limitingFactors}
-              onChange={setLimitingFactors}
-              multiple
+              value={limitingFactors[0] || null}
+              onChange={(value) => {
+                if (value) setLimitingFactors([value]);
+              }}
             />
           )}
-          
+
           <Textarea
             label="Additional Comments"
             placeholder="Share any additional feedback about this workout..."
@@ -330,14 +355,12 @@ export function WorkoutDayCard({
             value={comments}
             onChange={(e) => setComments(e.target.value)}
           />
-          
-          <Group position="right" mt="md">
+
+          <Group justify="flex-end" mt="md">
             <Button variant="outline" onClick={() => setFeedbackModalOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={submitFeedback}>
-              Submit Feedback
-            </Button>
+            <Button onClick={submitFeedback}>Submit Feedback</Button>
           </Group>
         </Stack>
       </Modal>

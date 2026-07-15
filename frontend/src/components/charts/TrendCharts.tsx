@@ -3,11 +3,12 @@
 import {
   Alert,
   Badge,
+  Box,
   Card,
   Grid,
   Group,
+  ScrollArea,
   SegmentedControl,
-  Select,
   Stack,
   Text,
   Title,
@@ -23,8 +24,6 @@ import { useMemo } from "react";
 import {
   Area,
   AreaChart,
-  Bar,
-  BarChart,
   CartesianGrid,
   Line,
   LineChart,
@@ -159,19 +158,22 @@ export function TrendCharts({
   return (
     <Stack gap="lg">
       {/* Controls */}
-      <Group justify="space-between" ta="center">
-        <Title order={3}>Training Trends</Title>
+      <Stack gap="sm">
+        <Title order={3} fz={{ base: "md", md: "lg" }}>
+          Training Trends
+        </Title>
         <SegmentedControl
           value={timeRange}
           onChange={(value) => onTimeRangeChange?.(value as any)}
           data={[
-            { label: "7 Days", value: "7d" },
-            { label: "14 Days", value: "14d" },
-            { label: "30 Days", value: "30d" },
-            { label: "90 Days", value: "90d" },
+            { label: "7D", value: "7d" },
+            { label: "14D", value: "14d" },
+            { label: "30D", value: "30d" },
+            { label: "90D", value: "90d" },
           ]}
+          fullWidth
         />
-      </Group>
+      </Stack>
 
       {/* Current Status */}
       {readiness && (
@@ -192,14 +194,14 @@ export function TrendCharts({
       {/* Trend Analysis */}
       {trendAnalysis && (
         <Grid>
-          <Grid.Col span={6}>
-            <Card padding="sm" withBorder>
-              <Group justify="space-between" ta="center">
+          <Grid.Col span={{ base: 12, xs: 6 }}>
+            <Card p="sm" withBorder>
+              <Group justify="space-between" wrap="wrap">
                 <Stack gap={2}>
                   <Text size="xs" c="dimmed">
                     RPE Trend
                   </Text>
-                  <Group gap="xs" ta="center">
+                  <Group gap="xs">
                     {getTrendIcon(trendAnalysis.rpe)}
                     <Text size="sm" fw={500}>
                       {trendAnalysis.rpe > 0 ? "+" : ""}
@@ -218,14 +220,14 @@ export function TrendCharts({
             </Card>
           </Grid.Col>
 
-          <Grid.Col span={6}>
-            <Card padding="sm" withBorder>
-              <Group justify="space-between" ta="center">
+          <Grid.Col span={{ base: 12, xs: 6 }}>
+            <Card p="sm" withBorder>
+              <Group justify="space-between" wrap="wrap">
                 <Stack gap={2}>
                   <Text size="xs" c="dimmed">
                     Energy Trend
                   </Text>
-                  <Group gap="xs" ta="center">
+                  <Group gap="xs">
                     {getTrendIcon(trendAnalysis.energy)}
                     <Text size="sm" fw={500}>
                       {trendAnalysis.energy > 0 ? "+" : ""}
@@ -247,61 +249,65 @@ export function TrendCharts({
       )}
 
       {/* Main Trends Chart */}
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <Card shadow="sm" p={{ base: "sm", md: "lg" }} radius="md" withBorder>
         <Stack gap="md">
-          <Title order={4}>Daily Metrics Trends</Title>
-          <div style={{ width: "100%", height: 300 }}>
-            <ResponsiveContainer>
-              <LineChart data={processedData}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                <XAxis dataKey="date" tick={{ fontSize: 12 }} tickLine={false} />
-                <YAxis domain={[1, 10]} tick={{ fontSize: 12 }} tickLine={false} />
-                <Tooltip
-                  formatter={formatTooltipValue}
-                  labelStyle={{ color: "#333" }}
-                  contentStyle={{
-                    backgroundColor: "#fff",
-                    border: "1px solid #ddd",
-                    borderRadius: "4px",
-                  }}
-                />
-                <ReferenceLine y={5} stroke="#888" strokeDasharray="2 2" opacity={0.5} />
-                <Line
-                  type="monotone"
-                  dataKey="rpe"
-                  stroke="#ff6b6b"
-                  strokeWidth={2}
-                  dot={{ fill: "#ff6b6b", strokeWidth: 0, r: 4 }}
-                  activeDot={{ r: 6, stroke: "#ff6b6b" }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="energy"
-                  stroke="#51cf66"
-                  strokeWidth={2}
-                  dot={{ fill: "#51cf66", strokeWidth: 0, r: 4 }}
-                  activeDot={{ r: 6, stroke: "#51cf66" }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="soreness"
-                  stroke="#ffa94d"
-                  strokeWidth={2}
-                  dot={{ fill: "#ffa94d", strokeWidth: 0, r: 4 }}
-                  activeDot={{ r: 6, stroke: "#ffa94d" }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="motivation"
-                  stroke="#339af0"
-                  strokeWidth={2}
-                  dot={{ fill: "#339af0", strokeWidth: 0, r: 4 }}
-                  activeDot={{ r: 6, stroke: "#339af0" }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-          <Group justify="center" gap="lg">
+          <Title order={4} fz={{ base: "sm", md: "md" }}>
+            Daily Metrics Trends
+          </Title>
+          <ScrollArea type="auto">
+            <Box style={{ width: "100%", minWidth: 350, height: 300 }}>
+              <ResponsiveContainer>
+                <LineChart data={processedData}>
+                  <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                  <XAxis dataKey="date" tick={{ fontSize: 12 }} tickLine={false} />
+                  <YAxis domain={[1, 10]} tick={{ fontSize: 12 }} tickLine={false} />
+                  <Tooltip
+                    formatter={formatTooltipValue}
+                    labelStyle={{ color: "#333" }}
+                    contentStyle={{
+                      backgroundColor: "#fff",
+                      border: "1px solid #ddd",
+                      borderRadius: "4px",
+                    }}
+                  />
+                  <ReferenceLine y={5} stroke="#888" strokeDasharray="2 2" opacity={0.5} />
+                  <Line
+                    type="monotone"
+                    dataKey="rpe"
+                    stroke="#ff6b6b"
+                    strokeWidth={2}
+                    dot={{ fill: "#ff6b6b", strokeWidth: 0, r: 4 }}
+                    activeDot={{ r: 6, stroke: "#ff6b6b" }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="energy"
+                    stroke="#51cf66"
+                    strokeWidth={2}
+                    dot={{ fill: "#51cf66", strokeWidth: 0, r: 4 }}
+                    activeDot={{ r: 6, stroke: "#51cf66" }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="soreness"
+                    stroke="#ffa94d"
+                    strokeWidth={2}
+                    dot={{ fill: "#ffa94d", strokeWidth: 0, r: 4 }}
+                    activeDot={{ r: 6, stroke: "#ffa94d" }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="motivation"
+                    stroke="#339af0"
+                    strokeWidth={2}
+                    dot={{ fill: "#339af0", strokeWidth: 0, r: 4 }}
+                    activeDot={{ r: 6, stroke: "#339af0" }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </Box>
+          </ScrollArea>
+          <Group justify="center" gap="sm" wrap="wrap">
             <Group gap="xs">
               <div style={{ width: 12, height: 2, backgroundColor: "#ff6b6b" }} />
               <Text size="sm">RPE</Text>
@@ -323,47 +329,53 @@ export function TrendCharts({
       </Card>
 
       {/* Training Stress Balance */}
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <Card shadow="sm" p={{ base: "sm", md: "lg" }} radius="md" withBorder>
         <Stack gap="md">
-          <Title order={4}>Training Stress Balance</Title>
+          <Title order={4} fz={{ base: "sm", md: "md" }}>
+            Training Stress Balance
+          </Title>
           <Text size="sm" c="dimmed">
             Positive values indicate good recovery, negative values suggest accumulated fatigue
           </Text>
-          <div style={{ width: "100%", height: 200 }}>
-            <ResponsiveContainer>
-              <AreaChart data={processedData}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                <XAxis dataKey="date" tick={{ fontSize: 12 }} tickLine={false} />
-                <YAxis tick={{ fontSize: 12 }} tickLine={false} />
-                <Tooltip
-                  formatter={(value: number) => [`${value.toFixed(1)}`, "TSB"]}
-                  labelStyle={{ color: "#333" }}
-                  contentStyle={{
-                    backgroundColor: "#fff",
-                    border: "1px solid #ddd",
-                    borderRadius: "4px",
-                  }}
-                />
-                <ReferenceLine y={0} stroke="#333" strokeDasharray="2 2" />
-                <Area
-                  type="monotone"
-                  dataKey="tsb"
-                  stroke="#8884d8"
-                  fill="#8884d8"
-                  fillOpacity={0.3}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          <ScrollArea type="auto">
+            <Box style={{ width: "100%", minWidth: 350, height: 200 }}>
+              <ResponsiveContainer>
+                <AreaChart data={processedData}>
+                  <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                  <XAxis dataKey="date" tick={{ fontSize: 12 }} tickLine={false} />
+                  <YAxis tick={{ fontSize: 12 }} tickLine={false} />
+                  <Tooltip
+                    formatter={(value: number) => [`${value.toFixed(1)}`, "TSB"]}
+                    labelStyle={{ color: "#333" }}
+                    contentStyle={{
+                      backgroundColor: "#fff",
+                      border: "1px solid #ddd",
+                      borderRadius: "4px",
+                    }}
+                  />
+                  <ReferenceLine y={0} stroke="#333" strokeDasharray="2 2" />
+                  <Area
+                    type="monotone"
+                    dataKey="tsb"
+                    stroke="#8884d8"
+                    fill="#8884d8"
+                    fillOpacity={0.3}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </Box>
+          </ScrollArea>
         </Stack>
       </Card>
 
       {/* Readiness Radar */}
       {processedData.length > 0 && (
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <Card shadow="sm" p={{ base: "sm", md: "lg" }} radius="md" withBorder>
           <Stack gap="md">
-            <Title order={4}>Current Training Profile</Title>
-            <div style={{ width: "100%", height: 300 }}>
+            <Title order={4} fz={{ base: "sm", md: "md" }}>
+              Current Training Profile
+            </Title>
+            <Box style={{ width: "100%", minHeight: 250, height: 300 }}>
               <ResponsiveContainer>
                 <RadarChart
                   data={[
@@ -407,7 +419,7 @@ export function TrendCharts({
                   />
                 </RadarChart>
               </ResponsiveContainer>
-            </div>
+            </Box>
             <Text size="sm" c="dimmed" ta="center">
               Larger area indicates better training readiness
             </Text>
