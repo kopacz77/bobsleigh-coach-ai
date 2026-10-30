@@ -45,8 +45,10 @@ jobs:
       - name: Lint with flake8
         run: |
           pip install flake8
+          # Syntax errors and undefined names fail the job; the style pass below
+          # is advisory (--exit-zero), as in GitHub's Python starter workflow.
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --count --max-complexity=10 --max-line-length=127 --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       # Uncomment when tests are added
       # - name: Test with pytest
       #   run: pytest

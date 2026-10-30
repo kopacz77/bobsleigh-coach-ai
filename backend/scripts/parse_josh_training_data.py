@@ -588,6 +588,12 @@ def parse_josh_hudson_data(
                     if exercise_sets and main_exercise:
                         # Create one exercise with multiple sets
                         exercise_id = f"{group_id}_ex1"
+                        # Built outside the f-string below: nesting a quoted key inside
+                        # a same-quoted f-string is a SyntaxError before Python 3.12.
+                        set_notes = ", ".join(
+                            f"{row['weight']}kg x {int(row['reps'])}"
+                            for row in exercise_sets if row["reps"] is not None
+                        )
                         
                         exercise = {
                             "id": exercise_id,
@@ -598,7 +604,7 @@ def parse_josh_hudson_data(
                             "weight": None,  # No single weight for multiple sets
                             "distance": None,
                             "duration": None,
-                            "notes": f"Multiple sets: {', '.join([f'{row['weight']}kg x {int(row['reps'])}' for row in exercise_sets if row['reps'] is not None])}",
+                            "notes": f"Multiple sets: {set_notes}",
                             "created_at": datetime.now().isoformat(),
                             "updated_at": datetime.now().isoformat()
                         }
