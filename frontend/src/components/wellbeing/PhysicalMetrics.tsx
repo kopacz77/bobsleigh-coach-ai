@@ -20,7 +20,6 @@ import {
 import { DatePickerInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
   IconEye,
   IconHeart,
@@ -45,6 +44,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * Metric type definition
@@ -113,7 +113,7 @@ interface PhysicalMetricsProps {
  */
 const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
@@ -162,6 +162,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   useEffect(() => {
     const fetchMetrics = async () => {
       if (!userId) return;
+      if (!supabase) return;
 
       try {
         let query = supabase
@@ -277,7 +278,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
 
   // Delete metric
   const handleDeleteMetric = async () => {
-    if (!selectedMetric) return;
+    if (!selectedMetric || !supabase) return;
 
     setDeleteLoading(true);
 
@@ -320,6 +321,7 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
 
   // Submit metric data
   const handleSubmit = async () => {
+    if (!supabase) return;
     if (!newMetric.type || !newMetric.value) {
       showNotification({
         title: "Missing Information",
@@ -340,17 +342,10 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
         notes: newMetric.notes || null,
       };
 
-      let query;
-
-      if (newMetric.id) {
-        // Update existing metric
-        query = supabase.from("physical_metrics").update(metricData).eq("id", newMetric.id);
-      } else {
-        // Insert new metric
-        query = supabase.from("physical_metrics").insert(metricData);
-      }
-
-      const { error } = await query;
+      // Update the existing metric, otherwise insert a new one
+      const { error } = newMetric.id
+        ? await supabase.from("physical_metrics").update(metricData).eq("id", newMetric.id)
+        : await supabase.from("physical_metrics").insert(metricData);
 
       if (error) {
         throw error;
@@ -413,7 +408,9 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   const getUniqueMetricTypes = (): UniqueMetricType[] => {
     // Fix for Set iteration in TypeScript by using Array.from()
     const typeSet = new Set<string>();
-    metrics.forEach((metric) => typeSet.add(metric.type));
+    metrics.forEach((metric) => {
+      typeSet.add(metric.type);
+    });
     const types = Array.from(typeSet);
 
     return types.map((type) => {
@@ -433,14 +430,14 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
   const renderTooltip = (props: CustomTooltipProps): React.ReactNode | null => {
     const { active, payload, label } = props;
 
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
       return (
         <Paper p="xs" withBorder shadow="sm">
           <Text fw={600}>{formatDate(label)}</Text>
-          {payload.map((entry, index) => {
+          {payload.map((entry) => {
             const metricType = getMetricTypeDetails(entry.dataKey?.toString() || "");
             return (
-              <Text key={index} size="sm" style={{ color: entry.color }}>
+              <Text key={String(entry.dataKey)} size="sm" style={{ color: entry.color }}>
                 {metricType.label}: {entry.value} {metricType.unit}
               </Text>
             );

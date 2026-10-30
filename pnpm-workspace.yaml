@@ -2,3 +2,16 @@ packages:
   - "frontend"
   - "packages/*"
   - "tools/*"
+
+# pnpm 11+ reads its settings from here, not from package.json's "pnpm" field.
+# sharp and esbuild fetch native binaries in their install scripts; biome's
+# script is only a check (its binary arrives as an optional dependency).
+allowBuilds:
+  sharp: true
+  esbuild: true
+  '@biomejs/biome': false
+
+# Security floors (advisories in form-data < 4.0.6 and shell-quote < 1.9.0).
+overrides:
+  form-data: '>=4.0.6'
+  shell-quote: '>=1.9.0'

@@ -1,9 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(tree:*)",
-      "Bash(xargs ls:*)"
-    ],
+    "allow": ["Bash(tree:*)", "Bash(xargs ls:*)"],
     "deny": [],
     "ask": []
   }

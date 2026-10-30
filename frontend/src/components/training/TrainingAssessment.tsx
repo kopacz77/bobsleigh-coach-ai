@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Divider,
   Group,
   List,
   MultiSelect,
@@ -12,14 +11,13 @@ import {
   Slider,
   Text,
   Textarea,
-  TextInput,
   ThemeIcon,
   Title,
   useMantineTheme,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import type { PostgrestError } from "@supabase/supabase-js";
 import {
   IconActivity, // Replaced IconMuscle with IconActivity
   IconArrowDown,
@@ -33,6 +31,7 @@ import {
 } from "@tabler/icons-react";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * Training area option
@@ -133,7 +132,7 @@ interface TrainingAssessmentProps {
  */
 const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workoutId = null }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState<boolean>(false);
   const [workout, setWorkout] = useState<Workout | null>(null);
   const [previousAssessment, setPreviousAssessment] = useState<TrainingAssessmentData | null>(null);
@@ -195,7 +194,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
   // Fetch workout details if workoutId is provided
   useEffect(() => {
     const fetchWorkoutDetails = async () => {
-      if (!workoutId || !userId) return;
+      if (!workoutId || !userId || !supabase) return;
 
       try {
         // Fetch workout details
@@ -324,6 +323,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
 
   // Submit assessment
   const handleSubmit = async () => {
+    if (!supabase) return;
     if (!assessment.workout_type) {
       showNotification({
         title: "Missing Information",
@@ -354,7 +354,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
         coach_feedback: assessment.coach_feedback || null,
       };
 
-      let query;
+      let query: PromiseLike<{ error: PostgrestError | null }>;
 
       if (assessment.id) {
         // Update existing assessment
@@ -410,7 +410,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
     const currentValue = Number(assessment[metric]);
     const previousValue = Number(previousAssessment[metric]);
 
-    if (isNaN(currentValue) || isNaN(previousValue)) return null;
+    if (Number.isNaN(currentValue) || Number.isNaN(previousValue)) return null;
 
     const diff = currentValue - previousValue;
 

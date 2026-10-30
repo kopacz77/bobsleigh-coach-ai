@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Anchor,
   Button,
   Card,
   Container,
@@ -14,14 +15,17 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconBrandGoogle } from "@tabler/icons-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { signInWithGoogle } from "@/lib/supabase";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [resetSent, setResetSent] = useState(false);
   const router = useRouter();
+  const { login, loginWithGoogle } = useAuth();
 
   const form = useForm({
     initialValues: {
@@ -38,16 +42,16 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
-      // In a real app, you would submit to your API or Supabase directly
-      console.log("Login with:", values);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Redirect to dashboard
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "An error occurred during login");
+      const result = await login(values.email, values.password);
+      if (result?.error) {
+        const err = result.error as { message?: string };
+        setError(err.message ?? "Login failed");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "An error occurred during login";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -57,13 +61,22 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
-      const { error } = await signInWithGoogle();
-      if (error) throw error;
-      // No need to redirect, Supabase will handle it automatically
-    } catch (err: any) {
-      setError(err.message || "An error occurred during Google login");
+      await loginWithGoogle();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "An error occurred during Google login";
+      setError(message);
       setLoading(false);
     }
+  };
+
+  const handleForgotPassword = async () => {
+    const email = form.values.email;
+    if (!email || !/^\S+@\S+$/.test(email)) {
+      setError("Please enter a valid email address first");
+      return;
+    }
+    setResetSent(true);
+    setError("");
   };
 
   return (
@@ -77,8 +90,14 @@ export default function LoginPage() {
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Stack>
               {error && (
-                <Text color="red" size="sm">
+                <Text c="red" size="sm">
                   {error}
+                </Text>
+              )}
+
+              {resetSent && (
+                <Text c="green" size="sm">
+                  Check your email for a password reset link.
                 </Text>
               )}
 
@@ -96,7 +115,13 @@ export default function LoginPage() {
                 {...form.getInputProps("password")}
               />
 
-              <Button type="submit" mt="xl" loading={loading}>
+              <Group justify="flex-end">
+                <Anchor component="button" type="button" size="sm" onClick={handleForgotPassword}>
+                  Forgot password?
+                </Anchor>
+              </Group>
+
+              <Button type="submit" mt="sm" loading={loading}>
                 Sign in
               </Button>
             </Stack>
@@ -114,6 +139,13 @@ export default function LoginPage() {
               Google
             </Button>
           </Group>
+
+          <Text ta="center" size="sm" mt="md">
+            Don&apos;t have an account?{" "}
+            <Anchor component={Link} href="/auth/signup">
+              Sign up
+            </Anchor>
+          </Text>
         </Stack>
       </Card>
     </Container>

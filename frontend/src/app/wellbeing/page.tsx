@@ -1,39 +1,37 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { AppShell } from '@/components/layout/AppShell';
-import { Tabs, Title, Stack, Group, Button } from '@mantine/core';
-import { IconChartLine, IconCalendarStats, IconClipboardHeart, IconNotebook, IconHeartbeat } from '@tabler/icons-react';
+import { Button, Group, Stack, Tabs, Title } from "@mantine/core";
 import {
-  MoodTracking,
-  PhysicalMetrics,
-  RecoveryHealth,
-  Reflection,
-  WellbeingAssessment,
-} from '@/components/wellbeing';
-import { WellbeingCalendar } from '@/components/wellbeing/WellbeingCalendar';
-import { WellbeingTrends } from '@/components/wellbeing/WellbeingTrends';
-import { useRouter } from 'next/navigation';
+  IconCalendarStats,
+  IconChartLine,
+  IconClipboardHeart,
+  IconHeartbeat,
+  IconNotebook,
+} from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { DailyCheckIn } from "@/components/check-in";
+import { AppShell } from "@/components/layout/AppShell";
+import { RecoveryHealth, Reflection } from "@/components/wellbeing";
+import { WellbeingCalendar } from "@/components/wellbeing/WellbeingCalendar";
+import { WellbeingTrends } from "@/components/wellbeing/WellbeingTrends";
 
 export default function WellbeingPage() {
-  const [activeTab, setActiveTab] = useState<string | null>('assessment');
+  const [activeTab, setActiveTab] = useState<string | null>("checkin");
   const router = useRouter();
-  const currentUserId = "123e4567-e89b-12d3-a456-426614174000";
 
   return (
     <AppShell>
       <Stack gap="xl">
         <Group justify="space-between">
           <Title>Wellbeing Tracker</Title>
-          <Button onClick={() => router.push('/wellbeing/history')}>
-            View History
-          </Button>
+          <Button onClick={() => router.push("/wellbeing/history")}>View History</Button>
         </Group>
 
         <Tabs value={activeTab} onChange={setActiveTab}>
           <Tabs.List>
-            <Tabs.Tab value="assessment" leftSection={<IconClipboardHeart size={16} />}>
-              Daily Assessment
+            <Tabs.Tab value="checkin" leftSection={<IconClipboardHeart size={16} />}>
+              Daily Check-In
             </Tabs.Tab>
             <Tabs.Tab value="calendar" leftSection={<IconCalendarStats size={16} />}>
               Calendar View
@@ -49,8 +47,8 @@ export default function WellbeingPage() {
             </Tabs.Tab>
           </Tabs.List>
 
-          <Tabs.Panel value="assessment" pt="md">
-            <WellbeingAssessment userId={currentUserId} />
+          <Tabs.Panel value="checkin" pt="md">
+            <DailyCheckIn />
           </Tabs.Panel>
 
           <Tabs.Panel value="calendar" pt="md">
@@ -62,20 +60,11 @@ export default function WellbeingPage() {
           </Tabs.Panel>
 
           <Tabs.Panel value="recovery" pt="md">
-            <RecoveryHealth userId={currentUserId} />
+            <RecoveryHealth />
           </Tabs.Panel>
 
           <Tabs.Panel value="reflections" pt="md">
-            <Reflection userId={currentUserId} />
-          </Tabs.Panel>
-
-          <Tabs.Panel value="mood" pt="md">
-            <MoodTracking userId={currentUserId} />
-          </Tabs.Panel>
-
-          <Tabs.Panel value="metrics" pt="md">
-            <PhysicalMetrics userId={currentUserId} />
-          </Tabs.Panel>
+            <Reflection />
           </Tabs.Panel>
         </Tabs>
       </Stack>

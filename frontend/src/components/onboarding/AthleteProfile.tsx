@@ -8,7 +8,6 @@ import {
   NumberInput,
   Paper,
   Radio,
-  RadioGroup,
   Select,
   SimpleGrid,
   Stepper,
@@ -19,7 +18,6 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
   IconCheck,
   IconChevronLeft,
@@ -30,7 +28,9 @@ import {
   IconUser,
   IconWeight,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * AthleteProfile component for onboarding new athletes with bobsleigh-specific profile fields
@@ -41,8 +41,8 @@ interface AthleteProfileProps {
 }
 
 const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
-  const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const _theme = useMantineTheme();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -125,22 +125,22 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
   ];
 
   // Handle text input changes
-  const handleTextChange = (field) => (event) => {
+  const handleTextChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setProfile((prev) => ({ ...prev, [field]: event.target.value }));
   };
 
   // Handle select changes
-  const handleSelectChange = (field) => (value) => {
+  const handleSelectChange = (field: string) => (value: string | string[] | Date | null) => {
     setProfile((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle number input changes
-  const handleNumberChange = (field) => (value) => {
+  const handleNumberChange = (field: string) => (value: string | number) => {
     setProfile((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle avatar file upload
-  const handleAvatarChange = (file) => {
+  const handleAvatarChange = (file: File | null) => {
     if (!file) {
       setAvatarFile(null);
       setAvatarPreview(null);
@@ -152,7 +152,7 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
     // Create preview URL
     const reader = new FileReader();
     reader.onloadend = () => {
-      setAvatarPreview(reader.result);
+      setAvatarPreview(reader.result as string | null);
     };
     reader.readAsDataURL(file);
   };
@@ -169,7 +169,7 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
 
   // Upload avatar to storage
   const uploadAvatar = async () => {
-    if (!avatarFile) return null;
+    if (!avatarFile || !supabase) return null;
 
     const fileExt = avatarFile.name.split(".").pop();
     const filePath = `avatars/${userId}-${Date.now()}.${fileExt}`;
@@ -187,6 +187,7 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
 
   // Save profile data
   const handleSaveProfile = async () => {
+    if (!supabase) return;
     setLoading(true);
 
     try {
@@ -201,7 +202,9 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
         user_id: userId,
         first_name: profile.firstName,
         last_name: profile.lastName,
-        birth_date: profile.birthDate ? profile.birthDate.toISOString().split("T")[0] : null,
+        birth_date: profile.birthDate
+          ? (profile.birthDate as Date).toISOString().split("T")[0]
+          : null,
         gender: profile.gender,
         email: profile.email,
         phone: profile.phone,
@@ -212,13 +215,16 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
         body_fat_percentage: Number.parseFloat(profile.bodyFat) || null,
         experience_level: profile.experienceLevel,
         bobsleigh_position: profile.bobsleighPosition,
-        years_experience: Number.parseInt(profile.yearsExperience) || 0,
+        years_experience: Number.parseInt(profile.yearsExperience, 10) || 0,
         previous_sports: profile.previousSports,
         competition_level: profile.competitionLevel,
         specializations: profile.specialization,
         primary_goal: profile.primaryGoal,
         secondary_goal: profile.secondaryGoal,
-        preferred_training_days: Number.parseInt(profile.preferredTrainingDays) || 5,
+        preferred_training_days:
+          typeof profile.preferredTrainingDays === "string"
+            ? Number.parseInt(profile.preferredTrainingDays, 10)
+            : profile.preferredTrainingDays || 5,
         preferred_training_time: profile.preferredTrainingTime,
         avatar_url: avatarPath ? `storage/athlete-avatars/${avatarPath}` : null,
       };
@@ -265,7 +271,7 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
 
   return (
     <Box>
-      <Stepper active={activeStep} onStepClick={setActiveStep} breakpoint="sm" mb="xl">
+      <Stepper active={activeStep} onStepClick={setActiveStep} mb="xl">
         <Stepper.Step
           label="Personal Information"
           description="Basic details"
@@ -350,7 +356,7 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
                 <FileInput
                   placeholder="Upload image"
                   accept="image/*"
-                  icon={<IconUpload size={14} />}
+                  leftSection={<IconUpload size={14} />}
                   onChange={handleAvatarChange}
                   styles={{ input: { width: 220 } }}
                 />
@@ -359,7 +365,11 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
           </Paper>
 
           <Group justify="flex-end" mt="xl">
-            <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
+            <Button
+              onClick={handleNextStep}
+              rightSection={<IconChevronRight size={16} />}
+              size="md"
+            >
               Next Step
             </Button>
           </Group>
@@ -382,7 +392,7 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
                 value={profile.height}
                 onChange={handleNumberChange("height")}
                 min={0}
-                precision={1}
+                decimalScale={1}
               />
 
               <NumberInput
@@ -391,7 +401,7 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
                 value={profile.weight}
                 onChange={handleNumberChange("weight")}
                 min={0}
-                precision={1}
+                decimalScale={1}
               />
             </SimpleGrid>
 
@@ -402,7 +412,7 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
                 value={profile.wingspan}
                 onChange={handleNumberChange("wingspan")}
                 min={0}
-                precision={1}
+                decimalScale={1}
               />
 
               <NumberInput
@@ -412,7 +422,7 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
                 onChange={handleNumberChange("bodyFat")}
                 min={0}
                 max={100}
-                precision={1}
+                decimalScale={1}
               />
             </SimpleGrid>
           </Paper>
@@ -427,7 +437,11 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
               Back
             </Button>
 
-            <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
+            <Button
+              onClick={handleNextStep}
+              rightSection={<IconChevronRight size={16} />}
+              size="md"
+            >
               Next Step
             </Button>
           </Group>
@@ -460,7 +474,7 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
                 onChange={handleNumberChange("yearsExperience")}
                 min={0}
                 max={30}
-                precision={0}
+                decimalScale={0}
               />
             </SimpleGrid>
 
@@ -516,7 +530,11 @@ const AthleteProfile = ({ userId, onComplete }: AthleteProfileProps) => {
               Back
             </Button>
 
-            <Button onClick={handleNextStep} rightSection={<IconChevronRight size={16} />} size="md">
+            <Button
+              onClick={handleNextStep}
+              rightSection={<IconChevronRight size={16} />}
+              size="md"
+            >
               Next Step
             </Button>
           </Group>

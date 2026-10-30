@@ -73,9 +73,11 @@ export function TrainingRecommendations() {
   };
 
   return (
-    <Card withBorder p="md" radius="md">
+    <Card withBorder p={{ base: "sm", md: "md" }} radius="md">
       <Stack>
-        <Title order={3}>Recommended Training</Title>
+        <Title order={3} fz={{ base: "md", md: "lg" }}>
+          Recommended Training
+        </Title>
 
         <Text size="sm" c="dimmed">
           These AI-generated workouts are tailored to your current fitness, fatigue levels, and
@@ -83,18 +85,20 @@ export function TrainingRecommendations() {
         </Text>
 
         <Accordion variant="separated">
-          {recommendations.map((workout, index) => (
-            <Accordion.Item key={index} value={workout.date}>
+          {recommendations.map((workout) => (
+            <Accordion.Item key={workout.date} value={workout.date}>
               <Accordion.Control>
-                <Group justify="space-between">
-                  <div>
-                    <Text fw={500}>{formatDate(workout.date)}</Text>
-                    <Text size="sm">
-                      {workout.workout_type} - {workout.focus}
+                <Stack gap={4}>
+                  <Group justify="space-between" wrap="wrap">
+                    <Text fw={500} size="sm">
+                      {formatDate(workout.date)}
                     </Text>
-                  </div>
-                  <Badge color={getBadgeColor(workout.intensity)}>{workout.intensity}</Badge>
-                </Group>
+                    <Badge color={getBadgeColor(workout.intensity)}>{workout.intensity}</Badge>
+                  </Group>
+                  <Text size="sm" c="dimmed">
+                    {workout.workout_type} - {workout.focus}
+                  </Text>
+                </Stack>
               </Accordion.Control>
 
               <Accordion.Panel>
@@ -107,22 +111,29 @@ export function TrainingRecommendations() {
                     Exercises
                   </Title>
 
-                  {workout.exercises.map((exercise, exIndex) => (
-                    <Card key={exIndex} withBorder p="xs" radius="sm">
-                      <Text fw={500}>{exercise.name}</Text>
+                  {workout.exercises.map((exercise) => (
+                    <Card key={exercise.name} withBorder p="sm" radius="sm">
+                      <Text fw={500} size="sm">
+                        {exercise.name}
+                      </Text>
                       <Text size="sm">
                         {exercise.sets} sets
-                        {exercise.reps && ` × ${exercise.reps} reps`}
+                        {exercise.reps && ` x ${exercise.reps} reps`}
                         {exercise.weight && ` @ ${exercise.weight}kg`}
-                        {exercise.distance && ` × ${exercise.distance}m`}
-                        {exercise.duration && ` × ${exercise.duration}s`}
-                        {exercise.height && ` × ${exercise.height}cm`}
+                        {exercise.distance && ` x ${exercise.distance}m`}
+                        {exercise.duration && ` x ${exercise.duration}s`}
+                        {exercise.height && ` x ${exercise.height}cm`}
                         {exercise.rest && ` (${exercise.rest}s rest)`}
                       </Text>
                     </Card>
                   ))}
 
-                  <Button leftSection={<IconCalendarPlus size={16} />} mt="sm" variant="light">
+                  <Button
+                    leftSection={<IconCalendarPlus size={16} />}
+                    mt="sm"
+                    variant="light"
+                    fullWidth
+                  >
                     Add to Training Log
                   </Button>
                 </Stack>

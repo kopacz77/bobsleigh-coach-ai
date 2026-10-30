@@ -79,13 +79,15 @@ export function ProfileCard() {
   };
 
   return (
-    <Card withBorder p="xl" radius="md">
+    <Card withBorder p={{ base: "sm", md: "xl" }} radius="md">
       {isEditing ? (
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
-            <Title order={3}>Edit Profile</Title>
+            <Title order={3} fz={{ base: "md", md: "lg" }}>
+              Edit Profile
+            </Title>
 
-            <Group grow>
+            <Stack gap="sm">
               <TextInput
                 label="First Name"
                 placeholder="First Name"
@@ -99,7 +101,7 @@ export function ProfileCard() {
                 required
                 {...form.getInputProps("last_name")}
               />
-            </Group>
+            </Stack>
 
             <TextInput
               label="Email"
@@ -115,7 +117,7 @@ export function ProfileCard() {
               {...form.getInputProps("sport")}
             />
 
-            <Group grow>
+            <Stack gap="sm">
               <NumberInput
                 label="Height (cm)"
                 placeholder="Height"
@@ -127,10 +129,10 @@ export function ProfileCard() {
                 label="Weight (kg)"
                 placeholder="Weight"
                 min={0}
-                precision={1}
+                decimalScale={1}
                 {...form.getInputProps("weight")}
               />
-            </Group>
+            </Stack>
 
             <DatePickerInput
               label="Birth Date"
@@ -138,40 +140,46 @@ export function ProfileCard() {
               {...form.getInputProps("birth_date")}
             />
 
-            <Group justify="flex-end" mt="md">
-              <Button variant="outline" onClick={() => setIsEditing(false)} disabled={isSubmitting}>
-                Cancel
-              </Button>
-
-              <Button type="submit" loading={isSubmitting}>
+            <Stack gap="sm" mt="md">
+              <Button type="submit" loading={isSubmitting} fullWidth>
                 Save Changes
               </Button>
-            </Group>
+              <Button
+                variant="outline"
+                onClick={() => setIsEditing(false)}
+                disabled={isSubmitting}
+                fullWidth
+              >
+                Cancel
+              </Button>
+            </Stack>
           </Stack>
         </form>
       ) : (
         <Stack>
-          <Group justify="space-between">
-            <Group>
-              <Avatar size="xl" radius="xl" color="blue">
-                {profileData.first_name.charAt(0)}
-                {profileData.last_name.charAt(0)}
-              </Avatar>
+          <Stack gap="sm">
+            <Group justify="space-between" wrap="wrap" gap="sm">
+              <Group>
+                <Avatar size="lg" radius="xl" color="blue">
+                  {profileData.first_name.charAt(0)}
+                  {profileData.last_name.charAt(0)}
+                </Avatar>
 
-              <div>
-                <Title order={3}>
-                  {profileData.first_name} {profileData.last_name}
-                </Title>
-                <Text size="sm" c="dimmed">
-                  {profileData.email}
-                </Text>
-              </div>
+                <div>
+                  <Title order={3} fz={{ base: "md", md: "lg" }}>
+                    {profileData.first_name} {profileData.last_name}
+                  </Title>
+                  <Text size="sm" c="dimmed">
+                    {profileData.email}
+                  </Text>
+                </div>
+              </Group>
+
+              <Button variant="outline" onClick={() => setIsEditing(true)} size="sm">
+                Edit Profile
+              </Button>
             </Group>
-
-            <Button variant="outline" onClick={() => setIsEditing(true)}>
-              Edit Profile
-            </Button>
-          </Group>
+          </Stack>
 
           <Card withBorder mt="md">
             <Stack>

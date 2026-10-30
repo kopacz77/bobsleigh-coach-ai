@@ -1,8 +1,30 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
 from app.api.router import api_router
 from app.core.config import settings
+from app.db.session import engine
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """FastAPI lifespan: start the scheduler on boot, stop it on shutdown.
+
+    Imported lazily so test collectors and one-off scripts that import
+    ``app.main`` do not start the background scheduler unless the app is
+    actually being served.
+    """
+    from app.scheduler import shutdown_scheduler, start_scheduler
+
+    start_scheduler()
+    try:
+        yield
+    finally:
+        shutdown_scheduler()
+
 
 # Create FastAPI app
 app = FastAPI(
@@ -11,6 +33,7 @@ app = FastAPI(
     version="0.1.0",
     docs_url="/docs" if settings.ENVIRONMENT != "production" else None,
     redoc_url="/redoc" if settings.ENVIRONMENT != "production" else None,
+    lifespan=lifespan,
 )
 
 # Configure CORS
@@ -28,5 +51,22 @@ app.include_router(api_router, prefix="/api")
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint"""
-    return {"status": "healthy", "environment": settings.ENVIRONMENT}
+    """Health check endpoint with database connectivity test.
+
+    Uses SQLAlchemy engine (not Supabase client) so the backend can run
+    against any PostgreSQL database including local PostgreSQL in
+    AUTH_PROVIDER=dev mode.
+    """
+    db_status = "disconnected"
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT id FROM sports LIMIT 1"))
+            db_status = "connected" if result.fetchone() else "empty"
+    except Exception as e:
+        db_status = f"error: {str(e)}"
+
+    return {
+        "status": "healthy",
+        "environment": settings.ENVIRONMENT,
+        "database": db_status,
+    }

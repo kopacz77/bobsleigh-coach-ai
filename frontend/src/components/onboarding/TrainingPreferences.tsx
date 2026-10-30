@@ -10,30 +10,35 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  ThemeIcon,
-  TimeInput,
+  TextInput,
   Title,
   useMantineTheme,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
   IconArrowRight,
   IconBarbell,
   IconCalendarEvent,
-  IconClock,
   IconDeviceFloppy,
   IconHeartbeat,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * TrainingPreferences component allows athletes to set their availability
  * and training preferences specifically for bobsleigh training
  */
-const TrainingPreferences = ({ userId, onComplete }) => {
+const TrainingPreferences = ({
+  userId,
+  onComplete,
+}: {
+  userId: string;
+  onComplete?: (data: any) => void;
+}) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState(false);
 
   // Training preferences form state
@@ -89,38 +94,40 @@ const TrainingPreferences = ({ userId, onComplete }) => {
   ];
 
   // Handle checkbox changes for availability
-  const handleAvailabilityChange = (day) => (event) => {
-    setPreferences((prev) => ({
-      ...prev,
-      availability: {
-        ...prev.availability,
-        [day]: event.currentTarget.checked,
-      },
-    }));
-  };
+  const handleAvailabilityChange =
+    (day: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPreferences((prev) => ({
+        ...prev,
+        availability: {
+          ...prev.availability,
+          [day]: event.currentTarget.checked,
+        },
+      }));
+    };
 
   // Handle select changes
-  const handleSelectChange = (field) => (value) => {
+  const handleSelectChange = (field: string) => (value: string | null) => {
     setPreferences((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle multi-select changes
-  const handleMultiSelectChange = (field) => (value) => {
+  const handleMultiSelectChange = (field: string) => (value: string[]) => {
     setPreferences((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle time input changes
-  const handleTimeChange = (field) => (value) => {
-    setPreferences((prev) => ({ ...prev, [field]: value }));
+  const handleTimeChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPreferences((prev) => ({ ...prev, [field]: event.currentTarget.value }));
   };
 
   // Toggle boolean preferences
-  const handleToggle = (field) => (event) => {
+  const handleToggle = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setPreferences((prev) => ({ ...prev, [field]: event.currentTarget.checked }));
   };
 
   // Save training preferences
   const handleSavePreferences = async () => {
+    if (!supabase) return;
     setLoading(true);
 
     try {
@@ -135,10 +142,10 @@ const TrainingPreferences = ({ userId, onComplete }) => {
         saturday_available: preferences.availability.saturday,
         sunday_available: preferences.availability.sunday,
         preferred_time_of_day: preferences.preferredTime,
-        training_days_per_week: Number.parseInt(preferences.trainingDays),
+        training_days_per_week: Number.parseInt(preferences.trainingDays, 10),
         preferred_start_time: preferences.preferredStartTime,
         preferred_end_time: preferences.preferredEndTime,
-        max_session_duration_min: Number.parseInt(preferences.maxSessionDuration),
+        max_session_duration_min: Number.parseInt(preferences.maxSessionDuration, 10),
         rest_day_preference: preferences.restDayPreference,
         preferred_training_types: preferences.preferredTrainingTypes,
         recovery_methods: preferences.recoveryMethods,
@@ -212,7 +219,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
         <SimpleGrid cols={{ base: 2, md: 7 }} spacing="md" mb="xl">
           {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map(
             (day) => {
-              const dayKey = day.toLowerCase();
+              const dayKey = day.toLowerCase() as keyof typeof preferences.availability;
               return (
                 <Paper
                   key={day}
@@ -272,16 +279,16 @@ const TrainingPreferences = ({ userId, onComplete }) => {
         </SimpleGrid>
 
         <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg" mb="md">
-          <TimeInput
+          <TextInput
             label="Preferred Start Time"
-            format="24"
+            placeholder="e.g. 08:00"
             value={preferences.preferredStartTime}
             onChange={handleTimeChange("preferredStartTime")}
           />
 
-          <TimeInput
+          <TextInput
             label="Preferred End Time"
-            format="24"
+            placeholder="e.g. 10:00"
             value={preferences.preferredEndTime}
             onChange={handleTimeChange("preferredEndTime")}
           />
@@ -379,7 +386,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
           <Group
             justify="space-between"
             p="md"
-            style={{ border: "1px solid " + theme.colors.gray[3], borderRadius: theme.radius.sm }}
+            style={{ border: `1px solid ${theme.colors.gray[3]}`, borderRadius: theme.radius.sm }}
           >
             <Text>Enable Training Notifications</Text>
             <Checkbox
@@ -391,7 +398,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
           <Group
             justify="space-between"
             p="md"
-            style={{ border: "1px solid " + theme.colors.gray[3], borderRadius: theme.radius.sm }}
+            style={{ border: `1px solid ${theme.colors.gray[3]}`, borderRadius: theme.radius.sm }}
           >
             <Text>Enable Check-in Reminders</Text>
             <Checkbox checked={preferences.reminders} onChange={handleToggle("reminders")} />
@@ -400,7 +407,7 @@ const TrainingPreferences = ({ userId, onComplete }) => {
           <Group
             justify="space-between"
             p="md"
-            style={{ border: "1px solid " + theme.colors.gray[3], borderRadius: theme.radius.sm }}
+            style={{ border: `1px solid ${theme.colors.gray[3]}`, borderRadius: theme.radius.sm }}
           >
             <div>
               <Text>Adaptive Training</Text>

@@ -8,12 +8,11 @@ import {
   Paper,
   Progress,
   SimpleGrid,
+  Stack,
   Text,
   ThemeIcon,
-  Title,
   useMantineTheme,
 } from "@mantine/core";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
   IconArrowRight,
   IconAward,
@@ -24,14 +23,14 @@ import {
   IconCheckbox,
   IconClipboardText,
   IconClock,
-  IconPercentage,
   IconRun,
   IconTarget,
   IconTrophy,
   IconUser,
 } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 import { DailyCheckIn } from "../check-in";
 
 /**
@@ -46,16 +45,17 @@ interface AthleteOverviewProps {
 const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
   const theme = useMantineTheme();
   const router = useRouter();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [todayCheckIn, setTodayCheckIn] = useState<any>(null);
   const [upcomingWorkouts, setUpcomingWorkouts] = useState<any[]>([]);
-  const [recentPerformance, setRecentPerformance] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [_recentPerformance, setRecentPerformance] = useState<any>(null);
+  const [_loading, setLoading] = useState(true);
   const [showCheckIn, setShowCheckIn] = useState(false);
 
   // Fetch data on component mount
   useEffect(() => {
     const fetchDashboardData = async () => {
+      if (!supabase) return;
       setLoading(true);
       try {
         const today = new Date().toISOString().split("T")[0];
@@ -101,7 +101,7 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
           console.error("Error fetching performance data:", performanceError);
         }
 
-        setRecentPerformance(performanceData && performanceData[0] ? performanceData[0] : null);
+        setRecentPerformance(performanceData?.[0] ? performanceData[0] : null);
       } catch (error) {
         console.error("Error in dashboard data fetch:", error);
       } finally {
@@ -116,7 +116,11 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
 
   // Format date for display
   const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric" };
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
@@ -204,45 +208,48 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
     <Box>
       <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="lg">
         <Box>
-          <Paper p="md" radius="md" withBorder mb="lg">
-            <Group justify="space-between" mb="md">
-              <Group>
-                <ThemeIcon size={40} radius="md" color="blue">
-                  <IconUser size={24} />
-                </ThemeIcon>
-                <Box>
-                  <Text size="xl" fw={700}>
-                    {userProfile?.firstName} {userProfile?.lastName}
-                  </Text>
-                  <Text c="dimmed" size="sm">
-                    Bobsleigh Athlete{" "}
-                    {userProfile?.role === "athlete" ? "" : `• ${userProfile?.role}`}
-                  </Text>
-                </Box>
-              </Group>
+          <Paper p={{ base: "sm", md: "md" }} radius="md" withBorder mb="lg">
+            <Stack gap="sm" mb="md">
+              <Group justify="space-between" wrap="wrap">
+                <Group>
+                  <ThemeIcon size={40} radius="md" color="blue">
+                    <IconUser size={24} />
+                  </ThemeIcon>
+                  <Box>
+                    <Text size="lg" fw={700}>
+                      {userProfile?.firstName} {userProfile?.lastName}
+                    </Text>
+                    <Text c="dimmed" size="sm">
+                      Bobsleigh Athlete{" "}
+                      {userProfile?.role === "athlete" ? "" : `- ${userProfile?.role}`}
+                    </Text>
+                  </Box>
+                </Group>
 
-              {todayCheckIn ? (
-                <Badge
-                  size="lg"
-                  color={getReadinessColor(todayCheckIn.training_readiness)}
-                  variant="filled"
-                >
-                  {getReadinessLabel(todayCheckIn.training_readiness)}
-                </Badge>
-              ) : (
-                <Button
-                  onClick={toggleCheckIn}
-                  leftSection={<IconClipboardText size={20} />}
-                  variant="light"
-                >
-                  {showCheckIn ? "Hide Check-In" : "Quick Check-In"}
-                </Button>
-              )}
-            </Group>
+                {todayCheckIn ? (
+                  <Badge
+                    size="lg"
+                    color={getReadinessColor(todayCheckIn.training_readiness)}
+                    variant="filled"
+                  >
+                    {getReadinessLabel(todayCheckIn.training_readiness)}
+                  </Badge>
+                ) : (
+                  <Button
+                    onClick={toggleCheckIn}
+                    leftSection={<IconClipboardText size={20} />}
+                    variant="light"
+                    fullWidth={false}
+                  >
+                    {showCheckIn ? "Hide Check-In" : "Quick Check-In"}
+                  </Button>
+                )}
+              </Group>
+            </Stack>
 
             {showCheckIn && !todayCheckIn && (
               <Box mb="md">
-                <DailyCheckIn userId={userId} />
+                <DailyCheckIn />
               </Box>
             )}
 
@@ -287,7 +294,7 @@ const AthleteOverview = ({ userId, userProfile }: AthleteOverviewProps) => {
                 <Text fw={500} mb="xs">
                   Weekly Goals Progress
                 </Text>
-                <SimpleGrid cols={3} mb="md">
+                <SimpleGrid cols={{ base: 1, xs: 3 }} mb="md">
                   <Box>
                     <Group justify="space-between" mb={5}>
                       <Group gap={6}>

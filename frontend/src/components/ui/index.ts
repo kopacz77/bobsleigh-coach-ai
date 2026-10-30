@@ -13,3 +13,5 @@ export { DailyFeedbackForm } from "../feedback/DailyFeedbackForm";
 export { ExerciseCard } from "../training/ExerciseCard";
 export { LoadAdjustments } from "../training/LoadAdjustments";
 export { SessionRecommendations } from "../training/SessionRecommendations";
+export { ColorSchemeToggle } from "./ColorSchemeToggle";
+export { OfflineIndicator } from "./OfflineIndicator";

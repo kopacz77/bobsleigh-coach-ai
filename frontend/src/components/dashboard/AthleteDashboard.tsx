@@ -1,11 +1,11 @@
+"use client";
+
 import {
-  ActionIcon,
   Avatar,
   Badge,
   Box,
   Button,
   Card,
-  Divider,
   Group,
   Paper,
   Progress,
@@ -17,11 +17,9 @@ import {
   Text,
   ThemeIcon,
   Title,
-  Tooltip,
   useMantineTheme,
 } from "@mantine/core";
-import { Calendar, DatePicker, DateValue } from "@mantine/dates";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Calendar } from "@mantine/dates";
 import {
   IconActivity,
   IconArrowDown,
@@ -33,32 +31,23 @@ import {
   IconCalendarEvent,
   IconCalendarStats,
   IconChartLine,
-  IconChecklist,
   IconClockHour4,
   IconDirections,
   IconHeartbeat,
   IconMapPin,
   IconMedal,
   IconMinus,
-  IconMoodHappy,
-  IconPencil,
   IconStar,
   IconTrophy,
   IconUsers,
 } from "@tabler/icons-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
-  Cell,
   Tooltip as ChartTooltip,
-  Legend,
   Line,
   LineChart,
-  Pie,
-  PieChart,
   PolarAngleAxis,
   PolarGrid,
   PolarRadiusAxis,
@@ -68,6 +57,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { StartWorkoutBanner } from "./StartWorkoutBanner";
 
 // Type Definitions
 interface AthleteProfileProps {
@@ -192,9 +182,8 @@ interface PerformanceItem {
  */
 const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [todayDate] = useState<Date>(new Date());
+  const [_loading, setLoading] = useState<boolean>(false);
+  const [_todayDate] = useState<Date>(new Date());
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [wellbeingData, setWellbeingData] = useState<WellbeingData | null>(null);
   const [upcomingWorkouts, setUpcomingWorkouts] = useState<Workout[]>([]);
@@ -204,13 +193,7 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  useEffect(() => {
-    if (userId) {
-      fetchDashboardData();
-    }
-  }, [userId, supabase]);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -488,7 +471,13 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    if (userId) {
+      fetchDashboardData();
+    }
+  }, [userId, fetchDashboardData]);
 
   // Format date for display
   const formatDate = (
@@ -594,11 +583,11 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
             gap: 2,
           }}
         >
-          {events.map((event, idx) => {
+          {events.map((event) => {
             if (event.type === "workout") {
               return (
                 <div
-                  key={idx}
+                  key={`${event.type}-${event.date}`}
                   style={{
                     width: 6,
                     height: 6,
@@ -616,7 +605,7 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
             if (event.type === "check-in") {
               return (
                 <div
-                  key={idx}
+                  key={`${event.type}-${event.date}`}
                   style={{
                     width: 6,
                     height: 6,
@@ -629,7 +618,7 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
             if (event.type === "event") {
               return (
                 <div
-                  key={idx}
+                  key={`${event.type}-${event.date}`}
                   style={{
                     width: 6,
                     height: 6,
@@ -977,8 +966,8 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
 
     return (
       <Stack gap="xs">
-        {performanceData.recentPRs.map((pr, index) => (
-          <Group key={index} justify="space-between">
+        {performanceData.recentPRs.map((pr) => (
+          <Group key={`${pr.metric}-${pr.date}`} justify="space-between">
             <Group gap="xs">
               <ThemeIcon color="yellow" variant="light" size={24} radius="xl">
                 <IconStar size={16} />
@@ -1149,6 +1138,11 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
         </Group>
 
         {renderWellbeingMetrics()}
+
+        {/* Start Workout banner -- prominent one-tap access for gym use */}
+        <Box mt="lg">
+          <StartWorkoutBanner />
+        </Box>
 
         <Box mt="xl">
           <Tabs defaultValue="dashboard">
@@ -1347,6 +1341,7 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
                     <Stack gap="xs">
                       {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, index) => {
                         const isToday = new Date().getDay() === (index + 1) % 7;
+                        const intensity = weeklyMetrics[index]?.workoutIntensity ?? 0;
                         return (
                           <Group
                             key={day}
@@ -1358,18 +1353,16 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
                             <Text fw={isToday ? 500 : 400}>{day}</Text>
                             <Badge
                               color={
-                                weeklyMetrics[index].workoutIntensity > 7
+                                intensity > 7
                                   ? "red"
-                                  : weeklyMetrics[index].workoutIntensity > 4
+                                  : intensity > 4
                                     ? "yellow"
-                                    : weeklyMetrics[index].workoutIntensity > 0
+                                    : intensity > 0
                                       ? "green"
                                       : "gray"
                               }
                             >
-                              {weeklyMetrics[index].workoutIntensity > 0
-                                ? `${weeklyMetrics[index].workoutIntensity}/10`
-                                : "Rest"}
+                              {intensity > 0 ? `${intensity}/10` : "Rest"}
                             </Badge>
                           </Group>
                         );

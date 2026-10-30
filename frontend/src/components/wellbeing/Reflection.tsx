@@ -1,10 +1,4 @@
-
-// Path: c:\users\a_kop\bobsleigh-coach-ai\frontend\src\components\wellbeing\Reflection.tsx
-
-import React, { useState, useEffect } from 'react';
-
-'use client';
-
+"use client";
 
 import {
   ActionIcon,
@@ -22,21 +16,10 @@ import {
   Title,
   Tooltip,
   useMantineTheme,
-
-  Divider,
-  Select
-} from '@mantine/core';
-import { Calendar } from '@mantine/dates';
-import { useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-
 } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
-import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-
+import { notifications } from "@mantine/notifications";
 import {
   IconBulb,
   IconCheck,
@@ -51,6 +34,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 type DateChangeHandler = (date: Date) => void;
 
@@ -108,7 +92,7 @@ interface NewReflection {
  * ReflectionComponent props
  */
 interface ReflectionComponentProps {
-  userId: string;
+  userId?: string;
 }
 
 /**
@@ -117,13 +101,13 @@ interface ReflectionComponentProps {
  */
 const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [reflections, setReflections] = useState<Reflection[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [addModalOpened, { open: openAddModal, close: closeAddModal }] = useDisclosure(false);
   const [viewModalOpened, { open: openViewModal, close: closeViewModal }] = useDisclosure(false);
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, _setSelectedDate] = useState<Date>(new Date());
   const [selectedReflection, setSelectedReflection] = useState<Reflection | null>(null);
 
   // Form state
@@ -156,7 +140,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
   // Fetch reflections for the current month
   useEffect(() => {
     const fetchReflections = async () => {
-      if (!userId) return;
+      if (!userId || !supabase) return;
 
       try {
         const startOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
@@ -183,6 +167,8 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
 
     fetchReflections();
   }, [userId, selectedDate, supabase]);
+
+  if (supabaseLoading || !supabase) return null;
 
   // Check if reflections exist for a date
   const getReflectionsForDate = (date: Date): Reflection[] => {
@@ -275,17 +261,10 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
         throw error;
       }
 
-
       notifications.show({
-        title: 'Success',
-        message: 'Reflection deleted successfully',
-        color: 'green',
-
-      showNotification({
         title: "Success",
         message: "Reflection deleted successfully",
         color: "green",
-
       });
 
       // Refresh reflections
@@ -303,19 +282,11 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
       setReflections(data || []);
       closeViewModal();
     } catch (error) {
-
-      console.error('Error deleting reflection:', error);
-      notifications.show({
-        title: 'Error',
-        message: 'Failed to delete reflection',
-        color: 'red',
-
       console.error("Error deleting reflection:", error);
-      showNotification({
+      notifications.show({
         title: "Error",
         message: "Failed to delete reflection",
         color: "red",
-
       });
     } finally {
       setDeleteLoading(false);
@@ -325,17 +296,10 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
   // Submit reflection
   const handleSubmit = async () => {
     if (!newReflection.title || !newReflection.content) {
-
       notifications.show({
-        title: 'Missing Information',
-        message: 'Please fill in all required fields',
-        color: 'orange',
-
-      showNotification({
         title: "Missing Information",
         message: "Please fill in all required fields",
         color: "orange",
-
       });
       return;
     }
@@ -354,54 +318,29 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
         is_favorite: newReflection.is_favorite,
       };
 
-
       if (newReflection.id) {
         // Update existing reflection
         const { error } = await supabase
-          .from('reflections')
+          .from("reflections")
           .update(reflectionData)
-          .eq('id', newReflection.id);
-        
+          .eq("id", newReflection.id);
+
         if (error) {
           throw error;
         }
       } else {
         // Insert new reflection
-        const { error } = await supabase
-          .from('reflections')
-          .insert(reflectionData);
-        
+        const { error } = await supabase.from("reflections").insert(reflectionData);
+
         if (error) {
           throw error;
         }
       }
 
       notifications.show({
-        title: 'Success',
-        message: 'Reflection saved successfully',
-        color: 'green',
-
-      let query;
-
-      if (newReflection.id) {
-        // Update existing reflection
-        query = supabase.from("reflections").update(reflectionData).eq("id", newReflection.id);
-      } else {
-        // Insert new reflection
-        query = supabase.from("reflections").insert(reflectionData);
-      }
-
-      const { error } = await query;
-
-      if (error) {
-        throw error;
-      }
-
-      showNotification({
         title: "Success",
         message: "Reflection saved successfully",
         color: "green",
-
       });
 
       // Refresh reflections
@@ -419,19 +358,11 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
       setReflections(data || []);
       closeAddModal();
     } catch (error) {
-
-      console.error('Error saving reflection:', error);
-      notifications.show({
-        title: 'Error',
-        message: 'Failed to save reflection',
-        color: 'red',
-
       console.error("Error saving reflection:", error);
-      showNotification({
+      notifications.show({
         title: "Error",
         message: "Failed to save reflection",
         color: "red",
-
       });
     } finally {
       setLoading(false);
@@ -467,31 +398,17 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
         });
       }
 
-
       notifications.show({
-        title: 'Success',
-        message: `Reflection ${reflection.is_favorite ? 'removed from' : 'added to'} favorites`,
-        color: 'green',
-      });
-    } catch (error) {
-      console.error('Error toggling favorite status:', error);
-      notifications.show({
-        title: 'Error',
-        message: 'Failed to update favorite status',
-        color: 'red',
-
-      showNotification({
         title: "Success",
         message: `Reflection ${reflection.is_favorite ? "removed from" : "added to"} favorites`,
         color: "green",
       });
     } catch (error) {
       console.error("Error toggling favorite status:", error);
-      showNotification({
+      notifications.show({
         title: "Error",
         message: "Failed to update favorite status",
         color: "red",
-
       });
     }
   };
@@ -555,17 +472,15 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
 
           <Calendar
             date={selectedDate}
-            // Cast handleDateChange to any to work around the type issue
             onDateChange={handleDateChange as DateChangeHandler}
             size="lg"
             styles={{
               day: {
                 height: 60,
               },
-              // Use a wrapper div instead
             }}
             renderDay={renderDay}
-            style={{ width: "100%" }} // Add direct style prop instead
+            style={{ width: "100%" }}
           />
 
           <Text size="sm" c="dimmed" mt="md" ta="center">
@@ -610,19 +525,14 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
                     <Badge
                       size="sm"
                       color={getSentimentDetails(reflection.sentiment).color}
-
-                      leftSection={getSentimentDetails(reflection.sentiment).icon && 
-                         // biome-ignore lint/suspicious/noExplicitAny: Required for Tabler icon components (known issue)
-                        React.createElement(getSentimentDetails(reflection.sentiment).icon as React.FC<any>, { size: 10 })}
-
                       leftSection={
                         getSentimentDetails(reflection.sentiment).icon &&
                         React.createElement(
+                          // biome-ignore lint/suspicious/noExplicitAny: Required for Tabler icon components (known issue)
                           getSentimentDetails(reflection.sentiment).icon as React.FC<any>,
                           { size: 10 }
                         )
                       }
-
                     >
                       {getSentimentDetails(reflection.sentiment).label}
                     </Badge>
@@ -715,7 +625,7 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
                   <Button
                     variant="subtle"
                     size="xs"
-                    styles={{ root: { padding: "4px 8px" } }} // Replace compact with custom styling
+                    styles={{ root: { padding: "4px 8px" } }}
                     onClick={() => handleViewReflection(reflection)}
                   >
                     Read more
@@ -740,7 +650,6 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
             </Text>
             <Calendar
               date={newReflection.date}
-              // Cast handleDateChange to any to work around the type issue
               onDateChange={handleDateChange as DateChangeHandler}
               maxDate={new Date()}
               size="sm"
@@ -880,19 +789,14 @@ const ReflectionComponent: React.FC<ReflectionComponentProps> = ({ userId }) => 
               mt="xs"
               mb="lg"
               color={getSentimentDetails(selectedReflection.sentiment).color}
-
-              leftSection={getSentimentDetails(selectedReflection.sentiment).icon && 
-                // biome-ignore lint/suspicious/noExplicitAny: Required for Tabler icon components (known issue)
-                React.createElement(getSentimentDetails(selectedReflection.sentiment).icon as React.FC<any>, { size: 10 })}
-
               leftSection={
                 getSentimentDetails(selectedReflection.sentiment).icon &&
                 React.createElement(
+                  // biome-ignore lint/suspicious/noExplicitAny: Required for Tabler icon components (known issue)
                   getSentimentDetails(selectedReflection.sentiment).icon as React.FC<any>,
                   { size: 10 }
                 )
               }
-
             >
               {getSentimentDetails(selectedReflection.sentiment).label}
             </Badge>

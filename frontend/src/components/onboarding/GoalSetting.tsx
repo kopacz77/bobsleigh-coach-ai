@@ -1,12 +1,9 @@
 import {
   Box,
   Button,
-  Chip,
-  Divider,
   Group,
   MultiSelect,
   Paper,
-  Radio,
   Select,
   SimpleGrid,
   Text,
@@ -17,7 +14,6 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
   IconArrowRight,
   IconCalendarEvent,
@@ -25,15 +21,23 @@ import {
   IconTarget,
   IconTrophy,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 /**
  * GoalSetting component allows athletes to define their seasonal and competition goals
  * specifically focused on bobsleigh performance metrics and events
  */
-const GoalSetting = ({ userId, onComplete }) => {
+const GoalSetting = ({
+  userId,
+  onComplete,
+}: {
+  userId: string;
+  onComplete?: (data: any) => void;
+}) => {
   const theme = useMantineTheme();
-  const supabase = useSupabaseClient();
+  const { supabase, loading: supabaseLoading } = useSupabase();
   const [loading, setLoading] = useState(false);
 
   // Goals form state
@@ -93,17 +97,18 @@ const GoalSetting = ({ userId, onComplete }) => {
   ];
 
   // Handle text input changes
-  const handleTextChange = (field) => (event) => {
-    setGoals((prev) => ({ ...prev, [field]: event.target.value }));
-  };
+  const handleTextChange =
+    (field: string) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setGoals((prev) => ({ ...prev, [field]: event.target.value }));
+    };
 
   // Handle select changes
-  const handleSelectChange = (field) => (value) => {
+  const handleSelectChange = (field: string) => (value: any) => {
     setGoals((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle specific metric changes
-  const handleMetricChange = (field) => (event) => {
+  const handleMetricChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setGoals((prev) => ({
       ...prev,
       specificMetrics: {
@@ -115,6 +120,7 @@ const GoalSetting = ({ userId, onComplete }) => {
 
   // Save goals data
   const handleSaveGoals = async () => {
+    if (!supabase) return;
     setLoading(true);
 
     try {
