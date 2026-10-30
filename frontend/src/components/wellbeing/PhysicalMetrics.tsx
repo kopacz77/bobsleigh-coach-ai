@@ -342,17 +342,10 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
         notes: newMetric.notes || null,
       };
 
-      let query;
-
-      if (newMetric.id) {
-        // Update existing metric
-        query = supabase.from("physical_metrics").update(metricData).eq("id", newMetric.id);
-      } else {
-        // Insert new metric
-        query = supabase.from("physical_metrics").insert(metricData);
-      }
-
-      const { error } = await query;
+      // Update the existing metric, otherwise insert a new one
+      const { error } = newMetric.id
+        ? await supabase.from("physical_metrics").update(metricData).eq("id", newMetric.id)
+        : await supabase.from("physical_metrics").insert(metricData);
 
       if (error) {
         throw error;
@@ -441,10 +434,10 @@ const PhysicalMetrics: React.FC<PhysicalMetricsProps> = ({ userId }) => {
       return (
         <Paper p="xs" withBorder shadow="sm">
           <Text fw={600}>{formatDate(label)}</Text>
-          {payload.map((entry, index) => {
+          {payload.map((entry) => {
             const metricType = getMetricTypeDetails(entry.dataKey?.toString() || "");
             return (
-              <Text key={index} size="sm" style={{ color: entry.color }}>
+              <Text key={String(entry.dataKey)} size="sm" style={{ color: entry.color }}>
                 {metricType.label}: {entry.value} {metricType.unit}
               </Text>
             );

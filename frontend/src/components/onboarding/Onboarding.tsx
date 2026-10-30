@@ -306,9 +306,9 @@ const Onboarding = ({ userId, userProfile }: { userId: string; userProfile: any 
           </Box>
 
           <Stepper active={step} onStepClick={setStep} allowNextStepsSelect={false}>
-            {steps.map((s, index) => (
+            {steps.map((s) => (
               <Stepper.Step
-                key={index}
+                key={s.title}
                 label={s.title}
                 description={s.description}
                 completedIcon={<IconCheck size={18} />}

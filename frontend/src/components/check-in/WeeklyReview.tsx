@@ -106,6 +106,18 @@ interface Averages {
  * WeeklyReview component for athletes to assess their weekly performance,
  * set goals for the upcoming week, and review progress
  */
+// Generate array of dates for the selected week
+function getWeekDates(startDate: Date): Date[] {
+  const dates: Date[] = [];
+  const start = new Date(startDate);
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(start);
+    date.setDate(start.getDate() + i);
+    dates.push(date);
+  }
+  return dates;
+}
+
 const WeeklyReview: React.FC<WeeklyReviewProps> = ({ userId }) => {
   const theme = useMantineTheme();
   const { supabase, loading: supabaseLoading } = useSupabase();
@@ -157,18 +169,6 @@ const WeeklyReview: React.FC<WeeklyReviewProps> = ({ userId }) => {
   // Helper function to format date for display
   function formatDate(date: Date): string {
     return new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  }
-
-  // Generate array of dates for the selected week
-  function getWeekDates(startDate: Date): Date[] {
-    const dates: Date[] = [];
-    const start = new Date(startDate);
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(start);
-      date.setDate(start.getDate() + i);
-      dates.push(date);
-    }
-    return dates;
   }
 
   // Fetch existing review data for the selected week
@@ -308,17 +308,10 @@ const WeeklyReview: React.FC<WeeklyReviewProps> = ({ userId }) => {
         key_learnings: review.key_learnings,
       };
 
-      let query;
-
-      if (savedReview) {
-        // Update existing review
-        query = supabase.from("weekly_reviews").update(reviewData).eq("id", savedReview.id);
-      } else {
-        // Insert new review
-        query = supabase.from("weekly_reviews").insert(reviewData);
-      }
-
-      const { error } = await query;
+      // Update the existing review, otherwise insert a new one
+      const { error } = savedReview
+        ? await supabase.from("weekly_reviews").update(reviewData).eq("id", savedReview.id)
+        : await supabase.from("weekly_reviews").insert(reviewData);
 
       if (error) {
         throw error;

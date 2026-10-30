@@ -233,17 +233,10 @@ const MoodTracking: React.FC<MoodTrackingProps> = ({ userId }) => {
         notes: currentMood.notes || null,
       };
 
-      let query;
-
-      if (existingEntry) {
-        // Update existing entry
-        query = supabase.from("mood_entries").update(moodEntry).eq("id", existingEntry.id);
-      } else {
-        // Insert new entry
-        query = supabase.from("mood_entries").insert(moodEntry);
-      }
-
-      const { error } = await query;
+      // Update the existing entry, otherwise insert a new one
+      const { error } = existingEntry
+        ? await supabase.from("mood_entries").update(moodEntry).eq("id", existingEntry.id)
+        : await supabase.from("mood_entries").insert(moodEntry);
 
       if (error) {
         throw error;

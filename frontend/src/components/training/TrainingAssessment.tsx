@@ -17,6 +17,7 @@ import {
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
+import type { PostgrestError } from "@supabase/supabase-js";
 import {
   IconActivity, // Replaced IconMuscle with IconActivity
   IconArrowDown,
@@ -353,7 +354,7 @@ const TrainingAssessment: React.FC<TrainingAssessmentProps> = ({ userId, workout
         coach_feedback: assessment.coach_feedback || null,
       };
 
-      let query;
+      let query: PromiseLike<{ error: PostgrestError | null }>;
 
       if (assessment.id) {
         // Update existing assessment

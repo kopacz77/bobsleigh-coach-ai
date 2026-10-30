@@ -42,7 +42,7 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   CartesianGrid,
   Tooltip as ChartTooltip,
@@ -57,7 +57,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useSupabase } from "@/providers/SupabaseProvider";
 import { StartWorkoutBanner } from "./StartWorkoutBanner";
 
 // Type Definitions
@@ -183,7 +182,6 @@ interface PerformanceItem {
  */
 const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
   const theme = useMantineTheme();
-  const { supabase, loading: supabaseLoading } = useSupabase();
   const [_loading, setLoading] = useState<boolean>(false);
   const [_todayDate] = useState<Date>(new Date());
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -195,13 +193,7 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  useEffect(() => {
-    if (userId) {
-      fetchDashboardData();
-    }
-  }, [userId, supabase]);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -479,7 +471,13 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    if (userId) {
+      fetchDashboardData();
+    }
+  }, [userId, fetchDashboardData]);
 
   // Format date for display
   const formatDate = (
@@ -585,11 +583,11 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
             gap: 2,
           }}
         >
-          {events.map((event, idx) => {
+          {events.map((event) => {
             if (event.type === "workout") {
               return (
                 <div
-                  key={idx}
+                  key={`${event.type}-${event.date}`}
                   style={{
                     width: 6,
                     height: 6,
@@ -607,7 +605,7 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
             if (event.type === "check-in") {
               return (
                 <div
-                  key={idx}
+                  key={`${event.type}-${event.date}`}
                   style={{
                     width: 6,
                     height: 6,
@@ -620,7 +618,7 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
             if (event.type === "event") {
               return (
                 <div
-                  key={idx}
+                  key={`${event.type}-${event.date}`}
                   style={{
                     width: 6,
                     height: 6,
@@ -968,8 +966,8 @@ const AthleteDashboard: React.FC<AthleteProfileProps> = ({ userId }) => {
 
     return (
       <Stack gap="xs">
-        {performanceData.recentPRs.map((pr, index) => (
-          <Group key={index} justify="space-between">
+        {performanceData.recentPRs.map((pr) => (
+          <Group key={`${pr.metric}-${pr.date}`} justify="space-between">
             <Group gap="xs">
               <ThemeIcon color="yellow" variant="light" size={24} radius="xl">
                 <IconStar size={16} />

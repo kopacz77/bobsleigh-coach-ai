@@ -285,9 +285,9 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
                     <Skeleton height={50} />
                   </Stack>
                 ) : alertList.length > 0 ? (
-                  alertList.slice(0, 5).map((alert: any, idx: number) => (
+                  alertList.slice(0, 5).map((alert: any) => (
                     <Paper
-                      key={`${alert.athlete_id}-${alert.type}-${idx}`}
+                      key={`${alert.athlete_id}-${alert.type}-${alert.date}-${alert.message}`}
                       p="sm"
                       withBorder
                       radius="md"
@@ -378,9 +378,9 @@ const CoachDashboard = ({ userId, userProfile }: CoachDashboardProps) => {
               </Stack>
             ) : filteredAlerts.length > 0 ? (
               <SimpleGrid cols={1} spacing="md">
-                {filteredAlerts.map((alert: any, idx: number) => (
+                {filteredAlerts.map((alert: any) => (
                   <Paper
-                    key={`${alert.athlete_id}-${alert.type}-${idx}`}
+                    key={`${alert.athlete_id}-${alert.type}-${alert.date}-${alert.message}`}
                     p="md"
                     withBorder
                     radius="md"

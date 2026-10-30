@@ -24,7 +24,7 @@ import {
   IconZzz,
 } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 type WellbeingData = {
@@ -47,11 +47,7 @@ export function WellbeingCalendar() {
   const [modalOpen, setModalOpen] = useState(false);
   const theme = useMantineTheme();
 
-  useEffect(() => {
-    fetchAssessments();
-  }, []);
-
-  const fetchAssessments = async () => {
+  const fetchAssessments = useCallback(async () => {
     try {
       const {
         data: { user },
@@ -77,7 +73,11 @@ export function WellbeingCalendar() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchAssessments();
+  }, [fetchAssessments]);
 
   // Calculate the average wellbeing score for a given assessment
   const calculateAvgScore = (assessment: WellbeingData) => {

@@ -31,6 +31,10 @@ import {
 import { useState } from "react";
 import { useWorkouts, type WorkoutFilters } from "@/hooks/useTraining";
 
+/** Placeholder rows and cells for the loading skeleton; named so React keys stay stable. */
+const SKELETON_ROWS = ["r1", "r2", "r3", "r4", "r5"];
+const SKELETON_CELLS = ["c1", "c2", "c3", "c4", "c5", "c6", "c7"];
+
 const WORKOUT_TYPES = [
   { value: "strength", label: "Strength" },
   { value: "power", label: "Power" },
@@ -104,10 +108,10 @@ export function WorkoutList() {
   };
 
   const renderSkeletonRows = () =>
-    Array.from({ length: 5 }).map((_, i) => (
-      <Table.Tr key={`skeleton-${i}`}>
-        {Array.from({ length: 7 }).map((__, j) => (
-          <Table.Td key={`skeleton-${i}-${j}`}>
+    SKELETON_ROWS.map((row) => (
+      <Table.Tr key={row}>
+        {SKELETON_CELLS.map((cell) => (
+          <Table.Td key={`${row}-${cell}`}>
             <Skeleton height={20} />
           </Table.Td>
         ))}

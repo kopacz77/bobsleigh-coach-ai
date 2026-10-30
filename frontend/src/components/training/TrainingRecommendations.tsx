@@ -85,8 +85,8 @@ export function TrainingRecommendations() {
         </Text>
 
         <Accordion variant="separated">
-          {recommendations.map((workout, index) => (
-            <Accordion.Item key={index} value={workout.date}>
+          {recommendations.map((workout) => (
+            <Accordion.Item key={workout.date} value={workout.date}>
               <Accordion.Control>
                 <Stack gap={4}>
                   <Group justify="space-between" wrap="wrap">
@@ -111,8 +111,8 @@ export function TrainingRecommendations() {
                     Exercises
                   </Title>
 
-                  {workout.exercises.map((exercise, exIndex) => (
-                    <Card key={exIndex} withBorder p="sm" radius="sm">
+                  {workout.exercises.map((exercise) => (
+                    <Card key={exercise.name} withBorder p="sm" radius="sm">
                       <Text fw={500} size="sm">
                         {exercise.name}
                       </Text>

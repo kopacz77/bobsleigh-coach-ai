@@ -127,9 +127,9 @@ export function WorkoutCalendar() {
           justifyContent: "center",
         }}
       >
-        {dayEvents.map((event, i) => (
+        {dayEvents.map((event) => (
           <Box
-            key={i}
+            key={event.id}
             w={8}
             h={8}
             style={{

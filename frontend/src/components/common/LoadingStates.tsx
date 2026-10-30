@@ -14,6 +14,9 @@ import {
 import { IconBrain, IconChartLine, IconCheck, IconTargetArrow } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
+/** Placeholder rows for the table skeleton; named so React keys stay stable. */
+const TABLE_SKELETON_ROWS = ["row-1", "row-2", "row-3", "row-4"];
+
 interface AIProcessingLoaderProps {
   stage: "analyzing" | "adapting" | "generating" | "complete";
   progress?: number;
@@ -127,7 +130,7 @@ export function ProcessingTimeline({ currentStep, steps }: ProcessingTimelinePro
         <Timeline active={currentStep} bulletSize={24} lineWidth={2}>
           {steps.map((step, index) => (
             <Timeline.Item
-              key={index}
+              key={step.title}
               bullet={
                 index < currentStep ? (
                   <IconCheck size={12} />
@@ -173,8 +176,8 @@ export function ExerciseCardSkeleton() {
         <Skeleton height={8} />
 
         <Stack gap="xs">
-          {Array.from({ length: 4 }, (_, i) => (
-            <Group key={i} justify="space-between">
+          {TABLE_SKELETON_ROWS.map((row) => (
+            <Group key={row} justify="space-between">
               <Skeleton height={16} width="20%" />
               <Skeleton height={16} width="15%" />
               <Skeleton height={16} width="15%" />

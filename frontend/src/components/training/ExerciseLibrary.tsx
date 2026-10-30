@@ -17,6 +17,10 @@ import { IconFilter, IconSearch } from "@tabler/icons-react";
 import { useCallback, useEffect, useState } from "react";
 import { exerciseAPI } from "@/lib/api";
 
+/** Placeholder rows and cells for the loading skeleton; named so React keys stay stable. */
+const SKELETON_ROWS = ["r1", "r2", "r3", "r4", "r5"];
+const SKELETON_CELLS = ["c1", "c2", "c3", "c4", "c5", "c6"];
+
 /** Shape returned from GET /api/exercises (matches database row). */
 interface ExerciseRow {
   id: string;
@@ -127,10 +131,10 @@ export function ExerciseLibrary() {
       .join(" ");
 
   const renderSkeletonRows = () =>
-    Array.from({ length: 5 }).map((_, i) => (
-      <Table.Tr key={`skeleton-${i}`}>
-        {Array.from({ length: 6 }).map((__, j) => (
-          <Table.Td key={`skeleton-${i}-${j}`}>
+    SKELETON_ROWS.map((row) => (
+      <Table.Tr key={row}>
+        {SKELETON_CELLS.map((cell) => (
+          <Table.Td key={`${row}-${cell}`}>
             <Skeleton height={20} />
           </Table.Td>
         ))}

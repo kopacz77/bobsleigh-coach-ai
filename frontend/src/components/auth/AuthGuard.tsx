@@ -28,6 +28,18 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
     if (!supabase) return;
 
+    const handleRedirect = (authed: boolean) => {
+      const isAuthPage = pathname.startsWith("/auth/");
+
+      if (!authed && !isAuthPage) {
+        // Not logged in and not on an auth page -> redirect to login
+        router.push("/auth/login");
+      } else if (authed && isAuthPage) {
+        // Logged in but on an auth page -> redirect to dashboard
+        router.push("/dashboard");
+      }
+    };
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsAuthenticated(!!session);
@@ -46,20 +58,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     });
 
     return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [supabase, pathname, authMode]);
-
-  function handleRedirect(authed: boolean) {
-    const isAuthPage = pathname.startsWith("/auth/");
-
-    if (!authed && !isAuthPage) {
-      // Not logged in and not on an auth page -> redirect to login
-      router.push("/auth/login");
-    } else if (authed && isAuthPage) {
-      // Logged in but on an auth page -> redirect to dashboard
-      router.push("/dashboard");
-    }
-  }
+  }, [supabase, pathname, authMode, router]);
 
   // In dev mode, never show loading state
   if (authMode === "dev") {

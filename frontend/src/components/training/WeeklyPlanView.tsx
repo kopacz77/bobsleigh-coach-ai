@@ -24,6 +24,9 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { useWeeklyWorkouts } from "@/hooks/useTraining";
 
+/** One placeholder per weekday for the loading skeleton; named so React keys stay stable. */
+const SKELETON_DAYS = ["d1", "d2", "d3", "d4", "d5", "d6", "d7"];
+
 /** Get the Monday of the week containing the given date. */
 function getMonday(d: dayjs.Dayjs): dayjs.Dayjs {
   const day = d.day(); // 0 = Sunday
@@ -147,8 +150,8 @@ export function WeeklyPlanView() {
       {/* Day cards */}
       {isLoading ? (
         <Stack gap="sm">
-          {Array.from({ length: 7 }).map((_, i) => (
-            <Skeleton key={`skel-${i}`} height={72} radius="md" />
+          {SKELETON_DAYS.map((day) => (
+            <Skeleton key={day} height={72} radius="md" />
           ))}
         </Stack>
       ) : (

@@ -24,7 +24,7 @@ import {
   IconZzz,
 } from "@tabler/icons-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 /**
@@ -75,11 +75,7 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
   // Get current date
   const [date, setDate] = useState<Date>(new Date());
 
-  useEffect(() => {
-    fetchTodaysAssessment();
-  }, []);
-
-  const fetchTodaysAssessment = async () => {
+  const fetchTodaysAssessment = useCallback(async () => {
     try {
       if (!userId) return;
 
@@ -133,7 +129,11 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
     } catch (error) {
       console.error("Error in wellbeing assessment fetch:", error);
     }
-  };
+  }, [userId, date]);
+
+  useEffect(() => {
+    fetchTodaysAssessment();
+  }, [fetchTodaysAssessment]);
 
   const handleSliderChange = (field: keyof AssessmentData) => (value: number) => {
     setAssessment((prev) => ({ ...prev, [field]: value }));
@@ -160,9 +160,8 @@ const WellbeingAssessment = ({ userId }: { userId: string }) => {
 
   const handleDateChange = (value: Date | null) => {
     if (value) {
+      // The effect above refetches once the new date is in state
       setDate(value);
-      // Fetch assessment for new date
-      fetchTodaysAssessment();
     }
   };
 

@@ -173,8 +173,13 @@ export function LoadAdjustments({
                 </Text>
               </Group>
 
-              {adjustments.map((adjustment, index) => (
-                <Card key={index} padding="sm" radius="sm" withBorder>
+              {adjustments.map((adjustment) => (
+                <Card
+                  key={`${adjustment.type}-${adjustment.reason}`}
+                  padding="sm"
+                  radius="sm"
+                  withBorder
+                >
                   <Stack gap="xs">
                     <Group justify="space-between" wrap="wrap">
                       <Group ta="center" gap="sm">
@@ -226,8 +231,8 @@ export function LoadAdjustments({
               </Group>
 
               <List size="sm" spacing="xs">
-                {reasoning.map((reason, index) => (
-                  <List.Item key={index}>
+                {reasoning.map((reason) => (
+                  <List.Item key={reason}>
                     <Text size="sm" c="dimmed">
                       {reason}
                     </Text>

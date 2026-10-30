@@ -242,7 +242,7 @@ export function WorkoutForm({ onSuccess }: WorkoutFormProps = {}) {
           <Divider label="Exercises" labelPosition="center" />
 
           {form.values.exercises.map((_, index) => (
-            <Card key={index} withBorder shadow="xs" p="sm" radius="md">
+            <Card key={form.key(`exercises.${index}`)} withBorder shadow="xs" p="sm" radius="md">
               <Stack>
                 <Group grow>
                   <Select

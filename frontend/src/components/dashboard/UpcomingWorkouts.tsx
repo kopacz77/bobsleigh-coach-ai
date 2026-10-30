@@ -132,8 +132,8 @@ export function UpcomingWorkouts() {
         </Group>
 
         <Stack gap={0}>
-          {workouts.map((workout, index) => (
-            <WorkoutItem key={index} {...workout} />
+          {workouts.map((workout) => (
+            <WorkoutItem key={`${workout.date}-${workout.title}`} {...workout} />
           ))}
         </Stack>
 

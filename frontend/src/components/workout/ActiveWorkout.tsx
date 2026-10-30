@@ -58,6 +58,17 @@ interface PlannedExercise {
   planned_weight_kg: number | null;
 }
 
+/** Stable per-exercise React keys: the id or name, suffixed only when a plan repeats one. */
+function withExerciseKeys(exercises: PlannedExercise[]) {
+  const seen = new Map<string, number>();
+  return exercises.map((exercise) => {
+    const base = exercise.exercise_id ?? exercise.exercise_name;
+    const count = (seen.get(base) ?? 0) + 1;
+    seen.set(base, count);
+    return { exercise, key: count > 1 ? `${base}-${count}` : base };
+  });
+}
+
 interface WorkoutPlan {
   id?: string;
   workout_name?: string;
@@ -294,9 +305,9 @@ export function ActiveWorkout({ plan }: ActiveWorkoutProps) {
       <RestTimer autoStartSeconds={autoStartRest} onAutoStartHandled={handleAutoStartHandled} />
 
       {/* Exercise list */}
-      {exercises.map((exercise, index) => (
+      {withExerciseKeys(exercises).map(({ exercise, key }, index) => (
         <SetLogger
-          key={`${exercise.exercise_name}-${index}`}
+          key={key}
           exercise={exercise}
           exerciseIndex={index}
           onStartRest={handleStartRest}

@@ -155,7 +155,7 @@ const PlanReviewCard = ({ plan }: PlanReviewCardProps) => {
         <Collapse in={expanded}>
           <Stack gap="md" mb="md">
             {days.map((day: any, dayIdx: number) => (
-              <Card key={dayIdx} withBorder radius="sm" p="sm" bg="gray.0">
+              <Card key={day.day_number ?? day.day_name} withBorder radius="sm" p="sm" bg="gray.0">
                 <Group justify="space-between" mb="xs">
                   <Text fw={600}>{day.day_name || `Day ${dayIdx + 1}`}</Text>
                   <Group gap="xs">
@@ -195,8 +195,8 @@ const PlanReviewCard = ({ plan }: PlanReviewCardProps) => {
                           </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
-                          {exercises.map((ex: any, exIdx: number) => (
-                            <Table.Tr key={exIdx}>
+                          {exercises.map((ex: any) => (
+                            <Table.Tr key={ex.exercise_id ?? ex.id ?? ex.exercise_name ?? ex.name}>
                               <Table.Td>
                                 <Text size="sm">{ex.exercise_name || ex.name || "---"}</Text>
                               </Table.Td>

@@ -42,7 +42,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Area,
   Bar,
@@ -55,7 +55,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useSupabase } from "@/providers/SupabaseProvider";
 
 // Define interfaces for type safety
 interface TeamOption {
@@ -164,7 +163,6 @@ interface OverviewMetricCardProps {
  */
 const AdminDashboard: React.FC = () => {
   const theme = useMantineTheme();
-  const { supabase } = useSupabase();
   const [_loading, setLoading] = useState<boolean>(false);
   const [athletes, setAthletes] = useState<Athlete[]>([]);
   const [teamStats, setTeamStats] = useState<TeamStats>({
@@ -190,11 +188,7 @@ const AdminDashboard: React.FC = () => {
     { value: "team3", label: "Junior Team" },
   ];
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, [supabase, dateRange, selectedTeam]);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     setLoading(true);
     try {
       // In a real implementation, these would be actual Supabase queries
@@ -315,7 +309,11 @@ const AdminDashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedTeam]);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   const handleViewAthleteDetails = async (athleteId: string) => {
     setExpandedAthlete(athleteId);
@@ -773,8 +771,8 @@ const AdminDashboard: React.FC = () => {
                 </Title>
                 {upcomingEvents.length > 0 ? (
                   <Stack gap="xs">
-                    {upcomingEvents.map((event, index) => (
-                      <Card key={index} p="sm" withBorder>
+                    {upcomingEvents.map((event) => (
+                      <Card key={`${event.name}-${event.date}`} p="sm" withBorder>
                         <Group justify="space-between">
                           <Box>
                             <Text fw={500}>{event.name}</Text>
@@ -836,8 +834,8 @@ const AdminDashboard: React.FC = () => {
               Athlete Goals
             </Title>
             <Stack gap="md">
-              {recentGoals.map((goal, index) => (
-                <Card key={index} p="sm" withBorder>
+              {recentGoals.map((goal) => (
+                <Card key={goal.goal} p="sm" withBorder>
                   <Group justify="space-between">
                     <Group gap="md">
                       <ThemeIcon
@@ -873,8 +871,8 @@ const AdminDashboard: React.FC = () => {
               Recent Alerts
             </Title>
             <Stack gap="md">
-              {recentAlerts.map((alert, index) => (
-                <Card key={index} p="sm" withBorder>
+              {recentAlerts.map((alert) => (
+                <Card key={`${alert.type}-${alert.date}-${alert.message}`} p="sm" withBorder>
                   <Group justify="space-between">
                     <Group gap="md">
                       <ThemeIcon

@@ -90,8 +90,8 @@ export function TrainingSummary() {
         </Group>
 
         <SimpleGrid cols={{ base: 1, xs: 3 }}>
-          {stats.map((stat, index) => (
-            <Stat key={index} {...stat} />
+          {stats.map((stat) => (
+            <Stat key={stat.title} {...stat} />
           ))}
         </SimpleGrid>
 
